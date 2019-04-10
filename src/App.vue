@@ -1,0 +1,35 @@
+<template>
+  <div id="app">
+    <router-view name="frame"></router-view>
+    <div id="main">
+          <router-view name="signIn"></router-view>
+      <router-view name="header"></router-view>
+      <router-view name="main"></router-view>
+    </div>
+
+  </div>
+</template>
+
+<script>
+import Frame from "./Frame/frame.vue";
+
+export default {
+  name: "App"
+};
+</script>
+
+<style>
+#app {
+  font-family: "Avenir", Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+#main {
+  flex: 1;
+}
+</style>
