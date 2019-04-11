@@ -11,6 +11,8 @@ import echarts from 'echarts'
 
 // 引入请求方法
 import * as $http from "./request/request"
+// 引入store
+import store from "./store/index.js"
 // 将所有方法挂在到vue的原型上
 Vue.prototype.$http=$http
 Vue.prototype.$echarts = echarts 
@@ -150,6 +152,7 @@ Vue.config.productionTip = false
 new Vue({
   el: '#app',
   router,
+  store,
   components: { App },
   template: '<App/>'
 })

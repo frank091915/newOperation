@@ -24,6 +24,7 @@
       label="密码"
     >
       <a-input
+      type="password"
         v-decorator="[
           'nickname',
           {rules: [{ required: true, message: 'Please input your nickname' }]}
@@ -48,6 +49,7 @@
 </template>
 
 <script>
+	import {mapActions,mapGetters} from "vuex"
 const formItemLayout = {
   labelCol: { span: 4 },
   wrapperCol: { span: 8 },
@@ -86,10 +88,22 @@ export default {
     },
       signIn(){
       this.$http.toSignIn("1").then((res)=>{
-          
+          if(res.data.success){
+            console.log(this.ifLogin)
+            window.sessionStorage.setItem("operationToken",JSON.stringify({"accessToken":res.data.accessToken}))
+            this.$router.push("/overview")
+          }else{
+
+          }
       })
-  }
+     }
   },
+  computed:{
+    login:()=>{
+      return "lalala"
+    },
+    ...mapGetters(["ifLogin"])
+  }
 
 };
 </script>
