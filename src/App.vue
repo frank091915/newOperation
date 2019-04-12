@@ -11,11 +11,9 @@
 </template>
 
 <script>
-import Frame from "./Frame/frame.vue";
 
-export default {
-  name: "App"
-};
+
+
 </script>
 
 <style>

@@ -6,7 +6,7 @@ Vue.use(Vuex)
 //导出store
 export default new Vuex.Store({
     state:{
-        hasLogin:false
+        accessToken:window.sessionStorage.getItem("operationToken")? JSON.parse(window.sessionStorage.getItem("operationToken")) : null
     },
     mutations:{
         hasLogin(state){

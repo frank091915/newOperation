@@ -5,6 +5,11 @@ import App from './App'
 import router from './router'
 import 'ant-design-vue/dist/antd.css'
 
+// 汉化
+import Frame from "./Frame/frame.vue";
+import zh_CN from 'ant-design-vue/lib/locale-provider/zh_CN';
+import moment from 'moment';
+import 'moment/locale/zh-cn';
 
 // 引入echarts
 import echarts from 'echarts'
@@ -14,8 +19,8 @@ import * as $http from "./request/request"
 // 引入store
 import store from "./store/index.js"
 // 将所有方法挂在到vue的原型上
-Vue.prototype.$http=$http
-Vue.prototype.$echarts = echarts 
+Vue.prototype.$http = $http
+Vue.prototype.$echarts = echarts
 // 引入echarts局部组件
 import {
   Affix,
@@ -153,6 +158,13 @@ new Vue({
   el: '#app',
   router,
   store,
-  components: { App },
-  template: '<App/>'
+  components: {
+    App
+  },
+  data() {
+    return {
+      zh_CN,
+    }
+  },
+  template: '<a-locale-provider :locale="zh_CN"> <App/></a-locale-provider>'
 })

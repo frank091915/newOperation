@@ -20,7 +20,27 @@ const toSignIn = (userInfo) => {
   )
 }
 
+// 请求用户id
+const toGetUerId = () => {
+  return ajax.get(
+    "/api/current/user", {
+      headers: {
+        "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken"))
+      }
+    }
+  )
+}
 
+// 请求汇聚机房列表
+const toGetconvergeRoomList = () => {
+  return ajax.get(
+    "/api/data/machine", {
+      headers: {
+        "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken"))
+      }
+    }
+  )
+}
 
 //拦截请求,并进行操作,显示等待图标
 ajax.interceptors.request.use((config)=>{
@@ -36,5 +56,7 @@ ajax.interceptors.request.use((config)=>{
   })
 
 export {
-  toSignIn
+  toSignIn,
+  toGetUerId,
+  toGetconvergeRoomList
 }

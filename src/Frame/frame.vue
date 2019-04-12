@@ -9,28 +9,22 @@
           <img id="logo" src="../assets/u6.png">
         </div>
         <a-menu theme="dark" :defaultSelectedKeys="['1']" mode="inline">
-          <a-menu-item key="1">
+          <!-- 渲染一级菜单 -->
+          <a-menu-item v-for="item in aloneMenu"  :key="item.id" @click="toNavigate(item.path,item.title)">
            
-            <span>状态汇总</span>
+            <span>{{item.title}}</span>
           </a-menu-item>
-          <a-menu-item key="2">
 
-            <span>位置展示</span>
-          </a-menu-item>
           <a-sub-menu
-            key="sub1"
+            v-for="item in parentMenu" 
+            :key="item.id"
           >
-            <span slot="title"><span>汇聚机房状态实时展示</span></span>
-            <a-menu-item key="3">Tom</a-menu-item>
-            <a-menu-item key="4">Bill</a-menu-item>
-            <a-menu-item key="5">Alex</a-menu-item>
-          </a-sub-menu>
-          <a-sub-menu
-            key="sub2"
-          >
-            <span slot="title"><span>弱电间实时状态</span></span>
-            <a-menu-item key="6">Team 1</a-menu-item>
-            <a-menu-item key="8">Team 2</a-menu-item>
+            <span slot="title"><span>{{item.title}}</span></span>
+            <a-menu-item 
+            v-for="subItem in item.subPermissions"
+            :key="subItem.id"
+            @click="toNavigate(subItem.path,subItem.title)"
+            >{{subItem.title}}</a-menu-item>
           </a-sub-menu>
         </a-menu>
       </a-layout-sider>
@@ -38,12 +32,48 @@
   </div>
 </template>
 <script>
+import {mapState} from "vuex"
 export default {
   data() {
     return {
       collapsed: false,
+      aloneMenu:[],
+      parentMenu:[]
     }
   },
+  created(){
+    // 获取侧边栏菜单数据
+    this.$http.toGetUerId().then((res)=>{
+      this.aloneMenu=res.data.data.filter((item)=>{
+        if(item.subPermissions.length===0){
+          return true
+        }else{
+          return false
+        }
+      });
+      this.parentMenu=res.data.data.filter((item)=>{
+        if(item.subPermissions.length != 0){
+          return true
+        }else{
+          return false
+        }
+      })
+      this.$nextTick(()=>{
+        console.log(this.aloneMenu)
+      })
+    })
+  },
+  computed:{
+    ...mapState(["accessToken"])
+  },
+  methods:{
+    toNavigate(path,title){
+      // 获取需要的路径字符串
+      let processedPath=path.slice(0,(path.length-3)).split("/").pop();
+      console.log(processedPath)
+      this.$router.push({path:processedPath,query:{title}})
+    }
+  }
 }
 </script>
 
