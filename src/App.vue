@@ -2,7 +2,7 @@
   <div id="app">
     <router-view name="frame"></router-view>
     <div id="main">
-          <router-view name="signIn"></router-view>
+      <router-view name="signIn"></router-view>
       <router-view name="header"></router-view>
       <router-view name="main"></router-view>
     </div>
@@ -26,6 +26,7 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  max-height: 100%;
 }
 #main {
   flex: 1;

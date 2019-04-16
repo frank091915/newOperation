@@ -102,7 +102,7 @@ export default {
         content: "立即跳转",
         onOk: () => {
           this.$router.push({
-            path:"/summery",
+            path:"/summary",
             query:{title:"状态汇总"}
           });
         },

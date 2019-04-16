@@ -1,10 +1,10 @@
 <template>
   <div id="header">
-    <div id="headerInfo">header</div>
+    <div id="headerInfo">{{title}}</div>
     <div id="dropDown">
       <a-dropdown>
         <a class="ant-dropdown-link" href="#">
-          userId
+          {{username}}
           <a-icon type="down"/>
         </a>
         <a-menu slot="overlay">
@@ -20,7 +20,30 @@
   </div>
 </template>
 <script>
-export default {};
+export default {
+  data()
+  {
+    return{
+      title:"",
+      username:""
+    }
+  },
+  created(){
+    this.title=this.$route.query.title,
+    this.$http.toGetUserInfo().then((res)=>{
+      console.log(res.data.data.username)
+      this.username=res.data.data.username
+    })
+  },
+  beforeRouteEnter (to, from, next) {
+    
+    next(vm => {
+      // 通过 `vm` 访问组件实例
+      console.log(to)
+      vm.title=to.query.title
+    })
+  }
+};
 </script>
 <style >
 #header {

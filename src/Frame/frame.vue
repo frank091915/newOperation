@@ -43,7 +43,8 @@ export default {
   },
   created(){
     // 获取侧边栏菜单数据
-    this.$http.toGetUerId().then((res)=>{
+    this.$http.toGetAsideMenu().then((res)=>{
+      console.log(res)
       this.aloneMenu=res.data.data.filter((item)=>{
         if(item.subPermissions.length===0){
           return true
@@ -59,7 +60,6 @@ export default {
         }
       })
       this.$nextTick(()=>{
-        console.log(this.aloneMenu)
       })
     })
   },
@@ -78,6 +78,11 @@ export default {
 </script>
 
 <style>
+html{height:100%}
+body{height:100%}
+#frame{
+  max-height:100%;
+}
 #components-layout-demo-side .logo {
   height: 32px;
   background: rgba(255,255,255,.2);
@@ -85,6 +90,7 @@ export default {
 }
 #components-layout-demo-side{
    max-width: 250px !important;
+   max-height: 100%;
 }
 .ant-layout-sider{
   min-width: 250px !important;

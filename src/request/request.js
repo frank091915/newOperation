@@ -21,7 +21,18 @@ const toSignIn = (userInfo) => {
 }
 
 // 请求用户id
-const toGetUerId = () => {
+const toGetAsideMenu = () => {
+  return ajax.get(
+    "/api/current/user/permission", {
+      headers: {
+        "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken"))
+      }
+    }
+  )
+}
+
+// 请求用户id
+const toGetUserInfo = () => {
   return ajax.get(
     "/api/current/user", {
       headers: {
@@ -42,9 +53,34 @@ const toGetconvergeRoomList = () => {
   )
 }
 
+// 请求弱电房间列表
+const toGetlowVoltageRoomList = () => {
+  return ajax.get(
+    "/api/data/electric", {
+      headers: {
+        "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken"))
+      }
+    }
+  )
+}
+
+// 请求pos机列表
+const toGetPosMechineList = (page=1,status,buildingId,searchRoom) => {
+  let statusQuery=status ? `&status=${status}` : "",
+      buildingIdQuery=buildingId ? `&status=${status}` : "",
+      searchRoomQuery=searchRoom ? `&status=${status}` : ""
+  console.log(statusQuery)
+  return ajax.get(
+    `/api/control/pos?currentPage=`+page+statusQuery+buildingIdQuery+searchRoomQuery, {
+      headers: {
+        "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken"))
+      }
+    }
+  )
+}
+
 //拦截请求,并进行操作,显示等待图标
 ajax.interceptors.request.use((config)=>{
-    console.log(config)
     return config
   });
   
@@ -57,6 +93,9 @@ ajax.interceptors.request.use((config)=>{
 
 export {
   toSignIn,
-  toGetUerId,
-  toGetconvergeRoomList
+  toGetAsideMenu,
+  toGetconvergeRoomList,
+  toGetUserInfo,
+  toGetlowVoltageRoomList,
+  toGetPosMechineList
 }
