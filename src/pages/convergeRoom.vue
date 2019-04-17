@@ -19,7 +19,7 @@
         class="statusDisplay"
       >
         <img :src='color(item.statusDescription)'>
-        <p>{{item.roomInfo.Description}}</p>
+        <p>{{item.roomInfo.roomName}}</p>
       </div>
     </div>
   </div>

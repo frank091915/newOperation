@@ -44,7 +44,6 @@ export default {
   created(){
     // 获取侧边栏菜单数据
     this.$http.toGetAsideMenu().then((res)=>{
-      console.log(res)
       this.aloneMenu=res.data.data.filter((item)=>{
         if(item.subPermissions.length===0){
           return true
@@ -113,7 +112,6 @@ body{height:100%}
 }
 .ant-menu-item{
   display: block;
-  padding-left: 0px !important;
 }
 .ant-menu{
   display: flex;
@@ -132,7 +130,8 @@ body{height:100%}
 }
 
 .ant-menu-item{
-  padding-right:104px !important;
+  box-sizing: border-box;
+  padding-left: 46px !important;
 }
 .ant-menu-submenu-title{
   display: flex;

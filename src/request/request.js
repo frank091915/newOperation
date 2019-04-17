@@ -20,7 +20,7 @@ const toSignIn = (userInfo) => {
   )
 }
 
-// 请求用户id
+// 请求权限菜单
 const toGetAsideMenu = () => {
   return ajax.get(
     "/api/current/user/permission", {
@@ -79,6 +79,127 @@ const toGetPosMechineList = (page=1,status,buildingId,searchRoom) => {
   )
 }
 
+// 请求角色管理列表
+const toGetRoleManageList = () => {
+  return ajax.get(
+    "/api/role", {
+      headers: {
+        "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken"))
+      }
+    }
+  )
+}
+
+// 角色管理删除操作
+const toDeleteRole = (userId) => {
+  return ajax.delete(
+    "/api/role/" + userId, {
+      headers: {
+        "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken"))
+      }
+    }
+  )
+}
+
+// 用户管理删除操作
+const toDeleteUser = (userId) => {
+  return ajax.delete(
+    "/api/user/" + userId, {
+      headers: {
+        "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken"))
+      }
+    }
+  )
+}
+
+  //角色添加
+  const toAddUser = (userInfo) => {
+    console.log(userInfo)
+    return ajax.post(
+      "/api/role", qs.stringify(userInfo), {
+        headers: {
+          "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken")),
+          "Content-Type": "application/x-www-form-urlencoded"
+        }
+      }
+    )
+  }
+
+  //角色添加
+  const toAddRole = (userInfo) => {
+    console.log(userInfo)
+    return ajax.post(
+      "/api/role", qs.stringify(userInfo), {
+        headers: {
+          "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken")),
+          "Content-Type": "application/x-www-form-urlencoded"
+        }
+      }
+    )
+  }
+
+    //角色修改
+    const toModifyRole = (userInfo) => {
+      console.log(userInfo)
+      return ajax.put(
+        "/api/role/"+userInfo.id, qs.stringify(userInfo), {
+          headers: {
+            "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken")),
+            "Content-Type": "application/x-www-form-urlencoded"
+          }
+        }
+      )
+    }
+
+
+      //用户修改
+      const toModifyUser = (userInfo) => {
+        console.log(userInfo)
+        return ajax.put(
+          "/api/role/"+userInfo.userId, qs.stringify(userInfo), {
+            headers: {
+              "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken")),
+              "Content-Type": "application/x-www-form-urlencoded"
+            }
+          }
+        )
+      }
+
+  // 请求用户列表
+const toUserList = () => {
+  return ajax.get(
+    "/api/user", {
+      headers: {
+        "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken"))
+      }
+    }
+  )
+}
+
+  // 进入编辑角色页面，获取角色信息
+  const toRoleInfo = (userId) => {
+    return ajax.get(
+      "/api/role/"+userId, {
+        headers: {
+          "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken"))
+        }
+      }
+    )
+  }
+
+
+  // 请求用户信息
+const toGetUserInfoById = (userId=1) => {
+  return ajax.get(
+    "/api/user/"+userId, {
+      headers: {
+        "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken"))
+      }
+    }
+  )
+}
+
+
 //拦截请求,并进行操作,显示等待图标
 ajax.interceptors.request.use((config)=>{
     return config
@@ -91,11 +212,22 @@ ajax.interceptors.request.use((config)=>{
   
   })
 
+
 export {
   toSignIn,
   toGetAsideMenu,
   toGetconvergeRoomList,
   toGetUserInfo,
   toGetlowVoltageRoomList,
-  toGetPosMechineList
+  toGetPosMechineList,
+  toGetRoleManageList,
+  toDeleteRole,
+  toAddRole,
+  toUserList,
+  toRoleInfo,
+  toModifyRole,
+  toDeleteUser,
+  toAddUser,
+  toGetUserInfoById,
+  toModifyUser
 }

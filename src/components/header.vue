@@ -31,7 +31,6 @@ export default {
   created(){
     this.title=this.$route.query.title,
     this.$http.toGetUserInfo().then((res)=>{
-      console.log(res.data.data.username)
       this.username=res.data.data.username
     })
   },
@@ -39,7 +38,6 @@ export default {
     
     next(vm => {
       // 通过 `vm` 访问组件实例
-      console.log(to)
       vm.title=to.query.title
     })
   }

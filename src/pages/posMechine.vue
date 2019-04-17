@@ -179,7 +179,7 @@ export default {
   },
   created() {
     this.$http.toGetPosMechineList(1).then(res => {
-      console.log(res);
+
       var i=0;
       if(res.data.success){
         this.data=res.data.data.filter((res)=>{
@@ -188,7 +188,7 @@ export default {
         })
         this.recordsTotal=res.data.recordsTotal
         this.$nextTick(()=>{
-          console.log(this.data)
+
         })
       }
     });
@@ -204,6 +204,8 @@ body{
 }
 #main{
   height: calc(100% - 50px);
+    width: 95%;
+  margin-left: 20px;
 }
 #frame{
   height: 100%;

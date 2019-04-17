@@ -12,6 +12,12 @@ import theServer from "../pages/Server.vue"
 import Access from "../pages/Access.vue"
 import Broadcast from "../pages/Broadcast.vue"
 import Network from "../pages/Network.vue"
+import RoleManage from "../pages/roleManage.vue"
+import addRole from "../pages/addRole.vue"
+import UserManage from "../pages/userManage.vue"
+import ModifyRole from "../pages/modifyRole.vue"
+import AddUser from "../pages/addUser.vue"
+import ModifyUser from "../pages/modifyUser.vue"
 // 将所有组件集中管理进行配置
 
 export default [{
@@ -123,6 +129,61 @@ export default [{
     components: {
       frame:Frame,
       main:Network,
+      header:Header
+	}
+  },
+  {
+    path: '/role',
+    name: 'role',
+    components: {
+      frame:Frame,
+      main:RoleManage,
+      header:Header
+	}
+  },
+  {
+    path: '/addRole',
+    name: 'addRole',
+    components: {
+      frame:Frame,
+      main:addRole,
+      header:Header
+	}
+  },
+  {
+    path: '/user',
+    name: 'user',
+    components: {
+      frame:Frame,
+      main:UserManage,
+      header:Header
+	}
+  },
+  {
+    path: '/modifyRole',
+    name: 'modifyRole',
+    components: {
+      frame:Frame,
+      main:ModifyRole,
+      header:Header
+	}
+  }
+  ,
+  {
+    path: '/addUser',
+    name: 'addUser',
+    components: {
+      frame:Frame,
+      main:AddUser,
+      header:Header
+	}
+  },
+  {
+    path: '/modifyUser',
+    name: 'modifyUser',
+    components: {
+      frame:Frame,
+      main:ModifyUser,
       header:Header
 	}
   }
