@@ -6,13 +6,10 @@ const ajax = axios.create({
 })
 
 // 用户登录请求
-const toSignIn = (userInfo) => {
 
+const toSignIn = (userInfo) => {
   return ajax.post(
-    "/login", qs.stringify({
-        username: "admin",
-        password: "123"
-      }), {
+    "/login", qs.stringify(userInfo), {
       headers: {
         "Content-Type": "application/x-www-form-urlencoded"
       }
@@ -24,6 +21,18 @@ const toSignIn = (userInfo) => {
 const toGetAsideMenu = () => {
   return ajax.get(
     "/api/current/user/permission", {
+      headers: {
+        "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken"))
+      }
+    }
+  )
+}
+
+
+// 汇聚机房告警设置列表
+const toGetConvergeRoomAlarmSettings = (userId,type,currentPage=1) => {
+  return ajax.get(
+    `/api/user/${userId}/device?currentPage=${currentPage}&type=${type}`, {
       headers: {
         "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken"))
       }
@@ -65,13 +74,26 @@ const toGetlowVoltageRoomList = () => {
 }
 
 // 请求pos机列表
-const toGetPosMechineList = (page=1,status,buildingId,searchRoom) => {
-  let statusQuery=status ? `&status=${status}` : "",
-      buildingIdQuery=buildingId ? `&status=${status}` : "",
-      searchRoomQuery=searchRoom ? `&status=${status}` : ""
-  console.log(statusQuery)
+const toGetPosMechineList = (page =1, status,buildingId,searchRoom) => {
+  let statusQuery = status ? `&status=${status}` : "",
+    buildingIdQuery = buildingId ? `&buildingId=${buildingId}` : "",
+    searchRoomQuery = searchRoom ? `&searchRoom=${searchRoom}` : "";
   return ajax.get(
-    `/api/control/pos?currentPage=`+page+statusQuery+buildingIdQuery+searchRoomQuery, {
+    `/api/control/pos?currentPage=` + page + statusQuery + buildingIdQuery + searchRoomQuery, {
+      headers: {
+        "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken"))
+      }
+    }
+  )
+}
+
+// 请求圈存机列表
+const toGetTransferList = (page =1, status,buildingId,searchRoom) => {
+  let statusQuery = status ? `&status=${status}` : "",
+    buildingIdQuery = buildingId ? `&buildingId=${buildingId}` : "",
+    searchRoomQuery = searchRoom ? `&searchRoom=${searchRoom}` : "";
+  return ajax.get(
+    `/api/control/transfer?currentPage=` + page + statusQuery + buildingIdQuery + searchRoomQuery, {
       headers: {
         "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken"))
       }
@@ -83,6 +105,17 @@ const toGetPosMechineList = (page=1,status,buildingId,searchRoom) => {
 const toGetRoleManageList = () => {
   return ajax.get(
     "/api/role", {
+      headers: {
+        "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken"))
+      }
+    }
+  )
+}
+
+// 请求楼宇名称列表
+const toGetBuildingList = () => {
+  return ajax.get(
+    "/api/cmdb/building", {
       headers: {
         "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken"))
       }
@@ -112,60 +145,118 @@ const toDeleteUser = (userId) => {
   )
 }
 
-  //角色添加
-  const toAddUser = (userInfo) => {
-    console.log(userInfo)
-    return ajax.post(
-      "/api/role", qs.stringify(userInfo), {
-        headers: {
-          "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken")),
-          "Content-Type": "application/x-www-form-urlencoded"
-        }
+//用户添加
+const toAddUser = (userInfo) => {
+  let obj ={};
+  obj=userInfo;
+  // obj.roleIds=[userInfo.role]
+  console.log(obj)
+  return ajax.post(
+    `/api/user?roleIds=${userInfo.role}`, obj, {
+      headers: {
+        "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken")),
+        "Content-Type": "application/json"
       }
-    )
-  }
-
-  //角色添加
-  const toAddRole = (userInfo) => {
-    console.log(userInfo)
-    return ajax.post(
-      "/api/role", qs.stringify(userInfo), {
-        headers: {
-          "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken")),
-          "Content-Type": "application/x-www-form-urlencoded"
-        }
-      }
-    )
-  }
-
-    //角色修改
-    const toModifyRole = (userInfo) => {
-      console.log(userInfo)
-      return ajax.put(
-        "/api/role/"+userInfo.id, qs.stringify(userInfo), {
-          headers: {
-            "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken")),
-            "Content-Type": "application/x-www-form-urlencoded"
-          }
-        }
-      )
     }
+  )
+}
 
-
-      //用户修改
-      const toModifyUser = (userInfo) => {
-        console.log(userInfo)
-        return ajax.put(
-          "/api/role/"+userInfo.userId, qs.stringify(userInfo), {
-            headers: {
-              "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken")),
-              "Content-Type": "application/x-www-form-urlencoded"
-            }
-          }
-        )
+//角色添加
+const toAddRole = (userInfo) => {
+  console.log(userInfo)
+  return ajax.post(
+    "/api/role", qs.stringify(userInfo), {
+      headers: {
+        "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken")),
+        "Content-Type": "application/x-www-form-urlencoded"
       }
+    }
+  )
+}
 
-  // 请求用户列表
+//角色修改
+const toModifyRole = (userInfo) => {
+  return ajax.put(
+    "/api/role/" + userInfo.id, qs.stringify(userInfo), {
+      headers: {
+        "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken")),
+        "Content-Type": "application/x-www-form-urlencoded"
+      }
+    }
+  )
+}
+
+
+//用户修改
+const toModifyUser = (userInfo) => {
+  console.log(userInfo)
+  return ajax.put(
+    "/api/user/" + userInfo.userId, qs.stringify(userInfo), {
+      headers: {
+        "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken")),
+        "Content-Type": "application/x-www-form-urlencoded"
+      }
+    }
+  )
+}
+
+//用户重置密码
+const toResetPassword = (userId) => {
+  console.log(userId)
+  return ajax.put(
+    "/api/user/reset/password/" + userId, {},{
+      headers: {
+        "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken")),
+        "Content-Type": "application/x-www-form-urlencoded"
+      }
+    }
+  )
+}
+
+//用户设置告警设置
+const toSetAlarm = (userID, FaultId) => {
+  console.log(userID, FaultId)
+  return ajax.post(
+    `/api/user/${userID}/warning/${FaultId}`, qs.stringify({
+    }), {
+      headers: {
+        "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken")),
+        "Content-Type": "application/x-www-form-urlencoded"
+
+      }
+    }
+  )
+}
+
+//用户开启告警设置
+const toSetAlarmOn = (obj) => {
+  console.log(obj)
+  return ajax.post(
+    `/api/user/${obj.userId}/device/${obj.cmdbId}/on`, qs.stringify(obj), {
+      headers: {
+        "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken")),
+        "Content-Type": "application/x-www-form-urlencoded"
+
+      }
+    }
+  )
+}
+
+//用户禁用告警设置
+const toSetAlarmOff = (obj) => {
+  console.log(obj)
+  return ajax.post(
+    `/api/user/${obj.userId}/device/${obj.cmdbId}/off`, qs.stringify(obj), {
+      headers: {
+        "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken")),
+        "Content-Type": "application/x-www-form-urlencoded"
+
+      }
+    }
+  )
+}
+
+// 请求用户列表
 const toUserList = () => {
   return ajax.get(
     "/api/user", {
@@ -176,22 +267,33 @@ const toUserList = () => {
   )
 }
 
-  // 进入编辑角色页面，获取角色信息
-  const toRoleInfo = (userId) => {
-    return ajax.get(
-      "/api/role/"+userId, {
-        headers: {
-          "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken"))
-        }
-      }
-    )
-  }
-
-
-  // 请求用户信息
-const toGetUserInfoById = (userId=1) => {
+// 获取用户告警设置列表
+const toGetUserAlarmSettings = (userId) => {
   return ajax.get(
-    "/api/user/"+userId, {
+    `/api/user/${userId}/warning`, {
+      headers: {
+        "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken"))
+      }
+    }
+  )
+}
+
+// 进入编辑角色页面，获取角色信息
+const toRoleInfo = (userId) => {
+  return ajax.get(
+    "/api/role/" + userId, {
+      headers: {
+        "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken"))
+      }
+    }
+  )
+}
+
+
+// 请求用户信息
+const toGetUserInfoById = (userId = 1) => {
+  return ajax.get(
+    "/api/user/" + userId, {
       headers: {
         "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken"))
       }
@@ -201,16 +303,16 @@ const toGetUserInfoById = (userId=1) => {
 
 
 //拦截请求,并进行操作,显示等待图标
-ajax.interceptors.request.use((config)=>{
-    return config
-  });
-  
-  //拦截相应,对相应数据进行操作并返回,顺带关掉indicator
-  ajax.interceptors.response.use((config)=>{
+ajax.interceptors.request.use((config) => {
+  return config
+});
 
-    return config
-  
-  })
+//拦截相应,对相应数据进行操作并返回,顺带关掉indicator
+ajax.interceptors.response.use((config) => {
+
+  return config
+
+})
 
 
 export {
@@ -229,5 +331,13 @@ export {
   toDeleteUser,
   toAddUser,
   toGetUserInfoById,
-  toModifyUser
+  toModifyUser,
+  toSetAlarm,
+  toGetUserAlarmSettings,
+  toResetPassword,
+  toGetConvergeRoomAlarmSettings,
+  toSetAlarmOn,
+  toSetAlarmOff,
+  toGetBuildingList,
+  toGetTransferList
 }

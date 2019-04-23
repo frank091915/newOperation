@@ -171,6 +171,7 @@ export default {
     },
     getRoleList(){
     this.$http.toGetRoleManageList().then(res => {
+      console.log(res)
       var i=0;
       if(res.data.success){
         this.data=res.data.data.filter((res)=>{

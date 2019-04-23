@@ -1,7 +1,9 @@
 <template>
   <div id="signInForm">
+     <a-card title="监控系统登录">
+
+
     <div id="signInFormWraper">
-      <div id="signInFormTitle">监控系统登录</div>
       <a-form :form="form">
         <a-form-item
           :label-col="formItemLayout.labelCol"
@@ -11,7 +13,7 @@
           <a-input
             v-decorator="[
           'username',
-          {rules: [{ required: true, message: 'Please input your name' }]}
+          {rules: [{ required: true, message: '请输入用户名' }]}
         ]"
             placeholder="请输入用户名"
           />
@@ -24,8 +26,8 @@
           <a-input
             type="password"
             v-decorator="[
-          'nickname',
-          {rules: [{ required: true, message: 'Please input your nickname' }]}
+          'password',
+          {rules: [{ required: true, message: '请输入密码' }]}
         ]"
             placeholder="请输入密码"
           />
@@ -38,6 +40,7 @@
     <!-- 模态框 -->
     <a-button v-show="visible" @click="showConfirm">Confirm</a-button>
     <a-button duration="errorDuration" v-show="hasError" @click="error"></a-button>
+      </a-card>
   </div>
 </template>
 
@@ -67,9 +70,9 @@ export default {
   },
   methods: {
     check() {
-      this.form.validateFields(err => {
+      this.form.validateFields((err,values) => {
         if (!err) {
-          this.signIn();
+          this.signIn(values);
         } else {
         }
       });
@@ -80,9 +83,8 @@ export default {
         this.form.validateFields(["nickname"], { force: true });
       });
     },
-    signIn() {
-      this.$http.toSignIn("1").then(res => {
-        console.log(res)
+    signIn(values) {
+      this.$http.toSignIn(values).then(res => {
         if (res.data.success) {
           window.sessionStorage.setItem(
             "operationToken",

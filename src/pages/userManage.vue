@@ -38,8 +38,8 @@
             </a-popconfirm>
 
             <a-button type="primary" @click="modifyUser(record)" size="small">编辑</a-button>
-            <a-button type="primary" size="small">重置密码</a-button>
-            <a-button type="primary" size="small">告警设置</a-button>
+            <a-button type="primary" @click="ResetPassword(record)" size="small">重置密码</a-button>
+            <a-button type="primary" @click="alarmSet(record)" size="small">告警设置</a-button>
           </div>
         </template>
       </a-table>
@@ -131,9 +131,11 @@ export default {
       },
       modifyUser(e){
           this.$router.push({path:"/modifyUser",query:{title:"用户管理",id:e.id}})
+      },      
+      alarmSet(e){
+          this.$router.push({path:"/alarmSet",query:{title:"用户管理",id:e.id}})
       },
     confirmDelete (user) {
-      console.log(user)
         this.$http.toDeleteUser(user.id).then((res)=>{
             console.log(res)
             if(res.data.success){
@@ -144,6 +146,17 @@ export default {
             }
         })
     },
+    ResetPassword(user){
+        this.$http.toResetPassword(user.id).then((res)=>{
+            console.log(res)
+            if(res.data.success){
+                this.$message.success('重置成功')
+            }else{
+                this.$message.success('重置密码失败，请重试')
+            }
+        })
+    }
+    ,
     cancelDelete (e) {
       console.log(e)
 
@@ -211,7 +224,7 @@ export default {
       if(res.data.success){
         this.data=res.data.data.filter((res)=>{
           res["key"]=i++;
-          res.status=res.status ? "正常" : "异常"
+          res.status=res.status ? "正常" : "禁用"
           return true
         })
         this.recordsTotal=res.data.recordsTotal

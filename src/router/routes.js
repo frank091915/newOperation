@@ -18,6 +18,8 @@ import UserManage from "../pages/userManage.vue"
 import ModifyRole from "../pages/modifyRole.vue"
 import AddUser from "../pages/addUser.vue"
 import ModifyUser from "../pages/modifyUser.vue"
+import AlarmSet from "../pages/alarmSet.vue"
+import ServerRoom from "../pages/serverRoom.vue"
 // 将所有组件集中管理进行配置
 
 export default [{
@@ -101,7 +103,7 @@ export default [{
     name: 'server',
     components: {
       frame:Frame,
-      main:theServer,
+      main:ServerRoom,
       header:Header
 	}
   },
@@ -184,6 +186,15 @@ export default [{
     components: {
       frame:Frame,
       main:ModifyUser,
+      header:Header
+	}
+  },
+  {
+    path: '/alarmSet',
+    name: 'alarmSet',
+    components: {
+      frame:Frame,
+      main:AlarmSet,
       header:Header
 	}
   }

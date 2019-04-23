@@ -1,8 +1,6 @@
 <template>
   <div id="addRoleWrapper">
-      <div id="pageTitle">
-          新增用户
-      </div>
+    <div id="pageTitle">新增用户</div>
     <a-form :form="form">
       <a-form-item
         :label-col="formItemLayout.labelCol"
@@ -16,7 +14,32 @@
         ]"
         />
       </a-form-item>
-        <a-form-item
+      <a-form-item
+        :label-col="formItemLayout.labelCol"
+        :wrapper-col="formItemLayout.wrapperCol"
+        label="用户名"
+      >
+        <a-input
+          v-decorator="[
+          'username',
+          {rules: [{ required: true,message:'请输入用户名'}]}
+        ]"
+        />
+      </a-form-item>
+      <a-form-item
+        :label-col="formItemLayout.labelCol"
+        :wrapper-col="formItemLayout.wrapperCol"
+        label="密码"
+      >
+        <a-input
+          type="password"
+          v-decorator="[
+          'password',
+          {rules: [{ required: true,message:'请输入密码'}]}
+        ]"
+        />
+      </a-form-item>
+      <a-form-item
         :label-col="formItemLayout.labelCol"
         :wrapper-col="formItemLayout.wrapperCol"
         label="Code"
@@ -41,7 +64,7 @@
         ]"
         />
       </a-form-item>
-            <a-form-item
+      <a-form-item
         :label-col="formItemLayout.labelCol"
         :wrapper-col="formItemLayout.wrapperCol"
         label="手机号"
@@ -53,7 +76,7 @@
         ]"
         />
       </a-form-item>
-            <a-form-item
+      <a-form-item
         :label-col="formItemLayout.labelCol"
         :wrapper-col="formItemLayout.wrapperCol"
         label="邮箱地址"
@@ -65,8 +88,29 @@
         ]"
         />
       </a-form-item>
+      <a-form-item
+        :label-col="formItemLayout.labelCol"
+        :wrapper-col="formItemLayout.wrapperCol"
+        label="角色"
+      >
+        <a-select
+          showSearch
+          placeholder="请选择角色"
+          optionFilterProp="children"
+          style="width: 350px"
+          v-decorator="[
+          'role',
+          {rules: [{ required: true,message:'请输入邮箱地址'}]}
+        ]"
+        >
+          <a-select-option v-for=" item in rolesGroup" :value="item.id" :key="item.id">{{item.name}}</a-select-option>
+        </a-select>
+      </a-form-item>
       <div id="radioBox">
-        <div id="radioText">状态<span>:</span></div>
+        <div id="radioText">
+          状态
+          <span>:</span>
+        </div>
         <a-radio-group v-model="value">
           <a-radio :value="1">正常</a-radio>
           <a-radio :value="0">关闭</a-radio>
@@ -77,12 +121,9 @@
         :wrapper-col="formItemLayout.wrapperCol"
         label="备注"
       >
-        <a-input
-          v-decorator="[
-          'remark',
-          {rules: [{ required: true, message: '请输入备注' }]}
-        ]"
-        />
+        <a-input v-decorator="[
+          'remark'
+        ]"/>
       </a-form-item>
       <a-form-item :label-col="formTailLayout.labelCol" :wrapper-col="formTailLayout.wrapperCol">
         <div id="opetarionBox">
@@ -111,7 +152,8 @@ export default {
       formTailLayout,
       form: this.$form.createForm(this),
       value: 1,
-      roleName: ""
+      roleName: "",
+      rolesGroup: []
     };
   },
   methods: {
@@ -124,14 +166,15 @@ export default {
         if (!err) {
           let userInfo = { ...values };
           userInfo.status = this.value ? true : false;
+          console.log(userInfo);
           this.$http.toAddUser(userInfo).then(res => {
             console.log(res);
             if (res.data.success) {
               this.$message.success("添加用户成功");
-            //   this.$router.push({
-            //     path: "/user",
-            //     query: { title: "用户管理" }
-            //   });
+              this.$router.push({
+                path: "/user",
+                query: { title: "用户管理" }
+              });
             } else {
               this.$message.error(res.data.errorInfo);
             }
@@ -145,12 +188,19 @@ export default {
         this.form.validateFields(["nickname"], { force: true });
       });
     }
+  },
+  created() {
+    this.$http.toGetRoleManageList().then(res => {
+      if (res.data.success) {
+        this.rolesGroup = res.data.data;
+      }
+    });
   }
 };
 </script>
 <style scoped>
-#pageTitle{
-    margin-left: 52px;
+#pageTitle {
+  margin-left: 52px;
 }
 #radioBox {
   box-sizing: border-box;
@@ -165,8 +215,8 @@ export default {
   margin-right: 20px;
   color: rgba(0, 0, 0, 0.85);
 }
-#radioText span{
-    margin-left: 2px;
+#radioText span {
+  margin-left: 2px;
 }
 #addRoleWrapper {
   margin-top: 20px;

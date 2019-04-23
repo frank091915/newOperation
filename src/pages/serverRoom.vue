@@ -79,18 +79,18 @@
 const columns = [
   {
     title: "序号",
-    dataIndex: "key",
+    dataIndex: "_id",
     width: "10%",
     scopedSlots: { customRender: "_id" }
   },
   {
     title: "状态",
-    dataIndex: "Status",
+    dataIndex: "status",
     width: "10%",
     scopedSlots: { customRender: "age" }
   },
   {
-    title: "圈存机名称",
+    title: "pos机名称",
     dataIndex: "Description",
     width: "15%",
     scopedSlots: { customRender: "address" }
@@ -173,7 +173,7 @@ export default {
   methods: {
     handleStatusChange() {
       this.statusParam=this.status==="null" ? null : this.status;
-      this.$http.toGetTransferList(1,this.statusParam,this.buildingIdParam).then((res)=>{
+      this.$http.toGetPosMechineList(1,this.statusParam,this.buildingIdParam).then((res)=>{
         if(res.data.success){
           this.data=res.data.data
         }else{
@@ -183,7 +183,7 @@ export default {
     },
     handleBuildingChange(){
       this.buildingIdParam=this.buildingId==="null" ? null : this.buildingId;
-      this.$http.toGetTransferList(1,this.statusParam,this.buildingIdParam).then((res)=>{
+      this.$http.toGetPosMechineList(1,this.statusParam,this.buildingIdParam).then((res)=>{
         if(res.data.success){
           this.data=res.data.data
         }else{
@@ -203,8 +203,7 @@ export default {
     }
   },
   created() {
-    this.$http.toGetTransferList(this.page).then(res => {
-        console.log(res)
+    this.$http.toGetPosMechineList(this.page).then(res => {
       var i=0;
       if(res.data.success){
         this.data=res.data.data.filter((res)=>{
@@ -219,6 +218,7 @@ export default {
     });
     // 获取所有楼宇名称
     this.$http.toGetBuildingList().then((res)=>{
+      console.log(res)
       if(res.data.success){
         this.allBuildings=res.data.data
       }

@@ -10,14 +10,14 @@
             placeholder="Select a person"
             optionFilterProp="children"
             style="width: 200px"
-            @focus="handleFocus"
-            @blur="handleBlur"
-            @change="handleChange"
+            @change="handleStatusChange"
             :filterOption="filterOption"
+            v-model="status"
           >
-            <a-select-option value="jack">全部</a-select-option>
-            <a-select-option value="lucy">正常</a-select-option>
-            <a-select-option value="tom">故障</a-select-option>
+            <a-select-option :value="nullStatus">全部</a-select-option>
+            <a-select-option :value="normalStatus">正常</a-select-option>
+            <a-select-option :value="abnormalStatus">异常</a-select-option>
+            <a-select-option :value="unknowStatus">未知</a-select-option>
           </a-select>
         </div>
       </div>
@@ -30,21 +30,20 @@
             placeholder="Select a person"
             optionFilterProp="children"
             style="width: 200px"
-            @focus="handleFocus"
-            @blur="handleBlur"
-            @change="handleChange"
+            @change="handleBuildingChange"
             :filterOption="filterOption"
+            v-model="buildingId"
           >
-            <a-select-option value="jack">全部</a-select-option>
-            <a-select-option value="lucy">检测中心</a-select-option>
+            <a-select-option :value="nullStatus" :key="8874">全部</a-select-option>
+            <a-select-option v-for="item in allBuildings" :value="item.Id" :key="item.Id">{{item.Address}}</a-select-option>
           </a-select>
         </div>
       </div>
       <div id="searchByNames">
         <div id="searchByNamesLabel">名称：</div>
         <div id="searchByNamesInput">
-          <a-input placeholder="请输入POS机名称"/>
-          <a-button type="primary">搜索</a-button>
+          <a-input v-model="searchParam" placeholder="请输入POS机名称"/>
+          <a-button @click="search" type="primary">搜索</a-button>
         </div>
       </div>
     </div>
@@ -53,6 +52,7 @@
       :columns="columns" 
       :dataSource="data"
       :pagination="false"
+      size="small"
       bordered>
         <template
           v-for="col in ['name', 'age', 'address']"
@@ -79,7 +79,7 @@
 const columns = [
   {
     title: "序号",
-    dataIndex: "_id",
+    dataIndex: "key",
     width: "10%",
     scopedSlots: { customRender: "_id" }
   },
@@ -156,18 +156,40 @@ export default {
     return {
       data:[],
       columns,
-      recordsTotal:""
+      recordsTotal:"",
+      status:"全部",
+      allBuildings:[],
+      buildingId:"全部",
+      nullStatus:"null",
+      normalStatus:1,
+      abnormalStatus:0,
+      unknowStatus:-1,
+      statusParam:"",
+      buildingIdParam:"",
+      page:1,
+      searchParam:""
     };
   },
   methods: {
-    handleChange(value) {
-      console.log(`selected ${value}`);
+    handleStatusChange() {
+      this.statusParam=this.status==="null" ? null : this.status;
+      this.$http.toGetPosMechineList(1,this.statusParam,this.buildingIdParam).then((res)=>{
+        if(res.data.success){
+          this.data=res.data.data
+        }else{
+          
+        }
+      })
     },
-    handleBlur() {
-      console.log("blur");
-    },
-    handleFocus() {
-      console.log("focus");
+    handleBuildingChange(){
+      this.buildingIdParam=this.buildingId==="null" ? null : this.buildingId;
+      this.$http.toGetPosMechineList(1,this.statusParam,this.buildingIdParam).then((res)=>{
+        if(res.data.success){
+          this.data=res.data.data
+        }else{
+          
+        }
+      })
     },
     filterOption(input, option) {
       return (
@@ -175,11 +197,14 @@ export default {
           .toLowerCase()
           .indexOf(input.toLowerCase()) >= 0
       );
+    },
+    search(){
+      console.log(this.searchParam)
     }
   },
   created() {
-    this.$http.toGetPosMechineList(1).then(res => {
-
+    this.$http.toGetPosMechineList(this.page).then(res => {
+      console.log(res)
       var i=0;
       if(res.data.success){
         this.data=res.data.data.filter((res)=>{
@@ -192,6 +217,12 @@ export default {
         })
       }
     });
+    // 获取所有楼宇名称
+    this.$http.toGetBuildingList().then((res)=>{
+      if(res.data.success){
+        this.allBuildings=res.data.data
+      }
+    })
   }
 };
 </script>
