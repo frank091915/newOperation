@@ -21,28 +21,10 @@
           </a-select>
         </div>
       </div>
-      <div id="statusSearch">
-        <div class="label">楼宇名称：</div>
-        <div id="buildingSearchInput">
-          <a-select
-            defaultValue="检测中心"
-            showSearch
-            placeholder="Select a person"
-            optionFilterProp="children"
-            style="width: 200px"
-            @change="handleBuildingChange"
-            :filterOption="filterOption"
-            v-model="buildingId"
-          >
-            <a-select-option :value="nullStatus" :key="8874">全部</a-select-option>
-            <a-select-option v-for="item in allBuildings" :value="item.Id" :key="item.Id">{{item.Address}}</a-select-option>
-          </a-select>
-        </div>
-      </div>
       <div id="searchByNames">
         <div id="searchByNamesLabel">名称：</div>
         <div id="searchByNamesInput">
-          <a-input v-model="searchParam" placeholder="请输入服务器名称"/>
+          <a-input v-model="searchParam" placeholder="请输入广播名称"/>
           <a-button @click="search" type="primary">搜索</a-button>
         </div>
       </div>
@@ -78,63 +60,63 @@
 
 const columns = [
   {
-    title: "序号",
+    title: "警告标号",
     dataIndex: "key",
-    width: "10%",
+    width: "8%",
     scopedSlots: { customRender: "_id" }
-  },
-  {
-    title: "状态",
-    dataIndex: "statusDescription",
-    width: "10%",
-    scopedSlots: { customRender: "age" }
-  },
-  {
-    title: "服务器名称",
-    dataIndex: "Description",
-    width: "15%",
-    scopedSlots: { customRender: "address" }
-  },
-  {
-    title: "型号",
-    dataIndex: "modelNumber",
-    width: "10%",
-    scopedSlots: { customRender: "address" }
   },
    {
     title: "楼宇名称",
-    dataIndex: "buildingName",
-    width: "10%",
+    dataIndex: "deviceInfo.buildingName",
+    width: "8%",
     scopedSlots: { customRender: "address" }
   },
   {
     title: "楼层",
-    dataIndex: "floorNumber",
-    width: "10%",
+    dataIndex: "deviceInfo.floorName",
+    width: "8%",
     scopedSlots: { customRender: "address" }
   },
   {
     title: "房间",
-    dataIndex: "roomNumber",
-    width: "10%",
+    dataIndex: "deviceInfo.roomName",
+    width: "8%",
     scopedSlots: { customRender: "address" }
   },
   {
-    title: "编号",
-    dataIndex: "Code",
-    width: "10%",
+    title: "设备MAC",
+    dataIndex: "deviceInfo.MacAddress",
+    width: "8%",
     scopedSlots: { customRender: "address" }
   },
   {
-    title: "ip地址",
-    dataIndex: "SerialNumber",
-    width: "10%",
+    title: "告警类型",
+    dataIndex: "warningRecord.way",
+    width: "8%",
+    scopedSlots: { customRender: "address" }
+  },
+  {
+    title: "告警值",
+    dataIndex: "warningRecord.value",
+    width: "8%",
+    scopedSlots: { customRender: "SerialNumber" }
+  },
+  {
+    title: "告警时间",
+    dataIndex: "warningRecord.time",
+    width: "8%",
+    scopedSlots: { customRender: "SerialNumber" }
+  },
+  {
+    title: "通知人员",
+    dataIndex: "warningRecord.userName",
+    width: "8%",
     scopedSlots: { customRender: "SerialNumber" }
   },
   {
     title: "备注",
-    dataIndex: "remarks",
-    width: "10%",
+    dataIndex: "warningRecord.exceptionRemark",
+    width: "8%",
     scopedSlots: { customRender: "address" }
   }
 ];
@@ -173,10 +155,10 @@ export default {
   methods: {
     handleStatusChange() {
       this.statusParam=this.status==="null" ? null : this.status;
-      this.$http.toGetPosMechineList(1,this.statusParam,this.buildingIdParam).then((res)=>{
+      this.$http.toGetBroadcastList(1,this.statusParam,this.buildingIdParam).then((res)=>{
         if(res.data.success){
           this.data=res.data.data
-          this.$nextTick(()=>{
+                  this.$nextTick(()=>{
             this.addOrder()
         })
         }else{
@@ -186,7 +168,7 @@ export default {
     },
     handleBuildingChange(){
       this.buildingIdParam=this.buildingId==="null" ? null : this.buildingId;
-      this.$http.toGetPosMechineList(1,this.statusParam,this.buildingIdParam).then((res)=>{
+      this.$http.toGetBroadcastList(1,this.statusParam,this.buildingIdParam).then((res)=>{
         if(res.data.success){
           this.data=res.data.data
                   this.$nextTick(()=>{
@@ -216,21 +198,13 @@ export default {
     }
   },
   created() {
-    this.$http.toGetPosMechineList(this.page).then(res => {
-      console.log(res.data.data)
-      if(res.data.success){
-        this.data=res.data.data
+    this.$http.toGetWarningRecordList().then((res)=>{
+        console.log(res)
+                this.data=res.data.data
         this.recordsTotal=res.data.recordsTotal
         this.$nextTick(()=>{
             this.addOrder()
         })
-      }
-    });
-    // 获取所有楼宇名称
-    this.$http.toGetBuildingList().then((res)=>{
-      if(res.data.success){
-        this.allBuildings=res.data.data
-      }
     })
   }
 };
@@ -255,10 +229,22 @@ body{
   width: 880px;
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
 }
 #statusSearch {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+#floorSearch {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+#roomSearch {
   display: flex;
   flex-direction: row;
   justify-content: space-between;

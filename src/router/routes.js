@@ -20,6 +20,8 @@ import AddUser from "../pages/addUser.vue"
 import ModifyUser from "../pages/modifyUser.vue"
 import AlarmSet from "../pages/alarmSet.vue"
 import ServerRoom from "../pages/serverRoom.vue"
+import WarningRecord from "../pages/warningRecord.vue"
+import ExceptionRecord from "../pages/exceptionRecord.vue"
 // 将所有组件集中管理进行配置
 
 export default [{
@@ -195,6 +197,24 @@ export default [{
     components: {
       frame:Frame,
       main:AlarmSet,
+      header:Header
+	}
+  },
+  {
+    path: '/warning',
+    name: 'warning',
+    components: {
+      frame:Frame,
+      main:WarningRecord,
+      header:Header
+	}
+  },
+  {
+    path: '/exception',
+    name: 'exception',
+    components: {
+      frame:Frame,
+      main:ExceptionRecord,
       header:Header
 	}
   }

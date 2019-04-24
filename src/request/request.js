@@ -73,11 +73,23 @@ const toGetlowVoltageRoomList = () => {
   )
 }
 
+// 请求状态汇总信息
+const toGetSummary = () => {
+  console.log("summary")
+  return ajax.get(
+    "/api/summary", {
+      headers: {
+        "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken"))
+      }
+    }
+  )
+}
+
 // 请求pos机列表
 const toGetPosMechineList = (page =1, status,buildingId,searchRoom) => {
-  let statusQuery = status ? `&status=${status}` : "",
-    buildingIdQuery = buildingId ? `&buildingId=${buildingId}` : "",
-    searchRoomQuery = searchRoom ? `&searchRoom=${searchRoom}` : "";
+  let statusQuery = status !=undefined? `&status=${status}` : "",
+    buildingIdQuery = buildingId !=undefined? `&buildingId=${buildingId}` : "",
+    searchRoomQuery = searchRoom !=undefined? `&searchRoom=${searchRoom}` : "";
   return ajax.get(
     `/api/control/pos?currentPage=` + page + statusQuery + buildingIdQuery + searchRoomQuery, {
       headers: {
@@ -89,9 +101,9 @@ const toGetPosMechineList = (page =1, status,buildingId,searchRoom) => {
 
 // 请求圈存机列表
 const toGetTransferList = (page =1, status,buildingId,searchRoom) => {
-  let statusQuery = status ? `&status=${status}` : "",
-    buildingIdQuery = buildingId ? `&buildingId=${buildingId}` : "",
-    searchRoomQuery = searchRoom ? `&searchRoom=${searchRoom}` : "";
+  let statusQuery = status !=undefined ? `&status=${status}` : "",
+    buildingIdQuery = buildingId != undefined ? `&buildingId=${buildingId}` : "",
+    searchRoomQuery = searchRoom  ? `&searchRoom=${searchRoom}` : "";
   return ajax.get(
     `/api/control/transfer?currentPage=` + page + statusQuery + buildingIdQuery + searchRoomQuery, {
       headers: {
@@ -100,6 +112,50 @@ const toGetTransferList = (page =1, status,buildingId,searchRoom) => {
     }
   )
 }
+
+// 请求门禁列表
+const toGetAccessList = (page =1, status,buildingId,searchRoom) => {
+  let statusQuery = status !=undefined? `&status=${status}` : "",
+    buildingIdQuery = buildingId !=undefined? `&buildingId=${buildingId}` : "",
+    searchRoomQuery = searchRoom !=undefined? `&searchRoom=${searchRoom}` : "";
+  return ajax.get(
+    `/api/control/access?currentPage=` + page + statusQuery + buildingIdQuery + searchRoomQuery, {
+      headers: {
+        "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken"))
+      }
+    }
+  )
+}
+
+// 请求广播列表
+const toGetBroadcastList = (page =1, status,buildingId,searchRoom) => {
+  let statusQuery = status !=undefined? `&status=${status}` : "",
+    buildingIdQuery = buildingId !=undefined? `&buildingId=${buildingId}` : "",
+    searchRoomQuery = searchRoom !=undefined? `&searchRoom=${searchRoom}` : "";
+  return ajax.get(
+    `/api/control/broadcast?currentPage=` + page + statusQuery + buildingIdQuery + searchRoomQuery, {
+      headers: {
+        "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken"))
+      }
+    }
+  )
+}
+
+// 请求交换机列表
+const toGetinterchangerList = (page =1, status,buildingId,searchRoom) => {
+  let statusQuery = status !=undefined ? `&status=${status}` : "",
+    buildingIdQuery = buildingId !==undefined ? `&buildingId=${buildingId}` : "",
+    searchRoomQuery = searchRoom !=undefined ? `&searchRoom=${searchRoom}` : "";
+  return ajax.get(
+    `/api/control/network?currentPage=` + page + statusQuery + buildingIdQuery + searchRoomQuery, {
+      headers: {
+        "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken"))
+      }
+    }
+  )
+}
+
+
 
 // 请求角色管理列表
 const toGetRoleManageList = () => {
@@ -278,6 +334,22 @@ const toGetUserAlarmSettings = (userId) => {
   )
 }
 
+// 请求告警记录列表
+
+const toGetWarningRecordList = (page =1, exceptionId,searchName) => {
+  let exceptionIdQuery = exceptionId !=undefined ? `&status=${exceptionId}` : "",
+  searchNameQuery = searchName !==undefined ? `&buildingId=${searchName}` : "";
+  return ajax.get(
+    `/api/record/warning?currentPage=` + page + exceptionIdQuery + searchNameQuery, {
+      headers: {
+        "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken"))
+      }
+    }
+  )
+}
+
+
+
 // 进入编辑角色页面，获取角色信息
 const toRoleInfo = (userId) => {
   return ajax.get(
@@ -339,5 +411,10 @@ export {
   toSetAlarmOn,
   toSetAlarmOff,
   toGetBuildingList,
-  toGetTransferList
+  toGetTransferList,
+  toGetSummary,
+  toGetAccessList,
+  toGetBroadcastList,
+  toGetinterchangerList,
+  toGetWarningRecordList
 }

@@ -14,15 +14,15 @@
     <div id="convergeRoomBox">
       <div
         v-for="item in roomList "
-        :key="item.roomInfo._id"
-        :type="item.roomInfo._type"
+        :key="item.Id"
+        :type="item.statusDescription"
         class="statusDisplay"
       >
         <div class="imgWrapper">
           <img :src='color(item.statusDescription)'>
         </div>
 
-        <p>{{item.roomInfo.roomName}}</p>
+        <p>{{item.roomName}}</p>
       </div>
     </div>
   </div>

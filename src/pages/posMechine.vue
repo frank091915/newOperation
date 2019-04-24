@@ -85,7 +85,7 @@ const columns = [
   },
   {
     title: "状态",
-    dataIndex: "status",
+    dataIndex: "statusDescription",
     width: "10%",
     scopedSlots: { customRender: "age" }
   },
@@ -115,7 +115,7 @@ const columns = [
   },
   {
     title: "房间",
-    dataIndex: "roomNumber",
+    dataIndex: "roomId",
     width: "10%",
     scopedSlots: { customRender: "address" }
   },

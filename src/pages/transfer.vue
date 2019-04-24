@@ -42,7 +42,7 @@
       <div id="searchByNames">
         <div id="searchByNamesLabel">名称：</div>
         <div id="searchByNamesInput">
-          <a-input v-model="searchParam" placeholder="请输入POS机名称"/>
+          <a-input v-model="searchParam" placeholder="请输入圈存机名称"/>
           <a-button @click="search" type="primary">搜索</a-button>
         </div>
       </div>
@@ -85,7 +85,7 @@ const columns = [
   },
   {
     title: "状态",
-    dataIndex: "Status",
+    dataIndex: "statusDescription",
     width: "10%",
     scopedSlots: { customRender: "age" }
   },
@@ -172,10 +172,14 @@ export default {
   },
   methods: {
     handleStatusChange() {
-      this.statusParam=this.status==="null" ? null : this.status;
+      this.statusParam = this.status==="null" ? null : this.status;
+      console.log(this.statusParam)
       this.$http.toGetTransferList(1,this.statusParam,this.buildingIdParam).then((res)=>{
         if(res.data.success){
           this.data=res.data.data
+          this.$nextTick(()=>{
+            this.addOrder()
+          })
         }else{
           
         }
@@ -183,9 +187,13 @@ export default {
     },
     handleBuildingChange(){
       this.buildingIdParam=this.buildingId==="null" ? null : this.buildingId;
+      console.log(this.buildingIdParam)
       this.$http.toGetTransferList(1,this.statusParam,this.buildingIdParam).then((res)=>{
         if(res.data.success){
           this.data=res.data.data
+          this.$nextTick(()=>{
+            this.addOrder()
+          })
         }else{
           
         }
@@ -200,6 +208,13 @@ export default {
     },
     search(){
       console.log(this.searchParam)
+    },
+    addOrder(){
+            var i=1;
+          this.data=this.data.filter((item)=>{
+          item["key"]=i++;
+          return true
+        })
     }
   },
   created() {
@@ -212,9 +227,6 @@ export default {
           return true
         })
         this.recordsTotal=res.data.recordsTotal
-        this.$nextTick(()=>{
-
-        })
       }
     });
     // 获取所有楼宇名称

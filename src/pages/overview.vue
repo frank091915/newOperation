@@ -1,7 +1,12 @@
 <template>
   <div id="main">
     <h3>状态汇总</h3>
-    <div id="myChart" :style="{width: '600px', height: '600px'}"></div>
+    <div id="chartWrapper">
+    <div id="convergeRoomChart" :style="{width: '300px', height: '300px'}"></div>
+    <div id="lowVoltageRoomChart" :style="{width: '300px', height: '300px'}"></div>
+    <div id="controlNetChart" :style="{width: '300px', height: '300px'}"></div>
+    </div>
+
   </div>
 </template>
 
@@ -10,115 +15,320 @@ export default {
 name: 'hello',
 data () {
 return {
-  msg: 'Welcome to Your Vue.js App'
+  ControlNetworkStatistics:{},
+  MachineRoomStatistics:{},
+  WeakElectricStatistics:{},
+  one:99,
 }
 },
 mounted(){
-this.drawLine();  // 初始化
+
 },
 methods: {
-drawLine(){
+drawMachineRoomLine(){
+
     // 基于准备好的dom，初始化echarts实例
-    let myChart = this.$echarts.init(document.getElementById('myChart'))
+    let convergeRoomChart = this.$echarts.init(document.getElementById('convergeRoomChart'))
+    let lowVoltageRoomChart = this.$echarts.init(document.getElementById('lowVoltageRoomChart'))
+    let controlNetChart = this.$echarts.init(document.getElementById('controlNetChart'))
     // 绘制图表
-    myChart.setOption({
+    convergeRoomChart.setOption({
     tooltip : {
         trigger: 'axis',
         axisPointer : {            // 坐标轴指示器，坐标轴触发有效
             type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
         }
     },
-    legend: {
-        data:['直接访问','邮件营销','联盟广告','视频广告','搜索引擎','百度','谷歌','必应','其他']
-    },
-    grid: {
-        left: '3%',
-        right: '4%',
-        bottom: '3%',
-        containLabel: true
-    },
-    xAxis : [
-        {
-            type : 'category',
-            data : ['周一','周二','周三','周四','周五','周六','周日']
-        }
-    ],
-    yAxis : [
-        {
-            type : 'value'
-        }
-    ],
-    series : [
-        {
-            name:'直接访问',
-            type:'bar',
-            data:[320, 332, 301, 334, 390, 330, 320]
-        },
-        {
-            name:'邮件营销',
-            type:'bar',
-            stack: '广告',
-            data:[120, 132, 101, 134, 90, 230, 210]
-        },
-        {
-            name:'联盟广告',
-            type:'bar',
-            stack: '广告',
-            data:[220, 182, 191, 234, 290, 330, 310]
-        },
-        {
-            name:'视频广告',
-            type:'bar',
-            stack: '广告',
-            data:[150, 232, 201, 154, 190, 330, 410]
-        },
-        {
-            name:'搜索引擎',
-            type:'bar',
-            data:[862, 1018, 964, 1026, 1679, 1600, 1570],
-            markLine : {
-                lineStyle: {
-                    normal: {
-                        type: 'dashed'
-                    }
-                },
-                data : [
-                    [{type : 'min'}, {type : 'max'}]
-                ]
+title: {
+            text: '当前汇聚机房状态汇总',
+            // x 设置水平安放位置，默认左对齐，可选值：'center' ¦ 'left' ¦ 'right' ¦ {number}（x坐标，单位px）
+            x: 'center',
+            // y 设置垂直安放位置，默认全图顶端，可选值：'top' ¦ 'bottom' ¦ 'center' ¦ {number}（y坐标，单位px）
+            y: 'top',
+            // itemGap设置主副标题纵向间隔，单位px，默认为10，
+            itemGap: 30,
+            // 主标题文本样式设置
+            textStyle: {
+              fontSize: 20,
+              fontWeight: 'normal',
+              color: '#aaa'
             }
-        },
-        {
-            name:'百度',
-            type:'bar',
-            barWidth : 5,
-            stack: '搜索引擎',
-            data:[620, 732, 701, 734, 1090, 1130, 1120]
-        },
-        {
-            name:'谷歌',
-            type:'bar',
-            stack: '搜索引擎',
-            data:[120, 132, 101, 134, 290, 230, 220]
-        },
-        {
-            name:'必应',
-            type:'bar',
-            stack: '搜索引擎',
-            data:[60, 72, 71, 74, 190, 130, 110]
-        },
-        {
-            name:'其他',
-            type:'bar',
-            stack: '搜索引擎',
-            data:[62, 82, 91, 84, 109, 110, 120]
+          },
+    legend: {
+            // orient 设置布局方式，默认水平布局，可选值：'horizontal'（水平） ¦ 'vertical'（垂直）
+            orient: 'horizontal',
+            // x 设置水平安放位置，默认全图居中，可选值：'center' ¦ 'left' ¦ 'right' ¦ {number}（x坐标，单位px）
+            x: 'center',
+            // y 设置垂直安放位置，默认全图顶端，可选值：'top' ¦ 'bottom' ¦ 'center' ¦ {number}（y坐标，单位px）
+            y: 'bottom',
+            bottom:30,
+            itemWidth: 5,   // 设置图例图形的宽
+            itemHeight: 5,  // 设置图例图形的高
+            textStyle: {
+              color: '#666'  // 图例文字颜色
+            },
+            // itemGap设置各个item之间的间隔，单位px，默认为10，横向布局时为水平间隔，纵向布局时为纵向间隔
+            itemGap: 10,
+            data: ['正常','异常','未知']
+          },
+  series: [
+            {
+              name: '生源地',
+              type: 'pie',
+              // radius: '50%',  // 设置饼状图大小，100%时，最大直径=整个图形的min(宽，高)
+              radius: ['30%', '60%'],  // 设置环形饼状图， 第一个百分数设置内圈大小，第二个百分数设置外圈大小
+              center: ['50%', '50%'],  // 设置饼状图位置，第一个百分数调水平位置，第二个百分数调垂直位置
+              data: [
+                  {value:this.MachineRoomStatistics.normalCount, name:'正常'},
+                  {value:this.MachineRoomStatistics.faultCount, name:'异常'},
+                  {value:this.MachineRoomStatistics.exceptionCount, name:'未知'},
+              ],
+              // itemStyle 设置饼状图扇形区域样式
+              itemStyle: {
+                // emphasis：英文意思是 强调;着重;（轮廓、图形等的）鲜明;突出，重读
+                // emphasis：设置鼠标放到哪一块扇形上面的时候，扇形样式、阴影
+                emphasis: {
+                  shadowBlur: 10,
+                  shadowOffsetX: 0,
+                  shadowColor: 'rgba(30, 144, 255，0.5)'
+                }
+              },
+              // 设置值域的那指向线
+              labelLine: {
+                normal: {
+                  show: false   // show设置线是否显示，默认为true，可选值：true ¦ false
+                }
+              },
+              // 设置值域的标签
+              label: {
+                normal: {
+                  position: 'outer',  // 设置标签位置，默认在饼状图外 可选值：'outer' ¦ 'inner（饼状图上）'
+                  // formatter: '{a} {b} : {c}个 ({d}%)'   设置标签显示内容 ，默认显示{b}
+                  // {a}指series.name  {b}指series.data的name
+                  // {c}指series.data的value  {d}%指这一部分占总数的百分比
+                  formatter: '{c}'
+                }
+              }
+            }
+          ]
+
+
+
+
+});
+},
+drawLowVoltageRoomLine(){
+
+    // 基于准备好的dom，初始化echarts实例
+    let convergeRoomChart = this.$echarts.init(document.getElementById('convergeRoomChart'))
+    let lowVoltageRoomChart = this.$echarts.init(document.getElementById('lowVoltageRoomChart'))
+    let controlNetChart = this.$echarts.init(document.getElementById('controlNetChart'))
+    // 绘制图表
+    lowVoltageRoomChart.setOption({
+    tooltip : {
+        trigger: 'axis',
+        axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+            type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
         }
-    ]
+    },
+title: {
+            text: '当前弱电间状态汇总',
+            // x 设置水平安放位置，默认左对齐，可选值：'center' ¦ 'left' ¦ 'right' ¦ {number}（x坐标，单位px）
+            x: 'center',
+            // y 设置垂直安放位置，默认全图顶端，可选值：'top' ¦ 'bottom' ¦ 'center' ¦ {number}（y坐标，单位px）
+            y: 'top',
+            // itemGap设置主副标题纵向间隔，单位px，默认为10，
+            itemGap: 30,
+            // 主标题文本样式设置
+            textStyle: {
+              fontSize: 20,
+              fontWeight: 'normal',
+              color: '#aaa'
+            }
+          },
+    legend: {
+            // orient 设置布局方式，默认水平布局，可选值：'horizontal'（水平） ¦ 'vertical'（垂直）
+            orient: 'horizontal',
+            // x 设置水平安放位置，默认全图居中，可选值：'center' ¦ 'left' ¦ 'right' ¦ {number}（x坐标，单位px）
+            x: 'center',
+            // y 设置垂直安放位置，默认全图顶端，可选值：'top' ¦ 'bottom' ¦ 'center' ¦ {number}（y坐标，单位px）
+            y: 'bottom',
+            bottom:30,
+            itemWidth: 5,   // 设置图例图形的宽
+            itemHeight: 5,  // 设置图例图形的高
+            textStyle: {
+              color: '#666'  // 图例文字颜色
+            },
+            // itemGap设置各个item之间的间隔，单位px，默认为10，横向布局时为水平间隔，纵向布局时为纵向间隔
+            itemGap: 10,
+            data: ['正常','异常','未知']
+          },
+  series: [
+            {
+              name: '生源地',
+              type: 'pie',
+              // radius: '50%',  // 设置饼状图大小，100%时，最大直径=整个图形的min(宽，高)
+              radius: ['30%', '60%'],  // 设置环形饼状图， 第一个百分数设置内圈大小，第二个百分数设置外圈大小
+              center: ['50%', '50%'],  // 设置饼状图位置，第一个百分数调水平位置，第二个百分数调垂直位置
+              data: [
+                  {value:this.WeakElectricStatistics.normalCount, name:'正常'},
+                  {value:this.WeakElectricStatistics.faultCount, name:'异常'},
+                  {value:this.WeakElectricStatistics.exceptionCount, name:'未知'},
+              ],
+              // itemStyle 设置饼状图扇形区域样式
+              itemStyle: {
+                // emphasis：英文意思是 强调;着重;（轮廓、图形等的）鲜明;突出，重读
+                // emphasis：设置鼠标放到哪一块扇形上面的时候，扇形样式、阴影
+                emphasis: {
+                  shadowBlur: 10,
+                  shadowOffsetX: 0,
+                  shadowColor: 'rgba(30, 144, 255，0.5)'
+                }
+              },
+              // 设置值域的那指向线
+              labelLine: {
+                normal: {
+                  show: false   // show设置线是否显示，默认为true，可选值：true ¦ false
+                }
+              },
+              // 设置值域的标签
+              label: {
+                normal: {
+                  position: 'outer',  // 设置标签位置，默认在饼状图外 可选值：'outer' ¦ 'inner（饼状图上）'
+                  // formatter: '{a} {b} : {c}个 ({d}%)'   设置标签显示内容 ，默认显示{b}
+                  // {a}指series.name  {b}指series.data的name
+                  // {c}指series.data的value  {d}%指这一部分占总数的百分比
+                  formatter: '{c}'
+                }
+              }
+            }
+          ]
+
+
+
+
+});
+},
+drawControlNetRoomLine(){
+    // 基于准备好的dom，初始化echarts实例
+    let convergeRoomChart = this.$echarts.init(document.getElementById('convergeRoomChart'))
+    let lowVoltageRoomChart = this.$echarts.init(document.getElementById('lowVoltageRoomChart'))
+    let controlNetChart = this.$echarts.init(document.getElementById('controlNetChart'))
+    // 绘制图表
+    controlNetChart.setOption({
+    tooltip : {
+        trigger: 'axis',
+        axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+            type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+        }
+    },
+title: {
+            text: '当前控制网状态汇总',
+            // x 设置水平安放位置，默认左对齐，可选值：'center' ¦ 'left' ¦ 'right' ¦ {number}（x坐标，单位px）
+            x: 'center',
+            // y 设置垂直安放位置，默认全图顶端，可选值：'top' ¦ 'bottom' ¦ 'center' ¦ {number}（y坐标，单位px）
+            y: 'top',
+            // itemGap设置主副标题纵向间隔，单位px，默认为10，
+            itemGap: 30,
+            // 主标题文本样式设置
+            textStyle: {
+              fontSize: 20,
+              fontWeight: 'normal',
+              color: '#aaa'
+            }
+          },
+    legend: {
+            // orient 设置布局方式，默认水平布局，可选值：'horizontal'（水平） ¦ 'vertical'（垂直）
+            orient: 'horizontal',
+            // x 设置水平安放位置，默认全图居中，可选值：'center' ¦ 'left' ¦ 'right' ¦ {number}（x坐标，单位px）
+            x: 'center',
+            // y 设置垂直安放位置，默认全图顶端，可选值：'top' ¦ 'bottom' ¦ 'center' ¦ {number}（y坐标，单位px）
+            y: 'bottom',
+            bottom:30,
+            itemWidth: 5,   // 设置图例图形的宽
+            itemHeight: 5,  // 设置图例图形的高
+            textStyle: {
+              color: '#666'  // 图例文字颜色
+            },
+            // itemGap设置各个item之间的间隔，单位px，默认为10，横向布局时为水平间隔，纵向布局时为纵向间隔
+            itemGap: 10,
+            data: ['正常','故障','未知']
+          },
+  series: [
+            {
+              name: '生源地',
+              type: 'pie',
+              // radius: '50%',  // 设置饼状图大小，100%时，最大直径=整个图形的min(宽，高)
+              radius: ['30%', '60%'],  // 设置环形饼状图， 第一个百分数设置内圈大小，第二个百分数设置外圈大小
+              center: ['50%', '50%'],  // 设置饼状图位置，第一个百分数调水平位置，第二个百分数调垂直位置
+              data: [
+                  {value:this.ControlNetworkStatistics.noProblemCount, name:'正常'},
+                  {value:this.ControlNetworkStatistics.problemCount, name:'故障'},
+                  {value:this.ControlNetworkStatistics.unknownCount, name:'未知'},
+              ],
+              // itemStyle 设置饼状图扇形区域样式
+              itemStyle: {
+                // emphasis：英文意思是 强调;着重;（轮廓、图形等的）鲜明;突出，重读
+                // emphasis：设置鼠标放到哪一块扇形上面的时候，扇形样式、阴影
+                emphasis: {
+                  shadowBlur: 10,
+                  shadowOffsetX: 0,
+                  shadowColor: 'rgba(30, 144, 255，0.5)'
+                }
+              },
+              // 设置值域的那指向线
+              labelLine: {
+                normal: {
+                  show: false   // show设置线是否显示，默认为true，可选值：true ¦ false
+                }
+              },
+              // 设置值域的标签
+              label: {
+                normal: {
+                  position: 'outer',  // 设置标签位置，默认在饼状图外 可选值：'outer' ¦ 'inner（饼状图上）'
+                  // formatter: '{a} {b} : {c}个 ({d}%)'   设置标签显示内容 ，默认显示{b}
+                  // {a}指series.name  {b}指series.data的name
+                  // {c}指series.data的value  {d}%指这一部分占总数的百分比
+                  formatter: '{c}'
+                }
+              }
+            }
+          ]
+
+
+
+
 });
 }
+},
+created(){
+    this.$http.toGetSummary().then((res)=>{
+
+        if(res.data.success){
+            this.WeakElectricStatistics= res.data.data.WeakElectricStatistics;
+            this.MachineRoomStatistics= res.data.data.MachineRoomStatistics;
+            this.ControlNetworkStatistics= res.data.data.ControlNetworkStatistics;
+            this.$nextTick(()=>{
+                this.drawMachineRoomLine()
+                this.drawLowVoltageRoomLine()
+                this.drawControlNetRoomLine()
+            })
+        }
+    })
 }
 }
 
 </script>
 
 <style>
+#convergeRoomChart{
+    width: 200px;
+    height: 200px;
+}
+#chartWrapper{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+}
 </style>

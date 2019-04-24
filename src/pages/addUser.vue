@@ -191,6 +191,7 @@ export default {
   },
   created() {
     this.$http.toGetRoleManageList().then(res => {
+      console.log(res)
       if (res.data.success) {
         this.rolesGroup = res.data.data;
       }

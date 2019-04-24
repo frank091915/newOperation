@@ -14,12 +14,12 @@
     <div id="convergeRoomBox">
       <div
         v-for="item in roomList "
-        :key="item.roomInfo._id"
-        :type="item.roomInfo._type"
+        :key="item.Id"
+        :type="item.statusDescription"
         class="statusDisplay"
       >
         <img :src='color(item.statusDescription)'>
-        <p>{{item.roomInfo.roomName}}</p>
+        <p>{{item.roomName}}</p>
       </div>
     </div>
   </div>
@@ -55,6 +55,7 @@ export default {
   created() {
     this.title=this.$route.query.title;
     this.$http.toGetconvergeRoomList().then(res => {
+      console.log(res)
       if (res.data.success) {
         this.roomList = res.data.data.device;
         this.normal = res.data.data.normalCount;
