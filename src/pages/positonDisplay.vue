@@ -1,201 +1,327 @@
 <template>
-<div id="menuSelection">
- <a-layout id="components-layout-demo-side" style="min-height: 100vh" class="frame">
-      <a-layout-sider
-        width="250px"
-        v-model="collapsed"
-      >
+  <div id="menuSelection">
+    <a-layout id="components-layout-demo-side" style="min-height: 100vh" class="frame">
+      <a-layout-sider width="250px" v-model="collapsed">
         <a-menu theme="light" :defaultSelectedKeys="['1']" mode="inline">
           <!-- 渲染一级菜单 -->
-          <a-menu-item v-for="item in aloneMenu"  :key="item.id" >
-            <span><input type="checkbox" :checked="judge(item.id,0)"></span><span>{{item.title}}</span>
+
+          <a-menu-item v-for="item in aloneMenuArray" :key="item.id">
+            <span>
+              <input
+                type="checkbox"
+                :checked="item.ifPermitted"
+                @click="changeAloneMenu(item.id,0)"
+              >
+            </span>
+            <span>{{item.title}}</span>
           </a-menu-item>
 
-          <a-sub-menu
-            v-for="item in parentMenu" 
-            :key="item.id"
-          >
-            <span slot="title"><span><span><input :checked="judge(item.id,1)" type="checkbox"></span>{{item.title}}</span></span>
-            <a-menu-item 
-            v-for="subItem in item.subPermissions"
-            :key="subItem.id"
-            ><span><input type="checkbox" :checked="judge(subItem.id,2)"></span>{{subItem.title}}</a-menu-item>
+          <a-sub-menu v-for="item in parentMenuArray" :key="item.id">
+            <span slot="title">
+              <span>
+                <span>
+                  <input
+                    :checked="item.ifPermitted"
+                    type="checkbox"
+                    @click="changeParentMenu(item.id,1)"
+                  >
+                </span>
+                {{item.title}}
+              </span>
+            </span>
+
+            <a-menu-item v-for="subItem in item.subPermissions" :key="subItem.id">
+              <span>
+                <input
+                  type="checkbox"
+                  :checked="subItem.ifPermitted"
+                  @click="changeChildStatus(subItem.id,2)"
+                >
+              </span>
+              {{subItem.title}}
+            </a-menu-item>
           </a-sub-menu>
         </a-menu>
       </a-layout-sider>
     </a-layout>
-</div>
+  </div>
 </template>
 <script>
 export default {
-    data() {
+  data() {
     return {
       collapsed: false,
-      aloneMenu:[],
-      parentMenu:[],
-    //   完整权限菜单
-      permissions:[],
-    //  当前用户权限菜单
-      permissionsArray:[],
-      parentMenuArray:[],
-      aloneMenuArray:[],
-      statusMenu:[],
-    //   权限菜单id
-      permissionsIdArray:[]
-    }
+      aloneMenu: [],
+      parentMenu: [],
+      // 含有状态的菜单数组
+      ultimateArray:[],
+      //   完整权限菜单
+      permissions: [],
+      //  当前用户权限菜单
+      permissionsArray: [],
+      parentMenuArray: [],
+      aloneMenuArray: [],
+      //   权限菜单id
+      permissionsIdArray: []
+    };
   },
-  created(){
+  created() {
     // 获取侧边栏菜单数据
-    this.$http.toGetAsideMenu().then((res)=>{
-      this.aloneMenu=res.data.data.filter((item)=>{
-        if(item.subPermissions.length===0){
-          return true
-        }else{
-          return false
+    this.$http.toGetAsideMenu().then(res => {
+      this.aloneMenu = res.data.data.filter(item => {
+        if (item.subPermissions.length === 0) {
+          return true;
+        } else {
+          return false;
         }
       });
-      this.parentMenu=res.data.data.filter((item)=>{
-        if(item.subPermissions.length != 0){
-          return true
-        }else{
-          return false
+      this.parentMenu = res.data.data.filter(item => {
+        if (item.subPermissions.length != 0) {
+          return true;
+        } else {
+          return false;
         }
-      })
-      this.$nextTick(()=>{
-      })
+      });
+      this.$nextTick(() => {});
     });
     // 获取当前用户菜单权限
-    this.$http.toGetUserInfoById(7).then((res)=>{
-          console.log(res)
-          this.permissions=res.data.data.permissions
-          this.permissionsIdArray=res.data.data.permissionIds
-        //   选出用户当前权限菜单
-        this.$nextTick(()=>{
-            // 选出用户一级菜单
-        this.aloneMenuArray=this.permissions.filter((item)=>{
-        if(item.subPermissions.length===0){
-          return true
-        }else{
-          return false
-        }
-      });
+    this.$http.toGetUserInfoById(7).then(res => {
+      console.log(res);
+      this.permissions = res.data.data.permissions;
+      this.permissionsIdArray = res.data.data.permissionIds;
+      //   选出用户当前权限菜单
+      this.$nextTick(() => {
+        // 选出用户一级菜单
+        this.aloneMenuArray = this.permissions.filter(item => {
+          if (item.subPermissions.length === 0) {
+            return true;
+          } else {
+            return false;
+          }
+        });
         // 选出用户二级菜单
-        this.parentMenuArray=this.permissions.filter((item)=>{
-        if(item.subPermissions.length !=0){
-          return true
-        }else{
-          return false
-        }
-      });
-        this.$nextTick(()=>{
-            // 给各个菜单添加状态
-            this.parentMenuArray=this.parentMenuArray.map((item)=>{
-                if(this.permissionsIdArray.includes(item.id)){
-                    item.ifPermitted=true
-                    return item
-                }else{
-                     item.ifPermitted=false
-                    return item
-                }
+        this.parentMenuArray = this.permissions.filter(item => {
+          if (item.subPermissions.length != 0) {
+            return true;
+          } else {
+            return false;
+          }
+        });
+        this.$nextTick(() => {
+          // 给各个菜单添加状态
+          this.parentMenuArray = this.parentMenuArray.map(item => {
+            if (this.permissionsIdArray.includes(item.id)) {
+              item.ifPermitted = true;
+              return item;
+            } else {
+              item.ifPermitted = false;
+              return item;
+            }
+          });
+          // 给二级目录添加状态
+          this.parentMenuArray = this.parentMenuArray.map(item => {
+            item.subPermissions.map(subItem => {
+              if (this.permissionsIdArray.includes(subItem.id)) {
+                subItem.ifPermitted = true;
+                return subItem;
+              } else {
+                subItem.ifPermitted = false;
+                return subItem;
+              }
             });
-            // 给二级目录添加状态
-            this.parentMenuArray=this.parentMenuArray.map((item)=>{
-                    item.subPermissions.map((subItem)=>{
-                        if(this.permissionsIdArray.includes(subItem.id)){
-                            subItem.ifPermitted=true
-                            return subItem
-                        }else{
-                            subItem.ifPermitted=false
-                            return subItem
-                        }
-                    })
-                    return item
-            });
+            return item;
+          });
 
-            this.aloneMenuArray=this.aloneMenuArray.map((item)=>{
-                if(this.permissionsIdArray.includes(item.id)){
-                    item.ifPermitted=true
-                    return item
-                }else{
-                     item.ifPermitted=false
-                    return item
-                }
-            });
+          this.aloneMenuArray = this.aloneMenuArray.map(item => {
+            if (this.permissionsIdArray.includes(item.id)) {
+              item.ifPermitted = true;
+              return item;
+            } else {
+              item.ifPermitted = false;
+              return item;
+            }
+          });
+          this.$nextTick(() => {
+            this.ultimateArray=this.aloneMenuArray.concat(this.parentMenuArray)
             this.$nextTick(()=>{
-                console.log(this.parentMenuArray)
+              console.log(this.ultimateArray)
             })
-                
-        })
-        })
-      })
+          });
+        });
+      });
+    });
   },
   methods: {
-    onOpenChange (openKeys) {
-      const latestOpenKey = openKeys.find(key => this.openKeys.indexOf(key) === -1)
+    onOpenChange(openKeys) {
+      const latestOpenKey = openKeys.find(
+        key => this.openKeys.indexOf(key) === -1
+      );
       if (this.rootSubmenuKeys.indexOf(latestOpenKey) === -1) {
-        this.openKeys = openKeys
+        this.openKeys = openKeys;
       } else {
-        this.openKeys = latestOpenKey ? [latestOpenKey] : []
+        this.openKeys = latestOpenKey ? [latestOpenKey] : [];
       }
     },
-    checkChange(e){
-      console.log(`checked = ${e.target.checked}`)
-
+    checkChange(e) {
+      console.log(`checked = ${e.target.checked}`);
     },
-    judge(id,type){
+    judge(id,type) {
+      switch (type) {
+        case 0:
+          return this.aloneMenuArray.filter(item => {
+            if (item.id == id) {
+              return true;
+            } else {
+              return false;
+            }
+          })[0]["ifPermitted"];
 
-        switch(type){
-            case 0:
-            return this.aloneMenuArray.filter((item)=>{
-                if(item.id==id){
-                    return true
-                }else{return false }
-            })[0]['ifPermitted'];
+        case 1:
+          return this.parentMenuArray.filter(item => {
+            if (item.id == id) {
+              return true;
+            } else {
+              return false;
+            }
+          })[0]["ifPermitted"];
 
-            case 1:
-            return this.parentMenuArray.filter((item)=>{
-                if(item.id==id){
-                    return true
-                }else{return false }
-            })[0]['ifPermitted'];
+        case 2:
+          // 先找到该二级菜单的父级菜单
+          let theParentMenu = this.parentMenuArray.filter(item => {
+            if (
+              item.subPermissions.filter(subItem => {
+                if (subItem.id === id) {
+                  return true;
+                } else {
+                  return false;
+                }
+              }).length != 0
+            ) {
+              return true;
+            } else {
+              return false;
+            }
+          });
+          // 再去找该二级菜单
+          let theChildMenu = theParentMenu[0].subPermissions.filter(item => {
+            if (item.id === id) {
+              return true;
+            } else {
+              return false;
+            }
+          })[0];
+          return theChildMenu.ifPermitted;
+      }
+    },
+    // 有子菜单的父级菜单状态改编后，改变子菜单状态的方法
+    changeChildren(id) {
+      console.log(id);
+    },
+    // 用户点击复选框时，先改变对应的菜单数组中队像的是否授权属性，然后再重新去掉judge方法判断是否选中
 
-            case 2:
-            console.log(this.parentMenuArray.filter((item)=>{
-                if(item.subPermissions.filter((subItem)=>{
-                    subItem.id===id
-                })){
-                    return true
-                }else{return false }
-            })[0].subPermissions)
-
-            return this.parentMenuArray.filter((item)=>{
-                if(item.subPermissions.filter((subItem)=>{
-                    subItem.id===id
-
-                })){
-                    return true
-                }else{return false }
-            })[0].subPermissions
-            .filter((item)=>{
-                if(item.id===id){ return true}else{return false} 
-            }).ifPermitted;
-            break;
+    // 修改没有子菜单的一级菜单
+    changeAloneMenu(id, type) {
+      // 改变菜单对象属性
+      // 先创建一个新对象，改变其属性，再重新给菜单对象赋值
+      this.aloneMenuArray = this.aloneMenuArray.map(item => {
+        if (item.id == id) {
+          item.ifPermitted = !item.ifPermitted;
+          return item;
         }
+        return item;
+      });
+      this.$nextTick(() => {
+        console.log(this.aloneMenuArray);
+        this.judge(id, type);
+      });
+    },
+    // 修改有子菜单的一级菜单
+    changeParentMenu(id, type) {
+      // 改变菜单对象属性
+      // 先创建一个新对象，改变其属性，再重新给菜单对象赋值
+      this.parentMenuArray = this.parentMenuArray.map(item => {
+        if (item.id == id) {
+          item.ifPermitted = !item.ifPermitted;
+            // 获取到新状态开始改变其子菜单权限属性
+
+            let newStatus=item.ifPermitted;
+            item.subPermissions.map((subItem)=>{
+              subItem.ifPermitted=newStatus
+              return subItem
+            })
+          return item;
+        }
+        return item;
+      });
+      this.$nextTick(() => {
+          this.ultimateArray=this.aloneMenuArray.concat(this.parentMenuArray)
+          this.$nextTick(()=>{
+            console.log(this.ultimateArray)
+          })
+      });
+    },
+    changeChildStatus(id, type) {
+      // 先找到该二级菜单的父级菜单
+      let theParentMenu = this.parentMenuArray.filter(item => {
+        if (
+          item.subPermissions.filter(subItem => {
+            if (subItem.id === id) {
+              return true;
+            } else {
+              return false;
+            }
+          }).length != 0
+        ) {
+          return true;
+        } else {
+          return false;
+        }
+      })[0];
+      // 改变该父级菜单属性
+      theParentMenu.subPermissions.map(theItem => {
+        if (theItem.id === id) {
+          theItem.ifPermitted = !theItem.ifPermitted;
+          return theItem;
+        }
+        return theItem;
+      });
+
+      // 该父级菜单权限属性
+      let parentStatus=theParentMenu.subPermissions.every((item)=>{
+          return item.ifPermitted===true
+      });
+      console.log(parentStatus)
+      theParentMenu.ifPermitted=parentStatus;
+      
+      // 去改变有子菜单的二级菜单数组
+       this.parentMenuArray=this.parentMenuArray.map(parentItem => {
+        if (parentItem.id === theParentMenu.id) {
+          return theParentMenu;
+        }
+        return parentItem;
+      });
+      this.$nextTick(() => {
+        this.ultimateArray=this.aloneMenuArray.concat(this.parentMenuArray)
+        this.$nextTick(()=>{
+          console.log(this.ultimateArray)
+        })
+      });
     }
   },
+};
+</script>
+<style scoped>
+#menuSelection {
+  max-height: calc(100% - 49px);
+  margin-left: 100px;
 }
 
-</script>
-<style  scoped>
-    #menuSelection{
-        max-height:calc(100% - 49px) ;
-        margin-left: 100px;
-    }
-    #components-layout-demo-side{
-        min-height: 50px !important;
-        border:1px solid #e8e8e8;
-    }
-    .ant-menu .ant-menu-inline .ant-menu-root .ant-menu-light{
-        border: none !important;
-    }
+#components-layout-demo-side {
+  min-height: 50px !important;
+  border: 1px solid #e8e8e8;
+}
+
+.ant-menu .ant-menu-inline .ant-menu-root .ant-menu-light {
+  border: none !important;
+}
 </style>

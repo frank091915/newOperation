@@ -75,9 +75,19 @@ const toGetlowVoltageRoomList = () => {
 
 // 请求状态汇总信息
 const toGetSummary = () => {
-  console.log("summary")
   return ajax.get(
     "/api/summary", {
+      headers: {
+        "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken"))
+      }
+    }
+  )
+}
+
+// 请求状态汇总信息
+const toGetFualtManageList = (page=1) => {
+  return ajax.get(
+    "/api/fault?currentPage="+page, {
       headers: {
         "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken"))
       }
@@ -416,5 +426,6 @@ export {
   toGetAccessList,
   toGetBroadcastList,
   toGetinterchangerList,
-  toGetWarningRecordList
+  toGetWarningRecordList,
+  toGetFualtManageList
 }

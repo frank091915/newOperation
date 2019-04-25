@@ -22,6 +22,9 @@ import AlarmSet from "../pages/alarmSet.vue"
 import ServerRoom from "../pages/serverRoom.vue"
 import WarningRecord from "../pages/warningRecord.vue"
 import ExceptionRecord from "../pages/exceptionRecord.vue"
+import Fualt from "../pages/fualtManage.vue"
+import AddFualt from "../pages/addFualt.vue"
+import FualtBinding from "../pages/fualtBinding.vue"
 // 将所有组件集中管理进行配置
 
 export default [{
@@ -215,6 +218,33 @@ export default [{
     components: {
       frame:Frame,
       main:ExceptionRecord,
+      header:Header
+	}
+  },
+  {
+    path: '/fault',
+    name: 'fualt',
+    components: {
+      frame:Frame,
+      main:Fualt,
+      header:Header
+	}
+  },
+  {
+    path: '/addFualt',
+    name: 'addFualt',
+    components: {
+      frame:Frame,
+      main:AddFualt,
+      header:Header
+	}
+  },
+  {
+    path: '/fualtBinding',
+    name: 'fualtBinding',
+    components: {
+      frame:Frame,
+      main:FualtBinding,
       header:Header
 	}
   }
