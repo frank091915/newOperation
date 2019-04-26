@@ -21,10 +21,14 @@ import ModifyUser from "../pages/modifyUser.vue"
 import AlarmSet from "../pages/alarmSet.vue"
 import ServerRoom from "../pages/serverRoom.vue"
 import WarningRecord from "../pages/warningRecord.vue"
-import ExceptionRecord from "../pages/exceptionRecord.vue"
 import Fualt from "../pages/fualtManage.vue"
 import AddFualt from "../pages/addFualt.vue"
 import FualtBinding from "../pages/fualtBinding.vue"
+import ModifyFualt from "../pages/modifyFualt.vue"
+import exceptionManage from "../pages/exceptionManage.vue"
+import ModifyException from "../pages/modifyException.vue"
+import AddException from "../pages/addException.vue"
+import ExceptionRecord from "../pages/exceptionRecord.vue"
 // 将所有组件集中管理进行配置
 
 export default [{
@@ -53,8 +57,8 @@ export default [{
 	}
   },
   {
-    path: '/machine',
-    name: 'machine',
+    path: '/data/machine',
+    name: 'data/machine',
     components: {
 		frame:Frame,
     main:ConvergeRoom,
@@ -77,8 +81,8 @@ export default [{
 	}
   },
   {
-    path: '/electric',
-    name: 'electric',
+    path: '/data/electric',
+    name: 'data/electric',
     components: {
       frame:Frame,
       main:LowVoltageRoom,
@@ -86,8 +90,8 @@ export default [{
 	}
   },
   {
-    path: '/pos',
-    name: 'pos',
+    path: '/control/pos',
+    name: 'control/pos',
     components: {
       frame:Frame,
       main:PosMechine,
@@ -95,8 +99,8 @@ export default [{
 	}
   },
   {
-    path: '/transfer',
-    name: 'transfer',
+    path: '/control/transfer',
+    name: 'control/transfer',
     components: {
       frame:Frame,
       main:Transfer,
@@ -104,8 +108,8 @@ export default [{
 	}
   },
   {
-    path: '/server',
-    name: 'server',
+    path: '/control/server',
+    name: 'control/server',
     components: {
       frame:Frame,
       main:ServerRoom,
@@ -113,8 +117,8 @@ export default [{
 	}
   },
   {
-    path: '/access',
-    name: 'access',
+    path: '/control/access',
+    name: 'control/access',
     components: {
       frame:Frame,
       main:Access,
@@ -122,8 +126,8 @@ export default [{
 	}
   },
   {
-    path: '/broadcast',
-    name: 'broadcast',
+    path: '/control/broadcast',
+    name: 'control/broadcast',
     components: {
       frame:Frame,
       main:Broadcast,
@@ -131,8 +135,8 @@ export default [{
 	}
   },
   {
-    path: '/network',
-    name: 'network',
+    path: '/control/network',
+    name: 'control/network',
     components: {
       frame:Frame,
       main:Network,
@@ -204,8 +208,8 @@ export default [{
 	}
   },
   {
-    path: '/warning',
-    name: 'warning',
+    path: '/record/warning',
+    name: 'record/warning',
     components: {
       frame:Frame,
       main:WarningRecord,
@@ -217,7 +221,7 @@ export default [{
     name: 'exception',
     components: {
       frame:Frame,
-      main:ExceptionRecord,
+      main:exceptionManage,
       header:Header
 	}
   },
@@ -247,5 +251,42 @@ export default [{
       main:FualtBinding,
       header:Header
 	}
+  },
+  {
+    path: '/ModifyFualt',
+    name: 'ModifyFualt',
+    components: {
+      frame:Frame,
+      main:ModifyFualt,
+      header:Header
+	}
+  },
+  {
+    path: '/modifyException',
+    name: 'modifyException',
+    components: {
+      frame:Frame,
+      main:ModifyException,
+      header:Header
+	}
+  },
+  {
+    path: '/addException',
+    name: 'addException',
+    components: {
+      frame:Frame,
+      main:AddException,
+      header:Header
+	}
+  },
+  {
+    path: '/record/exception',
+    name: 'record/exception',
+    components: {
+      frame:Frame,
+      main:ExceptionRecord,
+      header:Header
+	}
   }
 ]
+

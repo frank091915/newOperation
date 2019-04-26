@@ -2,8 +2,8 @@
 <template>
   <div id="alarmSetWrapper">
     <div id="tabWrapper">
-      <a-tabs defaultActiveKey="2" @change="callback">
-        <a-tab-pane tab="汇聚机房" key="2" forceRender>
+      <a-tabs defaultActiveKey="1" @change="callback">
+        <a-tab-pane tab="汇聚机房" key="1" forceRender>
           汇聚机房
           <div id="convergeRoomtitle"></div>
           <div id="convergeTableWrapper">
@@ -25,26 +25,14 @@
               </template>
               <template slot="weChatcheckBox" slot-scope="text, record">
                 <a-switch
-                  :checked="record.switchWx"
-                  @change="onChangeInformingMethod(3,record.Id,'NKD_AGG_DEVICE')"
-                />
-              </template>
-              <template slot="messagecheckBox" slot-scope="text, record">
-                <a-switch
-                  :checked="record.switchPhone"
-                  @change="onChangeInformingMethod(2,record.Id,'NKD_AGG_DEVICE')"
-                />
-              </template>
-              <template slot="emailcheckBox" slot-scope="text, record">
-                <a-switch
-                  :checked="record.switchEmail"
-                  @change="onChangeInformingMethod(1,record.Id,'NKD_AGG_DEVICE')"
+                  :checked="record.mark"
+                  @change="onChangeFualtBinding(record.id,1)"
                 />
               </template>
             </a-table>
           </div>
         </a-tab-pane>
-        <a-tab-pane tab="弱电间" key="3">
+        <a-tab-pane tab="弱电间" key="2">
           <div id="lowVoltageRoom">弱电间</div>
           <div id="lowVolttageTableWrapper">
             <a-table :columns="columns" :dataSource="electronicData" :pagination="false" bordered>
@@ -65,20 +53,8 @@
               </template>
               <template slot="weChatcheckBox" slot-scope="text, record">
                 <a-switch
-                  :checked="record.switchWx"
-                  @change="onChangeInformingMethod(3,record.Id,'NKD_WEAK_ELECTRIC_ADVICE')"
-                />
-              </template>
-              <template slot="messagecheckBox" slot-scope="text, record">
-                <a-switch
-                  :checked="record.switchPhone"
-                  @change="onChangeInformingMethod(2,record.Id,'NKD_WEAK_ELECTRIC_ADVICE')"
-                />
-              </template>
-              <template slot="emailcheckBox" slot-scope="text, record">
-                <a-switch
-                  :checked="record.switchEmail"
-                  @change="onChangeInformingMethod(1,record.Id,'NKD_WEAK_ELECTRIC_ADVICE')"
+                  :checked="record.mark"
+                  @change="onChangeFualtBinding(record.id,2)"
                 />
               </template>
             </a-table>
@@ -97,40 +73,22 @@ const columns = [
     scopedSlots: { customRender: "num" }
   },
   {
-    title: "汇聚机房编号",
-    dataIndex: "Code",
+    title: "异常编号",
+    dataIndex: "code",
     width: "10%",
     scopedSlots: { customRender: "age" }
   },
   {
     title: "描述",
-    dataIndex: "Description",
+    dataIndex: "remark",
     width: "15%",
     scopedSlots: { customRender: "address" }
   },
   {
-    title: "设备MAC地址",
-    dataIndex: "MacAddress",
-    width: "10%",
-    scopedSlots: { customRender: "address" }
-  },
-  {
-    title: "微信警告",
-    dataIndex: "switchWx",
+    title: "是否绑定",
+    dataIndex: "mark",
     width: "10%",
     scopedSlots: { customRender: "weChatcheckBox" }
-  },
-  {
-    title: "短信警告",
-    dataIndex: "floorNumber",
-    width: "10%",
-    scopedSlots: { customRender: "messagecheckBox" }
-  },
-  {
-    title: "邮件警告",
-    dataIndex: "roomNumber",
-    width: "10%",
-    scopedSlots: { customRender: "emailcheckBox" }
   }
 ];
 
@@ -141,7 +99,7 @@ export default {
       secondFault: "secondFault",
       thirdFault: "thirdFault",
       alarmData: [],
-      currentUserId: this.$route.query.id,
+      currentFualtId: this.$route.query.fualtId,
       convergeData: [],
       electronicData: [],
       columns,
@@ -149,7 +107,7 @@ export default {
     };
   },
   methods: {
-    addOrder(type) {
+    addOrder(type=1) {
       let i = 1;
       if(type===1){
       this.convergeData = this.convergeData.filter(item => {
@@ -162,41 +120,42 @@ export default {
         return true;
       });
       }
-
-
     },
     callback(key) {
-      if (key == 2) {
-        this.toGetConvergeRoomAlarmSettings("NKD_AGG_DEVICE", key);
-      } else if (key == 3) {
-        this.toGetConvergeRoomAlarmSettings("NKD_WEAK_ELECTRIC_ADVICE", key);
-      }
+        this.FualtException(key)
     },
     changeStatus(typeId, $event) {
-      this.$http.toSetAlarm(this.currentUserId, typeId).then(res => {
+      this.$http.toSetAlarm(this.currentFualtId, typeId).then(res => {
         if (res.data.success) {
           this.$message.success("设置成功");
           this.GetAlarmData();
         } else {
-          this.$message.success("设置失败，请重试");
+          this.$message.error("设置失败，请重试");
         }
       });
     },
-    GetAlarmData() {
-      this.$http.toGetUserAlarmSettings(this.currentUserId).then(res => {
+    FualtException(roomType) {
+      this.$http.toGetFualtExceptionList(1,this.currentFualtId,roomType).then(res => {
         if (res.data.success) {
-          this.alarmData = res.data.data;
-          this.$nextTick(() => {
-          });
+          if(roomType===1){
+          this.convergeData = res.data.data;
+          }else{
+            this.electronicData = res.data.data;
+          }
+
+        this.$nextTick(()=>{
+          console.log(res)
+            this.addOrder(roomType)
+        })
         } else {
-          this.$message.success("获取数据失败，请重试");
+          this.$message.error("获取数据失败，请重试");
         }
       });
     },
     toGetConvergeRoomAlarmSettings(type, key) {
       if (key == 2) {
         this.$http
-          .toGetConvergeRoomAlarmSettings(this.currentUserId, type)
+          .toGetConvergeRoomAlarmSettings(this.currentFualtId, type)
           .then(res => {
             if (res.data.success) {
               this.convergeData = res.data.data;
@@ -205,12 +164,12 @@ export default {
                 this.addOrder(1);
               });
             } else {
-              this.$message.success("获取数据失败，请重试");
+              this.$message.error("获取数据失败，请重试");
             }
           });
       } else {
         this.$http
-          .toGetConvergeRoomAlarmSettings(this.currentUserId, type)
+          .toGetConvergeRoomAlarmSettings(this.currentFualtId, type)
           .then(res => {
             if (res.data.success) {
               this.electronicData = res.data.data;
@@ -219,66 +178,26 @@ export default {
                 this.addOrder(2);
               });
             } else {
-              this.$message.success("获取数据失败，请重试");
+              this.$message.error("获取数据失败，请重试");
             }
           });
       }
     },
-    onChangeInformingMethod(noticeType, id, type) {
-      let infoObj = {};
-      infoObj.userId = this.$route.query.id;
-      infoObj.type = type;
-      infoObj.cmdbId = id;
-      infoObj.noticeType = noticeType;
-      // 找到当前设置的对象
-      let currentObj = this.allDataArray.filter(item => {
-        if (item.Id === id) {
-          return true;
+    onChangeFualtBinding(exceptionId,roomType) {
+      this.$http.toChangeFualtException({faultId:this.currentFualtId,exceptionId}).then((res)=>{
+        console.log(res);
+        if (res.data.success) {
+          this.$message.success("设置成功");
+          console.log(roomType)
+          this.FualtException(roomType)
         } else {
-          return false;
+          this.$message.error("设置失败，请重试");
         }
-      });
-
-      let informingMethod = "";
-      switch (noticeType) {
-        case 1:
-          informingMethod = "switchEmail";
-          break;
-        case 2:
-          informingMethod = "switchPhone";
-          break;
-        case 3:
-          informingMethod = "switchWx";
-          break;
-      }
-
-      let toSwitch = currentObj[0][informingMethod];
-      if (!toSwitch) {
-        this.$http.toSetAlarmOn(infoObj).then(res => {
-          if (res.data.success) {
-            this.$message.success("设置成功");
-            this.toGetConvergeRoomAlarmSettings("NKD_AGG_DEVICE", 2);
-            this.toGetConvergeRoomAlarmSettings("NKD_WEAK_ELECTRIC_ADVICE", 3);
-          } else {
-            this.$message.success("设置失败，请重试");
-          }
-        });
-      } else {
-        this.$http.toSetAlarmOff(infoObj).then(res => {
-          if (res.data.success) {
-            this.$message.success("设置成功");
-            this.toGetConvergeRoomAlarmSettings("NKD_AGG_DEVICE", 2);
-            this.toGetConvergeRoomAlarmSettings("NKD_WEAK_ELECTRIC_ADVICE", 3);
-          } else {
-            this.$message.success("设置失败，请重试");
-          }
-        });
-      }
+      })
     }
   },
   created() {
-    this.GetAlarmData();
-    this.toGetConvergeRoomAlarmSettings("NKD_AGG_DEVICE",2)
+    this.FualtException(1);
   }
 };
 </script>

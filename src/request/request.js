@@ -85,9 +85,9 @@ const toGetSummary = () => {
 }
 
 // 请求状态汇总信息
-const toGetFualtManageList = (page=1) => {
+const toGetExceptionManageList = (page=1) => {
   return ajax.get(
-    "/api/fault?currentPage="+page, {
+    "/api/exception?currentPage="+page, {
       headers: {
         "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken"))
       }
@@ -108,6 +108,34 @@ const toGetPosMechineList = (page =1, status,buildingId,searchRoom) => {
     }
   )
 }
+// 获取故障异常列表
+
+
+const toGetFualtExceptionList = (page =1,FaultId,exceptionType) => {
+  let exceptionTypeQuery = exceptionType !=undefined? `&exceptionType=${exceptionType}` : "";
+  return ajax.get(
+    `/api/fault/${FaultId}/exception?currentPage=` + page + exceptionTypeQuery, {
+      headers: {
+        "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken"))
+      }
+    }
+  )
+}
+
+
+// 是否绑定异常
+const toChangeFualtException = (fualtException) => {
+  console.log(fualtException)
+  return ajax.post(
+    `/api/fault/${fualtException.faultId}/binding/${fualtException.exceptionId}`, qs.stringify(fualtException), {
+      headers: {
+        "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken")),
+        "Content-Type": "application/x-www-form-urlencoded"
+      }
+    }
+  )
+}
+
 
 // 请求圈存机列表
 const toGetTransferList = (page =1, status,buildingId,searchRoom) => {
@@ -200,6 +228,17 @@ const toDeleteRole = (userId) => {
   )
 }
 
+// 删除故障
+const toDeleteFualt = (faultId) => {
+  return ajax.delete(
+    "/api/fault/" + faultId,{
+      headers: {
+        "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken"))
+      }
+    }
+  )
+}
+
 // 用户管理删除操作
 const toDeleteUser = (userId) => {
   return ajax.delete(
@@ -216,12 +255,26 @@ const toAddUser = (userInfo) => {
   let obj ={};
   obj=userInfo;
   // obj.roleIds=[userInfo.role]
+  userInfo.role=1
   console.log(obj)
   return ajax.post(
-    `/api/user?roleIds=${userInfo.role}`, obj, {
+    `/api/user?roleIds=${userInfo.role}`,obj, {
       headers: {
         "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken")),
         "Content-Type": "application/json"
+      }
+    }
+  )
+}
+
+//新增故障
+const toAddFualt = (fualtInfo) => {
+  console.log(fualtInfo)
+  return ajax.post(
+    `/api/fault`,qs.stringify(fualtInfo), {
+      headers: {
+        "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken")),
+        "Content-Type": "application/x-www-form-urlencoded"
       }
     }
   )
@@ -244,6 +297,18 @@ const toAddRole = (userInfo) => {
 const toModifyRole = (userInfo) => {
   return ajax.put(
     "/api/role/" + userInfo.id, qs.stringify(userInfo), {
+      headers: {
+        "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken")),
+        "Content-Type": "application/x-www-form-urlencoded"
+      }
+    }
+  )
+}
+
+//修改故障信息
+const toModifyFualt = (fualtInfo) => {
+  return ajax.put(
+    `/api/fault/${fualtInfo.faultId}?name=${fualtInfo.name}&${fualtInfo.remark}`, qs.stringify(fualtInfo), {
       headers: {
         "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken")),
         "Content-Type": "application/x-www-form-urlencoded"
@@ -326,6 +391,29 @@ const toSetAlarmOff = (obj) => {
 const toUserList = () => {
   return ajax.get(
     "/api/user", {
+      headers: {
+        "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken"))
+      }
+    }
+  )
+}
+
+// 请求故障列表
+const toGetFualtManageList = (page=1) => {
+  return ajax.get(
+    "/api/fault?currentPage="+page, {
+      headers: {
+        "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken"))
+      }
+    }
+  )
+}
+
+
+// 请求故障详情列表
+const toGetFualtInfo = (fualtId) => {
+  return ajax.get(
+    "/api/fault/"+fualtId, {
       headers: {
         "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken"))
       }
@@ -427,5 +515,12 @@ export {
   toGetBroadcastList,
   toGetinterchangerList,
   toGetWarningRecordList,
-  toGetFualtManageList
+  toGetFualtManageList,
+  toGetFualtExceptionList,
+  toChangeFualtException,
+  toAddFualt,
+  toGetFualtInfo,
+  toModifyFualt,
+  toDeleteFualt,
+  toGetExceptionManageList
 }

@@ -97,7 +97,7 @@
           showSearch
           placeholder="请选择角色"
           optionFilterProp="children"
-          style="width: 350px"
+          style="width: 218px"
           v-decorator="[
           'role',
           {rules: [{ required: true,message:'请输入邮箱地址'}]}
@@ -121,13 +121,15 @@
         :wrapper-col="formItemLayout.wrapperCol"
         label="备注"
       >
-        <a-input v-decorator="[
+        <a-input 
+        type="textarea"
+        v-decorator="[
           'remark'
         ]"/>
       </a-form-item>
       <a-form-item :label-col="formTailLayout.labelCol" :wrapper-col="formTailLayout.wrapperCol">
         <div id="opetarionBox">
-          <a-button @click="toReturn">返回</a-button>
+          <a-button @click="toReturn" id="returnButton">返回</a-button>
           <a-button type="primary" @click="toSave">保存</a-button>
         </div>
       </a-form-item>
@@ -153,7 +155,8 @@ export default {
       form: this.$form.createForm(this),
       value: 1,
       roleName: "",
-      rolesGroup: []
+      rolesGroup: [],
+
     };
   },
   methods: {
@@ -166,6 +169,8 @@ export default {
         if (!err) {
           let userInfo = { ...values };
           userInfo.status = this.value ? true : false;
+          // 添加权限菜单
+
           console.log(userInfo);
           this.$http.toAddUser(userInfo).then(res => {
             console.log(res);
@@ -187,6 +192,19 @@ export default {
       this.$nextTick(() => {
         this.form.validateFields(["nickname"], { force: true });
       });
+    },
+    onOpenChange(openKeys) {
+      const latestOpenKey = openKeys.find(
+        key => this.openKeys.indexOf(key) === -1
+      );
+      if (this.rootSubmenuKeys.indexOf(latestOpenKey) === -1) {
+        this.openKeys = openKeys;
+      } else {
+        this.openKeys = latestOpenKey ? [latestOpenKey] : [];
+      }
+    },
+    checkChange(e) {
+      console.log(`checked = ${e.target.checked}`);
     }
   },
   created() {
@@ -203,9 +221,18 @@ export default {
 #pageTitle {
   margin-left: 52px;
 }
+#menuSelection {
+  max-height: calc(100% - 49px);
+}
+
+#components-layout-demo-side {
+  min-height: 50px !important;
+  border: 1px solid #e8e8e8;
+}
+
 #radioBox {
   box-sizing: border-box;
-  padding-left: 230px;
+  padding-left: 101px;
   margin-bottom: 20px;
   display: flex;
   flex-direction: row;
@@ -221,6 +248,8 @@ export default {
 }
 #addRoleWrapper {
   margin-top: 20px;
+  width: 880px;
+  margin:0 auto;
 }
 .ant-form-item {
   margin-bottom: 20px !important;
@@ -228,10 +257,19 @@ export default {
 #opetarionBox {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
   width: 358px;
   box-sizing: border-box;
-  padding-left: 145px;
+  padding-left: 70px;
+}
+#permissionsMenu{
+  margin-top: 20px;
+}
+#permissionsMenuTitle{
+  margin-bottom: 2px;
+}
+#returnButton{
+  margin-right: 50px;
 }
 </style>

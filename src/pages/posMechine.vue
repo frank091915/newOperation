@@ -1,81 +1,80 @@
 <template>
-  <div id="main">
-    <div id="searchBox">
-      <div id="statusSearch">
-        <div class="label">状态：</div>
-        <div id="statusSearchInput">
-          <a-select
-            defaultValue="全部"
-            showSearch
-            placeholder="Select a person"
-            optionFilterProp="children"
-            style="width: 200px"
-            @change="handleStatusChange"
-            :filterOption="filterOption"
-            v-model="status"
-          >
-            <a-select-option :value="nullStatus">全部</a-select-option>
-            <a-select-option :value="normalStatus">正常</a-select-option>
-            <a-select-option :value="abnormalStatus">异常</a-select-option>
-            <a-select-option :value="unknowStatus">未知</a-select-option>
-          </a-select>
-        </div>
-      </div>
-      <div id="statusSearch">
-        <div class="label">楼宇名称：</div>
-        <div id="buildingSearchInput">
-          <a-select
-            defaultValue="检测中心"
-            showSearch
-            placeholder="Select a person"
-            optionFilterProp="children"
-            style="width: 200px"
-            @change="handleBuildingChange"
-            :filterOption="filterOption"
-            v-model="buildingId"
-          >
-            <a-select-option :value="nullStatus" :key="8874">全部</a-select-option>
-            <a-select-option v-for="item in allBuildings" :value="item.Id" :key="item.Id">{{item.Address}}</a-select-option>
-          </a-select>
-        </div>
-      </div>
-      <div id="searchByNames">
-        <div id="searchByNamesLabel">名称：</div>
-        <div id="searchByNamesInput">
-          <a-input v-model="searchParam" placeholder="请输入POS机名称"/>
-          <a-button @click="search" type="primary">搜索</a-button>
-        </div>
-      </div>
-    </div>
-    <div id="tableWrapper">
-      <a-table 
-      :columns="columns" 
-      :dataSource="data"
-      :pagination="false"
-      size="small"
-      bordered>
-        <template
-          v-for="col in ['name', 'age', 'address']"
-          :slot="col"
-          slot-scope="text, record, index"
-        >
-          <div :key="col">
-            <a-input
-              v-if="record.editable"
-              style="margin: -5px 0;padding:10px !important"
-              :value="text"
-              @change="e => handleChange(e.target.value, record.key, col)"
-            />
-            <template v-else>{{text}}</template>
+  <div>
+    <div id="main">
+      <div id="searchBox">
+        <div id="statusSearch">
+          <div class="label">状态：</div>
+          <div id="statusSearchInput">
+            <a-select
+              defaultValue="全部"
+              showSearch
+              placeholder="Select a person"
+              optionFilterProp="children"
+              style="width: 200px"
+              @change="handleStatusChange"
+              :filterOption="filterOption"
+              v-model="status"
+            >
+              <a-select-option :value="nullStatus">全部</a-select-option>
+              <a-select-option :value="normalStatus">正常</a-select-option>
+              <a-select-option :value="abnormalStatus">异常</a-select-option>
+              <a-select-option :value="unknowStatus">未知</a-select-option>
+            </a-select>
           </div>
-        </template>
-
-      </a-table>
+        </div>
+        <div id="statusSearch">
+          <div class="label">楼宇名称：</div>
+          <div id="buildingSearchInput">
+            <a-select
+              defaultValue="检测中心"
+              showSearch
+              placeholder="Select a person"
+              optionFilterProp="children"
+              style="width: 200px"
+              @change="handleBuildingChange"
+              :filterOption="filterOption"
+              v-model="buildingId"
+            >
+              <a-select-option :value="nullStatus" :key="8874">全部</a-select-option>
+              <a-select-option
+                v-for="item in allBuildings"
+                :value="item.Id"
+                :key="item.Id"
+              >{{item.Address}}</a-select-option>
+            </a-select>
+          </div>
+        </div>
+        <div id="searchByNames">
+          <div id="searchByNamesLabel">名称：</div>
+          <div id="searchByNamesInput">
+            <a-input v-model="searchParam" placeholder="请输入POS机名称"/>
+            <a-button @click="search" type="primary">搜索</a-button>
+          </div>
+        </div>
+      </div>
+      <div id="tableWrapper">
+        <a-table :columns="columns" :dataSource="data" :pagination="false" size="small" bordered :loading="isLoading">
+          <template
+            v-for="col in ['name', 'age', 'address']"
+            :slot="col"
+            slot-scope="text, record, index"
+          >
+            <div :key="col">
+              <a-input
+                v-if="record.editable"
+                style="margin: -5px 0;padding:10px !important"
+                :value="text"
+                @change="e => handleChange(e.target.value, record.key, col)"
+              />
+              <template v-else>{{text}}</template>
+            </div>
+          </template>
+        </a-table>
+      </div>
     </div>
   </div>
 </template>
 <script>
-
 const columns = [
   {
     title: "序号",
@@ -101,7 +100,7 @@ const columns = [
     width: "10%",
     scopedSlots: { customRender: "address" }
   },
-   {
+  {
     title: "楼宇名称",
     dataIndex: "buildingName",
     width: "10%",
@@ -154,42 +153,52 @@ export default {
   data() {
     this.cacheData = data.map(item => ({ ...item }));
     return {
-      data:[],
+      data: [],
       columns,
-      recordsTotal:"",
-      status:"全部",
-      allBuildings:[],
-      buildingId:"全部",
-      nullStatus:"null",
-      normalStatus:1,
-      abnormalStatus:0,
-      unknowStatus:-1,
-      statusParam:"",
-      buildingIdParam:"",
-      page:1,
-      searchParam:""
+      recordsTotal: "",
+      status: "全部",
+      allBuildings: [],
+      buildingId: "全部",
+      nullStatus: "null",
+      normalStatus: 1,
+      abnormalStatus: 0,
+      unknowStatus: -1,
+      statusParam: "",
+      buildingIdParam: "",
+      page: 1,
+      searchParam: "",
+      isLoading: true
     };
   },
   methods: {
     handleStatusChange() {
-      this.statusParam=this.status==="null" ? null : this.status;
-      this.$http.toGetPosMechineList(1,this.statusParam,this.buildingIdParam).then((res)=>{
-        if(res.data.success){
-          this.data=res.data.data
-        }else{
-          
-        }
-      })
+      this.statusParam = this.status === "null" ? null : this.status;
+      this.$http
+        .toGetPosMechineList(1, this.statusParam, this.buildingIdParam)
+        .then(res => {
+          if (res.data.success) {
+            this.data = res.data.data;
+            this.$nextTick(() => {
+              this.addOrder();
+            });
+          } else {
+          }
+        });
     },
-    handleBuildingChange(){
-      this.buildingIdParam=this.buildingId==="null" ? null : this.buildingId;
-      this.$http.toGetPosMechineList(1,this.statusParam,this.buildingIdParam).then((res)=>{
-        if(res.data.success){
-          this.data=res.data.data
-        }else{
-          
-        }
-      })
+    handleBuildingChange() {
+      this.buildingIdParam =
+        this.buildingId === "null" ? null : this.buildingId;
+      this.$http
+        .toGetPosMechineList(1, this.statusParam, this.buildingIdParam)
+        .then(res => {
+          if (res.data.success) {
+            this.data = res.data.data;
+            this.$nextTick(() => {
+              this.addOrder();
+            });
+          } else {
+          }
+        });
     },
     filterOption(input, option) {
       return (
@@ -198,47 +207,54 @@ export default {
           .indexOf(input.toLowerCase()) >= 0
       );
     },
-    search(){
-      console.log(this.searchParam)
+    search() {
+      console.log(this.searchParam);
+    },
+    addOrder() {
+      var i = 1;
+      this.data = this.data.filter(item => {
+        item["key"] = i++;
+        return true;
+      });
     }
   },
   created() {
     this.$http.toGetPosMechineList(this.page).then(res => {
-      console.log(res)
-      var i=0;
-      if(res.data.success){
-        this.data=res.data.data.filter((res)=>{
-          res["key"]=i++;
-          return true
-        })
-        this.recordsTotal=res.data.recordsTotal
-        this.$nextTick(()=>{
-
-        })
+      console.log(res);
+      var i = 0;
+      if (res.data.success) {
+        this.data = res.data.data.filter(res => {
+          res["key"] = i++;
+          return true;
+        });
+        this.recordsTotal = res.data.recordsTotal;
+        this.$nextTick(() => {
+          this.isLoading = false;
+        });
       }
     });
     // 获取所有楼宇名称
-    this.$http.toGetBuildingList().then((res)=>{
-      if(res.data.success){
-        this.allBuildings=res.data.data
+    this.$http.toGetBuildingList().then(res => {
+      if (res.data.success) {
+        this.allBuildings = res.data.data;
       }
-    })
+    });
   }
 };
 </script>
 <style scoped>
-html{
+html {
   height: 100%;
 }
-body{
+body {
   height: 100%;
 }
-#main{
+#main {
   height: calc(100% - 50px);
-    width: 95%;
+  width: 95%;
   margin-left: 20px;
 }
-#frame{
+#frame {
   height: 100%;
 }
 #searchBox {
@@ -267,12 +283,18 @@ body{
   justify-content: space-between;
   align-items: center;
 }
-.ant-table-row td{
+.ant-table-row td {
   background-color: aqua;
-  padding:10px !important;
+  padding: 10px !important;
 }
-#tableWrapper{
+#tableWrapper {
   height: calc(100% - 100px);
   overflow: auto;
+}
+.spin-content {
+  border: 1px solid #91d5ff;
+  background-color: #e6f7ff;
+  padding: 30px;
+  height: 200px;
 }
 </style>

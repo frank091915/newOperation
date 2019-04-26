@@ -85,7 +85,7 @@
       </a-form-item>
       <a-form-item :label-col="formTailLayout.labelCol" :wrapper-col="formTailLayout.wrapperCol">
         <div id="opetarionBox">
-          <a-button @click="toReturn">返回</a-button>
+          <a-button @click="toReturn" id="returnButton">返回</a-button>
           <a-button type="primary" @click="toSave">保存</a-button>
         </div>
       </a-form-item>
@@ -117,7 +117,6 @@ export default {
   },
   methods: {
     toReturn() {
-      console.log("return");
       this.$router.go("-1");
     },
     toSave() {
@@ -125,12 +124,14 @@ export default {
         if (!err) {
           let userInfo = { ...values };
           userInfo.status = this.value ? true : false;
-          userInfo.userId= Number.parseInt(this.$route.query.id) 
-          console.log(userInfo)
+          userInfo.userId=this.$route.query.id
+          // 添加权限菜单
+
+          console.log(userInfo);
           this.$http.toModifyUser(userInfo).then(res => {
             console.log(res);
             if (res.data.success) {
-              this.$message.success("编辑用户成功");
+              this.$message.success("用户编辑成功");
               this.$router.push({
                 path: "/user",
                 query: { title: "用户管理" }
@@ -148,6 +149,19 @@ export default {
         this.form.validateFields(["nickname"], { force: true });
       });
     },
+        onOpenChange(openKeys) {
+      const latestOpenKey = openKeys.find(
+        key => this.openKeys.indexOf(key) === -1
+      );
+      if (this.rootSubmenuKeys.indexOf(latestOpenKey) === -1) {
+        this.openKeys = openKeys;
+      } else {
+        this.openKeys = latestOpenKey ? [latestOpenKey] : [];
+      }
+    },
+    checkChange(e) {
+      console.log(`checked = ${e.target.checked}`);
+    },
   },
       created () {
         this.$http.toGetUserInfoById(this.$route.query.id).then((res)=>{
@@ -155,7 +169,7 @@ export default {
             if(res.data.success){
                 this.userInformation=res.data.data
             }
-        })
+        });
     }
 };
 </script>
@@ -185,6 +199,9 @@ export default {
 .ant-form-item {
   margin-bottom: 20px !important;
 }
+#permissionsMenu{
+  margin-top: 20px;
+}
 #opetarionBox {
   display: flex;
   flex-direction: row;
@@ -193,5 +210,50 @@ export default {
   width: 358px;
   box-sizing: border-box;
   padding-left: 145px;
+}
+#supremeWrapper{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-start;
+}
+#addRoleWrapper{
+  width: 650px;
+}
+#opetarionBox {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  width: 358px;
+  box-sizing: border-box;
+  padding-left: 70px;
+}
+
+#returnButton{
+  margin-right: 50px;
+}
+#menuSelection {
+  max-height: calc(100% - 49px);
+  margin-left: 100px;
+}
+
+#components-layout-demo-side {
+  min-height: 50px !important;
+  border: 1px solid #e8e8e8;
+}
+#addRoleWrapper {
+  margin-top: 20px;
+  width: 880px;
+  margin:0 auto;
+}
+#radioBox {
+  box-sizing: border-box;
+  padding-left: 101px;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
 }
 </style>

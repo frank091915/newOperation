@@ -1,18 +1,20 @@
 <template>
   <div id="addRoleWrapper">
       <div id="pageTitle">
-          新增故障
+          编辑异常
       </div>
     <a-form :form="form">
       <a-form-item
         :label-col="formItemLayout.labelCol"
         :wrapper-col="formItemLayout.wrapperCol"
-        label="故障名称"
+        label="异常名称"
       >
         <a-input
           v-decorator="[
           'name',
-          {rules: [{ required: true,message:'请输入故障名称'}]}
+          {rules: [{ required: true,message:'请输入故障名称'}],
+          initialValue:name
+          }
         ]"
         />
       </a-form-item>
@@ -26,7 +28,8 @@
           v-decorator="[
           'remark',
           
-          {rules: [{ required: true, message: '请输入备注' }]}
+          {rules: [{ required: true, message: '请输入备注' }],
+          initialValue:remark}
         ]"
         />
       </a-form-item>
@@ -57,7 +60,9 @@ export default {
       formTailLayout,
       form: this.$form.createForm(this),
       value: 1,
-      roleName: ""
+      roleName: "",
+      name:"",
+      remark:""
     };
   },
   methods: {
@@ -68,14 +73,14 @@ export default {
     toSave() {
       this.form.validateFields((err, values) => {
         if (!err) {
-
-          this.$http.toAddFualt(values).then(res => {
+            values.faultId=this.$route.query.fualtId
+          this.$http.toModifyFualt(values).then(res => {
             console.log(res);
             if (res.data.success) {
               this.$message.success("添加角色成功");
               this.$router.push({
-                path: "/fault",
-                query: { title: "故障管理" }
+                path: "/exception",
+                query: { title: "异常管理" }
               });
             } else {
               this.$message.error(res.data.errorInfo);
@@ -90,6 +95,15 @@ export default {
         this.form.validateFields(["nickname"], { force: true });
       });
     }
+  },
+  created(){
+      this.$http.toGetFualtInfo(this.$route.query.fualtId).then((res)=>{
+          console.log(res)
+          if(res.data.success){
+              this.name=res.data.data.name;
+              this.remark=res.data.data.remark;
+          }
+      })
   }
 };
 </script>

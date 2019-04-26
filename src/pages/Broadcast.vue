@@ -53,6 +53,7 @@
       :dataSource="data"
       :pagination="false"
       size="small"
+      :loading="isLoading"
       bordered>
         <template
           v-for="col in ['name', 'age', 'address']"
@@ -167,7 +168,8 @@ export default {
       statusParam:"",
       buildingIdParam:"",
       page:1,
-      searchParam:""
+      searchParam:"",
+      isLoading:true
     };
   },
   methods: {
@@ -176,7 +178,7 @@ export default {
       this.$http.toGetBroadcastList(1,this.statusParam,this.buildingIdParam).then((res)=>{
         if(res.data.success){
           this.data=res.data.data
-                  this.$nextTick(()=>{
+            this.$nextTick(()=>{
             this.addOrder()
         })
         }else{
@@ -223,6 +225,7 @@ export default {
         this.data=res.data.data
         this.recordsTotal=res.data.recordsTotal
         this.$nextTick(()=>{
+          this.isLoading=false
             this.addOrder()
         })
       }

@@ -1,6 +1,7 @@
 <template>
+<div>
   <div id="main">
-    <div id="searchBox">
+    <div id="searchBox" >
       <div id="statusSearch">
         <div class="label">状态：</div>
         <div id="statusSearchInput">
@@ -53,6 +54,7 @@
       :dataSource="data"
       :pagination="false"
       size="small"
+      :loading="isLoading"
       bordered>
         <template
           v-for="col in ['name', 'age', 'address']"
@@ -72,6 +74,8 @@
 
       </a-table>
     </div>
+  </div>
+
   </div>
 </template>
 <script>
@@ -167,7 +171,8 @@ export default {
       statusParam:"",
       buildingIdParam:"",
       page:1,
-      searchParam:""
+      searchParam:"",
+      isLoading: true
     };
   },
   methods: {
@@ -227,6 +232,9 @@ export default {
           return true
         })
         this.recordsTotal=res.data.recordsTotal
+        this.isLoading = false
+      }else{
+
       }
     });
     // 获取所有楼宇名称
@@ -286,5 +294,11 @@ body{
 #tableWrapper{
   height: calc(100% - 100px);
   overflow: auto;
+}
+.spin-content {
+border: 1px solid #91d5ff;
+background-color: #e6f7ff;
+padding: 30px;
+height: 200px;
 }
 </style>

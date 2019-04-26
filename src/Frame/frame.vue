@@ -69,8 +69,12 @@ export default {
     toNavigate(path,title){
       // 获取需要的路径字符串
       let processedPath=path.slice(0,(path.length-3)).split("/").pop();
-      console.log(processedPath)
-      this.$router.push({path:processedPath,query:{title}})
+      let ultimatePath=path.split('/')
+      ultimatePath=ultimatePath.slice(2,(ultimatePath.length-1))
+      ultimatePath=ultimatePath.join("/")
+      console.log(ultimatePath)
+
+      this.$router.push({path:"/"+ ultimatePath,query:{title}})
     }
   }
 }

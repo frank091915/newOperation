@@ -52,7 +52,7 @@
       </div>
     </div>
     <div id="tableWrapper">
-      <a-table :columns="columns" :dataSource="data" :pagination="false" size="small" bordered>
+      <a-table :columns="columns" :dataSource="data" :pagination="false" size="small" bordered :loading="isLoading">
         <template
           v-for="col in ['name', 'age', 'address']"
           :slot="col"
@@ -164,7 +164,8 @@ export default {
       statusParam: "",
       buildingIdParam: "",
       page: 1,
-      searchParam: ""
+      searchParam: "",
+      isLoading:true
     };
   },
   methods: {
@@ -223,6 +224,7 @@ export default {
         this.data = res.data.data;
         this.recordsTotal = res.data.recordsTotal;
         this.$nextTick(() => {
+          this.isLoading=false
           this.addOrder();
         });
       }

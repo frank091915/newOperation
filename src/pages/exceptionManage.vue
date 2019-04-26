@@ -2,7 +2,7 @@
   <div id="main">
     <div id="addBox">
         <div id="addButton">
-            <a-button @click="addRole"  type="primary" size="small">新增</a-button>
+            <a-button @click="addException"  type="primary" size="small">新增</a-button>
         </div>
       
     </div>
@@ -11,7 +11,7 @@
         <template
           v-for="col in ['name', 'age', 'address']" 
           :slot="col"
-          slot-scope="text, record"
+          slot-scope="text, record,index"
         >
           <div :key="col">
             <a-input
@@ -24,7 +24,7 @@
             <template v-else>{{text}}</template>
           </div>
         </template>
-        <template slot="operation" slot-scope="text, record">
+        <template slot="operation" slot-scope="text, record, index">
           <div class="editable-row-operations">
             <a-popconfirm
               title="确定要删除此用户?"
@@ -35,8 +35,8 @@
             >
               <a-button type="danger"  size="small">删除</a-button>
             </a-popconfirm>
-            <a-button @click="modifyFualt(record)" type="primary" size="small">编辑</a-button>
-            <a-button @click="bindFualt(record)" type="primary" size="small">异常绑定</a-button>
+            <a-button @click="modifyException(record)" type="primary" size="small">编辑</a-button>
+            <a-button @click="bindException(record)" type="primary" size="small">异常绑定</a-button>
           </div>
         </template>
       </a-table>
@@ -84,15 +84,15 @@ export default {
     };
   },
   methods: {
-    modifyFualt(record){
+    modifyException(record){
       console.log(record)
-      this.$router.push({path:"/ModifyFualt",query:{title:"异常绑定",fualtId:record.id}})
+      this.$router.push({path:"/modifyException",query:{title:"异常管理",fualtId:record.id}})
     },
       bindFualt(userInfo){
-        this.$router.push({path:"/fualtBinding",query:{title:"异常绑定",fualtId:userInfo.id}})
+        this.$router.push({path:"/fualtBinding",query:{title:"异常管理",fualtId:userInfo.id}})
       },
-      addRole(){
-          this.$router.push({path:"/addFualt",query:{title:"故障管理"}})
+      addException(){
+          this.$router.push({path:"addException",query:{title:"异常管理"}})
       },
     confirmDelete (fualt) {
         this.$http.toDeleteFualt(fualt.id).then((res)=>{
@@ -165,8 +165,8 @@ export default {
       );
     },
     GetFualtManageList(){
-      console.log(this.$http)
-    this.$http.toGetFualtManageList().then(res => {
+    this.$http.toGetExceptionManageList().then(res => {
+        console.log(res)
       var i=0;
       if(res.data.success){
         this.data=res.data.data.filter((res)=>{

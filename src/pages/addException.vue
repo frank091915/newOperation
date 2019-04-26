@@ -1,18 +1,18 @@
 <template>
   <div id="addRoleWrapper">
       <div id="pageTitle">
-          新增故障
+          新增异常
       </div>
     <a-form :form="form">
       <a-form-item
         :label-col="formItemLayout.labelCol"
         :wrapper-col="formItemLayout.wrapperCol"
-        label="故障名称"
+        label="异常名称"
       >
         <a-input
           v-decorator="[
           'name',
-          {rules: [{ required: true,message:'请输入故障名称'}]}
+          {rules: [{ required: true,message:'请输入异常名称'}]}
         ]"
         />
       </a-form-item>

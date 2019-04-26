@@ -53,11 +53,12 @@
       :dataSource="data"
       :pagination="false"
       size="small"
+      :loading="isLoading"
       bordered>
         <template
           v-for="col in ['name', 'age', 'address']"
           :slot="col"
-          slot-scope="text, record, index"
+          slot-scope="text, record"
         >
           <div :key="col">
             <a-input
@@ -173,7 +174,8 @@ export default {
       statusParam:"",
       buildingIdParam:"",
       page:1,
-      searchParam:""
+      searchParam:"",
+      isLoading:true
     };
   },
   methods: {
@@ -229,6 +231,7 @@ export default {
         this.data=res.data.data
         this.recordsTotal=res.data.recordsTotal
         this.$nextTick(()=>{
+          this.isLoading=false
             this.addOrder()
         })
       }
