@@ -36,7 +36,6 @@
               <a-button type="danger"  size="small">删除</a-button>
             </a-popconfirm>
             <a-button @click="modifyException(record)" type="primary" size="small">编辑</a-button>
-            <a-button @click="bindException(record)" type="primary" size="small">异常绑定</a-button>
           </div>
         </template>
       </a-table>
@@ -52,8 +51,8 @@ const columns = [
     scopedSlots: { customRender: "key" }
   },
   {
-    title: "故障名称",
-    dataIndex: "name",
+    title: "异常编号",
+    dataIndex: "code",
     width: "10%",
     scopedSlots: { customRender: "name" }
   },
@@ -86,19 +85,16 @@ export default {
   methods: {
     modifyException(record){
       console.log(record)
-      this.$router.push({path:"/modifyException",query:{title:"异常管理",fualtId:record.id}})
+      this.$router.push({path:"/modifyException",query:{title:"异常管理",exceptionId:record.id}})
     },
-      bindFualt(userInfo){
-        this.$router.push({path:"/fualtBinding",query:{title:"异常管理",fualtId:userInfo.id}})
-      },
       addException(){
           this.$router.push({path:"addException",query:{title:"异常管理"}})
       },
     confirmDelete (fualt) {
-        this.$http.toDeleteFualt(fualt.id).then((res)=>{
+        this.$http.toDeleteExceptionInfo(fualt.id).then((res)=>{
             if(res.data.success){
                 this.$message.success('删除成功')
-                this.GetFualtManageList()
+                this.GetExceptionManageList()
             }else{
                 this.$message.success('删除失败，请重试')
             }
@@ -164,7 +160,7 @@ export default {
           .indexOf(input.toLowerCase()) >= 0
       );
     },
-    GetFualtManageList(){
+    GetExceptionManageList(){
     this.$http.toGetExceptionManageList().then(res => {
         console.log(res)
       var i=0;
@@ -182,7 +178,7 @@ export default {
     }
   },
   created() {
-      this.GetFualtManageList()
+      this.GetExceptionManageList()
   }
 };
 </script>

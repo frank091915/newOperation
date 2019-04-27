@@ -207,12 +207,11 @@ export default {
       })
       // 得到所有权限菜单
       let ultimatePermissionIdsArray=tempaloneMenuIdArray.concat(tempParentMenuIdArray.concat(tempChildrenMenuIdArray))
-      console.log(ultimatePermissionIdsArray)
-
       this.form.validateFields((err, values) => {
         if (!err) {
           let userInfo = { ...values };
           userInfo.status = this.value ? true : false;
+          userInfo.permissions=ultimatePermissionIdsArray;
           this.$http.toAddRole(userInfo).then(res => {
             console.log(res);
             if (res.data.success) {
@@ -246,54 +245,6 @@ export default {
     },
     checkChange(e) {
       console.log(`checked = ${e.target.checked}`);
-    },
-    judge(id, type) {
-      switch (type) {
-        case 0:
-          return this.aloneMenuArray.filter(item => {
-            if (item.id == id) {
-              return true;
-            } else {
-              return false;
-            }
-          })[0]["ifPermitted"];
-
-        case 1:
-          return this.parentMenuArray.filter(item => {
-            if (item.id == id) {
-              return true;
-            } else {
-              return false;
-            }
-          })[0]["ifPermitted"];
-
-        case 2:
-          // 先找到该二级菜单的父级菜单
-          let theParentMenu = this.parentMenuArray.filter(item => {
-            if (
-              item.subPermissions.filter(subItem => {
-                if (subItem.id === id) {
-                  return true;
-                } else {
-                  return false;
-                }
-              }).length != 0
-            ) {
-              return true;
-            } else {
-              return false;
-            }
-          });
-          // 再去找该二级菜单
-          let theChildMenu = theParentMenu[0].subPermissions.filter(item => {
-            if (item.id === id) {
-              return true;
-            } else {
-              return false;
-            }
-          })[0];
-          return theChildMenu.ifPermitted;
-      }
     },
     // 有子菜单的父级菜单状态改编后，改变子菜单状态的方法
     changeChildren(id) {
@@ -407,11 +358,10 @@ export default {
           return false;
         }
       });
-      this.$nextTick(() => {});
     });
     // 获取当前用户菜单权限
     this.$http.toGetUserInfoById(7).then(res => {
-      console.log(res);
+
       this.permissions = res.data.data.permissions;
       this.permissionsIdArray = res.data.data.permissionIds;
       //   选出用户当前权限菜单

@@ -200,6 +200,7 @@ export default {
         if (!err) {
           let userInfo = { ...values };
           userInfo.status = this.value ? true : false;
+          userInfo.permissions=ultimatePermissionIdsArray;
           userInfo.id=Number.parseInt(this.$route.query.id) 
           console.log(userInfo)
           this.$http.toModifyRole(userInfo).then(res => {
@@ -235,54 +236,6 @@ export default {
     },
     checkChange(e) {
       console.log(`checked = ${e.target.checked}`);
-    },
-    judge(id,type) {
-      switch (type) {
-        case 0:
-          return this.aloneMenuArray.filter(item => {
-            if (item.id == id) {
-              return true;
-            } else {
-              return false;
-            }
-          })[0]["ifPermitted"];
-
-        case 1:
-          return this.parentMenuArray.filter(item => {
-            if (item.id == id) {
-              return true;
-            } else {
-              return false;
-            }
-          })[0]["ifPermitted"];
-
-        case 2:
-          // 先找到该二级菜单的父级菜单
-          let theParentMenu = this.parentMenuArray.filter(item => {
-            if (
-              item.subPermissions.filter(subItem => {
-                if (subItem.id === id) {
-                  return true;
-                } else {
-                  return false;
-                }
-              }).length != 0
-            ) {
-              return true;
-            } else {
-              return false;
-            }
-          });
-          // 再去找该二级菜单
-          let theChildMenu = theParentMenu[0].subPermissions.filter(item => {
-            if (item.id === id) {
-              return true;
-            } else {
-              return false;
-            }
-          })[0];
-          return theChildMenu.ifPermitted;
-      }
     },
     // 有子菜单的父级菜单状态改编后，改变子菜单状态的方法
     changeChildren(id) {
@@ -386,9 +339,8 @@ export default {
 //       })
 //   },
   created(){
-      this.$nextTick(()=>{
         this.$http.toRoleInfo(this.$route.query.id).then((res)=>{
-                
+                console.log(res)
             if(res.data.success){
                 this.code=res.data.data.code;
                 this.name=res.data.data.name;
@@ -398,7 +350,7 @@ export default {
                 this.$message.error(res.data.errorInfo);
             }
         })
-      });    // 获取侧边栏菜单数据
+     // 获取侧边栏菜单数据
     this.$http.toGetAsideMenu().then(res => {
       this.aloneMenu = res.data.data.filter(item => {
         if (item.subPermissions.length === 0) {
@@ -420,6 +372,9 @@ export default {
     this.$http.toGetUserInfoById(7).then(res => {
       console.log(res);
       this.permissions = res.data.data.permissions;
+
+      // 角色详情权限菜单结构改一下，按照用户权限结构来，再添加一个所有当前角色所有权限id数组
+
       this.permissionsIdArray = res.data.data.permissionIds;
       //   选出用户当前权限菜单
       this.$nextTick(() => {

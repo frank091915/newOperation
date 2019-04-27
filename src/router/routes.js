@@ -29,6 +29,9 @@ import exceptionManage from "../pages/exceptionManage.vue"
 import ModifyException from "../pages/modifyException.vue"
 import AddException from "../pages/addException.vue"
 import ExceptionRecord from "../pages/exceptionRecord.vue"
+import AlarmStrategy from "../pages/alarmStrategy.vue"
+import ModifyAlarmStrategy from "../pages/modifyAlarmStrategy.vue"
+import AddAlarmStrategy from "../pages/addAlarmStrategy.vue"
 // 将所有组件集中管理进行配置
 
 export default [{
@@ -287,6 +290,32 @@ export default [{
       main:ExceptionRecord,
       header:Header
 	}
+  },
+  {
+    path: '/warning/strategy',
+    name: 'warning/strategy',
+    components: {
+      frame:Frame,
+      main:AlarmStrategy,
+      header:Header
+	}
+  },
+  {
+    path: '/modifyAlarmStrategy',
+    name: '/modifyAlarmStrategy',
+    components: {
+      frame:Frame,
+      main:ModifyAlarmStrategy,
+      header:Header
+	}
+  },
+  {
+    path: '/addAlarmStrategy',
+    name: 'addAlarmStrategy',
+    components: {
+      frame:Frame,
+      main:AddAlarmStrategy,
+      header:Header
+	}
   }
 ]
-

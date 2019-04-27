@@ -97,7 +97,7 @@ export default {
     }
   },
   created(){
-      this.$http.toGetFualtInfo(this.$route.query.fualtId).then((res)=>{
+      this.$http.toGetExceptionInfo(this.$route.query.exceptionId).then((res)=>{
           console.log(res)
           if(res.data.success){
               this.name=res.data.data.name;

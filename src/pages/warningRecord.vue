@@ -2,7 +2,7 @@
   <div id="main">
     <div id="searchBox">
       <div id="statusSearch">
-        <div class="label">状态：</div>
+        <div class="label">告警类型：</div>
         <div id="statusSearchInput">
           <a-select
             defaultValue="全部"
@@ -12,20 +12,20 @@
             style="width: 200px"
             @change="handleStatusChange"
             :filterOption="filterOption"
-            v-model="status"
+            v-model="exceptionId"
           >
             <a-select-option :value="nullStatus">全部</a-select-option>
-            <a-select-option :value="normalStatus">正常</a-select-option>
-            <a-select-option :value="abnormalStatus">异常</a-select-option>
-            <a-select-option :value="unknowStatus">未知</a-select-option>
+            <a-select-option :value="normalStatus">温度异常</a-select-option>
+            <a-select-option :value="abnormalStatus">湿度异常</a-select-option>
+
           </a-select>
         </div>
       </div>
       <div id="searchByNames">
-        <div id="searchByNamesLabel">名称：</div>
+        <div id="searchByNamesLabel">通知人员：</div>
         <div id="searchByNamesInput">
-          <a-input v-model="searchParam" placeholder="请输入广播名称"/>
-          <a-button @click="search" type="primary">搜索</a-button>
+          <a-input v-model="searchName" placeholder="请输入通知人员"/>
+          <a-button @click="search" type="primary">查询</a-button>
         </div>
       </div>
     </div>
@@ -34,6 +34,7 @@
       :columns="columns" 
       :dataSource="data"
       :pagination="false"
+      :loading="isLoading"
       size="small"
       bordered>
         <template
@@ -149,7 +150,10 @@ export default {
       statusParam:"",
       buildingIdParam:"",
       page:1,
-      searchParam:""
+      searchParam:"",
+      isLoading:true,
+      exceptionId:"",
+      searchName:""
     };
   },
   methods: {
@@ -187,7 +191,18 @@ export default {
       );
     },
     search(){
-      console.log(this.searchParam)
+            console.log(this.searchParam)
+          this.isLoading=true;
+          this.$http.toGetWarningRecordList(this.page,1,this.searchName).then((res)=>{
+          console.log(res)
+          this.data=res.data.data
+          this.recordsTotal=res.data.recordsTotal
+          this.isLoading=false
+          this.$nextTick(()=>{
+              this.addOrder()
+          })
+    })
+
     },
     addOrder(){
         var i=1;
@@ -202,6 +217,7 @@ export default {
         console.log(res)
                 this.data=res.data.data
         this.recordsTotal=res.data.recordsTotal
+        this.isLoading=false
         this.$nextTick(()=>{
             this.addOrder()
         })

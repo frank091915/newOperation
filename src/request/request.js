@@ -109,8 +109,6 @@ const toGetPosMechineList = (page =1, status,buildingId,searchRoom) => {
   )
 }
 // 获取故障异常列表
-
-
 const toGetFualtExceptionList = (page =1,FaultId,exceptionType) => {
   let exceptionTypeQuery = exceptionType !=undefined? `&exceptionType=${exceptionType}` : "";
   return ajax.get(
@@ -206,6 +204,28 @@ const toGetRoleManageList = () => {
   )
 }
 
+// 获取异常详情
+const toGetExceptionInfo =(exceptionId) => {
+  return ajax.get(
+    "/api/exception/"+exceptionId, {
+      headers: {
+        "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken"))
+      }
+    }
+  )
+}
+
+// 删除异常详情
+const toDeleteExceptionInfo = (exceptionId) => {
+  return ajax.delete(
+    "/api/exception/"+exceptionId, {
+      headers: {
+        "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken"))
+      }
+    }
+  )
+}
+
 // 请求楼宇名称列表
 const toGetBuildingList = () => {
   return ajax.get(
@@ -255,7 +275,6 @@ const toAddUser = (userInfo) => {
   let obj ={};
   obj=userInfo;
   // obj.roleIds=[userInfo.role]
-  userInfo.role=1
   console.log(obj)
   return ajax.post(
     `/api/user?roleIds=${userInfo.role}`,obj, {
@@ -326,6 +345,18 @@ const toModifyUser = (userInfo) => {
       headers: {
         "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken")),
         "Content-Type": "application/x-www-form-urlencoded"
+      }
+    }
+  )
+}
+//修改告警策略
+const toModifyAlarmStrategy = (alarmStrategy) => {
+  console.log(alarmStrategy)
+  return ajax.put(
+    `/api/warning/strategy/device/${alarmStrategy.cmdbId}/type=${alarmStrategy.warningStrategy.type}`, alarmStrategy.warningStrategy, {
+      headers: {
+        "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken")),
+        "Content-Type": "application/json"
       }
     }
   )
@@ -435,10 +466,27 @@ const toGetUserAlarmSettings = (userId) => {
 // 请求告警记录列表
 
 const toGetWarningRecordList = (page =1, exceptionId,searchName) => {
-  let exceptionIdQuery = exceptionId !=undefined ? `&status=${exceptionId}` : "",
-  searchNameQuery = searchName !==undefined ? `&buildingId=${searchName}` : "";
+  console.log(searchName)
+  let exceptionIdQuery = exceptionId ===undefined ? ""  : `&exceptionId=${exceptionId}`,
+      searchNameQuery = searchName ===undefined ? ""  : `&searchName=${searchName}`;
   return ajax.get(
     `/api/record/warning?currentPage=` + page + exceptionIdQuery + searchNameQuery, {
+      headers: {
+        "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken"))
+      }
+    }
+  )
+}
+// 获取异常记录列表
+
+const toGetExceptionRecordList = (page =1,status,buildingId,floorId,roomId) => {
+  let roomIdQuery = roomId ===undefined || '' ? ""  : `&roomId=${roomId}`,
+      statusQuery = status ===undefined || ''  ? ""  : `&status=${status}`,
+      buildingIdQuery = buildingId ===undefined || ''  ? ""  : `&buildingId=${buildingId}`,
+      floorIdQuery = floorId ===undefined || ''  ? ""  : `&floorId=${floorId}`;
+
+  return ajax.get(
+    `/api/record/exception?currentPage=` + page + roomIdQuery + statusQuery+buildingIdQuery+floorIdQuery, {
       headers: {
         "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken"))
       }
@@ -460,8 +508,31 @@ const toRoleInfo = (userId) => {
 }
 
 
+// 获取所有楼层列表
+const toGetAllFloors = (buildingId) => {
+  return ajax.get(
+    `/api/cmdb/building/${buildingId}/floor`, {
+      headers: {
+        "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken"))
+      }
+    }
+  )
+}
+
+// 获取所有房间列表
+const toGetAllRooms = (floorId) => {
+  return ajax.get(
+    `/api/cmdb/floor/${floorId}/room`, {
+      headers: {
+        "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken"))
+      }
+    }
+  )
+}
+
+
 // 请求用户信息
-const toGetUserInfoById = (userId = 1) => {
+const toGetUserInfoById = (userId) => {
   return ajax.get(
     "/api/user/" + userId, {
       headers: {
@@ -471,6 +542,30 @@ const toGetUserInfoById = (userId = 1) => {
   )
 }
 
+// 告警策略信息
+const toGetAlarmStrategy = (type,page) => {
+  return ajax.get(
+    `/api/warning/strategy/device?type=${type}&currentPage=${page}`, {
+      headers: {
+        "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken"))
+      }
+    }
+  )
+}
+
+// 告警策略详情
+const toGetAlarmStrategyInfo = (cmdbId,type) => {
+  return ajax.get(
+    `/api/warning/strategy/device/${cmdbId}?type=${type}`, {
+      headers: {
+        "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken"))
+      }
+    }
+  )
+}
+
+
+
 
 //拦截请求,并进行操作,显示等待图标
 ajax.interceptors.request.use((config) => {
@@ -479,9 +574,7 @@ ajax.interceptors.request.use((config) => {
 
 //拦截相应,对相应数据进行操作并返回,顺带关掉indicator
 ajax.interceptors.response.use((config) => {
-
   return config
-
 })
 
 
@@ -522,5 +615,16 @@ export {
   toGetFualtInfo,
   toModifyFualt,
   toDeleteFualt,
-  toGetExceptionManageList
+  toGetExceptionManageList,
+  toGetExceptionInfo,
+  toDeleteExceptionInfo,
+  toGetAlarmStrategy,
+  toGetAlarmStrategyInfo,
+  toModifyAlarmStrategy,
+  toGetAllFloors,
+  toGetAllRooms,
+  toGetExceptionRecordList
 }
+
+
+

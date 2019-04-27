@@ -2,7 +2,7 @@
   <div id="main">
     <div id="searchBox">
       <div id="statusSearch">
-        <div class="label">状态：</div>
+        <div class="label">记录状态：</div>
         <div id="statusSearchInput">
           <a-select
           size="small"
@@ -50,13 +50,13 @@
             showSearch
             placeholder="Select a person"
             optionFilterProp="children"
-            style="width: 120px;height:25px"
-            @change="handleBuildingChange"
+            style="width: 165px;height:25px"
+            @change="handleFloorChange"
             :filterOption="filterOption"
-            v-model="buildingId"
+            v-model="floor"
           >
             <a-select-option :value="nullStatus" :key="8874">全部</a-select-option>
-            <a-select-option v-for="item in allBuildings" :value="item.Id" :key="item.Id">{{item.Address}}</a-select-option>
+            <a-select-option v-for="item in allFloors" :value="item.Id" :key="item.Id">{{item.Description}}</a-select-option>
           </a-select>
         </div>
       </div>
@@ -70,20 +70,18 @@
             showSearch
             placeholder="Select a person"
             optionFilterProp="children"
-            style="width:120px;height:25px"
-            @change="handleBuildingChange"
+            style="width:165px;height:25px"
+            @change="handleRoomChange"
             :filterOption="filterOption"
-            v-model="buildingId"
+            v-model="room"
           >
             <a-select-option :value="nullStatus" :key="8874">全部</a-select-option>
-            <a-select-option v-for="item in allBuildings" :value="item.Id" :key="item.Id">{{item.Address}}</a-select-option>
+            <a-select-option v-for="item in allRooms" :value="item.Id" :key="item.Id">{{item.Description}}</a-select-option>
           </a-select>
         </div>
       </div>
       <div id="searchByNames">
-        <div id="searchByNamesLabel">名称：</div>
         <div id="searchByNamesInput">
-          <a-input v-model="searchParam" placeholder="请输入广播名称"  style="width:120px;height:25px"/>
           <a-button @click="search" type="primary" size="small">搜索</a-button>
         </div>
       </div>
@@ -94,6 +92,7 @@
       :dataSource="data"
       :pagination="false"
       size="small"
+      :loading="isLoading"
       bordered>
         <template
           v-for="col in ['name', 'age', 'address']"
@@ -119,12 +118,48 @@
 
 const columns = [
   {
-    title: "警告标号",
+    title: "异常标号",
     dataIndex: "key",
     width: "8%",
-    scopedSlots: { customRender: "_id" }
+    scopedSlots: { customRender: "address" }
   },
    {
+    title: "异常名称",
+    dataIndex: "exceptionRecord.exceptionName",
+    width: "8%",
+    scopedSlots: { customRender: "address" }
+  },
+  {
+    title: "告警状态",
+    dataIndex: "exceptionRecord.status",
+    width: "8%",
+    scopedSlots: { customRender: "address" }
+  },
+  {
+    title: "告警次数",
+    dataIndex: "exceptionRecord.waringCount",
+    width: "8%",
+    scopedSlots: { customRender: "address" }
+  },
+  {
+    title: "起始时间",
+    dataIndex: "exceptionRecord.startTime",
+    width: "8%",
+    scopedSlots: { customRender: "address" }
+  },
+  {
+    title: "结束时间",
+    dataIndex: "exceptionRecord.endTime",
+    width: "8%",
+    scopedSlots: { customRender: "address" }
+  },
+  {
+    title: "记录状态",
+    dataIndex: "exceptionRecord.warningStatus",
+    width: "8%",
+    scopedSlots: { customRender: "address" }
+  },
+  {
     title: "楼宇名称",
     dataIndex: "deviceInfo.buildingName",
     width: "8%",
@@ -145,36 +180,6 @@ const columns = [
   {
     title: "设备MAC",
     dataIndex: "deviceInfo.MacAddress",
-    width: "8%",
-    scopedSlots: { customRender: "address" }
-  },
-  {
-    title: "告警类型",
-    dataIndex: "warningRecord.way",
-    width: "8%",
-    scopedSlots: { customRender: "address" }
-  },
-  {
-    title: "告警值",
-    dataIndex: "warningRecord.value",
-    width: "8%",
-    scopedSlots: { customRender: "SerialNumber" }
-  },
-  {
-    title: "告警时间",
-    dataIndex: "warningRecord.time",
-    width: "8%",
-    scopedSlots: { customRender: "SerialNumber" }
-  },
-  {
-    title: "通知人员",
-    dataIndex: "warningRecord.userName",
-    width: "8%",
-    scopedSlots: { customRender: "SerialNumber" }
-  },
-  {
-    title: "备注",
-    dataIndex: "warningRecord.exceptionRemark",
     width: "8%",
     scopedSlots: { customRender: "address" }
   }
@@ -208,7 +213,12 @@ export default {
       statusParam:"",
       buildingIdParam:"",
       page:1,
-      searchParam:""
+      searchParam:"",
+      isLoading:true,
+      allFloors:[],
+      allRooms:[],
+      floor:"全部",
+      room:"全部"
     };
   },
   methods: {
@@ -225,18 +235,26 @@ export default {
         }
       })
     },
-    handleBuildingChange(){
-      this.buildingIdParam=this.buildingId==="null" ? null : this.buildingId;
-      this.$http.toGetBroadcastList(1,this.statusParam,this.buildingIdParam).then((res)=>{
+    handleBuildingChange(e){
+      this.$http.toGetAllFloors(e).then((res)=>{
         if(res.data.success){
-          this.data=res.data.data
-                  this.$nextTick(()=>{
-            this.addOrder()
-        })
-        }else{
-          
+          this.allFloors=res.data.data
+          this.$nextTick(()=>{
+          })
         }
       })
+    },
+    handleFloorChange(e){
+        this.$http.toGetAllRooms(e).then((res)=>{
+        if(res.data.success){
+          this.allRooms=res.data.data
+
+        }
+      })
+
+    },
+    handleRoomChange(){
+
     },
     filterOption(input, option) {
       return (
@@ -246,7 +264,16 @@ export default {
       );
     },
     search(){
-      console.log(this.searchParam)
+      let buildingQuery=this.buildingId==="全部" ? null : this.this.buildingId,
+          floorQuery=this.floor==="全部" ? null : this.this.floor,
+          roomQuery=this.room==="全部" ? null : this.this.room;
+      this.getExceptionList(this.page,true,buildingQuery,floorQuery,roomQuery)
+    },
+    getAllRooms(){
+      console.log("获取所有房间")
+    },
+    getAllFloors(){
+      console.log("获取所有楼层")
     },
     addOrder(){
         var i=1;
@@ -254,6 +281,18 @@ export default {
           item["key"]=i++;
           return true
         })
+    },
+    getExceptionList(page=1,status,buildingId,floorId,roomId){
+          this.$http.toGetExceptionRecordList(page,status,buildingId,floorId,roomId).then((res)=>{
+      console.log(res)
+      if(res.data.success){
+        this.data=res.data.data
+        this.isLoading=false;
+                  this.$nextTick(()=>{
+            this.addOrder()
+          })
+      }
+    })
     }
   },
   created() {
@@ -263,14 +302,7 @@ export default {
         this.allBuildings=res.data.data
       }
     });
-    this.$http.toGetWarningRecordList().then((res)=>{
-        console.log(res)
-                this.data=res.data.data
-        this.recordsTotal=res.data.recordsTotal
-        this.$nextTick(()=>{
-            this.addOrder()
-        })
-    })
+    this.getExceptionList(1)
   }
 };
 </script>
