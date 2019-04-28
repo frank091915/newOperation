@@ -4,8 +4,6 @@
     <div id="tabWrapper">
       <a-tabs defaultActiveKey="1" @change="callback">
         <a-tab-pane tab="汇聚机房" key="1" forceRender>
-          汇聚机房
-          <div id="convergeRoomtitle"></div>
           <div id="convergeTableWrapper">
             <a-table :columns="columns" :dataSource="convergeData" :pagination="false" bordered>
               <template
@@ -33,7 +31,6 @@
           </div>
         </a-tab-pane>
         <a-tab-pane tab="弱电间" key="2">
-          <div id="lowVoltageRoom">弱电间</div>
           <div id="lowVolttageTableWrapper">
             <a-table :columns="columns" :dataSource="electronicData" :pagination="false" bordered>
               <template
@@ -70,28 +67,31 @@ const columns = [
     title: "序号",
     dataIndex: "key",
     width: "10%",
-    scopedSlots: { customRender: "num" }
+    scopedSlots: { customRender: "num" },
+    align:"center"
   },
   {
     title: "异常编号",
     dataIndex: "code",
     width: "10%",
-    scopedSlots: { customRender: "age" }
+    scopedSlots: { customRender: "age" },
+    align:"center"
   },
   {
     title: "描述",
     dataIndex: "remark",
     width: "15%",
-    scopedSlots: { customRender: "address" }
+    scopedSlots: { customRender: "address" },
+    align:"center"
   },
   {
     title: "是否绑定",
     dataIndex: "mark",
     width: "10%",
-    scopedSlots: { customRender: "weChatcheckBox" }
+    scopedSlots: { customRender: "weChatcheckBox" },
+    align:"center"
   }
 ];
-
 export default {
   data() {
     return {

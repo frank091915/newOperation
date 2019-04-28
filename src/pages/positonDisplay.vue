@@ -1,50 +1,7 @@
 <template>
-  <div id="menuSelection">
-    <a-layout id="components-layout-demo-side" style="min-height: 100vh" class="frame">
-      <a-layout-sider width="250px" v-model="collapsed">
-        <a-menu theme="light" :defaultSelectedKeys="['1']" mode="inline">
-          <!-- 渲染一级菜单 -->
-
-          <a-menu-item v-for="item in aloneMenuArray" :key="item.id">
-            <span>
-              <input
-                type="checkbox"
-                :checked="item.ifPermitted"
-                @click="changeAloneMenu(item.id,0)"
-              >
-            </span>
-            <span>{{item.title}}</span>
-          </a-menu-item>
-
-          <a-sub-menu v-for="item in parentMenuArray" :key="item.id">
-            <span slot="title">
-              <span>
-                <span>
-                  <input
-                    :checked="item.ifPermitted"
-                    type="checkbox"
-                    @click="changeParentMenu(item.id,1)"
-                  >
-                </span>
-                {{item.title}}
-              </span>
-            </span>
-
-            <a-menu-item v-for="subItem in item.subPermissions" :key="subItem.id">
-              <span>
-                <input
-                  type="checkbox"
-                  :checked="subItem.ifPermitted"
-                  @click="changeChildStatus(subItem.id,2)"
-                >
-              </span>
-              {{subItem.title}}
-            </a-menu-item>
-          </a-sub-menu>
-        </a-menu>
-      </a-layout-sider>
-    </a-layout>
-  </div>
+<div>
+  位置展示
+</div>
 </template>
 <script>
 export default {

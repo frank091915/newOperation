@@ -9,7 +9,7 @@
         </a>
         <a-menu slot="overlay">
           <a-menu-item>
-            <a href="javascript:;">退出登陆</a>
+            <a href="javascript:;" @click="signOut">退出登陆</a>
           </a-menu-item>
         </a-menu>
       </a-dropdown>
@@ -40,6 +40,14 @@ export default {
       // 通过 `vm` 访问组件实例
       vm.title=to.query.title
     })
+  },
+  methods:{
+    signOut(){
+      this.$http.toSignOut();
+      this.$message.success('退出成功')
+      this.$router.push("/signIn")
+      window.sessionStorage.removeItem("operationToken")
+    }
   }
 };
 </script>

@@ -13,6 +13,7 @@
             @change="handleStatusChange"
             :filterOption="filterOption"
             v-model="status"
+            size="small"
           >
             <a-select-option :value="nullStatus">全部</a-select-option>
             <a-select-option :value="normalStatus">正常</a-select-option>
@@ -33,6 +34,7 @@
             @change="handleBuildingChange"
             :filterOption="filterOption"
             v-model="buildingId"
+            size="small"
           >
             <a-select-option :value="nullStatus" :key="8874">全部</a-select-option>
             <a-select-option v-for="item in allBuildings" :value="item.Id" :key="item.Id">{{item.Address}}</a-select-option>
@@ -42,8 +44,8 @@
       <div id="searchByNames">
         <div id="searchByNamesLabel">名称：</div>
         <div id="searchByNamesInput">
-          <a-input v-model="searchParam" placeholder="请输入服务器名称"/>
-          <a-button @click="search" type="primary">搜索</a-button>
+          <a-input v-model="searchParam" placeholder="请输入服务器名称" size="small"/>
+          <a-button @click="search" type="primary" size="small">搜索</a-button>
         </div>
       </div>
     </div>
@@ -80,7 +82,7 @@ const columns = [
   {
     title: "序号",
     dataIndex: "key",
-    width: "10%",
+    width: "8%",
     scopedSlots: { customRender: "_id" }
   },
   {
@@ -92,7 +94,7 @@ const columns = [
   {
     title: "服务器名称",
     dataIndex: "Description",
-    width: "15%",
+    width: "10%",
     scopedSlots: { customRender: "address" }
   },
   {

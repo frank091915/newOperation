@@ -5,7 +5,7 @@
         <div class="label">记录状态：</div>
         <div id="statusSearchInput">
           <a-select
-          size="small"
+            size="small"
             defaultValue="全部"
             showSearch
             placeholder="Select a person"
@@ -16,9 +16,8 @@
             v-model="status"
           >
             <a-select-option :value="nullStatus">全部</a-select-option>
-            <a-select-option :value="normalStatus">正常</a-select-option>
-            <a-select-option :value="abnormalStatus">异常</a-select-option>
-            <a-select-option :value="unknowStatus">未知</a-select-option>
+            <a-select-option :value="ended">已完结</a-select-option>
+            <a-select-option :value="notEnded">未完结</a-select-option>
           </a-select>
         </div>
       </div>
@@ -26,7 +25,7 @@
         <div class="label">楼宇名称：</div>
         <div id="buildingSearchInput">
           <a-select
-          size="small"
+            size="small"
             defaultValue="检测中心"
             showSearch
             placeholder="Select a person"
@@ -37,15 +36,19 @@
             v-model="buildingId"
           >
             <a-select-option :value="nullStatus" :key="8874">全部</a-select-option>
-            <a-select-option v-for="item in allBuildings" :value="item.Id" :key="item.Id">{{item.Address}}</a-select-option>
+            <a-select-option
+              v-for="item in allBuildings"
+              :value="item.Id"
+              :key="item.Id"
+            >{{item.Address}}</a-select-option>
           </a-select>
         </div>
       </div>
-        <div id="floorSearch">
+      <div id="floorSearch">
         <div class="label">楼层：</div>
         <div id="buildingSearchInput">
           <a-select
-          size="small"
+            size="small"
             defaultValue="检测中心"
             showSearch
             placeholder="Select a person"
@@ -56,12 +59,16 @@
             v-model="floor"
           >
             <a-select-option :value="nullStatus" :key="8874">全部</a-select-option>
-            <a-select-option v-for="item in allFloors" :value="item.Id" :key="item.Id">{{item.Description}}</a-select-option>
+            <a-select-option
+              v-for="item in allFloors"
+              :value="item.Id"
+              :key="item.Id"
+            >{{item.Description}}</a-select-option>
           </a-select>
         </div>
       </div>
 
-        <div id="roomSearch">
+      <div id="roomSearch">
         <div class="label">房间：</div>
         <div id="buildingSearchInput">
           <a-select
@@ -76,7 +83,11 @@
             v-model="room"
           >
             <a-select-option :value="nullStatus" :key="8874">全部</a-select-option>
-            <a-select-option v-for="item in allRooms" :value="item.Id" :key="item.Id">{{item.Description}}</a-select-option>
+            <a-select-option
+              v-for="item in allRooms"
+              :value="item.Id"
+              :key="item.Id"
+            >{{item.Description}}</a-select-option>
           </a-select>
         </div>
       </div>
@@ -87,13 +98,14 @@
       </div>
     </div>
     <div id="tableWrapper">
-      <a-table 
-      :columns="columns" 
-      :dataSource="data"
-      :pagination="false"
-      size="small"
-      :loading="isLoading"
-      bordered>
+      <a-table
+        :columns="columns"
+        :dataSource="data"
+        :pagination="false"
+        size="small"
+        :loading="isLoading"
+        bordered
+      >
         <template
           v-for="col in ['name', 'age', 'address']"
           :slot="col"
@@ -109,13 +121,11 @@
             <template v-else>{{text}}</template>
           </div>
         </template>
-
       </a-table>
     </div>
   </div>
 </template>
 <script>
-
 const columns = [
   {
     title: "异常标号",
@@ -123,7 +133,7 @@ const columns = [
     width: "8%",
     scopedSlots: { customRender: "address" }
   },
-   {
+  {
     title: "异常名称",
     dataIndex: "exceptionRecord.exceptionName",
     width: "8%",
@@ -131,7 +141,7 @@ const columns = [
   },
   {
     title: "告警状态",
-    dataIndex: "exceptionRecord.status",
+    dataIndex: "exceptionRecord.warningStatus",
     width: "8%",
     scopedSlots: { customRender: "address" }
   },
@@ -155,7 +165,7 @@ const columns = [
   },
   {
     title: "记录状态",
-    dataIndex: "exceptionRecord.warningStatus",
+    dataIndex: "exceptionRecord.status",
     width: "8%",
     scopedSlots: { customRender: "address" }
   },
@@ -200,62 +210,55 @@ export default {
   data() {
     this.cacheData = data.map(item => ({ ...item }));
     return {
-      data:[],
+      data: [],
       columns,
-      recordsTotal:"",
-      status:"全部",
-      allBuildings:[],
-      buildingId:"全部",
-      nullStatus:"null",
-      normalStatus:1,
-      abnormalStatus:0,
-      unknowStatus:-1,
-      statusParam:"",
-      buildingIdParam:"",
-      page:1,
-      searchParam:"",
-      isLoading:true,
-      allFloors:[],
-      allRooms:[],
-      floor:"全部",
-      room:"全部"
+      recordsTotal: "",
+      status: "全部",
+      allBuildings: [],
+      buildingId: "全部",
+      nullStatus: "null",
+      ended:1,
+      notEnded:0,
+      statusParam: "",
+      buildingIdParam: "",
+      page: 1,
+      searchParam: "",
+      isLoading: true,
+      allFloors: [],
+      allRooms: [],
+      floor: "全部",
+      room: "全部"
     };
   },
   methods: {
     handleStatusChange() {
-      this.statusParam=this.status==="null" ? null : this.status;
-      this.$http.toGetBroadcastList(1,this.statusParam,this.buildingIdParam).then((res)=>{
-        if(res.data.success){
-          this.data=res.data.data
-                  this.$nextTick(()=>{
-            this.addOrder()
-        })
-        }else{
-          
-        }
-      })
-    },
-    handleBuildingChange(e){
-      this.$http.toGetAllFloors(e).then((res)=>{
-        if(res.data.success){
-          this.allFloors=res.data.data
-          this.$nextTick(()=>{
-          })
-        }
-      })
-    },
-    handleFloorChange(e){
-        this.$http.toGetAllRooms(e).then((res)=>{
-        if(res.data.success){
-          this.allRooms=res.data.data
-
-        }
-      })
+      this.statusParam = this.status === "null" ? null : this.status;
+      switch(this.status){
+        case "全部" :
+        this.statusParam=null;
+        case 1:
+        this.statusParam=true;
+        case 0:
+        this.statusParam=false;
+      }
 
     },
-    handleRoomChange(){
-
+    handleBuildingChange(e) {
+      this.$http.toGetAllFloors(e).then(res => {
+        if (res.data.success) {
+          this.allFloors = res.data.data;
+          this.$nextTick(() => {});
+        }
+      });
     },
+    handleFloorChange(e) {
+      this.$http.toGetAllRooms(e).then(res => {
+        if (res.data.success) {
+          this.allRooms = res.data.data;
+        }
+      });
+    },
+    handleRoomChange() {},
     filterOption(input, option) {
       return (
         option.componentOptions.children[0].text
@@ -263,62 +266,72 @@ export default {
           .indexOf(input.toLowerCase()) >= 0
       );
     },
-    search(){
-      let buildingQuery=this.buildingId==="全部" ? null : this.this.buildingId,
-          floorQuery=this.floor==="全部" ? null : this.this.floor,
-          roomQuery=this.room==="全部" ? null : this.this.room;
-      this.getExceptionList(this.page,true,buildingQuery,floorQuery,roomQuery)
+    search() {
+      let buildingQuery = this.buildingId === "全部" ? null : this.buildingId,
+        floorQuery = this.floor === "全部" ? null : this.floor,
+        roomQuery = this.room === "全部" ? null : this.room,
+        statusQuery=this.status ==="全部" ? null : this.status;
+      this.isLoading = true;
+      this.getExceptionList(
+        this.page,
+        statusQuery,
+        buildingQuery,
+        floorQuery,
+        roomQuery
+      );
     },
-    getAllRooms(){
-      console.log("获取所有房间")
+    getAllRooms() {
+      console.log("获取所有房间");
     },
-    getAllFloors(){
-      console.log("获取所有楼层")
+    getAllFloors() {
+      console.log("获取所有楼层");
     },
-    addOrder(){
-        var i=1;
-          this.data=this.data.filter((item)=>{
-          item["key"]=i++;
-          return true
-        })
+    addOrder() {
+      var i = 1;
+      this.data = this.data.filter(item => {
+        item["key"] = i++;
+        return true;
+      });
     },
-    getExceptionList(page=1,status,buildingId,floorId,roomId){
-          this.$http.toGetExceptionRecordList(page,status,buildingId,floorId,roomId).then((res)=>{
-      console.log(res)
-      if(res.data.success){
-        this.data=res.data.data
-        this.isLoading=false;
-                  this.$nextTick(()=>{
-            this.addOrder()
-          })
-      }
-    })
+    getExceptionList(page = 1, status, buildingId, floorId, roomId) {
+      this.$http
+        .toGetExceptionRecordList(page, status, buildingId, floorId, roomId)
+        .then(res => {
+          console.log(res);
+          if (res.data.success) {
+            this.data = res.data.data;
+            this.isLoading = false;
+            this.$nextTick(() => {
+              this.addOrder();
+            });
+          }
+        });
     }
   },
   created() {
     // 获取所有楼宇名称
-    this.$http.toGetBuildingList().then((res)=>{
-      if(res.data.success){
-        this.allBuildings=res.data.data
+    this.$http.toGetBuildingList().then(res => {
+      if (res.data.success) {
+        this.allBuildings = res.data.data;
       }
     });
-    this.getExceptionList(1)
+    this.getExceptionList(1);
   }
 };
 </script>
 <style scoped>
-html{
+html {
   height: 100%;
 }
-body{
+body {
   height: 100%;
 }
-#main{
+#main {
   height: calc(100% - 50px);
-width: 95%;
+  width: 95%;
   margin-left: 20px;
 }
-#frame{
+#frame {
   height: 100%;
 }
 #searchBox {
@@ -365,11 +378,11 @@ width: 95%;
   justify-content: space-between;
   align-items: center;
 }
-.ant-table-row td{
+.ant-table-row td {
   background-color: aqua;
-  padding:10px !important;
+  padding: 10px !important;
 }
-#tableWrapper{
+#tableWrapper {
   height: calc(100% - 100px);
   overflow: auto;
 }

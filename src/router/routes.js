@@ -32,6 +32,7 @@ import ExceptionRecord from "../pages/exceptionRecord.vue"
 import AlarmStrategy from "../pages/alarmStrategy.vue"
 import ModifyAlarmStrategy from "../pages/modifyAlarmStrategy.vue"
 import AddAlarmStrategy from "../pages/addAlarmStrategy.vue"
+import MenuManage from "../pages/menuManage.vue"
 // 将所有组件集中管理进行配置
 
 export default [{
@@ -316,6 +317,15 @@ export default [{
       frame:Frame,
       main:AddAlarmStrategy,
       header:Header
+	}
+  },
+  {
+    path: '/permission',
+    name: 'permission',
+    components: {
+      frame:Frame,
+      main:MenuManage,
+      header:Header,
 	}
   }
 ]

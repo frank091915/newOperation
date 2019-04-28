@@ -62,6 +62,25 @@
         
         />
       </a-form-item>
+      <a-form-item
+        :label-col="formItemLayout.labelCol"
+        :wrapper-col="formItemLayout.wrapperCol"
+        label="角色"
+      >
+        <a-select
+          showSearch
+          placeholder="请选择角色"
+          optionFilterProp="children"
+          style="width: 218px"
+          v-decorator="[
+          'role',
+          {rules: [{ required: true,message:'请输入邮箱地址'}],initialValue:userInformation.roles[0].name
+          }
+        ]"
+        >
+          <a-select-option v-for=" item in rolesGroup" :value="item.id" :key="item.id">{{item.name}}</a-select-option>
+        </a-select>
+      </a-form-item>
       <div id="radioBox">
         <div id="radioText">状态<span>:</span></div>
         <a-radio-group v-model="value">
@@ -113,6 +132,7 @@ export default {
       roleName: "",
       id:"",
       userInformation:{},
+      rolesGroup: [],
     };
   },
   methods: {
@@ -125,6 +145,7 @@ export default {
           let userInfo = { ...values };
           userInfo.status = this.value ? true : false;
           userInfo.userId=this.$route.query.id
+          userInfo.roleIds=[values.role]
           // 添加权限菜单
 
           console.log(userInfo);
@@ -170,6 +191,12 @@ export default {
                 this.userInformation=res.data.data
             }
         });
+      this.$http.toGetRoleManageList().then(res => {
+      console.log(res)
+      if (res.data.success) {
+        this.rolesGroup = res.data.data;
+      }
+    });
     }
 };
 </script>

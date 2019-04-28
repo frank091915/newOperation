@@ -91,8 +91,11 @@ export default {
             JSON.stringify(res.data.accessToken)
           );
           // 提示用户登录成功，之后再跳转页面
-
-          this.showConfirm();
+          this.$router.push({
+            path:"/summary",
+            query:{title:"状态汇总"}
+          });
+          // this.showConfirm();
         } else {
           this.error();
         }

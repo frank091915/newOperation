@@ -13,11 +13,11 @@
             @change="handleStatusChange"
             :filterOption="filterOption"
             v-model="status"
+            size="small"
           >
             <a-select-option :value="nullStatus">全部</a-select-option>
             <a-select-option :value="normalStatus">正常</a-select-option>
             <a-select-option :value="abnormalStatus">异常</a-select-option>
-            <a-select-option :value="unknowStatus">未知</a-select-option>
           </a-select>
         </div>
       </div>
@@ -25,6 +25,7 @@
         <div class="label">楼宇名称：</div>
         <div id="buildingSearchInput">
           <a-select
+          size="small"
             defaultValue="检测中心"
             showSearch
             placeholder="Select a person"
@@ -42,8 +43,8 @@
       <div id="searchByNames">
         <div id="searchByNamesLabel">名称：</div>
         <div id="searchByNamesInput">
-          <a-input v-model="searchParam" placeholder="请输入广播名称"/>
-          <a-button @click="search" type="primary">搜索</a-button>
+          <a-input v-model="searchParam" placeholder="请输入广播名称" size="small"/>
+          <a-button @click="search" type="primary" size="small">搜索</a-button>
         </div>
       </div>
     </div>
@@ -174,28 +175,32 @@ export default {
   },
   methods: {
     handleStatusChange() {
+      this.isLoading=true;
       this.statusParam=this.status==="null" ? null : this.status;
       this.$http.toGetBroadcastList(1,this.statusParam,this.buildingIdParam).then((res)=>{
         if(res.data.success){
           this.data=res.data.data
             this.$nextTick(()=>{
             this.addOrder()
+            this.isLoading=false
         })
         }else{
-          
+          this.$message.error(res.data.errorInfo);
         }
       })
     },
     handleBuildingChange(){
+      this.isLoading=true
       this.buildingIdParam=this.buildingId==="null" ? null : this.buildingId;
       this.$http.toGetBroadcastList(1,this.statusParam,this.buildingIdParam).then((res)=>{
         if(res.data.success){
           this.data=res.data.data
-                  this.$nextTick(()=>{
+            this.$nextTick(()=>{
             this.addOrder()
+            this.isLoading=false
         })
         }else{
-          
+          this.$message.error(res.data.errorInfo);
         }
       })
     },

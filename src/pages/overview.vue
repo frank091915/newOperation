@@ -303,7 +303,7 @@ title: {
 },
 created(){
     this.$http.toGetSummary().then((res)=>{
-
+        console.log(res)
         if(res.data.success){
             this.WeakElectricStatistics= res.data.data.WeakElectricStatistics;
             this.MachineRoomStatistics= res.data.data.MachineRoomStatistics;

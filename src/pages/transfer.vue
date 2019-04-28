@@ -6,6 +6,7 @@
         <div class="label">状态：</div>
         <div id="statusSearchInput">
           <a-select
+          size="small"
             defaultValue="全部"
             showSearch
             placeholder="Select a person"
@@ -18,7 +19,6 @@
             <a-select-option :value="nullStatus">全部</a-select-option>
             <a-select-option :value="normalStatus">正常</a-select-option>
             <a-select-option :value="abnormalStatus">异常</a-select-option>
-            <a-select-option :value="unknowStatus">未知</a-select-option>
           </a-select>
         </div>
       </div>
@@ -26,6 +26,7 @@
         <div class="label">楼宇名称：</div>
         <div id="buildingSearchInput">
           <a-select
+          size="small"
             defaultValue="检测中心"
             showSearch
             placeholder="Select a person"
@@ -43,8 +44,8 @@
       <div id="searchByNames">
         <div id="searchByNamesLabel">名称：</div>
         <div id="searchByNamesInput">
-          <a-input v-model="searchParam" placeholder="请输入圈存机名称"/>
-          <a-button @click="search" type="primary">搜索</a-button>
+          <a-input v-model="searchParam" placeholder="请输入圈存机名称" size="small"/>
+          <a-button @click="search" type="primary" size="small">搜索</a-button>
         </div>
       </div>
     </div>
@@ -84,7 +85,7 @@ const columns = [
   {
     title: "序号",
     dataIndex: "key",
-    width: "10%",
+    width: "8%",
     scopedSlots: { customRender: "_id" }
   },
   {
@@ -96,7 +97,7 @@ const columns = [
   {
     title: "圈存机名称",
     dataIndex: "Description",
-    width: "15%",
+    width: "10%",
     scopedSlots: { customRender: "address" }
   },
   {

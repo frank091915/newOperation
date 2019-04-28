@@ -265,7 +265,7 @@ export default {
       });
       this.$nextTick(() => {
         console.log(this.aloneMenuArray);
-        this.judge(id, type);
+
       });
     },
     // 修改有子菜单的一级菜单

@@ -27,7 +27,7 @@
         <template slot="operation" slot-scope="text, record">
           <div class="editable-row-operations">
             <a-popconfirm
-              title="确定要删除此用户?"
+              title="确定要删除此故障?"
               @confirm="confirmDelete(record)"
               @cancel="cancelDelete(record)"
               okText="确定"
@@ -48,26 +48,30 @@ const columns = [
   {
     title: "序号",
     dataIndex: "key",
-    width: "10%",
-    scopedSlots: { customRender: "key" }
+    width: "5%",
+    scopedSlots: { customRender: "key" },
+    align:"center"
   },
   {
     title: "故障名称",
     dataIndex: "name",
     width: "10%",
-    scopedSlots: { customRender: "name" }
+    scopedSlots: { customRender: "name" },
+    align:"center"
   },
   {
     title: "备注",
     dataIndex: "remark",
     width: "10%",
-    scopedSlots: { customRender: "remark" }
+    scopedSlots: { customRender: "remark" },
+    align:"center"
   },
   {
     title: "操作",
     dataIndex: "operation",
     width: "10%",
-    scopedSlots: { customRender: "operation" }
+    scopedSlots: { customRender: "operation" },
+    align:"center"
   }
 ];
 

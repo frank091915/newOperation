@@ -7,15 +7,22 @@
       <a-form-item
         :label-col="formItemLayout.labelCol"
         :wrapper-col="formItemLayout.wrapperCol"
-        label="异常名称"
+        label="异常code"
       >
         <a-input
           v-decorator="[
-          'name',
-          {rules: [{ required: true,message:'请输入异常名称'}]}
+          'code',
+          {rules: [{ required: true,message:'请输入异常code'}]}
         ]"
         />
       </a-form-item>
+      <div style="margin-bottom:20px;;margin-top:30px">
+        <span style="margin-left:130px">异常类型 ：</span>
+        <a-radio-group @change="onChange" v-model="type" style="margin-left:10px">
+          <a-radio :value="1">汇聚机房异常</a-radio>
+          <a-radio :value="2">弱电间异常</a-radio>
+        </a-radio-group>
+      </div>
       <a-form-item
         :label-col="formItemLayout.labelCol"
         :wrapper-col="formItemLayout.wrapperCol"
@@ -57,25 +64,33 @@ export default {
       formTailLayout,
       form: this.$form.createForm(this),
       value: 1,
-      roleName: ""
+      roleName: "",
+      type:1,
+      code:""
     };
   },
   methods: {
+    onChange (e) {
+      this.type=e.target.value
+      console.log(e.target.value)
+    },
     toReturn() {
       console.log("return");
       this.$router.go("-1");
     },
+
     toSave() {
       this.form.validateFields((err, values) => {
+        console.log(values)
+        values.type=this.type;
         if (!err) {
-
-          this.$http.toAddFualt(values).then(res => {
+          this.$http.toAddException(values).then(res => {
             console.log(res);
             if (res.data.success) {
-              this.$message.success("添加角色成功");
+              this.$message.success("添加异常成功");
               this.$router.push({
-                path: "/fault",
-                query: { title: "故障管理" }
+                path: "/exception",
+                query: { title: "异常管理" }
               });
             } else {
               this.$message.error(res.data.errorInfo);

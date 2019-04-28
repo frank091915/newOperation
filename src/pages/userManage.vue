@@ -63,7 +63,7 @@ const columns = [
   },
   {
     title: "姓名",
-    dataIndex: "name",
+    dataIndex: "username",
     width: "8%",
     scopedSlots: { customRender: "name" },
     align:"center"
@@ -84,7 +84,7 @@ const columns = [
   },
   {
     title: "角色",
-    dataIndex: "role",
+    dataIndex: "name",
     width: "8%",
     scopedSlots: { customRender: "role" },
     align:"center"
@@ -140,7 +140,7 @@ export default {
             console.log(res)
             if(res.data.success){
                 this.$message.success('删除成功')
-                this.getRoleList()
+                this.getUserList()
             }else{
                 this.$message.success('删除失败，请重试')
             }

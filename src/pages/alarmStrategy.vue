@@ -4,7 +4,7 @@
       <a-tabs defaultActiveKey="1" @change="callback">
         <a-tab-pane tab="汇聚机房告警策略" key="1" forceRender>
           <div id="tableWrapper">
-            <a-table :columns="columns" :dataSource="convergeData" bordered>
+            <a-table :columns="columns" :dataSource="convergeData" bordered :pagination="false" :scroll="{y:780}" :loading="isLoading">
               <template
                 v-for="col in ['name', 'age', 'address']"
                 :slot="col"
@@ -30,10 +30,9 @@
           </div>
         </a-tab-pane>
         <a-tab-pane tab="弱电间告警策略" key="2">
-          <div id="lowVoltageRoom">弱电间告警策略</div>
           <div id="lowVolttageTableWrapper">
           <div id="tableWrapper">
-            <a-table :columns="columns" :dataSource="convergeData" bordered>
+            <a-table :columns="columns" :dataSource="electronicData" bordered :pagination="false" :scroll="{y:780}" :loading="isLoading">
               <template
                 v-for="col in ['name', 'age', 'address']"
                 :slot="col"
@@ -68,56 +67,65 @@ const columns = [
   {
     title: "序号",
     dataIndex: "key",
-    width: "5%",
-    scopedSlots: { customRender: "key" }
+    width: "10%",
+    scopedSlots: { customRender: "key" },
+    align:"center"
   },
   {
     title: "汇聚机房编号",
     dataIndex: "deviceInfo.Code",
-    width: "8%",
-    scopedSlots: { customRender: "name" }
+    width: "10%",
+    scopedSlots: { customRender: "name" },
+    align:"center"
   },
   {
     title: "描述",
     dataIndex: "deviceInfo.Description",
-    width: "8%",
-    scopedSlots: { customRender: "address" }
+    width: "10%",
+    scopedSlots: { customRender: "address" },
+    align:"center"
   },
   {
     title: "楼宇名称",
     dataIndex: "deviceInfo.buildingName",
-    width: "8%",
-    scopedSlots: { customRender: "remark" }
+    width: "10%",
+    scopedSlots: { customRender: "remark" },
+    align:"center"
   },
   {
     title: "楼层",
     dataIndex: "deviceInfo.floorName",
-    width: "8%",
-    scopedSlots: { customRender: "name" }
+    width: "10%",
+    scopedSlots: { customRender: "name" },
+    align:"center"
   },
   {
     title: "房间",
-    dataIndex: "deviceInfo.Room",
-    width: "8%",
-    scopedSlots: { customRender: "name" }
+    dataIndex: "deviceInfo.roomName",
+    width: "10%",
+    scopedSlots: { customRender: "name" },
+    align:"center"
   },
   {
     title: "设备MAC地址",
     dataIndex: "deviceInfo.MacAddress",
-    width: "8%",
-    scopedSlots: { customRender: "name" }
+    width: "10%",
+    scopedSlots: { customRender: "name" },
+    align:"center"
   },
   {
     title: "校园地图坐标点",
     dataIndex: "deviceInfo.location",
-    width: "8%",
-    scopedSlots: { customRender: "name" }
+    width: "10%",
+    scopedSlots: { customRender: "name" },
+    align:"center"
   },
   {
     title: "操作",
     dataIndex: "operation",
     width: "10%",
-    scopedSlots: { customRender: "operation" }
+    scopedSlots: { customRender: "operation" },
+    align:"center"
   }
   
 ];
@@ -152,7 +160,8 @@ export default {
       columns,
       allDataArray: [],
       recordsTotal: "",
-      roomType:"NKD_AGG_DEVICE"
+      roomType:"NKD_AGG_DEVICE",
+      isLoading:true
     };
   },
   methods: {
@@ -222,9 +231,9 @@ export default {
             console.log(this.roomType)
          this.getAlarmStrategy(key,this.roomType);
         })
-
     },
     getAlarmStrategy(roomType, roomName, page=1) {
+      this.isLoading=true;
       this.$http.toGetAlarmStrategy(roomName, page).then(res => {
         if (res.data.success) {
           if (roomType === 1) {
@@ -232,9 +241,9 @@ export default {
           } else {
             this.electronicData = res.data.data;
           }
-
           this.$nextTick(() => {
             console.log(res);
+            this.isLoading=false;
             this.addOrder(roomType);
           });
         } else {
@@ -243,6 +252,7 @@ export default {
       });
     },
     toGetConvergeRoomAlarmSettings(type, key) {
+      this.isLoading=true;
       if (key == 1) {
         this.$http
           .toGetConvergeRoomAlarmSettings(this.currentFualtId, type)
@@ -251,6 +261,7 @@ export default {
               this.convergeData = res.data.data;
               this.allDataArray = this.electronicData.concat(this.convergeData);
               this.$nextTick(() => {
+                this.isLoading=false;
                 this.addOrder(1);
               });
             } else {
@@ -265,6 +276,7 @@ export default {
               this.electronicData = res.data.data;
               this.allDataArray = this.electronicData.concat(this.convergeData);
               this.$nextTick(() => {
+                this.isLoading=false;
                 this.addOrder(2);
               });
             } else {

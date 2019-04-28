@@ -5,6 +5,7 @@
         <div class="label">告警类型：</div>
         <div id="statusSearchInput">
           <a-select
+          size="small"
             defaultValue="全部"
             showSearch
             placeholder="Select a person"
@@ -12,20 +13,20 @@
             style="width: 200px"
             @change="handleStatusChange"
             :filterOption="filterOption"
-            v-model="exceptionId"
+            v-model="warningType"
           >
             <a-select-option :value="nullStatus">全部</a-select-option>
-            <a-select-option :value="normalStatus">温度异常</a-select-option>
-            <a-select-option :value="abnormalStatus">湿度异常</a-select-option>
+            <a-select-option :value="convergeRoomWarning">汇聚机房告警</a-select-option>
+            <a-select-option :value="electricRoomWarning">弱电间告警</a-select-option>
 
           </a-select>
         </div>
       </div>
-      <div id="searchByNames">
+      <div id="searchByNames" style="margin-left:10px">
         <div id="searchByNamesLabel">通知人员：</div>
         <div id="searchByNamesInput">
-          <a-input v-model="searchName" placeholder="请输入通知人员"/>
-          <a-button @click="search" type="primary">查询</a-button>
+          <a-input size="small" v-model="searchName" placeholder="请输入通知人员"/>
+          <a-button style="margin-left:10px" size="small" @click="search" type="primary">查询</a-button>
         </div>
       </div>
     </div>
@@ -144,31 +145,22 @@ export default {
       allBuildings:[],
       buildingId:"全部",
       nullStatus:"null",
-      normalStatus:1,
-      abnormalStatus:0,
-      unknowStatus:-1,
-      statusParam:"",
+      normalStatus:null,
+      convergeRoomWarning:1,
+      electricRoomWarning:2,
+      warningType:"全部",
       buildingIdParam:"",
       page:1,
-      searchParam:"",
       isLoading:true,
-      exceptionId:"",
-      searchName:""
+      exceptionId:"全部",
+      searchName:"",
     };
   },
   methods: {
     handleStatusChange() {
-      this.statusParam=this.status==="null" ? null : this.status;
-      this.$http.toGetBroadcastList(1,this.statusParam,this.buildingIdParam).then((res)=>{
-        if(res.data.success){
-          this.data=res.data.data
-                  this.$nextTick(()=>{
-            this.addOrder()
-        })
-        }else{
-          
-        }
-      })
+      this.isLoading=true
+        console.log(this.warningType)
+        this.getWarningList(this.page,this.warningType)
     },
     handleBuildingChange(){
       this.buildingIdParam=this.buildingId==="null" ? null : this.buildingId;
@@ -191,18 +183,10 @@ export default {
       );
     },
     search(){
-            console.log(this.searchParam)
           this.isLoading=true;
-          this.$http.toGetWarningRecordList(this.page,1,this.searchName).then((res)=>{
-          console.log(res)
-          this.data=res.data.data
-          this.recordsTotal=res.data.recordsTotal
-          this.isLoading=false
-          this.$nextTick(()=>{
-              this.addOrder()
-          })
-    })
 
+          let warningParam=this.warningType ==="全部" ? null :this.warningType;
+          this.getWarningList(this.page,warningParam,this.searchName)
     },
     addOrder(){
         var i=1;
@@ -210,18 +194,21 @@ export default {
           item["key"]=i++;
           return true
         })
-    }
-  },
-  created() {
-    this.$http.toGetWarningRecordList().then((res)=>{
+    },
+    getWarningList(page,type,searchName){
+    this.$http.toGetWarningRecordList(page,type,searchName).then((res)=>{
         console.log(res)
-                this.data=res.data.data
+        this.data=res.data.data
         this.recordsTotal=res.data.recordsTotal
         this.isLoading=false
         this.$nextTick(()=>{
             this.addOrder()
         })
     })
+    }
+  },
+  created() {
+    this.getWarningList()
   }
 };
 </script>

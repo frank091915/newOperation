@@ -18,7 +18,7 @@
                   v-decorator="[
                   
           'temperatureDuration',
-          {rules: [{message:'请输入温度时长告警'}],initialValue:(warningStrategy.temperatureDuration+'')}
+          {rules: [{message:'请输入温度时长告警'}],initialValue:(warningStrategy.temperatureDuration ? (warningStrategy.temperatureDuration+'') : '')}
         ]"
                   style="margin-left:5px;width:280px;"
                 />
@@ -33,7 +33,7 @@
                   v-decorator="[
                   
           'humidityDuration',
-          {rules: [{message:'请输入湿度时长告警'}],initialValue:warningStrategy.humidityDuration+'',}
+          {rules: [{message:'请输入湿度时长告警'}],initialValue:warningStrategy.humidityDuration ? (warningStrategy.humidityDuration+'') : '',}
         ]"
                   style="margin-left:5px;width:280px;"
                 />
@@ -48,7 +48,7 @@
                   v-decorator="[
                   
           'smokeDuration',
-          {rules: [{message:'请输入烟雾时长告警'}],initialValue:warningStrategy.smokeDuration+''}
+          {rules: [{message:'请输入烟雾时长告警'}],initialValue:warningStrategy.smokeDuration? (warningStrategy.smokeDuration+'') : ''}
          
         ]"
                   style="margin-left:5px;width:280px;"
@@ -64,7 +64,7 @@
                   v-decorator="[
                   
           'doorDuration',
-          {rules: [{message:'请输入门禁时长告警'}],initialValue:warningStrategy.doorDuration+''}
+          {rules: [{message:'请输入门禁时长告警'}],initialValue:warningStrategy.doorDuration ? (warningStrategy.doorDuration+'') : ''}
         ]"
                   style="margin-left:5px;width:280px;"
                 />
@@ -79,7 +79,7 @@
                   v-decorator="[
                   
           'smokeDuration',
-          {rules: [{message:'请输入电力时长告警'}],initialValue:warningStrategy.smokeDuration+''}
+          {rules: [{message:'请输入电力时长告警'}],initialValue:warningStrategy.smokeDuration ? (warningStrategy.smokeDuration+'') : ''}
         ]"
                   style="margin-left:5px;width:280px;"
                 />
@@ -94,7 +94,7 @@
                   v-decorator="[
                   
           'warningInterval',
-          {rules: [{message:'请输入告警通知间隔'}],initialValue:warningStrategy.warningInterval+''}
+          {rules: [{message:'请输入告警通知间隔'}],initialValue:warningStrategy.warningInterval ? (warningStrategy.warningInterval+'') : ''}
         ]"
                   style="margin-left:5px;width:280px;"
                 />
@@ -109,7 +109,7 @@
                   v-decorator="[
                   
           'maxWarningCount',
-          {rules: [{message:'请输入最大警告次数'}],initialValue:warningStrategy.maxWarningCount+''}
+          {rules: [{message:'请输入最大警告次数'}],initialValue:warningStrategy.maxWarningCount ? (warningStrategy.maxWarningCount+'') : ''}
         ]"
                   style="margin-left:5px;width:280px;"
                 />
@@ -132,7 +132,7 @@
                   v-decorator="[
                   
           'minTemperature',
-          {rules: [{message:'请输入最低温度'}],initialValue:warningStrategy.minTemperature+''}
+          {rules: [{message:'请输入最低温度'}],initialValue:warningStrategy.minTemperature ? (warningStrategy.minTemperature+'') : ''}
         ]"
                   style="margin-left:5px;width:280px;"
                 />
@@ -147,7 +147,7 @@
                   v-decorator="[
                   
           'minHumidity',
-          {rules: [{message:'请输入最低湿度'}],initialValue:warningStrategy.minHumidity+''}
+          {rules: [{message:'请输入最低湿度'}],initialValue:warningStrategy.minHumidity ? (warningStrategy.minHumidity+'') : ''}
         ]"
                   style="margin-left:5px;width:280px;"
                 />
@@ -165,7 +165,7 @@
                   v-decorator="[
                   
           'maxTemperature',
-          {rules: [{message:'请输入最高温度'}],initialValue:warningStrategy.maxTemperature+''}
+          {rules: [{message:'请输入最高温度'}],initialValue:warningStrategy.maxTemperature ? (warningStrategy.maxTemperature+'') : ''}
         ]"
                   style="margin-left:5px;width:280px;"
                 />
@@ -180,7 +180,7 @@
                   v-decorator="[
                  
           'maxHumidity',
-          {rules: [{message:'请输入最高湿度'}], initialValue:warningStrategy.maxHumidity+''}
+          {rules: [{message:'请输入最高湿度'}], initialValue:warningStrategy.maxHumidity ? (warningStrategy.maxHumidity+'') : ''}
         ]"
                   style="margin-left:5px;width:280px;"
                 />
@@ -276,10 +276,10 @@ export default {
           this.$http.toModifyAlarmStrategy(alarmStrategy).then(res => {
             console.log(res);
             if (res.data.success) {
-              this.$message.success("添加用户成功");
+              this.$message.success("修改告警策略成功");
               this.$router.push({
-                path: "/user",
-                query: { title: "用户管理" }
+                path: "warning/strategy",
+                query: { title: "告警策略管理" }
               });
             } else {
               this.$message.error(res.data.errorInfo);

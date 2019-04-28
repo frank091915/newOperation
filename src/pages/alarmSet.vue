@@ -12,10 +12,9 @@
           </div>
         </a-tab-pane>
         <a-tab-pane tab="汇聚机房" key="2" forceRender>
-          汇聚机房
-          <div id="convergeRoomtitle"></div>
+
           <div id="convergeTableWrapper">
-            <a-table :columns="columns" :dataSource="convergeData" :pagination="false" bordered>
+            <a-table :columns="columns" :dataSource="convergeData" :pagination="false" bordered :scroll="{y:790}">
               <template
                 v-for="col in ['name', 'age', 'address']"
                 :slot="col"
@@ -53,9 +52,8 @@
           </div>
         </a-tab-pane>
         <a-tab-pane tab="弱电间" key="3">
-          <div id="lowVoltageRoom">弱电间</div>
           <div id="lowVolttageTableWrapper">
-            <a-table :columns="columns" :dataSource="electronicData" :pagination="false" bordered>
+            <a-table :columns="columns" :dataSource="electronicData" :pagination="false" bordered :scroll="{y:790}">
               <template
                 v-for="col in ['name', 'age', 'address']"
                 :slot="col"
@@ -100,45 +98,52 @@
 const columns = [
   {
     title: "序号",
-    dataIndex: "num",
-    width: "10%",
-    scopedSlots: { customRender: "num" }
+    dataIndex: "key",
+    width: "5%",
+    scopedSlots: { customRender: "num" },
+    align:"center"
   },
   {
     title: "汇聚机房编号",
     dataIndex: "Code",
     width: "10%",
-    scopedSlots: { customRender: "age" }
+    scopedSlots: { customRender: "age" },
+        align:"center"
   },
   {
     title: "描述",
     dataIndex: "Description",
-    width: "15%",
-    scopedSlots: { customRender: "address" }
+    width: "10%",
+    scopedSlots: { customRender: "address" },
+        align:"center"
   },
   {
     title: "设备MAC地址",
     dataIndex: "MacAddress",
     width: "10%",
-    scopedSlots: { customRender: "address" }
+    scopedSlots: { customRender: "address" },
+        align:"center"
   },
   {
     title: "微信警告",
     dataIndex: "switchWx",
     width: "10%",
-    scopedSlots: { customRender: "weChatcheckBox" }
+    scopedSlots: { customRender: "weChatcheckBox" },
+        align:"center"
   },
   {
     title: "短信警告",
     dataIndex: "floorNumber",
     width: "10%",
-    scopedSlots: { customRender: "messagecheckBox" }
+    scopedSlots: { customRender: "messagecheckBox" },
+        align:"center"
   },
   {
     title: "邮件警告",
     dataIndex: "roomNumber",
     width: "10%",
-    scopedSlots: { customRender: "emailcheckBox" }
+    scopedSlots: { customRender: "emailcheckBox" },
+        align:"center"
   }
 ];
 
@@ -178,6 +183,9 @@ export default {
       this.$http.toGetUserAlarmSettings(this.currentUserId).then(res => {
         if (res.data.success) {
           this.alarmData = res.data.data;
+          this.$nextTick(()=>{
+            this.addOrder()
+          })
         } else {
           this.$message.success("获取数据失败，请重试");
         }
@@ -191,7 +199,9 @@ export default {
             if (res.data.success) {
               this.convergeData = res.data.data;
               this.allDataArray = this.electronicData.concat(this.convergeData);
-
+              this.$nextTick(()=>{
+                  this.addOrder(key)
+              })
             } else {
               this.$message.success("获取数据失败，请重试");
             }
@@ -203,7 +213,9 @@ export default {
             if (res.data.success) {
               this.electronicData = res.data.data;
               this.allDataArray = this.electronicData.concat(this.convergeData);
-
+              this.$nextTick(()=>{
+                  this.addOrder(key)
+              })
             } else {
               this.$message.success("获取数据失败，请重试");
             }
@@ -260,6 +272,22 @@ export default {
           }
         });
       }
+    },
+    addOrder(key){
+              var i=1;
+      if(key==2){
+          this.convergeData=this.convergeData.filter((item)=>{
+          item["key"]=i++;
+          return true
+        })
+      }else{
+        this.electronicData=this.electronicData.filter((item)=>{
+          item["key"]=i++;
+          return true
+        })
+      }
+
+
     }
   },
   created() {

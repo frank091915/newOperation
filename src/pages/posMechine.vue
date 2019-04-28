@@ -14,11 +14,11 @@
               @change="handleStatusChange"
               :filterOption="filterOption"
               v-model="status"
+              size="small"
             >
               <a-select-option :value="nullStatus">全部</a-select-option>
               <a-select-option :value="normalStatus">正常</a-select-option>
               <a-select-option :value="abnormalStatus">异常</a-select-option>
-              <a-select-option :value="unknowStatus">未知</a-select-option>
             </a-select>
           </div>
         </div>
@@ -34,6 +34,7 @@
               @change="handleBuildingChange"
               :filterOption="filterOption"
               v-model="buildingId"
+              size="small"
             >
               <a-select-option :value="nullStatus" :key="8874">全部</a-select-option>
               <a-select-option
@@ -47,13 +48,13 @@
         <div id="searchByNames">
           <div id="searchByNamesLabel">名称：</div>
           <div id="searchByNamesInput">
-            <a-input v-model="searchParam" placeholder="请输入POS机名称"/>
-            <a-button @click="search" type="primary">搜索</a-button>
+            <a-input v-model="searchParam" placeholder="请输入POS机名称"  size="small"/>
+            <a-button @click="search" type="primary" size="small">搜索</a-button>
           </div>
         </div>
       </div>
       <div id="tableWrapper">
-        <a-table :columns="columns" :dataSource="data" :pagination="false" size="small" bordered :loading="isLoading">
+        <a-table :columns="columns" :dataSource="data" :pagination="false" size="small" bordered :loading="isLoading" :scroll="{y:900}">
           <template
             v-for="col in ['name', 'age', 'address']"
             :slot="col"
@@ -79,7 +80,7 @@ const columns = [
   {
     title: "序号",
     dataIndex: "key",
-    width: "10%",
+    width: "8%",
     scopedSlots: { customRender: "_id" }
   },
   {
@@ -91,7 +92,7 @@ const columns = [
   {
     title: "pos机名称",
     dataIndex: "Description",
-    width: "15%",
+    width: "10%",
     scopedSlots: { customRender: "address" }
   },
   {

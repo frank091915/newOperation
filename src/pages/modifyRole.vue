@@ -256,7 +256,6 @@ export default {
       });
       this.$nextTick(() => {
         console.log(this.aloneMenuArray);
-        this.judge(id, type);
       });
     },
     // 修改有子菜单的一级菜单
@@ -346,6 +345,7 @@ export default {
                 this.name=res.data.data.name;
                 this.value=res.data.data.status ? 1 : 0;
                 this.remark=res.data.data.remark;
+                this.permissionsIdArray = res.data.data.permissionIds;
             }else{
                 this.$message.error(res.data.errorInfo);
             }
@@ -369,13 +369,13 @@ export default {
       this.$nextTick(() => {});
     });
     // 获取当前用户菜单权限
-    this.$http.toGetUserInfoById(7).then(res => {
+    this.$http.toGetUserInfoById(1).then(res => {
       console.log(res);
       this.permissions = res.data.data.permissions;
 
       // 角色详情权限菜单结构改一下，按照用户权限结构来，再添加一个所有当前角色所有权限id数组
 
-      this.permissionsIdArray = res.data.data.permissionIds;
+
       //   选出用户当前权限菜单
       this.$nextTick(() => {
         // 选出用户一级菜单

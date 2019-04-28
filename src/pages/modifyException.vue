@@ -3,33 +3,25 @@
       <div id="pageTitle">
           编辑异常
       </div>
-    <a-form :form="form">
-      <a-form-item
-        :label-col="formItemLayout.labelCol"
-        :wrapper-col="formItemLayout.wrapperCol"
-        label="异常名称"
-      >
-        <a-input
-          v-decorator="[
-          'name',
-          {rules: [{ required: true,message:'请输入故障名称'}],
-          initialValue:name
-          }
-        ]"
-        />
-      </a-form-item>
+      <div style="margin-bottom:20px;;margin-top:30px">
+        <span style="margin-left:130px">异常类型 ：</span>
+        <a-radio-group @change="onChange" v-model="type" style="margin-left:10px">
+          <a-radio :value="1">汇聚机房异常</a-radio>
+          <a-radio :value="2">弱电间异常</a-radio>
+        </a-radio-group>
+      </div>
       <a-form-item
         :label-col="formItemLayout.labelCol"
         :wrapper-col="formItemLayout.wrapperCol"
         label="备注"
       >
         <a-input
+        v-model="remark"
         type="textarea"
           v-decorator="[
           'remark',
-          
           {rules: [{ required: true, message: '请输入备注' }],
-          initialValue:remark}
+          }
         ]"
         />
       </a-form-item>
@@ -62,19 +54,27 @@ export default {
       value: 1,
       roleName: "",
       name:"",
-      remark:""
+      remark:"",
+      type:"",
     };
   },
   methods: {
+    onChange (e) {
+      this.type=e.target.value
+      console.log(e.target.value)
+    },
     toReturn() {
       console.log("return");
       this.$router.go("-1");
     },
     toSave() {
       this.form.validateFields((err, values) => {
+        console.log(values)
         if (!err) {
-            values.faultId=this.$route.query.fualtId
-          this.$http.toModifyFualt(values).then(res => {
+            values.exceptionId=this.$route.query.exceptionId;
+            values.remark=this.remark;
+            values.code=this.type;
+          this.$http.toModifyException(values).then(res => {
             console.log(res);
             if (res.data.success) {
               this.$message.success("添加角色成功");
@@ -100,8 +100,14 @@ export default {
       this.$http.toGetExceptionInfo(this.$route.query.exceptionId).then((res)=>{
           console.log(res)
           if(res.data.success){
+              this.type=res.data.data.type;
               this.name=res.data.data.name;
               this.remark=res.data.data.remark;
+              this.$nextTick(()=>{
+                console.log(this.remark)
+              })
+          }{
+
           }
       })
   }

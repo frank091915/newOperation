@@ -7,7 +7,7 @@
       
     </div>
     <div id="tableWrapper">
-      <a-table :columns="columns" :dataSource="data" bordered>
+      <a-table :columns="columns" :dataSource="data" bordered :pagination="false">
         <template
           v-for="col in ['name', 'age', 'address']" 
           :slot="col"
@@ -27,7 +27,7 @@
         <template slot="operation" slot-scope="text, record, index">
           <div class="editable-row-operations">
             <a-popconfirm
-              title="确定要删除此用户?"
+              title="确定要删除此异常?"
               @confirm="confirmDelete(record)"
               @cancel="cancelDelete(record)"
               okText="确定"
@@ -47,26 +47,30 @@ const columns = [
   {
     title: "序号",
     dataIndex: "key",
-    width: "10%",
-    scopedSlots: { customRender: "key" }
+    width: "5%",
+    scopedSlots: { customRender: "key" },
+    align:"center"
   },
   {
     title: "异常编号",
     dataIndex: "code",
     width: "10%",
-    scopedSlots: { customRender: "name" }
+    scopedSlots: { customRender: "name" },
+    align:"center"
   },
   {
     title: "备注",
     dataIndex: "remark",
     width: "10%",
-    scopedSlots: { customRender: "remark" }
+    scopedSlots: { customRender: "remark" },
+    align:"center"
   },
   {
     title: "操作",
     dataIndex: "operation",
     width: "10%",
-    scopedSlots: { customRender: "operation" }
+    scopedSlots: { customRender: "operation" },
+    align:"center"
   }
 ];
 
