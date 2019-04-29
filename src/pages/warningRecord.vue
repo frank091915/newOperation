@@ -1,6 +1,29 @@
 <template>
   <div id="main">
     <div id="searchBox">
+
+        <div id="deviceType">
+          <div class="label">设备类型：</div>
+          <div id="statusSearchInput">
+            <a-select
+              defaultValue="全部"
+              showSearch
+              placeholder="Select a person"
+              optionFilterProp="children"
+              style="width: 120px"
+              @change="handleDeviceTypeChange"
+              :filterOption="filterOption"
+              v-model="deviceType"
+              size="small"
+            >
+              <a-select-option :value="nullStatus">全部</a-select-option>
+              <a-select-option :value="convergeRoom">汇聚机房</a-select-option>
+              <a-select-option :value="lowVoltageRoom">弱电间</a-select-option>
+            </a-select>
+          </div>
+        </div>
+        
+
       <div id="statusSearch">
         <div class="label">告警类型：</div>
         <div id="statusSearchInput">
@@ -10,14 +33,17 @@
             showSearch
             placeholder="Select a person"
             optionFilterProp="children"
-            style="width: 200px"
+            style="width: 120px"
             @change="handleStatusChange"
             :filterOption="filterOption"
             v-model="warningType"
           >
             <a-select-option :value="nullStatus">全部</a-select-option>
-            <a-select-option :value="convergeRoomWarning">汇聚机房告警</a-select-option>
-            <a-select-option :value="electricRoomWarning">弱电间告警</a-select-option>
+              <a-select-option
+                v-for="item in exceptionList"
+                :value="item.id"
+                :key="item.id"
+              >{{item.remark}}</a-select-option>
 
           </a-select>
         </div>
@@ -25,7 +51,7 @@
       <div id="searchByNames" style="margin-left:10px">
         <div id="searchByNamesLabel">通知人员：</div>
         <div id="searchByNamesInput">
-          <a-input size="small" v-model="searchName" placeholder="请输入通知人员"/>
+          <a-input size="small" v-model="searchName" placeholder="请输入通知人员" style="width: 120px"/>
           <a-button style="margin-left:10px" size="small" @click="search" type="primary">查询</a-button>
         </div>
       </div>
@@ -37,7 +63,9 @@
       :pagination="false"
       :loading="isLoading"
       size="small"
-      bordered>
+      bordered
+      :scroll="{y:750}"
+      >
         <template
           v-for="col in ['name', 'age', 'address']"
           :slot="col"
@@ -65,61 +93,71 @@ const columns = [
     title: "警告标号",
     dataIndex: "key",
     width: "8%",
-    scopedSlots: { customRender: "_id" }
+    scopedSlots: { customRender: "_id" },
+    align:"center"
   },
    {
     title: "楼宇名称",
     dataIndex: "deviceInfo.buildingName",
     width: "8%",
-    scopedSlots: { customRender: "address" }
+    scopedSlots: { customRender: "address" },
+    align:"center"
   },
   {
     title: "楼层",
     dataIndex: "deviceInfo.floorName",
     width: "8%",
-    scopedSlots: { customRender: "address" }
+    scopedSlots: { customRender: "address" },
+    align:"center"
   },
   {
     title: "房间",
     dataIndex: "deviceInfo.roomName",
     width: "8%",
-    scopedSlots: { customRender: "address" }
+    scopedSlots: { customRender: "address" },
+    align:"center"
   },
   {
     title: "设备MAC",
     dataIndex: "deviceInfo.MacAddress",
     width: "8%",
-    scopedSlots: { customRender: "address" }
+    scopedSlots: { customRender: "address" },
+    align:"center"
   },
   {
     title: "告警类型",
     dataIndex: "warningRecord.way",
     width: "8%",
-    scopedSlots: { customRender: "address" }
+    scopedSlots: { customRender: "address" },
+    align:"center"
   },
   {
     title: "告警值",
     dataIndex: "warningRecord.value",
     width: "8%",
-    scopedSlots: { customRender: "SerialNumber" }
+    scopedSlots: { customRender: "SerialNumber" },
+    align:"center"
   },
   {
     title: "告警时间",
     dataIndex: "warningRecord.time",
     width: "8%",
-    scopedSlots: { customRender: "SerialNumber" }
+    scopedSlots: { customRender: "SerialNumber" },
+    align:"center"
   },
   {
     title: "通知人员",
     dataIndex: "warningRecord.userName",
     width: "8%",
-    scopedSlots: { customRender: "SerialNumber" }
+    scopedSlots: { customRender: "SerialNumber" },
+    align:"center"
   },
   {
     title: "备注",
     dataIndex: "warningRecord.exceptionRemark",
     width: "8%",
-    scopedSlots: { customRender: "address" }
+    scopedSlots: { customRender: "address" },
+    align:"center"
   }
 ];
 
@@ -144,7 +182,7 @@ export default {
       status:"全部",
       allBuildings:[],
       buildingId:"全部",
-      nullStatus:"null",
+      nullStatus:"全部",
       normalStatus:null,
       convergeRoomWarning:1,
       electricRoomWarning:2,
@@ -154,26 +192,16 @@ export default {
       isLoading:true,
       exceptionId:"全部",
       searchName:"",
+      deviceType : "全部",
+      convergeRoom:1,
+      lowVoltageRoom:2,
+      exceptionList:[],
     };
   },
   methods: {
     handleStatusChange() {
-      this.isLoading=true
         console.log(this.warningType)
-        this.getWarningList(this.page,this.warningType)
-    },
-    handleBuildingChange(){
-      this.buildingIdParam=this.buildingId==="null" ? null : this.buildingId;
-      this.$http.toGetBroadcastList(1,this.statusParam,this.buildingIdParam).then((res)=>{
-        if(res.data.success){
-          this.data=res.data.data
-                  this.$nextTick(()=>{
-            this.addOrder()
-        })
-        }else{
-          
-        }
-      })
+
     },
     filterOption(input, option) {
       return (
@@ -183,10 +211,10 @@ export default {
       );
     },
     search(){
-          this.isLoading=true;
+      let
+          warningTypeParam=this.warningType ==="全部" ? null : this.warningType;
 
-          let warningParam=this.warningType ==="全部" ? null :this.warningType;
-          this.getWarningList(this.page,warningParam,this.searchName)
+          this.getWarningList(this.page,warningTypeParam,this.searchName)
     },
     addOrder(){
         var i=1;
@@ -205,10 +233,24 @@ export default {
             this.addOrder()
         })
     })
+    },
+    handleDeviceTypeChange(){
+
+      this.warningType="全部"
+      let deviceTypeParam= this.deviceType ==="全部" ? null : this.deviceType;
+            console.log(this.deviceType,deviceTypeParam)
+      this.$http.toGetAllExceptionList(deviceTypeParam).then((res)=>{
+        console.log(res)
+        if(res.data.success){
+          this.exceptionList=res.data.data
+        }
+      })
+      // toGetAllExceptionList
     }
   },
   created() {
     this.getWarningList()
+    
   }
 };
 </script>
@@ -272,5 +314,12 @@ body{
 #tableWrapper{
   height: calc(100% - 100px);
   overflow: auto;
+}
+#deviceType{
+  width: 190px;
+    display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
 }
 </style>

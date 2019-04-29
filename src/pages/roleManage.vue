@@ -7,7 +7,7 @@
       
     </div>
     <div id="tableWrapper">
-      <a-table :columns="columns" :dataSource="data" bordered>
+      <a-table :columns="columns" :dataSource="data" bordered :pagination="false">
         <template
           v-for="col in ['name', 'age', 'address']" 
           :slot="col"

@@ -33,6 +33,7 @@ import AlarmStrategy from "../pages/alarmStrategy.vue"
 import ModifyAlarmStrategy from "../pages/modifyAlarmStrategy.vue"
 import AddAlarmStrategy from "../pages/addAlarmStrategy.vue"
 import MenuManage from "../pages/menuManage.vue"
+import RoomDetails from "../pages/roomDetails.vue"
 // 将所有组件集中管理进行配置
 
 export default [{
@@ -325,6 +326,15 @@ export default [{
     components: {
       frame:Frame,
       main:MenuManage,
+      header:Header,
+	}
+  },
+  {
+    path: '/roomDetails',
+    name: 'roomDetails',
+    components: {
+      frame:Frame,
+      main:RoomDetails,
       header:Header,
 	}
   }

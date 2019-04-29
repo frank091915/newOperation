@@ -14,7 +14,7 @@
         <a-tab-pane tab="汇聚机房" key="2" forceRender>
 
           <div id="convergeTableWrapper">
-            <a-table :columns="columns" :dataSource="convergeData" :pagination="false" bordered :scroll="{y:790}">
+            <a-table :columns="columns" :dataSource="convergeData" :pagination="false" bordered :scroll="{y:790}" :loading="isLoading">
               <template
                 v-for="col in ['name', 'age', 'address']"
                 :slot="col"
@@ -53,7 +53,7 @@
         </a-tab-pane>
         <a-tab-pane tab="弱电间" key="3">
           <div id="lowVolttageTableWrapper">
-            <a-table :columns="columns" :dataSource="electronicData" :pagination="false" bordered :scroll="{y:790}">
+            <a-table :columns="columns" :dataSource="electronicData" :pagination="false" bordered :scroll="{y:790}" :loading="isLoading">
               <template
                 v-for="col in ['name', 'age', 'address']"
                 :slot="col"
@@ -158,7 +158,8 @@ export default {
       convergeData: [],
       electronicData: [],
       columns,
-      allDataArray: []
+      allDataArray: [],
+      isLoading:true
     };
   },
   methods: {
@@ -180,9 +181,11 @@ export default {
       });
     },
     GetAlarmData() {
+      this.isLoading=true;
       this.$http.toGetUserAlarmSettings(this.currentUserId).then(res => {
         if (res.data.success) {
           this.alarmData = res.data.data;
+          this.isLoading=false;
           this.$nextTick(()=>{
             this.addOrder()
           })
@@ -192,12 +195,14 @@ export default {
       });
     },
     toGetConvergeRoomAlarmSettings(type, key) {
+      this.isLoading=true;
       if (key == 2) {
         this.$http
           .toGetConvergeRoomAlarmSettings(this.currentUserId, type)
           .then(res => {
             if (res.data.success) {
               this.convergeData = res.data.data;
+              this.isLoading=false;
               this.allDataArray = this.electronicData.concat(this.convergeData);
               this.$nextTick(()=>{
                   this.addOrder(key)
@@ -211,6 +216,7 @@ export default {
           .toGetConvergeRoomAlarmSettings(this.currentUserId, type)
           .then(res => {
             if (res.data.success) {
+              this.isLoading=false;
               this.electronicData = res.data.data;
               this.allDataArray = this.electronicData.concat(this.convergeData);
               this.$nextTick(()=>{

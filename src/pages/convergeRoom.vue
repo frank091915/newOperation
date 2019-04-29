@@ -18,7 +18,7 @@
         :type="item.statusDescription"
         class="statusDisplay"
       >
-        <img :src='color(item.statusDescription)'>
+        <img :src='color(item.statusDescription)' @click="toShowDetails(item.Id)">
         <p>{{item.roomName}}</p>
       </div>
     </div>
@@ -50,6 +50,10 @@ export default {
         case "故障":
           return ('../../static/assets/computerRoomRed.png');
       }
+    },
+    toShowDetails(id){
+      console.log(id)
+      this.$router.push({path:"/roomDetails",query:{title:"汇聚机房详情",detailsId:id,roomType:1}})
     }
   },
   created() {

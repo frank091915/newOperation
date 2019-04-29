@@ -105,6 +105,7 @@
         size="small"
         :loading="isLoading"
         bordered
+        :scroll="{y:750}"
       >
         <template
           v-for="col in ['name', 'age', 'address']"
@@ -131,67 +132,78 @@ const columns = [
     title: "异常标号",
     dataIndex: "key",
     width: "8%",
-    scopedSlots: { customRender: "address" }
+    scopedSlots: { customRender: "address" },
+    align:"center"
   },
   {
     title: "异常名称",
     dataIndex: "exceptionRecord.exceptionName",
     width: "8%",
-    scopedSlots: { customRender: "address" }
+    scopedSlots: { customRender: "address" },
+    align:"center"
   },
   {
     title: "告警状态",
-    dataIndex: "exceptionRecord.warningStatus",
+    dataIndex: "exceptionRecord.warningStatusDescription",
     width: "8%",
-    scopedSlots: { customRender: "address" }
+    scopedSlots: { customRender: "address" },
+    align:"center"
   },
   {
     title: "告警次数",
     dataIndex: "exceptionRecord.waringCount",
     width: "8%",
-    scopedSlots: { customRender: "address" }
+    scopedSlots: { customRender: "address" },
+    align:"center"
   },
   {
     title: "起始时间",
     dataIndex: "exceptionRecord.startTime",
     width: "8%",
-    scopedSlots: { customRender: "address" }
+    scopedSlots: { customRender: "address" },
+    align:"center"
   },
   {
     title: "结束时间",
     dataIndex: "exceptionRecord.endTime",
     width: "8%",
-    scopedSlots: { customRender: "address" }
+    scopedSlots: { customRender: "address" },
+    align:"center"
   },
   {
     title: "记录状态",
-    dataIndex: "exceptionRecord.status",
+    dataIndex: "exceptionRecord.recordingStatusDescription",
     width: "8%",
-    scopedSlots: { customRender: "address" }
+    scopedSlots: { customRender: "address" },
+    align:"center"
   },
   {
     title: "楼宇名称",
     dataIndex: "deviceInfo.buildingName",
     width: "8%",
-    scopedSlots: { customRender: "address" }
+    scopedSlots: { customRender: "address" },
+    align:"center"
   },
   {
     title: "楼层",
     dataIndex: "deviceInfo.floorName",
     width: "8%",
-    scopedSlots: { customRender: "address" }
+    scopedSlots: { customRender: "address" },
+    align:"center"
   },
   {
     title: "房间",
     dataIndex: "deviceInfo.roomName",
     width: "8%",
-    scopedSlots: { customRender: "address" }
+    scopedSlots: { customRender: "address" },
+    align:"center"
   },
   {
     title: "设备MAC",
     dataIndex: "deviceInfo.MacAddress",
     width: "8%",
-    scopedSlots: { customRender: "address" }
+    scopedSlots: { customRender: "address" },
+    align:"center"
   }
 ];
 
@@ -247,6 +259,8 @@ export default {
       this.$http.toGetAllFloors(e).then(res => {
         if (res.data.success) {
           this.allFloors = res.data.data;
+          this.floor= "全部";
+      this.room= "全部"
           this.$nextTick(() => {});
         }
       });
@@ -255,6 +269,7 @@ export default {
       this.$http.toGetAllRooms(e).then(res => {
         if (res.data.success) {
           this.allRooms = res.data.data;
+          this.room= "全部";
         }
       });
     },
@@ -268,9 +283,9 @@ export default {
     },
     search() {
       let buildingQuery = this.buildingId === "全部" ? null : this.buildingId,
-        floorQuery = this.floor === "全部" ? null : this.floor,
-        roomQuery = this.room === "全部" ? null : this.room,
-        statusQuery=this.status ==="全部" ? null : this.status;
+          floorQuery = this.floor === "全部" ? null : this.floor,
+          roomQuery = this.room === "全部" ? null : this.room,
+          statusQuery=this.status ==="全部" ? null : this.status;
       this.isLoading = true;
       this.getExceptionList(
         this.page,
@@ -293,6 +308,17 @@ export default {
         return true;
       });
     },
+    addStatusDescription(){
+      console.log(this.data)
+      this.data=this.data.map((item)=>{
+           item.exceptionRecord.warningStatusDescription= item.exceptionRecord.warningStatus ? "已完结" :"未完结";
+           item.exceptionRecord.recordingStatusDescription= item.exceptionRecord.status ? "已完结" :"未完结";
+           return item
+      })
+      this.$nextTick(()=>{
+        console.log(this.data)
+      })
+    },
     getExceptionList(page = 1, status, buildingId, floorId, roomId) {
       this.$http
         .toGetExceptionRecordList(page, status, buildingId, floorId, roomId)
@@ -303,6 +329,7 @@ export default {
             this.isLoading = false;
             this.$nextTick(() => {
               this.addOrder();
+              this.addStatusDescription()
             });
           }
         });

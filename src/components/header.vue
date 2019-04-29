@@ -62,6 +62,8 @@ export default {
 }
 #headerInfo{
     margin-left: 50px;
+    font-weight: 600;
+    font-size: 18px;
 }
 #dropDown{
     width: 110px;

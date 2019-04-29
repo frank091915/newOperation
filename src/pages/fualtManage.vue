@@ -7,7 +7,7 @@
       
     </div>
     <div id="tableWrapper">
-      <a-table :columns="columns" :dataSource="data" bordered>
+      <a-table :columns="columns" :dataSource="data" bordered :loading="isLoading" :pagination="false">
         <template
           v-for="col in ['name', 'age', 'address']" 
           :slot="col"
@@ -84,7 +84,8 @@ export default {
     return {
       data,
       columns,
-      recordsTotal: ""
+      recordsTotal: "",
+      isLoading:true
     };
   },
   methods: {
@@ -169,10 +170,11 @@ export default {
       );
     },
     GetFualtManageList(){
-      console.log(this.$http)
+
     this.$http.toGetFualtManageList().then(res => {
       var i=0;
       if(res.data.success){
+        this.isLoading=false
         this.data=res.data.data.filter((res)=>{
           res["key"]=i++;
           return true

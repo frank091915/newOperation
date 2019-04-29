@@ -81,61 +81,71 @@ const columns = [
     title: "序号",
     dataIndex: "key",
     width: "8%",
-    scopedSlots: { customRender: "_id" }
+    scopedSlots: { customRender: "_id" },
+    align:"center"
   },
   {
     title: "状态",
     dataIndex: "statusDescription",
     width: "10%",
-    scopedSlots: { customRender: "age" }
+    scopedSlots: { customRender: "age" },
+    align:"center"
   },
   {
     title: "pos机名称",
     dataIndex: "Description",
     width: "10%",
-    scopedSlots: { customRender: "address" }
+    scopedSlots: { customRender: "address" },
+    align:"center"
   },
   {
     title: "型号",
     dataIndex: "modelNumber",
     width: "10%",
-    scopedSlots: { customRender: "address" }
+    scopedSlots: { customRender: "address" },
+    align:"center"
   },
   {
     title: "楼宇名称",
     dataIndex: "buildingName",
     width: "10%",
-    scopedSlots: { customRender: "address" }
+    scopedSlots: { customRender: "address" },
+    align:"center"
   },
   {
     title: "楼层",
     dataIndex: "floorNumber",
     width: "10%",
-    scopedSlots: { customRender: "address" }
+    scopedSlots: { customRender: "address" },
+    align:"center"
   },
   {
     title: "房间",
     dataIndex: "roomId",
     width: "10%",
-    scopedSlots: { customRender: "address" }
+    scopedSlots: { customRender: "address" },
+    align:"center"
   },
   {
     title: "编号",
     dataIndex: "Code",
     width: "10%",
-    scopedSlots: { customRender: "address" }
+    scopedSlots: { customRender: "address" },
+    align:"center"
   },
   {
     title: "ip地址",
     dataIndex: "SerialNumber",
     width: "10%",
-    scopedSlots: { customRender: "SerialNumber" }
+    scopedSlots: { customRender: "SerialNumber" },
+    align:"center"
   },
   {
     title: "备注",
     dataIndex: "remarks",
     width: "10%",
-    scopedSlots: { customRender: "address" }
+    scopedSlots: { customRender: "address" },
+    align:"center"
   }
 ];
 
@@ -164,8 +174,8 @@ export default {
       normalStatus: 1,
       abnormalStatus: 0,
       unknowStatus: -1,
-      statusParam: "",
-      buildingIdParam: "",
+      statusParam:this.status === "全部" ? null : this.status,
+      buildingIdParam: this.buildingId === "全部" ? null : this.buildingId,
       page: 1,
       searchParam: "",
       isLoading: true
@@ -209,7 +219,11 @@ export default {
       );
     },
     search() {
-      console.log(this.searchParam);
+      let statusParam=this.status === "全部" ? null : this.status,
+          searchParam=this.searchParam === "全部" ? null : this.searchParam,
+          buildingIdParam= this.buildingId === "全部" ? null : this.buildingId;          
+      console.log(this.searchParam,statusParam,buildingIdParam);
+      this.GetPosMechineList(this.page,statusParam,buildingIdParam,this.searchParam)
     },
     addOrder() {
       var i = 1;
@@ -217,23 +231,26 @@ export default {
         item["key"] = i++;
         return true;
       });
+    },
+    GetPosMechineList(page,status,buildingId,searchRoom){
+      this.$http.toGetPosMechineList(page,status,buildingId,searchRoom).then(res => {
+        console.log(res);
+        var i = 0;
+        if (res.data.success) {
+          this.data = res.data.data.filter(res => {
+            res["key"] = i++;
+            return true;
+          });
+          this.recordsTotal = res.data.recordsTotal;
+          this.$nextTick(() => {
+            this.isLoading = false;
+          });
+        }
+      });
     }
   },
   created() {
-    this.$http.toGetPosMechineList(this.page).then(res => {
-      console.log(res);
-      var i = 0;
-      if (res.data.success) {
-        this.data = res.data.data.filter(res => {
-          res["key"] = i++;
-          return true;
-        });
-        this.recordsTotal = res.data.recordsTotal;
-        this.$nextTick(() => {
-          this.isLoading = false;
-        });
-      }
-    });
+    this.GetPosMechineList(this.page)
     // 获取所有楼宇名称
     this.$http.toGetBuildingList().then(res => {
       if (res.data.success) {

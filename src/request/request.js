@@ -27,6 +27,21 @@ const toGetAsideMenu = () => {
   )
 }
 
+
+// 请求所有异常列表
+const toGetAllExceptionList = (type) => {
+  console.log(type)
+  let typeParam= type ?   `type=${type}`: "";
+
+  return ajax.get(
+    "/api/exception/all?" + typeParam, {
+      headers: {
+        "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken"))
+      }
+    }
+  )
+}
+
 // 改变菜单权限状态
 const toModifyPermissionStatus = (permissionId) => {
   console.log(permissionId)
@@ -51,6 +66,8 @@ const toGetConvergeRoomAlarmSettings = (userId,type,currentPage=1) => {
   )
 }
 
+
+
 // 请求用户id
 const toGetUserInfo = () => {
   return ajax.get(
@@ -72,6 +89,29 @@ const toGetconvergeRoomList = () => {
     }
   )
 }
+
+// 请求汇聚机房详情
+const toGetconvergeRoomDetails = (id) => {
+  return ajax.get(
+    "/api/data/machine/"+id, {
+      headers: {
+        "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken"))
+      }
+    }
+  )
+}
+
+// 请求弱电间详情
+const toGetLowVoltageRoomDetails = (id) => {
+  return ajax.get(
+    "/api/data/electric/"+id, {
+      headers: {
+        "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken"))
+      }
+    }
+  )
+}
+
 
 // 请求弱电房间列表
 const toGetlowVoltageRoomList = () => {
@@ -108,9 +148,10 @@ const toGetExceptionManageList = (page=1) => {
 
 // 请求pos机列表
 const toGetPosMechineList = (page =1, status,buildingId,searchRoom) => {
-  let statusQuery = status !=undefined? `&status=${status}` : "",
-    buildingIdQuery = buildingId !=undefined? `&buildingId=${buildingId}` : "",
-    searchRoomQuery = searchRoom !=undefined? `&searchRoom=${searchRoom}` : "";
+  console.log(page =1, status,buildingId,searchRoom)
+  let statusQuery = status ? `&status=${status}`:  "" ,
+    buildingIdQuery = buildingId ? `&buildingId=${buildingId}`: ""  ,
+    searchRoomQuery = searchRoom ?  `&searchRoom=${searchRoom}`: "";
   return ajax.get(
     `/api/control/pos?currentPage=` + page + statusQuery + buildingIdQuery + searchRoomQuery, {
       headers: {
@@ -148,8 +189,9 @@ const toChangeFualtException = (fualtException) => {
 
 // 请求圈存机列表
 const toGetTransferList = (page =1, status,buildingId,searchRoom) => {
-  let statusQuery = status !=undefined ? `&status=${status}` : "",
-    buildingIdQuery = buildingId != undefined ? `&buildingId=${buildingId}` : "",
+  console.log(status,buildingId,searchRoom)
+  let statusQuery = status ===undefined || status ===null ?  "" : `&status=${status}`,
+    buildingIdQuery = buildingId  ? `&buildingId=${buildingId}` : "",
     searchRoomQuery = searchRoom  ? `&searchRoom=${searchRoom}` : "";
   return ajax.get(
     `/api/control/transfer?currentPage=` + page + statusQuery + buildingIdQuery + searchRoomQuery, {
@@ -161,8 +203,8 @@ const toGetTransferList = (page =1, status,buildingId,searchRoom) => {
 }
 
 // 请求门禁列表
-const toGetAccessList = (page =1, status,buildingId,searchRoom) => {
-  let statusQuery = status !=undefined? `&status=${status}` : "",
+const toGetAccessList = (page, status,buildingId,searchRoom) => {
+  let statusQuery = status ===undefined || status ===null ?  "" : `&status=${status}`,
     buildingIdQuery = buildingId !=undefined? `&buildingId=${buildingId}` : "",
     searchRoomQuery = searchRoom !=undefined? `&searchRoom=${searchRoom}` : "";
   return ajax.get(
@@ -189,8 +231,8 @@ const toGetBroadcastList = (page =1, status,buildingId,searchRoom) => {
 }
 
 // 请求交换机列表
-const toGetinterchangerList = (page =1, status,buildingId,searchRoom) => {
-  let statusQuery = status !=undefined ? `&status=${status}` : "",
+const toGetinterchangerList = (page =1,status,buildingId,searchRoom) => {
+  let statusQuery = status ===undefined || status ===null ?  "" : `&status=${status}`,
     buildingIdQuery = buildingId !==undefined ? `&buildingId=${buildingId}` : "",
     searchRoomQuery = searchRoom !=undefined ? `&searchRoom=${searchRoom}` : "";
   return ajax.get(
@@ -521,7 +563,7 @@ const toGetWarningRecordList = (page =1,warningId,searchName) => {
 
 const toGetExceptionRecordList = (page =1,status,buildingId,floorId,roomId) => {
   let roomIdQuery = roomId ?   `&roomId=${roomId}`: "",
-      statusQuery = status  ===undefined ||status  === null ?""  : `&status=${status}` ,
+      statusQuery = status ? `&status=${status}`: ""  ,
       buildingIdQuery = buildingId ?  `&buildingId=${buildingId}`:""  ,
       floorIdQuery = floorId ?  `&floorId=${floorId}`:""  ;
 
@@ -678,7 +720,10 @@ export {
   toSignOut,
   toAddException,
   toModifyException,
-  toModifyPermissionStatus
+  toModifyPermissionStatus,
+  toGetconvergeRoomDetails,
+  toGetLowVoltageRoomDetails,
+  toGetAllExceptionList
 }
 
 

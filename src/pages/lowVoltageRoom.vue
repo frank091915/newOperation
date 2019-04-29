@@ -19,7 +19,7 @@
         class="statusDisplay"
       >
         <div class="imgWrapper">
-          <img :src='color(item.statusDescription)'>
+          <img :src='color(item.statusDescription)' @click="toShowDetails(item.Id)">
         </div>
 
         <p>{{item.roomName}}</p>
@@ -53,6 +53,10 @@ export default {
         case "故障":
           return ('../../static/assets/lowVoltageRoomRed.png');
       }
+    },
+    toShowDetails(id){
+      console.log(id)
+      this.$router.push({path:"/roomDetails",query:{title:"弱电间详情",detailsId:id,roomType:2}})
     }
   },
   created() {

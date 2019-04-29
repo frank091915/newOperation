@@ -83,61 +83,71 @@ const columns = [
     title: "序号",
     dataIndex: "key",
     width: "8%",
-    scopedSlots: { customRender: "_id" }
+    scopedSlots: { customRender: "_id" },
+    align:"center"
   },
   {
     title: "状态",
     dataIndex: "statusDescription",
     width: "8%",
-    scopedSlots: { customRender: "age" }
+    scopedSlots: { customRender: "age" },
+    align:"center"
   },
   {
     title: "广播名称",
     dataIndex: "Description",
     width: "8%",
-    scopedSlots: { customRender: "address" }
+    scopedSlots: { customRender: "address" },
+    align:"center"
   },
   {
     title: "型号",
     dataIndex: "Model",
     width: "8%",
-    scopedSlots: { customRender: "address" }
+    scopedSlots: { customRender: "address" },
+    align:"center"
   },
    {
     title: "楼宇名称",
     dataIndex: "buildingName",
     width: "8%",
-    scopedSlots: { customRender: "address" }
+    scopedSlots: { customRender: "address" },
+    align:"center"
   },
   {
     title: "楼层",
     dataIndex: "floorName",
     width: "8%",
-    scopedSlots: { customRender: "address" }
+    scopedSlots: { customRender: "address" },
+    align:"center"
   },
   {
     title: "房间",
     dataIndex: "roomName",
     width: "8%",
-    scopedSlots: { customRender: "address" }
+    scopedSlots: { customRender: "address" },
+    align:"center"
   },
   {
     title: "编号",
     dataIndex: "Code",
     width: "8%",
-    scopedSlots: { customRender: "address" }
+    scopedSlots: { customRender: "address" },
+    align:"center"
   },
   {
     title: "ip地址",
     dataIndex: "SerialNumber",
     width: "8%",
-    scopedSlots: { customRender: "SerialNumber" }
+    scopedSlots: { customRender: "SerialNumber" },
+    align:"center"
   },
   {
     title: "备注",
     dataIndex: "remarks",
     width: "8%",
-    scopedSlots: { customRender: "address" }
+    scopedSlots: { customRender: "address" },
+    align:"center"
   }
 ];
 
@@ -212,7 +222,11 @@ export default {
       );
     },
     search(){
-      console.log(this.searchParam)
+          let statusParam=this.status === "全部" ? null : this.status,
+              buildingIdParam= this.buildingId === "全部" ? null : this.buildingId;          
+          console.log(this.page,statusParam,buildingIdParam,this.searchParam);
+
+          this.GetBroadcastList(this.page,statusParam,buildingIdParam,this.searchParam)
     },
     addOrder(){
         var i=1;
@@ -220,11 +234,9 @@ export default {
           item["key"]=i++;
           return true
         })
-    }
-  },
-  created() {
-    // 获得门禁列表
-    this.$http.toGetBroadcastList().then((res)=>{
+    },
+    GetBroadcastList(page,status,buildingId,searchRoom){
+    this.$http.toGetBroadcastList(page,status,buildingId,searchRoom).then((res)=>{
         console.log(res)
         if(res.data.success){
         this.data=res.data.data
@@ -235,6 +247,11 @@ export default {
         })
       }
     })
+    }
+  },
+  created() {
+    // 获得门禁列表
+    this.GetBroadcastList(this.page)
     // 获取所有楼宇名称
     this.$http.toGetBuildingList().then((res)=>{
       if(res.data.success){

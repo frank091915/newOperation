@@ -18,7 +18,6 @@
             <a-select-option :value="nullStatus">全部</a-select-option>
             <a-select-option :value="normalStatus">正常</a-select-option>
             <a-select-option :value="abnormalStatus">异常</a-select-option>
-            <a-select-option :value="unknowStatus">未知</a-select-option>
           </a-select>
         </div>
       </div>
@@ -55,7 +54,10 @@
       :dataSource="data"
       :pagination="false"
       size="small"
-      bordered>
+      bordered 
+      :scroll="{y:750}"
+      :loading="isLoading"
+      >
         <template
           v-for="col in ['name', 'age', 'address']"
           :slot="col"
@@ -83,61 +85,71 @@ const columns = [
     title: "序号",
     dataIndex: "key",
     width: "8%",
-    scopedSlots: { customRender: "_id" }
+    scopedSlots: { customRender: "_id" },
+    align:"center"
   },
   {
     title: "状态",
     dataIndex: "statusDescription",
     width: "10%",
-    scopedSlots: { customRender: "age" }
+    scopedSlots: { customRender: "age" },
+    align:"center"
   },
   {
     title: "服务器名称",
     dataIndex: "Description",
     width: "10%",
-    scopedSlots: { customRender: "address" }
+    scopedSlots: { customRender: "address" },
+    align:"center"
   },
   {
     title: "型号",
     dataIndex: "modelNumber",
     width: "10%",
-    scopedSlots: { customRender: "address" }
+    scopedSlots: { customRender: "address" },
+    align:"center"
   },
    {
     title: "楼宇名称",
     dataIndex: "buildingName",
     width: "10%",
-    scopedSlots: { customRender: "address" }
+    scopedSlots: { customRender: "address" },
+    align:"center"
   },
   {
     title: "楼层",
     dataIndex: "floorNumber",
     width: "10%",
-    scopedSlots: { customRender: "address" }
+    scopedSlots: { customRender: "address" },
+    align:"center"
   },
   {
     title: "房间",
     dataIndex: "roomNumber",
     width: "10%",
-    scopedSlots: { customRender: "address" }
+    scopedSlots: { customRender: "address" },
+    align:"center"
   },
   {
     title: "编号",
     dataIndex: "Code",
     width: "10%",
-    scopedSlots: { customRender: "address" }
+    scopedSlots: { customRender: "address" },
+    align:"center"
   },
   {
     title: "ip地址",
     dataIndex: "SerialNumber",
     width: "10%",
-    scopedSlots: { customRender: "SerialNumber" }
+    scopedSlots: { customRender: "SerialNumber" },
+    align:"center"
   },
   {
     title: "备注",
     dataIndex: "remarks",
     width: "10%",
-    scopedSlots: { customRender: "address" }
+    scopedSlots: { customRender: "address" },
+    align:"center"
   }
 ];
 
@@ -169,7 +181,8 @@ export default {
       statusParam:"",
       buildingIdParam:"",
       page:1,
-      searchParam:""
+      searchParam:"",
+      isLoading:true
     };
   },
   methods: {
@@ -207,7 +220,11 @@ export default {
       );
     },
     search(){
-      console.log(this.searchParam)
+        let statusParam=this.status === "全部" ? null : this.status,
+            searchParam=this.searchParam === "全部" ? null : this.searchParam,
+            buildingIdParam= this.buildingId === "全部" ? null : this.buildingId;          
+           console.log(this.page,statusParam,buildingIdParam,this.searchParam);
+           this.GetPosMechineList(this.page,statusParam,buildingIdParam,this.searchParam)
     },
     addOrder(){
         var i=1;
@@ -215,19 +232,24 @@ export default {
           item["key"]=i++;
           return true
         })
+    },
+    GetPosMechineList(page,status,buildingId,searchRoom){
+      this.isLoading=true;
+      this.$http.toGetPosMechineList(page,status,buildingId,searchRoom).then(res => {
+        console.log(res.data.data)
+        if(res.data.success){
+          this.isLoading=false;
+          this.data=res.data.data
+          this.recordsTotal=res.data.recordsTotal
+          this.$nextTick(()=>{
+              this.addOrder()
+          })
+        }
+      });
     }
   },
   created() {
-    this.$http.toGetPosMechineList(this.page).then(res => {
-      console.log(res.data.data)
-      if(res.data.success){
-        this.data=res.data.data
-        this.recordsTotal=res.data.recordsTotal
-        this.$nextTick(()=>{
-            this.addOrder()
-        })
-      }
-    });
+    this.GetPosMechineList(this.page)
     // 获取所有楼宇名称
     this.$http.toGetBuildingList().then((res)=>{
       if(res.data.success){

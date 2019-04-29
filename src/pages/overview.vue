@@ -1,6 +1,5 @@
 <template>
   <div id="main">
-    <h3>状态汇总</h3>
     <div id="chartWrapper">
     <div id="convergeRoomChart" :style="{width: '300px', height: '300px'}"></div>
     <div id="lowVoltageRoomChart" :style="{width: '300px', height: '300px'}"></div>
