@@ -45,7 +45,7 @@
         <div id="searchByNamesLabel">名称：</div>
         <div id="searchByNamesInput">
           <a-input v-model="searchParam" placeholder="请输入圈存机名称" size="small"/>
-          <a-button @click="search(true)" type="primary" size="small">搜索</a-button>
+          <a-button @click="search(true)" type="primary" size="small" style="margin-left:15px">搜索</a-button>
         </div>
       </div>
     </div>
@@ -54,7 +54,6 @@
       :columns="columns" 
       :dataSource="data"
       :pagination="false"
-      size="small"
       :loading="isLoading"
       bordered
       :scroll="{y:750}"
@@ -77,7 +76,7 @@
 
       </a-table>
     </div>
-        <div id="pagination"> 
+        <div id="pagination" v-show="!isLoading"> 
           <div id="total">
             共{{recordsTotal}}条数据
           </div>

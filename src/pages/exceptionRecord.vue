@@ -123,12 +123,12 @@
           </div>
         </template>
       </a-table>
-              <div id="pagination"> 
+              <div id="pagination" v-show="!isLoading"> 
           <div id="total">
             共{{recordsTotal}}条数据
           </div>
           <div id="paginationBox">
-            <a-pagination @change="changePage" v-model="current" :total="recordsTotal"   :pageSize="12" v-show="!isLoading"/>
+            <a-pagination @change="changePage" v-model="current" :total="recordsTotal"   :pageSize="12" />
           </div>
         </div>
     </div>

@@ -44,7 +44,7 @@
         <div id="searchByNamesLabel">名称：</div>
         <div id="searchByNamesInput">
           <a-input v-model="searchParam" placeholder="请输入门禁名称" size="small" />
-          <a-button @click="search" type="primary" size="small">搜索</a-button>
+          <a-button @click="search" type="primary" size="small" style="margin-left:15px">搜索</a-button>
         </div>
       </div>
     </div>
@@ -53,7 +53,6 @@
       :columns="columns" 
       :dataSource="data"
       :pagination="false"
-      size="small"
       :loading="isLoading"
       bordered>
         <template
@@ -73,7 +72,9 @@
         </template>
 
       </a-table>
-              <div id="pagination"> 
+
+    </div>
+        <div id="pagination" v-show="!isLoading"> 
           <div id="total">
             共{{recordsTotal}}条数据
           </div>
@@ -81,7 +82,6 @@
             <a-pagination @change="changePage" v-model="current" :total="recordsTotal"   :pageSize="12" v-show="!isLoading"/>
           </div>
         </div>
-    </div>
   </div>
 </template>
 <script>
