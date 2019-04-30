@@ -31,10 +31,10 @@ const toGetAsideMenu = () => {
 // 请求所有异常列表
 const toGetAllExceptionList = (type) => {
   console.log(type)
-  let typeParam= type ?   `type=${type}`: "";
+  let typeParam= type ?   `?type=${type}`: "";
 
   return ajax.get(
-    "/api/exception/all?" + typeParam, {
+    "/api/exception/all" + typeParam, {
       headers: {
         "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken"))
       }
@@ -147,8 +147,8 @@ const toGetExceptionManageList = (page=1) => {
 }
 
 // 请求pos机列表
-const toGetPosMechineList = (page =1, status,buildingId,searchRoom) => {
-  console.log(page =1, status,buildingId,searchRoom)
+const toGetPosMechineList = (page , status,buildingId,searchRoom) => {
+  console.log(page , status,buildingId,searchRoom)
   let statusQuery = status ? `&status=${status}`:  "" ,
     buildingIdQuery = buildingId ? `&buildingId=${buildingId}`: ""  ,
     searchRoomQuery = searchRoom ?  `&searchRoom=${searchRoom}`: "";
@@ -160,6 +160,22 @@ const toGetPosMechineList = (page =1, status,buildingId,searchRoom) => {
     }
   )
 }
+
+// 请求服务器列表
+const toGetServerRoomList = (page , status,buildingId,searchRoom) => {
+  console.log(page , status,buildingId,searchRoom)
+  let statusQuery = status ? `&status=${status}`:  "" ,
+    buildingIdQuery = buildingId ? `&buildingId=${buildingId}`: ""  ,
+    searchRoomQuery = searchRoom ?  `&searchRoom=${searchRoom}`: "";
+  return ajax.get(
+    `/api/control/server?currentPage=` + page + statusQuery + buildingIdQuery + searchRoomQuery, {
+      headers: {
+        "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken"))
+      }
+    }
+  )
+}
+
 // 获取故障异常列表
 const toGetFualtExceptionList = (page =1,FaultId,exceptionType) => {
   let exceptionTypeQuery = exceptionType !=undefined? `&exceptionType=${exceptionType}` : "";
@@ -233,8 +249,8 @@ const toGetBroadcastList = (page =1, status,buildingId,searchRoom) => {
 // 请求交换机列表
 const toGetinterchangerList = (page =1,status,buildingId,searchRoom) => {
   let statusQuery = status ===undefined || status ===null ?  "" : `&status=${status}`,
-    buildingIdQuery = buildingId !==undefined ? `&buildingId=${buildingId}` : "",
-    searchRoomQuery = searchRoom !=undefined ? `&searchRoom=${searchRoom}` : "";
+    buildingIdQuery = buildingId  ? `&buildingId=${buildingId}` : "",
+    searchRoomQuery = searchRoom ? `&searchRoom=${searchRoom}` : "";
   return ajax.get(
     `/api/control/network?currentPage=` + page + statusQuery + buildingIdQuery + searchRoomQuery, {
       headers: {
@@ -723,7 +739,8 @@ export {
   toModifyPermissionStatus,
   toGetconvergeRoomDetails,
   toGetLowVoltageRoomDetails,
-  toGetAllExceptionList
+  toGetAllExceptionList,
+  toGetServerRoomList
 }
 
 

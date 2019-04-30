@@ -25,7 +25,7 @@
         <div class="label">楼宇名称：</div>
         <div id="buildingSearchInput">
           <a-select
-          size="small"
+            size="small"
             defaultValue="检测中心"
             showSearch
             placeholder="Select a person"
@@ -36,7 +36,11 @@
             v-model="buildingId"
           >
             <a-select-option :value="nullStatus" :key="8874">全部</a-select-option>
-            <a-select-option v-for="item in allBuildings" :value="item.Id" :key="item.Id">{{item.Address}}</a-select-option>
+            <a-select-option
+              v-for="item in allBuildings"
+              :value="item.Id"
+              :key="item.Id"
+            >{{item.Address}}</a-select-option>
           </a-select>
         </div>
       </div>
@@ -44,18 +48,19 @@
         <div id="searchByNamesLabel">名称：</div>
         <div id="searchByNamesInput">
           <a-input v-model="searchParam" placeholder="请输入广播名称" size="small"/>
-          <a-button @click="search" type="primary" size="small">搜索</a-button>
+          <a-button @click="search(true)" type="primary" size="small">搜索</a-button>
         </div>
       </div>
     </div>
     <div id="tableWrapper">
-      <a-table 
-      :columns="columns" 
-      :dataSource="data"
-      :pagination="false"
-      size="small"
-      :loading="isLoading"
-      bordered>
+      <a-table
+        :columns="columns"
+        :dataSource="data"
+        :pagination="false"
+        size="small"
+        :loading="isLoading"
+        bordered
+      >
         <template
           v-for="col in ['name', 'age', 'address']"
           :slot="col"
@@ -71,83 +76,93 @@
             <template v-else>{{text}}</template>
           </div>
         </template>
-
       </a-table>
+      <div id="pagination">
+        <div id="total">共{{recordsTotal}}条数据</div>
+        <div id="paginationBox">
+          <a-pagination
+            @change="changePage"
+            v-model="current"
+            :total="recordsTotal"
+            :pageSize="12"
+            v-show="!isLoading"
+          />
+        </div>
+      </div>
     </div>
   </div>
 </template>
 <script>
-
 const columns = [
   {
     title: "序号",
     dataIndex: "key",
     width: "8%",
     scopedSlots: { customRender: "_id" },
-    align:"center"
+    align: "center"
   },
   {
     title: "状态",
     dataIndex: "statusDescription",
     width: "8%",
     scopedSlots: { customRender: "age" },
-    align:"center"
+    align: "center"
   },
   {
     title: "广播名称",
     dataIndex: "Description",
     width: "8%",
     scopedSlots: { customRender: "address" },
-    align:"center"
+    align: "center"
   },
   {
     title: "型号",
     dataIndex: "Model",
     width: "8%",
     scopedSlots: { customRender: "address" },
-    align:"center"
+    align: "center"
   },
-   {
+  {
     title: "楼宇名称",
     dataIndex: "buildingName",
     width: "8%",
     scopedSlots: { customRender: "address" },
-    align:"center"
+    align: "center"
   },
   {
     title: "楼层",
     dataIndex: "floorName",
     width: "8%",
     scopedSlots: { customRender: "address" },
-    align:"center"
+    align: "center"
   },
   {
     title: "房间",
     dataIndex: "roomName",
     width: "8%",
     scopedSlots: { customRender: "address" },
-    align:"center"
+    align: "center"
   },
   {
     title: "编号",
     dataIndex: "Code",
     width: "8%",
     scopedSlots: { customRender: "address" },
-    align:"center"
+    align: "center"
   },
   {
     title: "ip地址",
     dataIndex: "SerialNumber",
     width: "8%",
     scopedSlots: { customRender: "SerialNumber" },
-    align:"center"
+    align: "center"
   },
   {
     title: "备注",
     dataIndex: "remarks",
     width: "8%",
     scopedSlots: { customRender: "address" },
-    align:"center"
+    align: "center"
   }
 ];
 
@@ -166,53 +181,61 @@ export default {
   data() {
     this.cacheData = data.map(item => ({ ...item }));
     return {
-      data:[],
+      data: [],
       columns,
-      recordsTotal:"",
-      status:"全部",
-      allBuildings:[],
-      buildingId:"全部",
-      nullStatus:"null",
-      normalStatus:1,
-      abnormalStatus:0,
-      unknowStatus:-1,
-      statusParam:"",
-      buildingIdParam:"",
-      page:1,
-      searchParam:"",
-      isLoading:true
+      recordsTotal: 0,
+      status: "全部",
+      allBuildings: [],
+      buildingId: "全部",
+      nullStatus: "null",
+      normalStatus: 1,
+      abnormalStatus: 0,
+      unknowStatus: -1,
+      statusParam: "",
+      buildingIdParam: "",
+      page: 1,
+      searchParam: "",
+      isLoading: true,
+      current: 1
     };
   },
   methods: {
     handleStatusChange() {
-      this.isLoading=true;
-      this.statusParam=this.status==="null" ? null : this.status;
-      this.$http.toGetBroadcastList(1,this.statusParam,this.buildingIdParam).then((res)=>{
-        if(res.data.success){
-          this.data=res.data.data
-            this.$nextTick(()=>{
-            this.addOrder()
-            this.isLoading=false
-        })
-        }else{
-          this.$message.error(res.data.errorInfo);
-        }
-      })
+      this.isLoading = true;
+      this.statusParam = this.status === "null" ? null : this.status;
+      this.$http
+        .toGetBroadcastList(1, this.statusParam, this.buildingIdParam)
+        .then(res => {
+          if (res.data.success) {
+            this.recordsTotal = res.data.recordsTotal;
+            this.data = res.data.data;
+            this.$nextTick(() => {
+              this.addOrder();
+              this.isLoading = false;
+            });
+          } else {
+            this.$message.error(res.data.errorInfo);
+          }
+        });
     },
-    handleBuildingChange(){
-      this.isLoading=true
-      this.buildingIdParam=this.buildingId==="null" ? null : this.buildingId;
-      this.$http.toGetBroadcastList(1,this.statusParam,this.buildingIdParam).then((res)=>{
-        if(res.data.success){
-          this.data=res.data.data
-            this.$nextTick(()=>{
-            this.addOrder()
-            this.isLoading=false
-        })
-        }else{
-          this.$message.error(res.data.errorInfo);
-        }
-      })
+    handleBuildingChange() {
+      this.isLoading = true;
+      this.buildingIdParam =
+        this.buildingId === "null" ? null : this.buildingId;
+      this.$http
+        .toGetBroadcastList(1, this.statusParam, this.buildingIdParam)
+        .then(res => {
+          if (res.data.success) {
+            this.data = res.data.data;
+            this.recordsTotal = res.data.recordsTotal;
+            this.$nextTick(() => {
+              this.addOrder();
+              this.isLoading = false;
+            });
+          } else {
+            this.$message.error(res.data.errorInfo);
+          }
+        });
     },
     filterOption(input, option) {
       return (
@@ -221,60 +244,79 @@ export default {
           .indexOf(input.toLowerCase()) >= 0
       );
     },
-    search(){
-          let statusParam=this.status === "全部" ? null : this.status,
-              buildingIdParam= this.buildingId === "全部" ? null : this.buildingId;          
-          console.log(this.page,statusParam,buildingIdParam,this.searchParam);
+    search(isSearching) {
+      let statusParam = this.status === "全部" ? null : this.status,
+        buildingIdParam = this.buildingId === "全部" ? null : this.buildingId;
+      console.log(this.page, statusParam, buildingIdParam, this.searchParam);
 
-          this.GetBroadcastList(this.page,statusParam,buildingIdParam,this.searchParam)
+      this.GetBroadcastList(
+        this.page,
+        statusParam,
+        buildingIdParam,
+        this.searchParam,
+        isSearching
+      );
     },
-    addOrder(){
-        var i=1;
-          this.data=this.data.filter((item)=>{
-          item["key"]=i++;
-          return true
-        })
+    addOrder() {
+      var i = 1;
+      this.data = this.data.filter(item => {
+        item["key"] = i++;
+        return true;
+      });
     },
-    GetBroadcastList(page,status,buildingId,searchRoom){
-    this.$http.toGetBroadcastList(page,status,buildingId,searchRoom).then((res)=>{
-        console.log(res)
-        if(res.data.success){
-        this.data=res.data.data
-        this.recordsTotal=res.data.recordsTotal
-        this.$nextTick(()=>{
-          this.isLoading=false
-            this.addOrder()
-        })
-      }
-    })
+    GetBroadcastList(page, status, buildingId, searchRoom,isSearching) {
+      this.isLoading = true;
+      this.$http
+        .toGetBroadcastList(page, status, buildingId, searchRoom)
+        .then(res => {
+          console.log(res);
+          if (res.data.success) {
+            this.data = res.data.data;
+            this.recordsTotal = res.data.recordsTotal;
+            if(isSearching){
+              this.current=1
+            }
+            this.$nextTick(() => {
+              this.isLoading = false;
+              this.addOrder();
+            });
+          }
+        });
+    },
+    changePage(page) {
+      console.log(page);
+      this.page = page;
+      this.$nextTick(() => {
+        console.log(this.page);
+        this.search(false);
+      });
     }
   },
   created() {
     // 获得门禁列表
-    this.GetBroadcastList(this.page)
+    this.GetBroadcastList(this.page);
     // 获取所有楼宇名称
-    this.$http.toGetBuildingList().then((res)=>{
-      if(res.data.success){
-        this.allBuildings=res.data.data
-
+    this.$http.toGetBuildingList().then(res => {
+      if (res.data.success) {
+        this.allBuildings = res.data.data;
       }
-    })
+    });
   }
 };
 </script>
 <style scoped>
-html{
+html {
   height: 100%;
 }
-body{
+body {
   height: 100%;
 }
-#main{
+#main {
   height: calc(100% - 50px);
-    width: 95%;
+  width: 95%;
   margin-left: 20px;
 }
-#frame{
+#frame {
   height: 100%;
 }
 #searchBox {
@@ -303,12 +345,27 @@ body{
   justify-content: space-between;
   align-items: center;
 }
-.ant-table-row td{
+.ant-table-row td {
   background-color: aqua;
-  padding:10px !important;
+  padding: 10px !important;
 }
-#tableWrapper{
+#tableWrapper {
   height: calc(100% - 100px);
   overflow: auto;
+}
+#pagination {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 15px;
+}
+#total {
+  font-size: 15px;
+}
+#buildingSearch {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
 }
 </style>

@@ -24,7 +24,7 @@
         </div>
         
 
-      <div id="statusSearch">
+      <div id="statusSearch" style="margin-left: 15px">
         <div class="label">告警类型：</div>
         <div id="statusSearchInput">
           <a-select
@@ -48,11 +48,11 @@
           </a-select>
         </div>
       </div>
-      <div id="searchByNames" style="margin-left:10px">
+      <div id="searchByNames" style="margin-left:15px">
         <div id="searchByNamesLabel">通知人员：</div>
         <div id="searchByNamesInput">
           <a-input size="small" v-model="searchName" placeholder="请输入通知人员" style="width: 120px"/>
-          <a-button style="margin-left:10px" size="small" @click="search" type="primary">查询</a-button>
+          <a-button style="margin-left:10px" size="small" @click="search(true)" type="primary">查询</a-button>
         </div>
       </div>
     </div>
@@ -62,7 +62,6 @@
       :dataSource="data"
       :pagination="false"
       :loading="isLoading"
-      size="small"
       bordered
       :scroll="{y:750}"
       >
@@ -83,6 +82,14 @@
         </template>
 
       </a-table>
+        <div id="pagination"> 
+          <div id="total">
+            共{{recordsTotal}}条数据
+          </div>
+          <div id="paginationBox">
+            <a-pagination @change="changePage" v-model="current" :total="recordsTotal"   :pageSize="12" v-show="!isLoading"/>
+          </div>
+        </div>
     </div>
   </div>
 </template>
@@ -92,42 +99,42 @@ const columns = [
   {
     title: "警告标号",
     dataIndex: "key",
-    width: "8%",
+    width: "5%",
     scopedSlots: { customRender: "_id" },
     align:"center"
   },
    {
     title: "楼宇名称",
     dataIndex: "deviceInfo.buildingName",
-    width: "8%",
+    width: "10%",
     scopedSlots: { customRender: "address" },
     align:"center"
   },
   {
     title: "楼层",
     dataIndex: "deviceInfo.floorName",
-    width: "8%",
+    width: "10%",
     scopedSlots: { customRender: "address" },
     align:"center"
   },
   {
     title: "房间",
     dataIndex: "deviceInfo.roomName",
-    width: "8%",
+    width: "12%",
     scopedSlots: { customRender: "address" },
     align:"center"
   },
   {
     title: "设备MAC",
     dataIndex: "deviceInfo.MacAddress",
-    width: "8%",
+    width: "10%",
     scopedSlots: { customRender: "address" },
     align:"center"
   },
   {
     title: "告警类型",
     dataIndex: "warningRecord.way",
-    width: "8%",
+    width: "10%",
     scopedSlots: { customRender: "address" },
     align:"center"
   },
@@ -141,21 +148,21 @@ const columns = [
   {
     title: "告警时间",
     dataIndex: "warningRecord.time",
-    width: "8%",
+    width: "15%",
     scopedSlots: { customRender: "SerialNumber" },
     align:"center"
   },
   {
     title: "通知人员",
     dataIndex: "warningRecord.userName",
-    width: "8%",
+    width: "10%",
     scopedSlots: { customRender: "SerialNumber" },
     align:"center"
   },
   {
     title: "备注",
     dataIndex: "warningRecord.exceptionRemark",
-    width: "8%",
+    width: "10%",
     scopedSlots: { customRender: "address" },
     align:"center"
   }
@@ -178,7 +185,7 @@ export default {
     return {
       data:[],
       columns,
-      recordsTotal:"",
+      recordsTotal:0,
       status:"全部",
       allBuildings:[],
       buildingId:"全部",
@@ -196,6 +203,7 @@ export default {
       convergeRoom:1,
       lowVoltageRoom:2,
       exceptionList:[],
+      current:1
     };
   },
   methods: {
@@ -210,11 +218,11 @@ export default {
           .indexOf(input.toLowerCase()) >= 0
       );
     },
-    search(){
+    search(isSearching){
       let
           warningTypeParam=this.warningType ==="全部" ? null : this.warningType;
 
-          this.getWarningList(this.page,warningTypeParam,this.searchName)
+          this.getWarningList(this.page,warningTypeParam,this.searchName,isSearching)
     },
     addOrder(){
         var i=1;
@@ -223,19 +231,22 @@ export default {
           return true
         })
     },
-    getWarningList(page,type,searchName){
+    getWarningList(page,type,searchName,isSearching){
+      this.isLoading=true;
     this.$http.toGetWarningRecordList(page,type,searchName).then((res)=>{
         console.log(res)
         this.data=res.data.data
         this.recordsTotal=res.data.recordsTotal
         this.isLoading=false
+        if(isSearching){
+          this.current=1
+        }
         this.$nextTick(()=>{
             this.addOrder()
         })
     })
     },
     handleDeviceTypeChange(){
-
       this.warningType="全部"
       let deviceTypeParam= this.deviceType ==="全部" ? null : this.deviceType;
             console.log(this.deviceType,deviceTypeParam)
@@ -246,7 +257,15 @@ export default {
         }
       })
       // toGetAllExceptionList
-    }
+    },
+    changePage(page){
+      console.log(page)
+      this.page=page;
+      this.$nextTick(()=>{
+        console.log(this.page)
+        this.search(false)
+      })
+    },
   },
   created() {
     this.getWarningList()
@@ -318,6 +337,21 @@ body{
 #deviceType{
   width: 190px;
     display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+#pagination{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 15px;
+}
+#total{
+  font-size: 15px;
+}
+#buildingSearch{
+  display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;

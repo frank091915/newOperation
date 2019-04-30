@@ -22,7 +22,7 @@
             </a-select>
           </div>
         </div>
-        <div id="statusSearch">
+        <div id="buildingSearch">
           <div class="label">楼宇名称：</div>
           <div id="buildingSearchInput">
             <a-select
@@ -49,12 +49,12 @@
           <div id="searchByNamesLabel">名称：</div>
           <div id="searchByNamesInput">
             <a-input v-model="searchParam" placeholder="请输入POS机名称"  size="small"/>
-            <a-button @click="search" type="primary" size="small">搜索</a-button>
+            <a-button @click="search(true)" type="primary" size="small">搜索</a-button>
           </div>
         </div>
       </div>
       <div id="tableWrapper">
-        <a-table :columns="columns" :dataSource="data" :pagination="false" size="small" bordered :loading="isLoading" :scroll="{y:900}">
+        <a-table :columns="columns" :dataSource="data" :pagination="false"  bordered :loading="isLoading" :scroll="{y:900}">
           <template
             v-for="col in ['name', 'age', 'address']"
             :slot="col"
@@ -71,6 +71,14 @@
             </div>
           </template>
         </a-table>
+        <div id="pagination"> 
+          <div id="total">
+            共{{recordsTotal}}条数据
+          </div>
+          <div id="paginationBox">
+            <a-pagination @change="changePage" v-model="current" :total="recordsTotal"   :pageSize="12" v-show="!isLoading"/>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -166,7 +174,7 @@ export default {
     return {
       data: [],
       columns,
-      recordsTotal: "",
+      recordsTotal: 0,
       status: "全部",
       allBuildings: [],
       buildingId: "全部",
@@ -178,7 +186,8 @@ export default {
       buildingIdParam: this.buildingId === "全部" ? null : this.buildingId,
       page: 1,
       searchParam: "",
-      isLoading: true
+      isLoading: true,
+      current: 1
     };
   },
   methods: {
@@ -218,12 +227,12 @@ export default {
           .indexOf(input.toLowerCase()) >= 0
       );
     },
-    search() {
+    search(isSearching) {
       let statusParam=this.status === "全部" ? null : this.status,
           searchParam=this.searchParam === "全部" ? null : this.searchParam,
           buildingIdParam= this.buildingId === "全部" ? null : this.buildingId;          
       console.log(this.searchParam,statusParam,buildingIdParam);
-      this.GetPosMechineList(this.page,statusParam,buildingIdParam,this.searchParam)
+      this.GetPosMechineList(this.page,statusParam,buildingIdParam,this.searchParam,isSearching)
     },
     addOrder() {
       var i = 1;
@@ -232,7 +241,8 @@ export default {
         return true;
       });
     },
-    GetPosMechineList(page,status,buildingId,searchRoom){
+    GetPosMechineList(page,status,buildingId,searchRoom,isSearching){
+      this.isLoading=true;
       this.$http.toGetPosMechineList(page,status,buildingId,searchRoom).then(res => {
         console.log(res);
         var i = 0;
@@ -242,12 +252,23 @@ export default {
             return true;
           });
           this.recordsTotal = res.data.recordsTotal;
+          if(isSearching){
+            this.current=1
+          }
           this.$nextTick(() => {
             this.isLoading = false;
           });
         }
       });
-    }
+    },
+    changePage(page){
+      console.log(page)
+      this.page=page;
+      this.$nextTick(()=>{
+        console.log(this.page)
+        this.search(false)
+      })
+    },
   },
   created() {
     this.GetPosMechineList(this.page)
@@ -314,5 +335,20 @@ body {
   background-color: #e6f7ff;
   padding: 30px;
   height: 200px;
+}
+#pagination{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 15px;
+}
+#total{
+  font-size: 15px;
+}
+#buildingSearch{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
 }
 </style>

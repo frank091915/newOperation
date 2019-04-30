@@ -44,7 +44,7 @@
         <div id="searchByNamesLabel">名称：</div>
         <div id="searchByNamesInput">
           <a-input v-model="searchParam" placeholder="请输入服务器名称" size="small"/>
-          <a-button @click="search" type="primary" size="small">搜索</a-button>
+          <a-button @click="search(true)" type="primary" size="small">搜索</a-button>
         </div>
       </div>
     </div>
@@ -75,7 +75,16 @@
         </template>
 
       </a-table>
+          <div id="pagination"> 
+          <div id="total">
+            共{{recordsTotal}}条数据
+          </div>
+          <div id="paginationBox">
+            <a-pagination @change="changePage" v-model="current" :total="recordsTotal"   :pageSize="12" v-show="!isLoading"/>
+          </div>
+        </div>
     </div>
+
   </div>
 </template>
 <script>
@@ -170,7 +179,7 @@ export default {
     return {
       data:[],
       columns,
-      recordsTotal:"",
+      recordsTotal:0,
       status:"全部",
       allBuildings:[],
       buildingId:"全部",
@@ -182,14 +191,18 @@ export default {
       buildingIdParam:"",
       page:1,
       searchParam:"",
-      isLoading:true
+      isLoading:true,
+      current: 1
     };
   },
   methods: {
     handleStatusChange() {
       this.statusParam=this.status==="null" ? null : this.status;
-      this.$http.toGetPosMechineList(1,this.statusParam,this.buildingIdParam).then((res)=>{
+      this.isLoading=true;
+      this.$http.toGetServerRoomList(1,this.statusParam,this.buildingIdParam).then((res)=>{
         if(res.data.success){
+                    this.recordsTotal=res.data.recordsTotal
+                this.isLoading=false;
           this.data=res.data.data
           this.$nextTick(()=>{
             this.addOrder()
@@ -201,8 +214,11 @@ export default {
     },
     handleBuildingChange(){
       this.buildingIdParam=this.buildingId==="null" ? null : this.buildingId;
-      this.$http.toGetPosMechineList(1,this.statusParam,this.buildingIdParam).then((res)=>{
+            this.isLoading=true;
+      this.$http.toGetServerRoomList(1,this.statusParam,this.buildingIdParam).then((res)=>{
         if(res.data.success){
+          this.isLoading=false;
+                    this.recordsTotal=res.data.recordsTotal
           this.data=res.data.data
                   this.$nextTick(()=>{
             this.addOrder()
@@ -219,12 +235,12 @@ export default {
           .indexOf(input.toLowerCase()) >= 0
       );
     },
-    search(){
+    search(isSearching){
         let statusParam=this.status === "全部" ? null : this.status,
             searchParam=this.searchParam === "全部" ? null : this.searchParam,
             buildingIdParam= this.buildingId === "全部" ? null : this.buildingId;          
            console.log(this.page,statusParam,buildingIdParam,this.searchParam);
-           this.GetPosMechineList(this.page,statusParam,buildingIdParam,this.searchParam)
+           this.toGetServerRoomList(this.page,statusParam,buildingIdParam,this.searchParam,isSearching)
     },
     addOrder(){
         var i=1;
@@ -233,23 +249,32 @@ export default {
           return true
         })
     },
-    GetPosMechineList(page,status,buildingId,searchRoom){
+    toGetServerRoomList(page,status,buildingId,searchRoom,isSearching){
       this.isLoading=true;
-      this.$http.toGetPosMechineList(page,status,buildingId,searchRoom).then(res => {
+      this.$http.toGetServerRoomList(page,status,buildingId,searchRoom).then(res => {
         console.log(res.data.data)
         if(res.data.success){
           this.isLoading=false;
           this.data=res.data.data
+          if(isSearching){this.current=1}
           this.recordsTotal=res.data.recordsTotal
           this.$nextTick(()=>{
               this.addOrder()
           })
         }
       });
+    },
+    changePage(page){
+      console.log(page)
+      this.page=page;
+      this.$nextTick(()=>{
+        console.log(this.page)
+        this.search(false)
+      })
     }
   },
   created() {
-    this.GetPosMechineList(this.page)
+    this.toGetServerRoomList(this.page)
     // 获取所有楼宇名称
     this.$http.toGetBuildingList().then((res)=>{
       if(res.data.success){
@@ -307,5 +332,20 @@ body{
 #tableWrapper{
   height: calc(100% - 100px);
   overflow: auto;
+}
+#pagination{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 15px;
+}
+#total{
+  font-size: 15px;
+}
+#buildingSearch{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
 }
 </style>

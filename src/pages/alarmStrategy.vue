@@ -27,6 +27,14 @@
                 </div>
               </template>
             </a-table>
+          <div id="pagination">
+          <div id="total">
+            共{{recordsTotal}}条数据
+          </div>
+          <div id="paginationBox">
+            <a-pagination @change="changePageOnConvergeRoom" v-model="current" :total="recordsTotal"   :pageSize="12" v-show="!isLoading"/>
+          </div>
+        </div>
           </div>
         </a-tab-pane>
         <a-tab-pane tab="弱电间告警策略" key="2">
@@ -55,6 +63,14 @@
                 </div>
               </template>
             </a-table>
+          <div id="pagination">
+          <div id="total">
+            共{{recordsTotal}}条数据
+          </div>
+          <div id="paginationBox">
+            <a-pagination @change="changePageOnLovaltageRoom" v-model="current" :total="recordsTotal"   :pageSize="12" v-show="!isLoading"/>
+          </div>
+        </div>
           </div>
           </div>
         </a-tab-pane>
@@ -67,7 +83,7 @@ const columns = [
   {
     title: "序号",
     dataIndex: "key",
-    width: "10%",
+    width: "5%",
     scopedSlots: { customRender: "key" },
     align:"center"
   },
@@ -81,7 +97,7 @@ const columns = [
   {
     title: "描述",
     dataIndex: "deviceInfo.Description",
-    width: "10%",
+    width: "15%",
     scopedSlots: { customRender: "address" },
     align:"center"
   },
@@ -102,7 +118,7 @@ const columns = [
   {
     title: "房间",
     dataIndex: "deviceInfo.roomName",
-    width: "10%",
+    width: "13%",
     scopedSlots: { customRender: "name" },
     align:"center"
   },
@@ -116,7 +132,7 @@ const columns = [
   {
     title: "校园地图坐标点",
     dataIndex: "deviceInfo.location",
-    width: "10%",
+    width: "7%",
     scopedSlots: { customRender: "name" },
     align:"center"
   },
@@ -159,9 +175,10 @@ export default {
       electronicData: [],
       columns,
       allDataArray: [],
-      recordsTotal: "",
+      recordsTotal: 0,
       roomType:"NKD_AGG_DEVICE",
-      isLoading:true
+      isLoading:true,
+      current:1,
     };
   },
   methods: {
@@ -229,20 +246,23 @@ export default {
         this.roomType= key==1? "NKD_AGG_DEVICE" :"NKD_WEAK_ELECTRIC_ADVICE";
         this.$nextTick(()=>{
             console.log(this.roomType)
-         this.getAlarmStrategy(key,this.roomType);
+            this.current=1
+         this.getAlarmStrategy(key,this.roomType,this.page);
         })
     },
-    getAlarmStrategy(roomType, roomName, page=1) {
+    getAlarmStrategy(roomType, roomName, page) {
       this.isLoading=true;
       this.$http.toGetAlarmStrategy(roomName, page).then(res => {
         if (res.data.success) {
           if (roomType === 1) {
+            
             this.convergeData = res.data.data;
           } else {
             this.electronicData = res.data.data;
           }
           this.$nextTick(() => {
             console.log(res);
+            this.recordsTotal = res.data.recordsTotal;
             this.isLoading=false;
             this.addOrder(roomType);
           });
@@ -298,6 +318,22 @@ export default {
             this.$message.error("设置失败，请重试");
           }
         });
+    },
+    changePageOnConvergeRoom(page){
+      console.log(page)
+      this.page=page;
+      this.$nextTick(()=>{
+          console.log(this.roomType,this.page)
+          this.getAlarmStrategy(1,this.roomType,this.page)
+      })
+    },
+    changePageOnLovaltageRoom(){
+        console.log(page)
+        this.page=page;
+        this.$nextTick(()=>{
+            console.log(this.roomType,this.page)
+            this.getAlarmStrategy(2,this.roomType,this.page)
+        })
     }
   },
   created() {
@@ -342,7 +378,6 @@ export default {
 }
 #alarmSetWrapper{
     max-height: calc(100% - 70px);
-    overflow: auto;
     box-sizing: border-box;
     padding-right: 10px;
 }

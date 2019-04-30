@@ -93,7 +93,7 @@
       </div>
       <div id="searchByNames">
         <div id="searchByNamesInput">
-          <a-button @click="search" type="primary" size="small">搜索</a-button>
+          <a-button @click="search(true)" type="primary" size="small">搜索</a-button>
         </div>
       </div>
     </div>
@@ -123,6 +123,14 @@
           </div>
         </template>
       </a-table>
+              <div id="pagination"> 
+          <div id="total">
+            共{{recordsTotal}}条数据
+          </div>
+          <div id="paginationBox">
+            <a-pagination @change="changePage" v-model="current" :total="recordsTotal"   :pageSize="12" v-show="!isLoading"/>
+          </div>
+        </div>
     </div>
   </div>
 </template>
@@ -224,7 +232,7 @@ export default {
     return {
       data: [],
       columns,
-      recordsTotal: "",
+      recordsTotal: 0,
       status: "全部",
       allBuildings: [],
       buildingId: "全部",
@@ -239,7 +247,8 @@ export default {
       allFloors: [],
       allRooms: [],
       floor: "全部",
-      room: "全部"
+      room: "全部",
+      current:1
     };
   },
   methods: {
@@ -281,7 +290,7 @@ export default {
           .indexOf(input.toLowerCase()) >= 0
       );
     },
-    search() {
+    search(isSearching) {
       let buildingQuery = this.buildingId === "全部" ? null : this.buildingId,
           floorQuery = this.floor === "全部" ? null : this.floor,
           roomQuery = this.room === "全部" ? null : this.room,
@@ -292,7 +301,8 @@ export default {
         statusQuery,
         buildingQuery,
         floorQuery,
-        roomQuery
+        roomQuery,
+        isSearching
       );
     },
     getAllRooms() {
@@ -319,7 +329,7 @@ export default {
         console.log(this.data)
       })
     },
-    getExceptionList(page = 1, status, buildingId, floorId, roomId) {
+    getExceptionList(page = 1, status, buildingId, floorId, roomId,isSearching) {
       this.$http
         .toGetExceptionRecordList(page, status, buildingId, floorId, roomId)
         .then(res => {
@@ -327,13 +337,25 @@ export default {
           if (res.data.success) {
             this.data = res.data.data;
             this.isLoading = false;
+            this.recordsTotal = res.data.recordsTotal;
+            if(isSearching){
+              this.current=1
+            }
             this.$nextTick(() => {
               this.addOrder();
               this.addStatusDescription()
             });
           }
         });
-    }
+    },
+    changePage(page){
+      console.log(page)
+      this.page=page;
+      this.$nextTick(()=>{
+        console.log(this.page)
+        this.search(false)
+      })
+    },
   },
   created() {
     // 获取所有楼宇名称
@@ -412,5 +434,20 @@ body {
 #tableWrapper {
   height: calc(100% - 100px);
   overflow: auto;
+}
+#pagination{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 15px;
+}
+#total{
+  font-size: 15px;
+}
+#buildingSearch{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
 }
 </style>

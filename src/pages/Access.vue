@@ -73,6 +73,14 @@
         </template>
 
       </a-table>
+              <div id="pagination"> 
+          <div id="total">
+            共{{recordsTotal}}条数据
+          </div>
+          <div id="paginationBox">
+            <a-pagination @change="changePage" v-model="current" :total="recordsTotal"   :pageSize="12" v-show="!isLoading"/>
+          </div>
+        </div>
     </div>
   </div>
 </template>
@@ -175,7 +183,7 @@ export default {
     return {
       data:[],
       columns,
-      recordsTotal:"",
+      recordsTotal:0,
       status:"全部",
       allBuildings:[],
       buildingId:"全部",
@@ -187,15 +195,19 @@ export default {
       buildingIdParam:"",
       page:1,
       searchParam:"",
-      isLoading:true
+      isLoading:true,
+      current:1
     };
   },
   methods: {
     handleStatusChange() {
       this.statusParam=this.status==="null" ? null : this.status;
+      this.isLoading=true;
       this.$http.toGetAccessList(1,this.statusParam,this.buildingIdParam).then((res)=>{
         if(res.data.success){
+                      this.recordsTotal = res.data.recordsTotal;
           this.data=res.data.data
+          this.isLoading=false;
                   this.$nextTick(()=>{
             this.addOrder()
         })
@@ -205,9 +217,12 @@ export default {
       })
     },
     handleBuildingChange(){
+            this.isLoading=true;
       this.buildingIdParam=this.buildingId==="null" ? null : this.buildingId;
       this.$http.toGetAccessList(1,this.statusParam,this.buildingIdParam).then((res)=>{
         if(res.data.success){
+                this.isLoading=false;
+                      this.recordsTotal = res.data.recordsTotal;
           this.data=res.data.data
                   this.$nextTick(()=>{
             this.addOrder()
@@ -224,11 +239,11 @@ export default {
           .indexOf(input.toLowerCase()) >= 0
       );
     },
-    search(){
+    search(isSearching){
           let statusParam=this.status === "全部" ? null : this.status,
             buildingIdParam= this.buildingId === "全部" ? null : this.buildingId;          
            console.log(this.page,statusParam,buildingIdParam,this.searchParam);
-            this.GetAccessList(this.page,statusParam,buildingIdParam,this.searchParam)
+            this.GetAccessList(this.page,statusParam,buildingIdParam,this.searchParam,isSearching)
     },
     addOrder(){
         var i=1;
@@ -237,18 +252,30 @@ export default {
           return true
         })
     },
-    GetAccessList(page,statusParam,buildingIdParam,searchParam){
+    GetAccessList(page,statusParam,buildingIdParam,searchParam,isSearching){
+      this.isLoading=true;
           this.$http.toGetAccessList(page,statusParam,buildingIdParam,searchParam).then((res)=>{
         console.log(res)
         if(res.data.success){
         this.data=res.data.data
         this.recordsTotal=res.data.recordsTotal
+        if(isSearching){
+          this.current=1
+        }
         this.$nextTick(()=>{
           this.isLoading=false
             this.addOrder()
         })
       }
     })
+    },
+    changePage(page){
+      console.log(page)
+      this.page=page;
+      this.$nextTick(()=>{
+        console.log(this.page)
+        this.search(false)
+      })
     }
   },
   created() {
@@ -287,6 +314,7 @@ body{
   justify-content: space-between;
   align-items: center;
 }
+
 #statusSearch {
   display: flex;
   flex-direction: row;
@@ -313,4 +341,21 @@ body{
   height: calc(100% - 100px);
   overflow: auto;
 }
+#pagination{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 15px;
+}
+#total{
+  font-size: 15px;
+}
+#buildingSearch{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+
 </style>
