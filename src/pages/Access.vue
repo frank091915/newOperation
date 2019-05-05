@@ -54,6 +54,7 @@
       :dataSource="data"
       :pagination="false"
       :loading="isLoading"
+      :scroll="{y:750}"
       bordered>
         <template
           v-for="col in ['name', 'age', 'address']"
@@ -90,7 +91,7 @@ const columns = [
   {
     title: "序号",
     dataIndex: "key",
-    width: "8%",
+    width: "5%",
     scopedSlots: { customRender: "_id" },
     align:"center"
   },
@@ -104,7 +105,7 @@ const columns = [
   {
     title: "门禁名称",
     dataIndex: "Description",
-    width: "8%",
+    width: "10%",
     scopedSlots: { customRender: "address" },
     align:"center"
   },
@@ -118,7 +119,7 @@ const columns = [
   {
     title: "型号",
     dataIndex: "Model",
-    width: "8%",
+    width: "5%",
     scopedSlots: { customRender: "address" },
     align:"center"
   },
@@ -132,21 +133,21 @@ const columns = [
   {
     title: "楼层",
     dataIndex: "floorName",
-    width: "8%",
+    width: "10%",
     scopedSlots: { customRender: "address" },
     align:"center"
   },
   {
     title: "房间",
     dataIndex: "roomName",
-    width: "8%",
+    width: "16%",
     scopedSlots: { customRender: "address" },
     align:"center"
   },
   {
     title: "编号",
     dataIndex: "Code",
-    width: "8%",
+    width: "6%",
     scopedSlots: { customRender: "address" },
     align:"center"
   },
@@ -202,35 +203,35 @@ export default {
   methods: {
     handleStatusChange() {
       this.statusParam=this.status==="null" ? null : this.status;
-      this.isLoading=true;
-      this.$http.toGetAccessList(1,this.statusParam,this.buildingIdParam).then((res)=>{
-        if(res.data.success){
-                      this.recordsTotal = res.data.recordsTotal;
-          this.data=res.data.data
-          this.isLoading=false;
-                  this.$nextTick(()=>{
-            this.addOrder()
-        })
-        }else{
+      // this.isLoading=true;
+      // this.$http.toGetAccessList(1,this.statusParam,this.buildingIdParam).then((res)=>{
+      //   if(res.data.success){
+      //                 this.recordsTotal = res.data.recordsTotal;
+      //     this.data=res.data.data
+      //     this.isLoading=false;
+      //             this.$nextTick(()=>{
+      //       this.addOrder()
+      //   })
+      //   }else{
           
-        }
-      })
+      //   }
+      // })
     },
     handleBuildingChange(){
-            this.isLoading=true;
+            // this.isLoading=true;
       this.buildingIdParam=this.buildingId==="null" ? null : this.buildingId;
-      this.$http.toGetAccessList(1,this.statusParam,this.buildingIdParam).then((res)=>{
-        if(res.data.success){
-                this.isLoading=false;
-                      this.recordsTotal = res.data.recordsTotal;
-          this.data=res.data.data
-                  this.$nextTick(()=>{
-            this.addOrder()
-        })
-        }else{
+      // this.$http.toGetAccessList(1,this.statusParam,this.buildingIdParam).then((res)=>{
+      //   if(res.data.success){
+      //           this.isLoading=false;
+      //                 this.recordsTotal = res.data.recordsTotal;
+      //     this.data=res.data.data
+      //             this.$nextTick(()=>{
+      //       this.addOrder()
+      //   })
+      //   }else{
           
-        }
-      })
+      //   }
+      // })
     },
     filterOption(input, option) {
       return (
@@ -240,13 +241,17 @@ export default {
       );
     },
     search(isSearching){
-          let statusParam=this.status === "全部" ? null : this.status,
-            buildingIdParam= this.buildingId === "全部" ? null : this.buildingId;          
+          let statusParam=this.status === "全部" || this.status === "null" ? null : this.status,
+            buildingIdParam= this.buildingId === "全部" || this.buildingId === "null"  ? null : this.buildingId;          
            console.log(this.page,statusParam,buildingIdParam,this.searchParam);
+           if(isSearching){
+             this.page=1;
+              this.GetAccessList(this.page,statusParam,buildingIdParam,this.searchParam,isSearching)         
+           }
             this.GetAccessList(this.page,statusParam,buildingIdParam,this.searchParam,isSearching)
     },
     addOrder(){
-        var i=1;
+        var i = 1 + (this.page-1)*12;
           this.data=this.data.filter((item)=>{
           item["key"]=i++;
           return true
@@ -299,9 +304,9 @@ body{
   height: 100%;
 }
 #main{
-  height: calc(100% - 50px);
-    width: 95%;
+  width: 95%;
   margin-left: 20px;
+  box-sizing: border-box；
 }
 #frame{
   height: 100%;
@@ -336,10 +341,6 @@ body{
 .ant-table-row td{
   background-color: aqua;
   padding:10px !important;
-}
-#tableWrapper{
-  height: calc(100% - 100px);
-  overflow: auto;
 }
 #pagination{
     display: flex;

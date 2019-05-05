@@ -149,7 +149,7 @@ const toGetExceptionManageList = (page=1) => {
 // 请求pos机列表
 const toGetPosMechineList = (page , status,buildingId,searchRoom) => {
   console.log(page , status,buildingId,searchRoom)
-  let statusQuery = status ? `&status=${status}`:  "" ,
+  let statusQuery = status ===undefined || status ===null ?  "" : `&status=${status}`,
     buildingIdQuery = buildingId ? `&buildingId=${buildingId}`: ""  ,
     searchRoomQuery = searchRoom ?  `&searchRoom=${searchRoom}`: "";
   return ajax.get(
@@ -219,10 +219,11 @@ const toGetTransferList = (page =1, status,buildingId,searchRoom) => {
 }
 
 // 请求门禁列表
-const toGetAccessList = (page, status,buildingId,searchRoom) => {
-  let statusQuery = status ===undefined || status ===null ?  "" : `&status=${status}`,
-    buildingIdQuery = buildingId !=undefined? `&buildingId=${buildingId}` : "",
-    searchRoomQuery = searchRoom !=undefined? `&searchRoom=${searchRoom}` : "";
+const toGetAccessList = (page, status,buildingId,searchRoom) => { 
+  let statusQuery = status ===undefined || status ==null ?  " " : `&status=${status}`,
+    buildingIdQuery = buildingId ? `&buildingId=${buildingId}` : "",
+    searchRoomQuery = searchRoom ? `&searchRoom=${searchRoom}` : "";
+    console.log(buildingIdQuery)
   return ajax.get(
     `/api/control/access?currentPage=` + page + statusQuery + buildingIdQuery + searchRoomQuery, {
       headers: {
@@ -248,9 +249,10 @@ const toGetBroadcastList = (page =1, status,buildingId,searchRoom) => {
 
 // 请求交换机列表
 const toGetinterchangerList = (page =1,status,buildingId,searchRoom) => {
-  let statusQuery = status ===undefined || status ===null ?  "" : `&status=${status}`,
+  let statusQuery = status === undefined || status == null ?  "" : `&status=${status}`,
     buildingIdQuery = buildingId  ? `&buildingId=${buildingId}` : "",
     searchRoomQuery = searchRoom ? `&searchRoom=${searchRoom}` : "";
+    console.log(status,statusQuery,status === undefined || status == null,status === undefined,status === null)
   return ajax.get(
     `/api/control/network?currentPage=` + page + statusQuery + buildingIdQuery + searchRoomQuery, {
       headers: {
@@ -343,10 +345,10 @@ const toDeleteUser = (userId) => {
 const toAddUser = (userInfo) => {
   let obj ={};
   obj=userInfo;
-  // obj.roleIds=[userInfo.role]
+  obj.roleIds=[userInfo.role]
   console.log(obj)
   return ajax.post(
-    `/api/user?roleIds=${userInfo.role}`,obj, {
+    `/api/user`,obj, {
       headers: {
         "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken")),
         "Content-Type": "application/json"
@@ -438,11 +440,40 @@ const toModifyException = (exceptionInfo) => {
 //用户修改
 const toModifyUser = (userInfo) => {
   console.log(userInfo)
+
+let keyArray=Object.keys(userInfo),
+    itemArray=[],
+    i=0;
+    for(var item of  keyArray){
+      var obj={};
+      if(userInfo[item]){
+        if(i===0){
+          obj[item]=`?${item}= ${userInfo[item]}`
+        }else{
+          obj[item]=`&${item}= ${userInfo[item]}` ;
+        }
+
+        itemArray.push(obj);
+        i++;
+      }
+    }
+    
+console.log(itemArray)
+
+  let ultimateParam =[],
+      itemArrayKeys=Object.keys(itemArray);
+
+      for(var item of itemArrayKeys){
+        console.log(item)
+        ultimateParam.push(itemArray[item])
+      }
+
+  console.log(itemArrayKeys)
   return ajax.put(
-    "/api/user/" + userInfo.userId, qs.stringify(userInfo), {
+    `/api/user/${userInfo}`,qs.stringify(userInfo), {
       headers: {
         "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken")),
-        "Content-Type": "application/x-www-form-urlencoded"
+        "Content-Type": "application/json"
       }
     }
   )
@@ -454,7 +485,7 @@ const toModifyAlarmStrategy = (alarmStrategy) => {
     `/api/warning/strategy/device/${alarmStrategy.cmdbId}/?type=${alarmStrategy.type}`, alarmStrategy.warningStrategy, {
       headers: {
         "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken")),
-        "Content-Type": "application/json"
+        "Content-Type": "application/x-www-form-urlencoded"
       }
     }
   )

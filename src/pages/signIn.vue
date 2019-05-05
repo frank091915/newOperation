@@ -11,6 +11,7 @@
           label="用户名"
         >
           <a-input
+          @keydown.enter="check"
             v-decorator="[
           'username',
           {rules: [{ required: true, message: '请输入用户名' }]}
@@ -24,6 +25,7 @@
           label="密码"
         >
           <a-input
+          @keydown.enter="check"
             type="password"
             v-decorator="[
           'password',
@@ -139,6 +141,8 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  margin: 0 auto;
+  margin-top: 200px;
 }
 #signInFormWraper {
   width: 600px;

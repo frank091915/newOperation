@@ -77,7 +77,7 @@ export default {
           this.$http.toModifyException(values).then(res => {
             console.log(res);
             if (res.data.success) {
-              this.$message.success("添加角色成功");
+              this.$message.success("修改异常管理成功");
               this.$router.push({
                 path: "/exception",
                 query: { title: "异常管理" }

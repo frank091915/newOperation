@@ -1,11 +1,17 @@
 <template>
   <div id="main">
-    <div id="chartWrapper">
-    <div id="convergeRoomChart" :style="{width: '300px', height: '300px'}"></div>
-    <div id="lowVoltageRoomChart" :style="{width: '300px', height: '300px'}"></div>
-    <div id="controlNetChart" :style="{width: '300px', height: '300px'}"></div>
+    <div id="chartWrapper" v-show="!isLoading">
+      <div id="convergeRoomChart" :style="{width: '300px', height: '300px'}"></div>
+      <div id="lowVoltageRoomChart" :style="{width: '300px', height: '300px'}"></div>
+      <div id="controlNetChart" :style="{width: '300px', height: '300px'}"></div>
     </div>
+    <div v-if="isLoading">
+        <a-spin tip="数据正在加载中...">
+                <div class="spin-content">
 
+      </div>
+        </a-spin>
+      </div>
   </div>
 </template>
 
@@ -18,6 +24,7 @@ return {
   MachineRoomStatistics:{},
   WeakElectricStatistics:{},
   one:99,
+  isLoading:true
 }
 },
 mounted(){
@@ -302,12 +309,14 @@ title: {
 },
 created(){
     this.$http.toGetSummary().then((res)=>{
+      
         console.log(res)
         if(res.data.success){
             this.WeakElectricStatistics= res.data.data.WeakElectricStatistics;
             this.MachineRoomStatistics= res.data.data.MachineRoomStatistics;
             this.ControlNetworkStatistics= res.data.data.ControlNetworkStatistics;
             this.$nextTick(()=>{
+              this.isLoading=false;
                 this.drawMachineRoomLine()
                 this.drawLowVoltageRoomLine()
                 this.drawControlNetRoomLine()
@@ -331,4 +340,9 @@ created(){
     align-items: center;
     margin-top: 300px;
 }
+.spin-content{
+    border: 1px solid #91d5ff;
+    background-color: #e6f7ff;
+    padding: 30px;
+  }
 </style>

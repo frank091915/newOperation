@@ -42,19 +42,6 @@
       <a-form-item
         :label-col="formItemLayout.labelCol"
         :wrapper-col="formItemLayout.wrapperCol"
-        label="Code"
-      >
-        <a-input
-          v-decorator="[
-          'code',
-          {rules: [{ required: true,message:'请输入以ROLE_开头的Code'}]}
-        ]"
-          placeholder="请输入以ROLE_开头"
-        />
-      </a-form-item>
-      <a-form-item
-        :label-col="formItemLayout.labelCol"
-        :wrapper-col="formItemLayout.wrapperCol"
         label="姓名"
       >
         <a-input
@@ -100,7 +87,7 @@
           style="width: 218px"
           v-decorator="[
           'role',
-          {rules: [{ required: true,message:'请输入邮箱地址'}]}
+          {rules: []}
         ]"
         >
           <a-select-option v-for=" item in rolesGroup" :value="item.id" :key="item.id">{{item.name}}</a-select-option>

@@ -74,7 +74,7 @@
           style="width: 218px"
           v-decorator="[
           'role',
-          {rules: [{ required: true,message:'请输入邮箱地址'}],initialValue:userInformation.roles[0].name
+          {initialValue:userInformation.roles.length ? userInformation.roles[0].name : ''
           }
         ]"
         >
@@ -186,13 +186,14 @@ export default {
   },
       created () {
         this.$http.toGetUserInfoById(this.$route.query.id).then((res)=>{
-            console.log(res)
             if(res.data.success){
                 this.userInformation=res.data.data
+                this.$nextTick(()=>{
+                  console.log(this.userInformation)
+                })
             }
         });
       this.$http.toGetRoleManageList().then(res => {
-      console.log(res)
       if (res.data.success) {
         this.rolesGroup = res.data.data;
       }

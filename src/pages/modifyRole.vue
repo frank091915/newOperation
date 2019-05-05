@@ -64,7 +64,8 @@
     </a-form>
   </div>
   <div id="permissionsMenu">
-    权限菜单
+    <div id="permissionsMenuTitle">权限菜单</div>
+  
     <div id="menuSelection">
     <a-layout id="components-layout-demo-side" style="min-height: 100vh" class="frame">
       <a-layout-sider width="250px" v-model="collapsed">
@@ -443,7 +444,7 @@ export default {
 </script>
 <style scoped>
 #pageTitle{
-    margin-left: 52px;
+    margin-left: 165px;
 }
 #radioBox {
   box-sizing: border-box;
@@ -477,13 +478,10 @@ export default {
   box-sizing: border-box;
   padding-left: 145px;
 }
+
 #menuSelection {
   max-height: calc(100% - 49px);
-  margin-left: 100px;
-}
-#menuSelection {
-  max-height: calc(100% - 49px);
-  margin-left: 100px;
+  margin-top: 5px;
 }
 #components-layout-demo-side {
   min-height: 50px !important;
@@ -521,5 +519,8 @@ export default {
 }
 #returnButton{
   margin-right: 50px;
+}
+#permissionsMenuTitle{
+  text-align: center;
 }
 </style>

@@ -147,10 +147,14 @@ export default {
         })
     },
     ResetPassword(user){
+      console.log(user.id,window.currentUserId)
         this.$http.toResetPassword(user.id).then((res)=>{
-            console.log(res)
             if(res.data.success){
+              if(user.id===window.currentUserId){
+                this.$router.push("/signIn")
+              }
                 this.$message.success('重置成功')
+
             }else{
                 this.$message.success('重置密码失败，请重试')
             }

@@ -296,6 +296,19 @@ export default {
           roomQuery = this.room === "全部" ? null : this.room,
           statusQuery=this.status ==="全部" ? null : this.status;
       this.isLoading = true;
+      if(isSearching){
+        this.page=1;
+        this.$nextTick(()=>{
+            this.getExceptionList(
+              this.page,
+              statusQuery,
+              buildingQuery,
+              floorQuery,
+              roomQuery,
+              isSearching
+            );
+        })
+      }
       this.getExceptionList(
         this.page,
         statusQuery,
@@ -312,7 +325,7 @@ export default {
       console.log("获取所有楼层");
     },
     addOrder() {
-      var i = 1;
+      var i = 1 + (this.page-1)*12;
       this.data = this.data.filter(item => {
         item["key"] = i++;
         return true;

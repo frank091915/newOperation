@@ -203,38 +203,38 @@ export default {
   methods: {
     handleStatusChange() {
       this.statusParam = this.status === "null" ? null : this.status;
-      this.isLoading = true;
-      this.$http
-        .toGetinterchangerList(1, this.statusParam, this.buildingIdParam)
-        .then(res => {
-          if (res.data.success) {
-            this.isLoading = false;
-            this.data = res.data.data;
-            this.recordsTotal = res.data.recordsTotal;
-            this.$nextTick(() => {
-              this.addOrder();
-            });
-          } else {
-          }
-        });
+      // this.isLoading = true;
+      // this.$http
+      //   .toGetinterchangerList(1, this.statusParam, this.buildingIdParam)
+      //   .then(res => {
+      //     if (res.data.success) {
+      //       this.isLoading = false;
+      //       this.data = res.data.data;
+      //       this.recordsTotal = res.data.recordsTotal;
+      //       this.$nextTick(() => {
+      //         this.addOrder();
+      //       });
+      //     } else {
+      //     }
+      //   });
     },
     handleBuildingChange() {
-      this.buildingIdParam =
-        this.buildingId === "null" ? null : this.buildingId;
-      this.isLoading = true;
-      this.$http
-        .toGetinterchangerList(1, this.statusParam, this.buildingIdParam)
-        .then(res => {
-          if (res.data.success) {
-            this.isLoading = false;
-            this.data = res.data.data;
-            this.recordsTotal = res.data.recordsTotal;
-            this.$nextTick(() => {
-              this.addOrder();
-            });
-          } else {
-          }
-        });
+      // this.buildingIdParam =
+      //   this.buildingId === "null" ? null : this.buildingId;
+      // this.isLoading = true;
+      // this.$http
+      //   .toGetinterchangerList(1, this.statusParam, this.buildingIdParam)
+      //   .then(res => {
+      //     if (res.data.success) {
+      //       this.isLoading = false;
+      //       this.data = res.data.data;
+      //       this.recordsTotal = res.data.recordsTotal;
+      //       this.$nextTick(() => {
+      //         this.addOrder();
+      //       });
+      //     } else {
+      //     }
+      //   });
     },
     filterOption(input, option) {
       return (
@@ -244,18 +244,31 @@ export default {
       );
     },
     search(isSearching) {
-      let statusParam = this.status === "全部" ? null : this.status,
-        buildingIdParam = this.buildingId === "全部" ? null : this.buildingId;
+      let statusParam = this.status === "全部" || this.status === "null" ? null : this.status,
+        buildingIdParam = this.buildingId === "全部" ||this.buildingId === "null" ? null : this.buildingId;
+        console.log(statusParam)
+        if(isSearching){
+          this.page=1;
+          this.$nextTick(()=>{
+            this.GetinterchangerList(
+              this.page,
+              this.statusParam,
+              buildingIdParam,
+              this.searchParam,
+              isSearching
+            );
+          })
+        }
       this.GetinterchangerList(
         this.page,
-        statusParam,
+        this.statusParam,
         buildingIdParam,
         this.searchParam,
         isSearching
       );
     },
     addOrder() {
-      var i = 1;
+      var i = 1 + (this.page-1)*12;
       this.data = this.data.filter(item => {
         item["key"] = i++;
         return true;

@@ -112,6 +112,7 @@ export default {
   },
   methods: {
     color(type, status) {
+      console.log(status)
       switch (status) {
         case undefined:
           return `../../static/assets/${type}Grey.png`;

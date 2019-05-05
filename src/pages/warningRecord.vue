@@ -99,7 +99,7 @@ const columns = [
   {
     title: "警告标号",
     dataIndex: "key",
-    width: "5%",
+    width: "6%",
     scopedSlots: { customRender: "_id" },
     align:"center"
   },
@@ -134,7 +134,7 @@ const columns = [
   {
     title: "告警类型",
     dataIndex: "warningRecord.way",
-    width: "10%",
+    width: "9%",
     scopedSlots: { customRender: "address" },
     align:"center"
   },
@@ -221,11 +221,17 @@ export default {
     search(isSearching){
       let
           warningTypeParam=this.warningType ==="全部" ? null : this.warningType;
+          if(isSearching){
+            this.page=1;
+            this.$nextTick(()=>{
+              this.getWarningList(this.page,warningTypeParam,this.searchName,isSearching)
+            })
+          }
 
           this.getWarningList(this.page,warningTypeParam,this.searchName,isSearching)
     },
     addOrder(){
-        var i=1;
+        var i = 1 + (this.page-1)*12;
           this.data=this.data.filter((item)=>{
           item["key"]=i++;
           return true

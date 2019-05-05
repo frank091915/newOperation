@@ -31,6 +31,7 @@ export default {
   created(){
     this.title=this.$route.query.title,
     this.$http.toGetUserInfo().then((res)=>{
+      window.currentUserId=res.data.data.id
       this.username=res.data.data.username
     })
   },

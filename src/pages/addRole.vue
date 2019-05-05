@@ -432,7 +432,7 @@ export default {
 </script>
 <style scoped>
 #pageTitle {
-  margin-left: 52px;
+  margin-left: 165px;
 }
 
 #radioBox {
@@ -500,11 +500,7 @@ export default {
 
 #menuSelection {
   max-height: calc(100% - 49px);
-}
-
-#menuSelection {
-  max-height: calc(100% - 49px);
-  margin-left: 100px;
+  margin-top: 10px;
 }
 
 #opetarionBox {
@@ -523,5 +519,9 @@ export default {
 }
 #returnButton{
   margin-right: 50px;
+}
+#permissionsMenuTitle{
+  margin-top: 10px;
+  text-align: center;
 }
 </style>

@@ -59,6 +59,13 @@ const columns = [
     align:"center"
   },
   {
+    title: "异常类型",
+    dataIndex: "deviceType",
+    width: "10%",
+    scopedSlots: { customRender: "name" },
+    align:"center"
+  },
+  {
     title: "备注",
     dataIndex: "remark",
     width: "10%",
@@ -101,7 +108,7 @@ export default {
                 this.$message.success('删除成功')
                 this.GetExceptionManageList()
             }else{
-                this.$message.success('删除失败，请重试')
+                this.$message.error(res.data.errorInfo)
             }
         })
     },
@@ -169,17 +176,15 @@ export default {
       this.isLoading=true;
     this.$http.toGetExceptionManageList().then(res => {
         console.log(res)
-      var i=0;
+      var i=1;
       if(res.data.success){
         this.isLoading=false;
-        this.data=res.data.data.filter((res)=>{
+        this.data=res.data.data.map((res)=>{
           res["key"]=i++;
-          return true
+          res.deviceType=res.type ==1 ? "汇聚机房" :"弱电间"
+          return res
         })
         this.recordsTotal=res.data.recordsTotal
-        this.$nextTick(()=>{
-
-        })
       }
     });
     }

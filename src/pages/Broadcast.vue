@@ -57,7 +57,6 @@
         :columns="columns"
         :dataSource="data"
         :pagination="false"
-        size="small"
         :loading="isLoading"
         bordered
       >
@@ -77,7 +76,9 @@
           </div>
         </template>
       </a-table>
-      <div id="pagination"  v-show="!isLoading">
+
+    </div>
+          <div id="pagination"  v-show="!isLoading">
         <div id="total">共{{recordsTotal}}条数据</div>
         <div id="paginationBox">
           <a-pagination
@@ -89,7 +90,6 @@
           />
         </div>
       </div>
-    </div>
   </div>
 </template>
 <script>
@@ -97,7 +97,7 @@ const columns = [
   {
     title: "序号",
     dataIndex: "key",
-    width: "8%",
+    width: "5%",
     scopedSlots: { customRender: "_id" },
     align: "center"
   },
@@ -111,7 +111,7 @@ const columns = [
   {
     title: "广播名称",
     dataIndex: "Description",
-    width: "8%",
+    width: "15%",
     scopedSlots: { customRender: "address" },
     align: "center"
   },
@@ -201,41 +201,41 @@ export default {
   },
   methods: {
     handleStatusChange() {
-      this.isLoading = true;
-      this.statusParam = this.status === "null" ? null : this.status;
-      this.$http
-        .toGetBroadcastList(1, this.statusParam, this.buildingIdParam)
-        .then(res => {
-          if (res.data.success) {
-            this.recordsTotal = res.data.recordsTotal;
-            this.data = res.data.data;
-            this.$nextTick(() => {
-              this.addOrder();
-              this.isLoading = false;
-            });
-          } else {
-            this.$message.error(res.data.errorInfo);
-          }
-        });
+      // this.isLoading = true;
+      // this.statusParam = this.status === "null" ? null : this.status;
+      // this.$http
+      //   .toGetBroadcastList(1, this.statusParam, this.buildingIdParam)
+      //   .then(res => {
+      //     if (res.data.success) {
+      //       this.recordsTotal = res.data.recordsTotal;
+      //       this.data = res.data.data;
+      //       this.$nextTick(() => {
+      //         this.addOrder();
+      //         this.isLoading = false;
+      //       });
+      //     } else {
+      //       this.$message.error(res.data.errorInfo);
+      //     }
+      //   });
     },
     handleBuildingChange() {
-      this.isLoading = true;
-      this.buildingIdParam =
-        this.buildingId === "null" ? null : this.buildingId;
-      this.$http
-        .toGetBroadcastList(1, this.statusParam, this.buildingIdParam)
-        .then(res => {
-          if (res.data.success) {
-            this.data = res.data.data;
-            this.recordsTotal = res.data.recordsTotal;
-            this.$nextTick(() => {
-              this.addOrder();
-              this.isLoading = false;
-            });
-          } else {
-            this.$message.error(res.data.errorInfo);
-          }
-        });
+      // this.isLoading = true;
+      // this.buildingIdParam =
+      //   this.buildingId === "null" ? null : this.buildingId;
+      // this.$http
+      //   .toGetBroadcastList(1, this.statusParam, this.buildingIdParam)
+      //   .then(res => {
+      //     if (res.data.success) {
+      //       this.data = res.data.data;
+      //       this.recordsTotal = res.data.recordsTotal;
+      //       this.$nextTick(() => {
+      //         this.addOrder();
+      //         this.isLoading = false;
+      //       });
+      //     } else {
+      //       this.$message.error(res.data.errorInfo);
+      //     }
+      //   });
     },
     filterOption(input, option) {
       return (
@@ -245,9 +245,21 @@ export default {
       );
     },
     search(isSearching) {
-      let statusParam = this.status === "全部" ? null : this.status,
-        buildingIdParam = this.buildingId === "全部" ? null : this.buildingId;
+      let statusParam = this.status === "全部" ||  this.status === "null"  ?  null : this.status,
+        buildingIdParam = this.buildingId === "全部" ||this.buildingId === "null" ? null : this.buildingId;
       console.log(this.page, statusParam, buildingIdParam, this.searchParam);
+      if(isSearching){
+          this.page=1;
+        this.$nextTick(()=>{
+                this.GetBroadcastList(
+                  this.page,
+                  statusParam,
+                  buildingIdParam,
+                  this.searchParam,
+                  isSearching
+                );
+        })
+      }
 
       this.GetBroadcastList(
         this.page,
@@ -258,7 +270,7 @@ export default {
       );
     },
     addOrder() {
-      var i = 1;
+      var i = 1 + (this.page-1)*12;
       this.data = this.data.filter(item => {
         item["key"] = i++;
         return true;
@@ -348,10 +360,6 @@ body {
 .ant-table-row td {
   background-color: aqua;
   padding: 10px !important;
-}
-#tableWrapper {
-  height: calc(100% - 100px);
-  overflow: auto;
 }
 #pagination {
   display: flex;

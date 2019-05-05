@@ -49,7 +49,7 @@
           <div id="searchByNamesLabel">名称：</div>
           <div id="searchByNamesInput">
             <a-input v-model="searchParam" placeholder="请输入POS机名称"  size="small"/>
-            <a-button @click="search(true)" type="primary" size="small">搜索</a-button>
+            <a-button @click="search(true)" type="primary" size="small" style="margin-left:10px">搜索</a-button>
           </div>
         </div>
       </div>
@@ -122,14 +122,14 @@ const columns = [
   },
   {
     title: "楼层",
-    dataIndex: "floorNumber",
+    dataIndex: "floorName",
     width: "10%",
     scopedSlots: { customRender: "address" },
     align:"center"
   },
   {
     title: "房间",
-    dataIndex: "roomId",
+    dataIndex: "roomName",
     width: "10%",
     scopedSlots: { customRender: "address" },
     align:"center"
@@ -193,32 +193,32 @@ export default {
   methods: {
     handleStatusChange() {
       this.statusParam = this.status === "null" ? null : this.status;
-      this.$http
-        .toGetPosMechineList(1, this.statusParam, this.buildingIdParam)
-        .then(res => {
-          if (res.data.success) {
-            this.data = res.data.data;
-            this.$nextTick(() => {
-              this.addOrder();
-            });
-          } else {
-          }
-        });
+      // this.$http
+      //   .toGetPosMechineList(1, this.statusParam, this.buildingIdParam)
+      //   .then(res => {
+      //     if (res.data.success) {
+      //       this.data = res.data.data;
+      //       this.$nextTick(() => {
+      //         this.addOrder();
+      //       });
+      //     } else {
+      //     }
+      //   });
     },
     handleBuildingChange() {
       this.buildingIdParam =
         this.buildingId === "null" ? null : this.buildingId;
-      this.$http
-        .toGetPosMechineList(1, this.statusParam, this.buildingIdParam)
-        .then(res => {
-          if (res.data.success) {
-            this.data = res.data.data;
-            this.$nextTick(() => {
-              this.addOrder();
-            });
-          } else {
-          }
-        });
+      // this.$http
+      //   .toGetPosMechineList(1, this.statusParam, this.buildingIdParam)
+      //   .then(res => {
+      //     if (res.data.success) {
+      //       this.data = res.data.data;
+      //       this.$nextTick(() => {
+      //         this.addOrder();
+      //       });
+      //     } else {
+      //     }
+      //   });
     },
     filterOption(input, option) {
       return (
@@ -228,14 +228,22 @@ export default {
       );
     },
     search(isSearching) {
-      let statusParam=this.status === "全部" ? null : this.status,
+      let statusParam=this.status === "全部" || this.status === "null" ? null : this.status,
           searchParam=this.searchParam === "全部" ? null : this.searchParam,
-          buildingIdParam= this.buildingId === "全部" ? null : this.buildingId;          
+          buildingIdParam= this.buildingId === "全部" || this.buildingId === "null" ? null : this.buildingId;          
       console.log(this.searchParam,statusParam,buildingIdParam);
+      if(isSearching){
+          this.page=1;
+        this.$nextTick(()=>{
+          this.GetPosMechineList(this.page,statusParam,buildingIdParam,this.searchParam,isSearching)
+        })
+      }
+
+
       this.GetPosMechineList(this.page,statusParam,buildingIdParam,this.searchParam,isSearching)
     },
     addOrder() {
-      var i = 1;
+      var i = 1 + (this.page-1)*12;
       this.data = this.data.filter(item => {
         item["key"] = i++;
         return true;
@@ -245,19 +253,17 @@ export default {
       this.isLoading=true;
       this.$http.toGetPosMechineList(page,status,buildingId,searchRoom).then(res => {
         console.log(res);
-        var i = 0;
         if (res.data.success) {
-          this.data = res.data.data.filter(res => {
-            res["key"] = i++;
-            return true;
-          });
           this.recordsTotal = res.data.recordsTotal;
+          this.data=res.data.data
+            this.$nextTick(() => {
+            this.isLoading = false;
+            this.addOrder()
+          });
           if(isSearching){
             this.current=1
           }
-          this.$nextTick(() => {
-            this.isLoading = false;
-          });
+
         }
       });
     },

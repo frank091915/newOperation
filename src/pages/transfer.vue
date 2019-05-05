@@ -94,7 +94,7 @@ const columns = [
   {
     title: "序号",
     dataIndex: "key",
-    width: "8%",
+    width: "5%",
     scopedSlots: { customRender: "_id" },
     align:"center"
   },
@@ -108,14 +108,14 @@ const columns = [
   {
     title: "圈存机名称",
     dataIndex: "Description",
-    width: "10%",
+    width: "18%",
     scopedSlots: { customRender: "address" },
     align:"center"
   },
   {
     title: "型号",
     dataIndex: "modelNumber",
-    width: "10%",
+    width: "8%",
     scopedSlots: { customRender: "address" },
     align:"center"
   },
@@ -143,7 +143,7 @@ const columns = [
   {
     title: "编号",
     dataIndex: "Code",
-    width: "10%",
+    width: "8%",
     scopedSlots: { customRender: "address" },
     align:"center"
   },
@@ -199,31 +199,31 @@ export default {
   methods: {
     handleStatusChange() {
       this.statusParam = this.status==="null" ? null : this.status;
-      console.log(this.statusParam)
-      this.$http.toGetTransferList(1,this.statusParam,this.buildingIdParam).then((res)=>{
-        if(res.data.success){
-          this.data=res.data.data
-          this.$nextTick(()=>{
-            this.addOrder()
-          })
-        }else{
+      // console.log(this.statusParam)
+      // this.$http.toGetTransferList(1,this.statusParam,this.buildingIdParam).then((res)=>{
+      //   if(res.data.success){
+      //     this.data=res.data.data
+      //     this.$nextTick(()=>{
+      //       this.addOrder()
+      //     })
+      //   }else{
           
-        }
-      })
+      //   }
+      // })
     },
     handleBuildingChange(){
       this.buildingIdParam=this.buildingId==="null" ? null : this.buildingId;
-      console.log(this.buildingIdParam)
-      this.$http.toGetTransferList(1,this.statusParam,this.buildingIdParam).then((res)=>{
-        if(res.data.success){
-          this.data=res.data.data
-          this.$nextTick(()=>{
-            this.addOrder()
-          })
-        }else{
+      // console.log(this.buildingIdParam)
+      // this.$http.toGetTransferList(1,this.statusParam,this.buildingIdParam).then((res)=>{
+      //   if(res.data.success){
+      //     this.data=res.data.data
+      //     this.$nextTick(()=>{
+      //       this.addOrder()
+      //     })
+      //   }else{
           
-        }
-      })
+      //   }
+      // })
     },
     filterOption(input, option) {
       return (
@@ -233,27 +233,34 @@ export default {
       );
     },
     search(isSearching){
-            let statusParam=this.status === "全部" ? null : this.status,
+            let statusParam=this.status === "全部" ||this.status === "null" ? null : this.status,
             searchParam=this.searchParam === "全部" ? null : this.searchParam,
-            buildingIdParam= this.buildingId === "全部" ? null : this.buildingId;          
+            buildingIdParam= this.buildingId === "全部" ||this.buildingId === "null"  ? null : this.buildingId;          
            console.log(this.searchParam,statusParam,buildingIdParam);
+      if(isSearching){
+          this.page=1;
+        this.$nextTick(()=>{
+           this.GetTransferList(this.page,this.statusParam,buildingIdParam,searchParam,isSearching)
+        })
+      }
+
            this.GetTransferList(this.page,this.statusParam,buildingIdParam,searchParam,isSearching)
     },
     addOrder(){
-            var i=1;
+            var i = 1 + (this.page-1)*12;
           this.data=this.data.filter((item)=>{
           item["key"]=i++;
           return true
         })
     },
     GetTransferList(page,status,buildingId,searchRoom,isSearching){
+      this.isLoading=true;
           this.$http.toGetTransferList(page,status,buildingId,searchRoom).then(res => {
           console.log(res)
-        var i=1;
         if(res.data.success){
-          this.data=res.data.data.filter((res)=>{
-            res["key"]=i++;
-            return true
+          this.data=res.data.data;
+          this.$nextTick(()=>{
+            this.addOrder()
           })
           if(isSearching){
             this.current=1
@@ -293,7 +300,6 @@ body{
   height: 100%;
 }
 #main{
-  height: calc(100% - 50px);
     width: 95%;
   margin-left: 20px;
 }

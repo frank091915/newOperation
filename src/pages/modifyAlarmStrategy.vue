@@ -78,8 +78,8 @@
                   size="small"
                   v-decorator="[
                   
-          'smokeDuration',
-          {rules: [{message:'请输入电力时长告警'}],initialValue:warningStrategy.smokeDuration ? (warningStrategy.smokeDuration+'') : ''}
+          'powerDuration',
+          {rules: [{message:'请输入电力时长告警'}],initialValue:warningStrategy.powerDuration ? (warningStrategy.powerDuration+'') : ''}
         ]"
                   style="margin-left:5px;width:280px;"
                 />
