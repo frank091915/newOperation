@@ -73,7 +73,7 @@
           optionFilterProp="children"
           style="width: 218px"
           v-decorator="[
-          'role',
+          'roleIds',
           {initialValue:userInformation.roles.length ? userInformation.roles[0].name : ''
           }
         ]"
@@ -145,7 +145,6 @@ export default {
           let userInfo = { ...values };
           userInfo.status = this.value ? true : false;
           userInfo.userId=this.$route.query.id
-          userInfo.roleIds=[values.role]
           // 添加权限菜单
 
           console.log(userInfo);

@@ -360,7 +360,7 @@ export default {
       });
     });
     // 获取当前用户菜单权限
-    this.$http.toGetUserInfoById(7).then(res => {
+    this.$http.toGetUserInfoById(1).then(res => {
 
       this.permissions = res.data.data.permissions;
       this.permissionsIdArray = res.data.data.permissionIds;

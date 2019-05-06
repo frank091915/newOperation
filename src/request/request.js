@@ -448,9 +448,9 @@ let keyArray=Object.keys(userInfo),
       var obj={};
       if(userInfo[item]){
         if(i===0){
-          obj[item]=`?${item}= ${userInfo[item]}`
+          obj[item]=`?${item}=${userInfo[item]}`
         }else{
-          obj[item]=`&${item}= ${userInfo[item]}` ;
+          obj[item]=`&${item}=${userInfo[item]}` ;
         }
 
         itemArray.push(obj);
@@ -458,19 +458,22 @@ let keyArray=Object.keys(userInfo),
       }
     }
     
-console.log(itemArray)
 
   let ultimateParam =[],
-      itemArrayKeys=Object.keys(itemArray);
+      ultimateKeyArray=[]
+    // 得到所有的key值
+    for(var j = 0;j<itemArray.length; j++ ){
+      console.log(Object.keys(itemArray[j])[0])
+      ultimateKeyArray.push(Object.keys(itemArray[j])[0]); 
+    }
+  // 得到所有的参数array
+  for(var j = 0;j<itemArray.length; j++ ){
+    ultimateParam.push(itemArray[j][(ultimateKeyArray[j])]) 
+  }
 
-      for(var item of itemArrayKeys){
-        console.log(item)
-        ultimateParam.push(itemArray[item])
-      }
-
-  console.log(itemArrayKeys)
+  console.log(ultimateParam.join(''))
   return ajax.put(
-    `/api/user/${userInfo}`,qs.stringify(userInfo), {
+    `/api/user/${userInfo.userId}`+ultimateParam.join(''),qs.stringify(userInfo), {
       headers: {
         "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken")),
         "Content-Type": "application/json"

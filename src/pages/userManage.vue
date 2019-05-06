@@ -224,7 +224,7 @@ export default {
     // 获取用户列表
     getUserList(){
     this.$http.toUserList().then(res => {
-      var i=0;
+      var i=1;
       if(res.data.success){
         this.data=res.data.data.filter((res)=>{
           res["key"]=i++;

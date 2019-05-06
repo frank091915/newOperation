@@ -4,7 +4,7 @@
       <a-tabs defaultActiveKey="1" @change="callback">
         <a-tab-pane tab="汇聚机房告警策略" key="1" forceRender>
           <div id="tableWrapper">
-            <a-table :columns="columns" :dataSource="convergeData" bordered :pagination="false" :scroll="{y:780}" :loading="isLoading">
+            <a-table :columns="columns" :dataSource="convergeData" bordered :pagination="false" :scroll="{y:700}" :loading="isLoading">
               <template
                 v-for="col in ['name', 'age', 'address']"
                 :slot="col"
@@ -32,7 +32,7 @@
             共{{recordsTotal}}条数据
           </div>
           <div id="paginationBox">
-            <a-pagination @change="changePageOnConvergeRoom" v-model="current" :total="recordsTotal"   :pageSize="12" v-show="!isLoading"/>
+            <a-pagination @change="changePageOnConvergeRoom" v-model="current" :total="recordsTotal"   :pageSize="12" v-show="!isLoading" />
           </div>
         </div>
           </div>
@@ -40,7 +40,7 @@
         <a-tab-pane tab="弱电间告警策略" key="2">
           <div id="lowVolttageTableWrapper">
           <div id="tableWrapper">
-            <a-table :columns="columns" :dataSource="electronicData" bordered :pagination="false" :scroll="{y:780}" :loading="isLoading">
+            <a-table :columns="columns" :dataSource="electronicData" bordered :pagination="false" :scroll="{y:700}" :loading="isLoading">
               <template
                 v-for="col in ['name', 'age', 'address']"
                 :slot="col"
@@ -97,7 +97,7 @@ const columns = [
   {
     title: "描述",
     dataIndex: "deviceInfo.Description",
-    width: "15%",
+    width: "12%",
     scopedSlots: { customRender: "address" },
     align:"center"
   },
@@ -118,7 +118,7 @@ const columns = [
   {
     title: "房间",
     dataIndex: "deviceInfo.roomName",
-    width: "13%",
+    width: "15%",
     scopedSlots: { customRender: "name" },
     align:"center"
   },
@@ -132,14 +132,14 @@ const columns = [
   {
     title: "校园地图坐标点",
     dataIndex: "deviceInfo.location",
-    width: "7%",
+    width: "10%",
     scopedSlots: { customRender: "name" },
     align:"center"
   },
   {
     title: "操作",
     dataIndex: "operation",
-    width: "10%",
+    width: "8%",
     scopedSlots: { customRender: "operation" },
     align:"center"
   }
@@ -179,6 +179,8 @@ export default {
       roomType:"NKD_AGG_DEVICE",
       isLoading:true,
       current:1,
+      page:1,
+      type:1
     };
   },
   methods: {
@@ -228,8 +230,9 @@ export default {
         }
       });
     },
-    addOrder(type = 1) {
-      let i = 1;
+    addOrder(type) {
+      console.log(type,this.page)
+      let i = 1 +(this.page-1)*12;
       if (type === 1) {
         this.convergeData = this.convergeData.filter(item => {
           item["key"] = i++;
@@ -246,8 +249,12 @@ export default {
         this.roomType= key==1? "NKD_AGG_DEVICE" :"NKD_WEAK_ELECTRIC_ADVICE";
         this.$nextTick(()=>{
             console.log(this.roomType)
-            this.current=1
-         this.getAlarmStrategy(key,this.roomType,this.page);
+            this.current=1;
+            this.page=1;
+            this.$nextTick(()=>{
+                this.getAlarmStrategy(key,this.roomType,1);
+            })
+
         })
     },
     getAlarmStrategy(roomType, roomName, page) {
@@ -321,14 +328,15 @@ export default {
     },
     changePageOnConvergeRoom(page){
       console.log(page)
+
       this.page=page;
       this.$nextTick(()=>{
           console.log(this.roomType,this.page)
           this.getAlarmStrategy(1,this.roomType,this.page)
+          this.type=1
       })
     },
-    changePageOnLovaltageRoom(){
-        console.log(page)
+    changePageOnLovaltageRoom(page){
         this.page=page;
         this.$nextTick(()=>{
             console.log(this.roomType,this.page)
@@ -384,5 +392,11 @@ export default {
 #addBox{
     height: 20px;
     margin-bottom:5px;
+}
+#pagination{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 15px;
 }
 </style>

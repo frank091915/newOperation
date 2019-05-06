@@ -57,7 +57,6 @@
         :columns="columns"
         :dataSource="data"
         :pagination="false"
-        size="small"
         bordered
         :loading="isLoading"
         :scroll="{y:750}"
@@ -98,7 +97,7 @@ const columns = [
   {
     title: "序号",
     dataIndex: "key",
-    width: "8%",
+    width: "6%",
     scopedSlots: { customRender: "_id" },
     align: "center"
   },
@@ -140,7 +139,7 @@ const columns = [
   {
     title: "房间",
     dataIndex: "roomName",
-    width: "8%",
+    width: "12%",
     scopedSlots: { customRender: "address" },
     align: "center"
   },

@@ -47,7 +47,7 @@
             <div
               class="textDescription"
             >{{details.deviceData.ups ? (details.deviceData.ups ? " 正常 " : " 异常" ) : " 未知"}}</div>
-            <div class="status">电力状态</div>
+            <div class="status">ups状态</div>
           </div>
         </div>
         <div class="singleStatusBox">

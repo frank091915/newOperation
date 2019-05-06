@@ -88,7 +88,7 @@ const columns = [
   {
     title: "序号",
     dataIndex: "key",
-    width: "8%",
+    width: "6%",
     scopedSlots: { customRender: "_id" },
     align:"center"
   },
@@ -109,7 +109,7 @@ const columns = [
   {
     title: "型号",
     dataIndex: "modelNumber",
-    width: "10%",
+    width: "8%",
     scopedSlots: { customRender: "address" },
     align:"center"
   },
@@ -130,7 +130,7 @@ const columns = [
   {
     title: "房间",
     dataIndex: "roomName",
-    width: "10%",
+    width: "18%",
     scopedSlots: { customRender: "address" },
     align:"center"
   },
