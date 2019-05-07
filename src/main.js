@@ -155,12 +155,17 @@ Vue.config.productionTip = false
 
 router.beforeEach((to, from, next) => {
   //	判断是否已登录
+  console.log(to.path)
     if(window.sessionStorage.getItem("operationToken")){
       next() 
     }else{
-      next({path:"signIn"})
+      if(to.path==="/signIn"){
+        next()
+      }else{
+        next({path:"/signIn"})
+      }
+
     }
-  
   })
 
 

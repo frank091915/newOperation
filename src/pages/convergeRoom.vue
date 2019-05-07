@@ -8,10 +8,10 @@
           <div class="unknownCountBox">未知：{{unknown}}</div>
           <div class="normalCountBox">正常：{{normal}}</div>
         </div>
-        <a-input-search placeholder="搜索汇聚机房名称" style="width: 200px" @search="onSearch"/>
+        <a-input-search placeholder="搜索汇聚机房名称" style="width: 200px" @keydown.enter="onSearch" @search="onSearch" v-model="searchParam" />
       </div>
     </div>
-    <div id="convergeRoomBox">
+    <div id="convergeRoomBox" v-if="!isLoading">
       <div
         v-for="item in roomList "
         :key="item.Id"
@@ -22,6 +22,12 @@
         <p>{{item.roomName}}</p>
       </div>
     </div>
+      <div v-if="isLoading">
+      <a-spin tip="搜索中...">
+        <div class="spin-content"></div>
+      </a-spin>
+    </div>
+    <div></div>
   </div>
 </template>
 <script>
@@ -34,12 +40,33 @@ export default {
       abnormal: "",
       fauly: "",
       unknown: 0,
-      title:""
+      title:"",
+      searchParam:'',
+      isLoading:false,
+      noData:false,
     };
   },
   methods: {
-    onSearch(value) {
-      console.log(value);
+    onSearch() {
+        this.isLoading=true;
+      this.$http.toSearchConvergeRoom(this.searchParam).then((res)=>{
+        console.log(res)
+        if(res.data.success){
+          this.roomList=[];
+          this.$nextTick(()=>{
+              if(res.data.deviceData){
+                  this.noData=true;
+              }else{
+                // this.roomList.concat()
+                this.roomList = res.data.data.device;
+              } 
+          })
+          this.isLoading=false
+        }else{
+          this.isLoading=false
+          this.$message.error(res.data.errorInfo) 
+        }
+      })
     },
     color(status) {
       switch (status) {
@@ -129,5 +156,10 @@ export default {
   color: #333333;
   font-family: "Arial Negreta", "Arial Normal", "Arial";
   font-weight: 700;
+}
+.spin-content {
+  border: 1px solid #91d5ff;
+  background-color: #e6f7ff;
+  padding: 30px;
 }
 </style>

@@ -90,6 +90,19 @@ const toGetconvergeRoomList = () => {
   )
 }
 
+
+// 搜索汇聚机房
+const toSearchConvergeRoom = (roomId) => {
+  return ajax.get(
+    "/api/data/machine/"+roomId, {
+      headers: {
+        "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken"))
+      }
+    }
+  )
+}
+
+
 // 请求汇聚机房详情
 const toGetconvergeRoomDetails = (id) => {
   return ajax.get(
@@ -774,7 +787,8 @@ export {
   toGetconvergeRoomDetails,
   toGetLowVoltageRoomDetails,
   toGetAllExceptionList,
-  toGetServerRoomList
+  toGetServerRoomList,
+  toSearchConvergeRoom
 }
 
 
