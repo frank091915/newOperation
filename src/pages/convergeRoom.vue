@@ -27,7 +27,7 @@
         <div class="spin-content"></div>
       </a-spin>
     </div>
-    <div></div>
+    <div id="noData" v-if="noData">暂无数据</div>
   </div>
 </template>
 <script>
@@ -57,8 +57,12 @@ export default {
               if(res.data.deviceData){
                   this.noData=true;
               }else{
-                // this.roomList.concat()
                 this.roomList = res.data.data.device;
+                if(res.data.data.device.length===0){
+                  this.noData=true;
+                }else{
+                  this.noData=false;
+                }
               } 
           })
           this.isLoading=false
@@ -161,5 +165,8 @@ export default {
   border: 1px solid #91d5ff;
   background-color: #e6f7ff;
   padding: 30px;
+}
+#noData{
+      color: rgba(0, 0, 0, 0.45);
 }
 </style>

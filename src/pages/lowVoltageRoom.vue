@@ -8,10 +8,10 @@
           <div class="unknownCountBox">未知：{{unknown}}</div>
           <div class="normalCountBox">正常：{{normal}}</div>
         </div>
-        <a-input-search placeholder="搜索汇聚机房名称" style="width: 200px" @search="onSearch"/>
+        <a-input-search placeholder="搜索汇聚机房名称" style="width: 200px" @search="onSearch" @keydown.enter="onSearch" v-model="searchParam"/>
       </div>
     </div>
-    <div id="convergeRoomBox">
+    <div id="convergeRoomBox" v-show="!isLoading">
       <div
         v-for="item in roomList "
         :key="item.Id"
@@ -25,6 +25,12 @@
         <p>{{item.roomName}}</p>
       </div>
     </div>
+    <div v-if="isLoading">
+      <a-spin tip="搜索中...">
+        <div class="spin-content"></div>
+      </a-spin>
+    </div>
+    <div id="noData" v-if="noData">暂无数据</div>
   </div>
 </template>
 <script>
@@ -37,12 +43,38 @@ export default {
       abnormal: "",
       fauly: "",
       unknown: 0,
-      title:""
+      title:"",
+      searchParam:'',
+      noData:false,
+      isLoading:false
     };
   },
   methods: {
     onSearch(value) {
-      console.log(value);
+
+
+              this.isLoading=true;
+      this.$http.toSearchlowVoltageRoom(this.searchParam).then((res)=>{
+
+        if(res.data.success){
+          this.$nextTick(()=>{
+              if(res.data.deviceData){
+                  this.noData=true;
+              }else{
+                this.roomList = res.data.data.device;
+                if(res.data.data.device.length===0){
+                  this.noData=true;
+                }else{
+                  this.noData=false;
+                }
+              } 
+          })
+          this.isLoading=false
+        }else{
+          this.isLoading=false
+          this.$message.error(res.data.errorInfo) 
+        }
+      })
     },
     color(status) {
       switch (status) {
@@ -55,7 +87,7 @@ export default {
       }
     },
     toShowDetails(id){
-      console.log(id)
+
       this.$router.push({path:"/roomDetails",query:{title:"弱电间详情",detailsId:id,roomType:2}})
     }
   },
@@ -68,7 +100,7 @@ export default {
         this.abnormal = res.data.data.exceptionCount;
         this.fauly = res.data.data.faultCount;
         this.$nextTick(() => {
-          console.log(res);
+
         });
       } else {
         // 错误请求处理
@@ -145,5 +177,13 @@ html,body{
   color: #333333;
   font-family: "Arial Negreta", "Arial Normal", "Arial";
   font-weight: 700;
+}
+.spin-content {
+  border: 1px solid #91d5ff;
+  background-color: #e6f7ff;
+  padding: 30px;
+}
+#noData{
+      color: rgba(0, 0, 0, 0.45);
 }
 </style>

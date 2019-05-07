@@ -93,8 +93,10 @@ const toGetconvergeRoomList = () => {
 
 // 搜索汇聚机房
 const toSearchConvergeRoom = (roomId) => {
+  let roomIdParam = roomId ? `?searchRoom=${roomId}` : "" ;
+  console.log(roomIdParam)
   return ajax.get(
-    "/api/data/machine/"+roomId, {
+    "/api/data/machine"+roomIdParam, {
       headers: {
         "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken"))
       }
@@ -126,7 +128,7 @@ const toGetLowVoltageRoomDetails = (id) => {
 }
 
 
-// 请求弱电房间列表
+// 请求弱电间列表
 const toGetlowVoltageRoomList = () => {
   return ajax.get(
     "/api/data/electric", {
@@ -136,6 +138,19 @@ const toGetlowVoltageRoomList = () => {
     }
   )
 }
+
+// 搜索弱电间
+const toSearchlowVoltageRoom = (roomId) => {
+  let roomIdParam = roomId ? `?searchRoom=${roomId}` : "" ;
+  return ajax.get(
+    "/api/data/electric" +roomIdParam, {
+      headers: {
+        "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken"))
+      }
+    }
+  )
+}
+
 
 // 请求状态汇总信息
 const toGetSummary = () => {
@@ -788,7 +803,8 @@ export {
   toGetLowVoltageRoomDetails,
   toGetAllExceptionList,
   toGetServerRoomList,
-  toSearchConvergeRoom
+  toSearchConvergeRoom,
+  toSearchlowVoltageRoom
 }
 
 
