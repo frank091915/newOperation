@@ -18,11 +18,7 @@ build:
   - VER=`git log -n1|head -n1|cut -d " " -f2`
   - echo "Building Project Ver $VER"
   - cnpm install
-  - sonar-scanner \
-    -Dsonar.projectKey=2019_machineintegrationfrnt \
-    -Dsonar.sources=. \
-    -Dsonar.host.url=http://172.18.14.1:8001 \
-    -Dsonar.login=51bec2811fd8cc2ca39345bab5446cf57b651557
+  - sonar-scanner  -Dsonar.projectKey=2019_machineintegrationfrnt  -Dsonar.sources=.  -Dsonar.host.url=http://172.18.14.1:8001  -Dsonar.login=51bec2811fd8cc2ca39345bab5446cf57b651557
   - echo "Build success. Copy to dir..."
   - echo "File name $VER"
   - cp -r ./dist /opt/build/machine-integration-frnt/$VER
