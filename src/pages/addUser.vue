@@ -87,7 +87,7 @@
           style="width: 218px"
           v-decorator="[
           'role',
-          {rules: []}
+          {rules: [{ required: true,message:'请选择角色'}]}
         ]"
         >
           <a-select-option v-for=" item in rolesGroup" :value="item.id" :key="item.id">{{item.name}}</a-select-option>

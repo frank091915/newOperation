@@ -1,5 +1,5 @@
 <template>
-  <div id="main">
+  <div id="pageWrapper">
     <div id="searchBox">
       <div id="statusSearch">
         <div class="label">状态：</div>
@@ -291,7 +291,7 @@ html{
 body{
   height: 100%;
 }
-#main{
+#pageWrapper{
   height: calc(100% - 50px);
     width: 95%;
   margin-left: 20px;

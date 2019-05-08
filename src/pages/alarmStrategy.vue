@@ -233,7 +233,7 @@ export default {
     addOrder(type) {
       console.log(type,this.page)
       let i = 1 +(this.page-1)*12;
-      if (type === 1) {
+      if (type == 1) {
         this.convergeData = this.convergeData.filter(item => {
           item["key"] = i++;
           return true;
@@ -248,22 +248,24 @@ export default {
     callback(key) {
         this.roomType= key==1? "NKD_AGG_DEVICE" :"NKD_WEAK_ELECTRIC_ADVICE";
         this.$nextTick(()=>{
-            console.log(this.roomType)
             this.current=1;
             this.page=1;
             this.$nextTick(()=>{
-                this.getAlarmStrategy(key,this.roomType,1);
+                this.getAlarmStrategy(key,this.roomType,this.page);
             })
 
         })
     },
     getAlarmStrategy(roomType, roomName, page) {
       this.isLoading=true;
+      console.log(roomType)
       this.$http.toGetAlarmStrategy(roomName, page).then(res => {
         if (res.data.success) {
-          if (roomType === 1) {
-            
+          if (roomType == 1) {
             this.convergeData = res.data.data;
+            this.$nextTick(()=>{
+
+            })
           } else {
             this.electronicData = res.data.data;
           }

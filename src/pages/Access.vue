@@ -1,5 +1,5 @@
 <template>
-  <div id="main">
+  <div id="pageWrapper">
     <div id="searchBox">
       <div id="statusSearch">
         <div class="label">状态：</div>
@@ -43,7 +43,7 @@
       <div id="searchByNames">
         <div id="searchByNamesLabel">名称：</div>
         <div id="searchByNamesInput">
-          <a-input v-model="searchParam" placeholder="请输入门禁名称" size="small" />
+          <a-input v-model="searchParam" placeholder="请输入门禁房间名称" size="small" @keydown.enter="search(true)"/>
           <a-button @click="search" type="primary" size="small" style="margin-left:15px">搜索</a-button>
         </div>
       </div>
@@ -54,7 +54,6 @@
       :dataSource="data"
       :pagination="false"
       :loading="isLoading"
-      :scroll="{y:750}"
       bordered>
         <template
           v-for="col in ['name', 'age', 'address']"
@@ -71,6 +70,22 @@
             <template v-else>{{text}}</template>
           </div>
         </template>
+
+      <template
+            v-for="col in ['name','age', 'address','highLight']"
+            slot="highLight"
+            slot-scope="text, record,highLight"
+          >
+            <div :key="col" :style='color(record.status)' >
+              <a-input
+                v-if="record.editable"
+                style=""
+                :value="text"
+                @change="e => handleChange(e.target.value, record.key, col)"
+              />
+              <template v-else>{{text}}</template>
+            </div>
+          </template>
 
       </a-table>
 
@@ -98,14 +113,14 @@ const columns = [
   {
     title: "状态",
     dataIndex: "statusDescription",
-    width: "8%",
-    scopedSlots: { customRender: "age" },
+    width: "15%",
+    scopedSlots: { customRender: "highLight" },
     align:"center"
   },
   {
     title: "门禁名称",
     dataIndex: "Description",
-    width: "10%",
+    width: "8%",
     scopedSlots: { customRender: "address" },
     align:"center"
   },
@@ -119,7 +134,7 @@ const columns = [
   {
     title: "型号",
     dataIndex: "Model",
-    width: "5%",
+    width: "9%",
     scopedSlots: { customRender: "address" },
     align:"center"
   },
@@ -217,6 +232,12 @@ export default {
       //   }
       // })
     },
+    color(type){
+      console.log(type)
+      if(type!=0){
+        return 'color : red'
+      }
+    },
     handleBuildingChange(){
             // this.isLoading=true;
       this.buildingIdParam=this.buildingId==="null" ? null : this.buildingId;
@@ -293,6 +314,16 @@ export default {
 
       }
     })
+  },
+  mounted(){
+        let that = this;
+    document.onkeypress = function(e) {
+      var keycode = document.all ? event.keyCode : e.which;
+      if (keycode == 13) {
+        that.search(true);// 登录方法名
+         return false;
+      }
+    };
   }
 };
 </script>
@@ -303,7 +334,7 @@ html{
 body{
   height: 100%;
 }
-#main{
+#pageWrapper{
   width: 95%;
   margin-left: 20px;
   box-sizing: border-box；

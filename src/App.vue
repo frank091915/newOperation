@@ -2,9 +2,9 @@
   <div id="app">
     <router-view name="frame"></router-view>
     <div id="main">
-      <router-view name="signIn"></router-view>
-      <router-view name="header"></router-view>
-      <router-view name="main"></router-view>
+        <router-view name="signIn"></router-view>
+        <router-view name="header"></router-view>
+        <router-view name="main"></router-view>
     </div>
 
   </div>
@@ -29,5 +29,14 @@
 }
 #main {
   flex: 1;
+  position: fixed;
+  left: 260px;
+  width: calc(100% - 260px );
+  height: 100%;
 }
+/* #mainWrapper{
+  height: 100%;
+  width: 100%;
+  display: block;
+} */
 </style>

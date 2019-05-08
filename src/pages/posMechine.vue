@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div id="main">
+    <div id="pageWrapper" @keydown.enter="search(true)">
       <div id="searchBox">
         <div id="statusSearch">
           <div class="label">状态：</div>
@@ -48,19 +48,19 @@
         <div id="searchByNames">
           <div id="searchByNamesLabel">名称：</div>
           <div id="searchByNamesInput">
-            <a-input v-model="searchParam" placeholder="请输入POS机名称"  size="small"/>
-            <a-button @click="search(true)" type="primary" size="small" style="margin-left:10px">搜索</a-button>
+            <a-input v-model="searchParam" @keydown.enter="search(true)" placeholder="请输入POS机房间名称"  size="small"/>
+            <a-button  @click="search(true)" type="primary" size="small" style="margin-left:10px">搜索</a-button>
           </div>
         </div>
       </div>
       <div id="tableWrapper">
-        <a-table :columns="columns" :dataSource="data" :pagination="false"  bordered :loading="isLoading" :scroll="{y:900}">
+        <a-table :columns="columns" :dataSource="data" :pagination="false"  bordered :loading="isLoading">
           <template
             v-for="col in ['name', 'age', 'address']"
             :slot="col"
             slot-scope="text, record, index"
           >
-            <div :key="col">
+            <div :key="col" >
               <a-input
                 v-if="record.editable"
                 style="margin: -5px 0;padding:10px !important"
@@ -70,6 +70,24 @@
               <template v-else>{{text}}</template>
             </div>
           </template>
+
+          <template
+            v-for="col in ['name','age', 'address','highLight']"
+            slot="highLight"
+            slot-scope="text, record,highLight"
+          >
+            <div :key="col" :style='color(record.status)' >
+              <a-input
+                v-if="record.editable"
+                style=""
+                :value="text"
+                @change="e => handleChange(e.target.value, record.key, col)"
+              />
+              <template v-else>{{text}}</template>
+            </div>
+          </template>
+
+
         </a-table>
         <div id="pagination" v-show="!isLoading"> 
           <div id="total">
@@ -88,21 +106,21 @@ const columns = [
   {
     title: "序号",
     dataIndex: "key",
-    width: "6%",
+    width: "5%",
     scopedSlots: { customRender: "_id" },
     align:"center"
   },
   {
     title: "状态",
     dataIndex: "statusDescription",
-    width: "10%",
-    scopedSlots: { customRender: "age" },
+    width: "14%",
+    scopedSlots: { customRender: "highLight" },
     align:"center"
   },
   {
     title: "pos机名称",
     dataIndex: "Description",
-    width: "10%",
+    width: "8%",
     scopedSlots: { customRender: "address" },
     align:"center"
   },
@@ -116,7 +134,7 @@ const columns = [
   {
     title: "楼宇名称",
     dataIndex: "buildingName",
-    width: "10%",
+    width: "9%",
     scopedSlots: { customRender: "address" },
     align:"center"
   },
@@ -144,7 +162,7 @@ const columns = [
   {
     title: "ip地址",
     dataIndex: "SerialNumber",
-    width: "10%",
+    width: "9%",
     scopedSlots: { customRender: "SerialNumber" },
     align:"center"
   },
@@ -204,6 +222,19 @@ export default {
       //     } else {
       //     }
       //   });
+    },
+    color(type){
+      switch(type){
+        case 1 :
+        return
+      }
+
+    },
+    color(type){
+      console.log(type)
+      if(type!=0){
+        return 'color : red'
+      }
     },
     handleBuildingChange() {
       this.buildingIdParam =
@@ -284,6 +315,16 @@ export default {
         this.allBuildings = res.data.data;
       }
     });
+  },
+  mounted(){
+        let that = this;
+    document.onkeypress = function(e) {
+      var keycode = document.all ? event.keyCode : e.which;
+      if (keycode == 13) {
+        that.search(true);// 登录方法名
+         return false;
+      }
+    };
   }
 };
 </script>
@@ -294,7 +335,7 @@ html {
 body {
   height: 100%;
 }
-#main {
+#pageWrapper {
   height: calc(100% - 50px);
   width: 95%;
   margin-left: 20px;

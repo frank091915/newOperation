@@ -6,9 +6,9 @@
         v-model="collapsed"
       >
         <div class="logo" >
-          <img id="logo" src="../assets/u6.png">
+          <img id="logo" src="../assets/sustech.png">
         </div>
-        <a-menu theme="dark" :defaultSelectedKeys="['1']" mode="inline">
+        <a-menu theme="dark" :defaultSelectedKeys="['1']" mode="inline" >
           <!-- 渲染一级菜单 -->
           <a-menu-item v-for="item in aloneMenu"  :key="item.id" @click="toNavigate(item.path,item.title)">
            
@@ -19,11 +19,12 @@
             v-for="item in parentMenu" 
             :key="item.id"
           >
-            <span slot="title"><span>{{item.title}}</span></span>
+            <span slot="title" ><span>{{item.title}}</span></span>
             <a-menu-item 
             v-for="subItem in item.subPermissions"
             :key="subItem.id"
             @click="toNavigate(subItem.path,subItem.title)"
+            class="childrenMenu"
             >{{subItem.title}}</a-menu-item>
           </a-sub-menu>
         </a-menu>
@@ -59,6 +60,7 @@ export default {
         }
       })
       this.$nextTick(()=>{
+        console.log(this.aloneMenu)
       })
     })
   },
@@ -92,11 +94,11 @@ body{height:100%}
   margin: 16px;
 }
 #components-layout-demo-side{
-   max-width: 250px !important;
+   max-width: 260px !important;
    max-height: 100%;
 }
 .ant-layout-sider{
-  min-width: 250px !important;
+  min-width: 260px !important;
 }
 #components-layout-demo-side .logo{
   margin-bottom: 18px !important;
@@ -144,5 +146,11 @@ body{height:100%}
   align-items: center;
   box-sizing: border-box;
   padding-left: 46px !important;
+  }
+  .childrenMenu{
+    box-sizing: border-box;
+    padding-left: 65px !important;
+    padding-right:5px !important;
+    width: 260px !important;
   }
 </style>

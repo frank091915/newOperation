@@ -1,5 +1,5 @@
 <template>
-  <div id="main">
+  <div id="pageWrapper">
     <div id="searchBox">
       <div id="statusSearch">
         <div class="label">记录状态：</div>
@@ -105,7 +105,6 @@
         size="small"
         :loading="isLoading"
         bordered
-        :scroll="{y:750}"
       >
         <template
           v-for="col in ['name', 'age', 'address']"
@@ -265,22 +264,31 @@ export default {
 
     },
     handleBuildingChange(e) {
-      this.$http.toGetAllFloors(e).then(res => {
-        if (res.data.success) {
-          this.allFloors = res.data.data;
           this.floor= "全部";
-      this.room= "全部"
-          this.$nextTick(() => {});
-        }
-      });
+          this.room= "全部";
+          this.allFloors=[];
+          this.allRooms=[];
+          if(this.buildingId!="null"){
+            this.$http.toGetAllFloors(e).then(res => {
+              if (res.data.success) {
+                this.allFloors = res.data.data;
+                this.$nextTick(() => {});
+              }
+            });
+          }
     },
     handleFloorChange(e) {
-      this.$http.toGetAllRooms(e).then(res => {
-        if (res.data.success) {
-          this.allRooms = res.data.data;
-          this.room= "全部";
-        }
-      });
+      console.log(e)
+      this.room= "全部";
+      this.allRooms=[];
+      if(this.floor!="null"){
+        this.$http.toGetAllRooms(e).then(res => {
+          if (res.data.success) {
+            this.allRooms = res.data.data;
+          }
+        });
+      }
+
     },
     handleRoomChange() {},
     filterOption(input, option) {
@@ -291,10 +299,10 @@ export default {
       );
     },
     search(isSearching) {
-      let buildingQuery = this.buildingId === "全部" ? null : this.buildingId,
-          floorQuery = this.floor === "全部" ? null : this.floor,
-          roomQuery = this.room === "全部" ? null : this.room,
-          statusQuery=this.status ==="全部" ? null : this.status;
+      let buildingQuery = this.buildingId === "全部"  || this.buildingId === "null" ? null : this.buildingId,
+          floorQuery = this.floor === "全部" || this.floor === "null" ? null : this.floor,
+          roomQuery = this.room === "全部" || this.room === "null" ? null : this.room,
+          statusQuery=this.status ==="全部" || this.status === "null"  ? null : this.status;
       this.isLoading = true;
       if(isSearching){
         this.page=1;
@@ -378,6 +386,16 @@ export default {
       }
     });
     this.getExceptionList(1);
+  },
+  mounted(){
+        let that = this;
+    document.onkeypress = function(e) {
+      var keycode = document.all ? event.keyCode : e.which;
+      if (keycode == 13) {
+        that.search(true);// 登录方法名
+         return false;
+      }
+    };
   }
 };
 </script>
@@ -388,7 +406,7 @@ html {
 body {
   height: 100%;
 }
-#main {
+#pageWrapper {
   height: calc(100% - 50px);
   width: 95%;
   margin-left: 20px;

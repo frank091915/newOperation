@@ -66,7 +66,7 @@ const columns = [
   {
     title: "序号",
     dataIndex: "key",
-    width: "10%",
+    width: "5%",
     scopedSlots: { customRender: "num" },
     align:"center"
   },

@@ -1,6 +1,6 @@
 <template>
 <div>
-  <div id="main">
+  <div id="pageWrapper">
     <div id="searchBox" >
       <div id="statusSearch">
         <div class="label">状态：</div>
@@ -44,7 +44,7 @@
       <div id="searchByNames">
         <div id="searchByNamesLabel">名称：</div>
         <div id="searchByNamesInput">
-          <a-input v-model="searchParam" placeholder="请输入圈存机名称" size="small"/>
+          <a-input v-model="searchParam" placeholder="请输入圈存机房间名称" size="small" @keydown.enter="search(true)"/>
           <a-button @click="search(true)" type="primary" size="small" style="margin-left:15px">搜索</a-button>
         </div>
       </div>
@@ -56,7 +56,6 @@
       :pagination="false"
       :loading="isLoading"
       bordered
-      :scroll="{y:750}"
       >
         <template
           v-for="col in ['name', 'age', 'address']"
@@ -73,6 +72,23 @@
             <template v-else>{{text}}</template>
           </div>
         </template>
+
+          <template
+            v-for="col in ['name','age', 'address','highLight']"
+            slot="highLight"
+            slot-scope="text, record,highLight"
+          >
+            <div :key="col" :style='color(record.status)' >
+              <a-input
+                v-if="record.editable"
+                style=""
+                :value="text"
+                @change="e => handleChange(e.target.value, record.key, col)"
+              />
+              <template v-else>{{text}}</template>
+            </div>
+          </template>
+
 
       </a-table>
     </div>
@@ -102,7 +118,7 @@ const columns = [
     title: "状态",
     dataIndex: "statusDescription",
     width: "10%",
-    scopedSlots: { customRender: "age" },
+    scopedSlots: { customRender: "highLight" },
     align:"center"
   },
   {
@@ -225,6 +241,13 @@ export default {
       //   }
       // })
     },
+    color(type){
+      console.log(type)
+      if(type!=0){
+        return 'color : red'
+      }
+      
+    },
     filterOption(input, option) {
       return (
         option.componentOptions.children[0].text
@@ -289,6 +312,16 @@ export default {
         this.allBuildings=res.data.data
       }
     })
+  },
+  mounted(){
+        let that = this;
+    document.onkeypress = function(e) {
+      var keycode = document.all ? event.keyCode : e.which;
+      if (keycode == 13) {
+        that.search(true);// 登录方法名
+         return false;
+      }
+    };
   }
 };
 </script>
@@ -299,7 +332,7 @@ html{
 body{
   height: 100%;
 }
-#main{
+#pageWrapper{
     width: 95%;
   margin-left: 20px;
 }

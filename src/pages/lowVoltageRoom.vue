@@ -5,8 +5,8 @@
         <div v-show="normal" id="statusBox">
           <div class="faultyCountBox">故障：{{fauly}}</div>
           <div class="abnormalCountBox">异常：{{abnormal}}</div>
-          <div class="unknownCountBox">未知：{{unknown}}</div>
           <div class="normalCountBox">正常：{{normal}}</div>
+          <div class="normalCountBox">合计：{{total}}</div>
         </div>
         <a-input-search placeholder="搜索汇聚机房名称" style="width: 200px" @search="onSearch" @keydown.enter="onSearch" v-model="searchParam"/>
       </div>
@@ -19,10 +19,10 @@
         class="statusDisplay"
       >
         <div class="imgWrapper">
-          <img :src='color(item.statusDescription)' @click="toShowDetails(item.Id)">
+          <img :src='color(item.statusDescription)' @click="toShowDetails(item.Id)" style="cursor:pointer">
         </div>
 
-        <p>{{item.roomName}}</p>
+        <p @click="toShowDetails(item.Id)" style="cursor:pointer">{{item.roomName}}</p>
       </div>
     </div>
     <div v-if="isLoading">
@@ -46,7 +46,8 @@ export default {
       title:"",
       searchParam:'',
       noData:false,
-      isLoading:false
+      isLoading:false,
+      total:0
     };
   },
   methods: {
@@ -99,6 +100,7 @@ export default {
         this.normal = res.data.data.normalCount;
         this.abnormal = res.data.data.exceptionCount;
         this.fauly = res.data.data.faultCount;
+        this.total=res.data.data.normalCount + res.data.data.exceptionCount + res.data.data.faultCount;
         this.$nextTick(() => {
 
         });
@@ -106,6 +108,16 @@ export default {
         // 错误请求处理
       }
     });
+  },
+  mounted(){
+        let that = this;
+    document.onkeypress = function(e) {
+      var keycode = document.all ? event.keyCode : e.which;
+      if (keycode == 13) {
+        that.onSearch();// 登录方法名
+         return false;
+      }
+    };
   }
 };
 </script>

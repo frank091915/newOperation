@@ -1,5 +1,5 @@
 <template>
-  <div id="main">
+  <div id="pageWrapper">
     <div id="addBox">
         <div id="addButton">
             <a-button @click="addRole"  type="primary" size="small">新增</a-button>
@@ -199,7 +199,7 @@ html {
 body {
   height: 100%;
 }
-#main {
+#pageWrapper {
   height: calc(100% - 50px);
   width: 95%;
   margin-left: 20px;

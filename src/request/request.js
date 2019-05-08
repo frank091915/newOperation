@@ -27,6 +27,18 @@ const toGetAsideMenu = () => {
   )
 }
 
+// 获取所有菜单
+const toGetMenu = () => {
+  return ajax.get(
+    "/api/permission", {
+      headers: {
+        "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken"))
+      }
+    }
+  )
+}
+
+
 
 // 请求所有异常列表
 const toGetAllExceptionList = (type) => {
@@ -371,12 +383,11 @@ const toDeleteUser = (userId) => {
 
 //用户添加
 const toAddUser = (userInfo) => {
-  let obj ={};
-  obj=userInfo;
+  let obj=userInfo;
   obj.roleIds=[userInfo.role]
   console.log(obj)
   return ajax.post(
-    `/api/user`,obj, {
+    `/api/user?roleIds=${userInfo.role}`,obj, {
       headers: {
         "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken")),
         "Content-Type": "application/json"
@@ -640,11 +651,12 @@ const toGetWarningRecordList = (page =1,warningId,searchName) => {
 // 获取异常记录列表
 
 const toGetExceptionRecordList = (page =1,status,buildingId,floorId,roomId) => {
+
   let roomIdQuery = roomId ?   `&roomId=${roomId}`: "",
-      statusQuery = status ? `&status=${status}`: ""  ,
+      statusQuery = status === undefined || status == null ?  "" : `&status=${status}`,
       buildingIdQuery = buildingId ?  `&buildingId=${buildingId}`:""  ,
       floorIdQuery = floorId ?  `&floorId=${floorId}`:""  ;
-
+      console.log(buildingIdQuery,floorIdQuery)
   return ajax.get(
     `/api/record/exception?currentPage=` + page + roomIdQuery + statusQuery+buildingIdQuery+floorIdQuery, {
       headers: {
@@ -745,6 +757,13 @@ ajax.interceptors.request.use((config) => {
 
 //拦截相应,对相应数据进行操作并返回,顺带关掉indicator
 ajax.interceptors.response.use((config) => {
+
+  if(!config.data.success){
+    if(httpCode==401){
+      this.$message.error("登录已失效，请重新登录");
+      window.location.href="/signInn"
+    }
+  }
   return config
 })
 
@@ -804,7 +823,8 @@ export {
   toGetAllExceptionList,
   toGetServerRoomList,
   toSearchConvergeRoom,
-  toSearchlowVoltageRoom
+  toSearchlowVoltageRoom,
+  toGetMenu
 }
 
 

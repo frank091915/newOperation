@@ -1,5 +1,5 @@
 <template>
-  <div id="main">
+  <div id="pageWrapper">
     <div id="searchBox">
 
         <div id="deviceType">
@@ -63,7 +63,6 @@
       :pagination="false"
       :loading="isLoading"
       bordered
-      :scroll="{y:750}"
       >
         <template
           v-for="col in ['name', 'age', 'address']"
@@ -132,7 +131,7 @@ const columns = [
     align:"center"
   },
   {
-    title: "告警类型",
+    title: "告警通知方式",
     dataIndex: "warningRecord.way",
     width: "9%",
     scopedSlots: { customRender: "address" },
@@ -276,6 +275,16 @@ export default {
   created() {
     this.getWarningList()
     
+  },
+  mounted(){
+        let that = this;
+    document.onkeypress = function(e) {
+      var keycode = document.all ? event.keyCode : e.which;
+      if (keycode == 13) {
+        that.search(true);// 登录方法名
+         return false;
+      }
+    };
   }
 };
 </script>
@@ -286,7 +295,7 @@ html{
 body{
   height: 100%;
 }
-#main{
+#pageWrapper{
   height: calc(100% - 50px);
     width: 95%;
   margin-left: 20px;

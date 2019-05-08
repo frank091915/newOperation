@@ -1,5 +1,5 @@
 <template>
-          <div id="convergeTableWrapper">
+          <div id="pageWrapper">
             <a-table :columns="columns" :dataSource="menu" :pagination="false" bordered :scroll="{y:790}" :loading="isLoading">
               <template
                 v-for="col in ['name', 'age', 'address']"
@@ -93,19 +93,20 @@ data() {
           })
       },
       getMenu(){
-        this.$http.toGetAsideMenu().then((res)=>{
+        this.$http.toGetMenu().then((res)=>{
           if(res.data.success){
-                let parentMenu=res.data.data,
-                    childrenMenu=res.data.data.filter((item)=>{
-                        if(item.subPermissions.length){
-                            return true
-                        }else{return false}
-                    });
-                childrenMenu=childrenMenu.reduce((pre,next)=>{
-                    return pre.concat([...next.subPermissions])
-                },[])
-                parentMenu=parentMenu.concat(childrenMenu);
-                this.menu=parentMenu;
+            console.log(res)
+                // let parentMenu=res.data.data,
+                //     childrenMenu=res.data.data.filter((item)=>{
+                //         if(item.subPermissions.length){
+                //             return true
+                //         }else{return false}
+                //     });
+                // childrenMenu=childrenMenu.reduce((pre,next)=>{
+                //     return pre.concat([...next.subPermissions])
+                // },[])
+                // parentMenu=parentMenu.concat(childrenMenu);
+                this.menu=res.data.data;
                 this.$nextTick(()=>{
                     this.isLoading=false;
                     console.log(this.menu)
@@ -122,5 +123,9 @@ data() {
 }
 </script>
 <style >
-    
+  #pageWrapper {
+  height: calc(100% - 50px);
+  width: 95%;
+  margin-left: 20px;
+}
 </style>
