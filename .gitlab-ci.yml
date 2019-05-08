@@ -30,6 +30,7 @@ test:
   - cnpmbuild
   script:
   - VER=`git log -n1|head -n1|cut -d " " -f2`
+  - sed -i "s/VER/$VER/" Dockerfile
   - docker build -f ./Dockerfile -t 172.18.14.1:5000/machine-integration-frnt:$VER .
   - docker tag 172.18.14.1:5000/machine-integration-frnt:$VER 172.18.14.1:5000/machine-integration-frnt:test
   - docker push 172.18.14.1:5000/machine-integration-frnt:test
@@ -43,6 +44,7 @@ production:
   - cnpmbuild
   script:
   - VER=`git log -n1|head -n1|cut -d " " -f2`
+  - sed -i "s/VER/$VER/" Dockerfile
   - docker build -f ./Dockerfile -t 172.18.14.1:5000/machine-integration-frnt:latest .
   - docker push 172.18.14.1:5000/machine-integration-frnt:latest
   only:
