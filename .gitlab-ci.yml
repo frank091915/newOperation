@@ -18,6 +18,7 @@ build:
   - VER=`git log -n1|head -n1|cut -d " " -f2`
   - echo "Building Project Ver $VER"
   - cnpm install
+  - cnpm run build
   - sonar-scanner  -Dsonar.projectKey=2019_machineintegrationfrnt  -Dsonar.sources=./src  -Dsonar.host.url=http://172.18.14.1:8001  -Dsonar.login=51bec2811fd8cc2ca39345bab5446cf57b651557
   - echo "Build success. Copy to dir..."
   - echo "File name $VER"
@@ -29,7 +30,6 @@ test:
   - cnpmbuild
   script:
   - VER=`git log -n1|head -n1|cut -d " " -f2`
-  - sed -i "s/VER/$VER/" Dockerfile
   - docker build -f ./Dockerfile -t 172.18.14.1:5000/machine-integration-frnt:$VER .
   - docker tag 172.18.14.1:5000/machine-integration-frnt:$VER 172.18.14.1:5000/machine-integration-frnt:test
   - docker push 172.18.14.1:5000/machine-integration-frnt:test
@@ -43,7 +43,6 @@ production:
   - cnpmbuild
   script:
   - VER=`git log -n1|head -n1|cut -d " " -f2`
-  - sed -i "s/VER/$VER/" Dockerfile
   - docker build -f ./Dockerfile -t 172.18.14.1:5000/machine-integration-frnt:latest .
   - docker push 172.18.14.1:5000/machine-integration-frnt:latest
   only:
