@@ -23,8 +23,8 @@ build:
   - echo "Build success. Copy to dir..."
   - echo "File name $VER"
   - cd dist
-  - tar czf $VER.tar.gz ./
-  - cp -r $VER.tar.gz /opt/build/machine-integration-frnt/
+  - tar czf ../$VER.tar.gz ./
+  - cp -r ../$VER.tar.gz /opt/build/machine-integration-frnt/
   
 test:
   stage: test
