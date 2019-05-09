@@ -4,7 +4,14 @@
       <a-tabs defaultActiveKey="1" @change="callback">
         <a-tab-pane tab="汇聚机房告警策略" key="1" forceRender>
           <div id="tableWrapper">
-            <a-table :columns="columns" :dataSource="convergeData" bordered :pagination="false" :scroll="{y:700}" :loading="isLoading">
+            <a-table
+              :columns="columns"
+              :dataSource="convergeData"
+              bordered
+              :pagination="false"
+              :scroll="{y:700}"
+              :loading="isLoading"
+            >
               <template
                 v-for="col in ['name', 'age', 'address']"
                 :slot="col"
@@ -23,55 +30,78 @@
               </template>
               <template slot="operation" slot-scope="text, record, index">
                 <div class="editable-row-operations">
-                  <a-button @click="modifyAlarmStrategy(record.warningStrategy.cmdbId)" type="primary" size="small">编辑</a-button>
+                  <a-button
+                    @click="modifyAlarmStrategy(record.warningStrategy.cmdbId)"
+                    type="primary"
+                    size="small"
+                  >编辑</a-button>
                 </div>
               </template>
             </a-table>
-          <div id="pagination">
-          <div id="total">
-            共{{recordsTotal}}条数据
-          </div>
-          <div id="paginationBox">
-            <a-pagination @change="changePageOnConvergeRoom" v-model="current" :total="recordsTotal"   :pageSize="12" v-show="!isLoading" />
-          </div>
-        </div>
+            <div id="pagination">
+              <div id="total">共{{recordsTotal}}条数据</div>
+              <div id="paginationBox">
+                <a-pagination
+                  @change="changePageOnConvergeRoom"
+                  v-model="current"
+                  :total="recordsTotal"
+                  :pageSize="12"
+                  v-show="!isLoading"
+                />
+              </div>
+            </div>
           </div>
         </a-tab-pane>
         <a-tab-pane tab="弱电间告警策略" key="2">
           <div id="lowVolttageTableWrapper">
-          <div id="tableWrapper">
-            <a-table :columns="columns" :dataSource="electronicData" bordered :pagination="false" :scroll="{y:700}" :loading="isLoading">
-              <template
-                v-for="col in ['name', 'age', 'address']"
-                :slot="col"
-                slot-scope="text, record,index"
+            <div id="tableWrapper">
+              <a-table
+                :columns="columns"
+                :dataSource="electronicData"
+                bordered
+                :pagination="false"
+                :scroll="{y:700}"
+                :loading="isLoading"
               >
-                <div :key="col">
-                  <a-input
-                    v-if="record.editable"
-                    style="margin: -5px 0"
-                    :value="text"
-                    :pagination="false"
-                    @change="e => handleChange(e.target.value, record.key, col)"
+                <template
+                  v-for="col in ['name', 'age', 'address']"
+                  :slot="col"
+                  slot-scope="text, record,index"
+                >
+                  <div :key="col">
+                    <a-input
+                      v-if="record.editable"
+                      style="margin: -5px 0"
+                      :value="text"
+                      :pagination="false"
+                      @change="e => handleChange(e.target.value, record.key, col)"
+                    />
+                    <template v-else>{{text}}</template>
+                  </div>
+                </template>
+                <template slot="operation" slot-scope="text, record, index">
+                  <div class="editable-row-operations">
+                    <a-button
+                      @click="modifyAlarmStrategy(record.warningStrategy.cmdbId)"
+                      type="primary"
+                      size="small"
+                    >编辑</a-button>
+                  </div>
+                </template>
+              </a-table>
+              <div id="pagination">
+                <div id="total">共{{recordsTotal}}条数据</div>
+                <div id="paginationBox">
+                  <a-pagination
+                    @change="changePageOnLovaltageRoom"
+                    v-model="current"
+                    :total="recordsTotal"
+                    :pageSize="12"
+                    v-show="!isLoading"
                   />
-                  <template v-else>{{text}}</template>
                 </div>
-              </template>
-              <template slot="operation" slot-scope="text, record, index">
-                <div class="editable-row-operations">
-                  <a-button @click="modifyAlarmStrategy(record.warningStrategy.cmdbId)" type="primary" size="small">编辑</a-button>
-                </div>
-              </template>
-            </a-table>
-          <div id="pagination">
-          <div id="total">
-            共{{recordsTotal}}条数据
-          </div>
-          <div id="paginationBox">
-            <a-pagination @change="changePageOnLovaltageRoom" v-model="current" :total="recordsTotal"   :pageSize="12" v-show="!isLoading"/>
-          </div>
-        </div>
-          </div>
+              </div>
+            </div>
           </div>
         </a-tab-pane>
       </a-tabs>
@@ -85,65 +115,64 @@ const columns = [
     dataIndex: "key",
     width: "5%",
     scopedSlots: { customRender: "key" },
-    align:"center"
+    align: "center"
   },
   {
     title: "汇聚机房编号",
     dataIndex: "deviceInfo.Code",
     width: "10%",
     scopedSlots: { customRender: "name" },
-    align:"center"
+    align: "center"
   },
   {
     title: "描述",
     dataIndex: "deviceInfo.Description",
     width: "12%",
     scopedSlots: { customRender: "address" },
-    align:"center"
+    align: "center"
   },
   {
     title: "楼宇名称",
     dataIndex: "deviceInfo.buildingName",
     width: "10%",
     scopedSlots: { customRender: "remark" },
-    align:"center"
+    align: "center"
   },
   {
     title: "楼层",
     dataIndex: "deviceInfo.floorName",
     width: "10%",
     scopedSlots: { customRender: "name" },
-    align:"center"
+    align: "center"
   },
   {
     title: "房间",
     dataIndex: "deviceInfo.roomName",
     width: "15%",
     scopedSlots: { customRender: "name" },
-    align:"center"
+    align: "center"
   },
   {
     title: "设备MAC地址",
     dataIndex: "deviceInfo.MacAddress",
     width: "10%",
     scopedSlots: { customRender: "name" },
-    align:"center"
+    align: "center"
   },
   {
     title: "校园地图坐标点",
     dataIndex: "deviceInfo.location",
     width: "10%",
     scopedSlots: { customRender: "name" },
-    align:"center"
+    align: "center"
   },
   {
     title: "操作",
     dataIndex: "operation",
     width: "8%",
     scopedSlots: { customRender: "operation" },
-    align:"center"
+    align: "center"
   }
-  
 ];
 const formItemLayout = {
   labelCol: { span: 4 },
@@ -176,22 +205,25 @@ export default {
       columns,
       allDataArray: [],
       recordsTotal: 0,
-      roomType:"NKD_AGG_DEVICE",
-      isLoading:true,
-      current:1,
-      page:1,
-      type:1
+      roomType: "NKD_AGG_DEVICE",
+      isLoading: true,
+      current: 1,
+      page: 1,
+      type: 1
     };
   },
   methods: {
     modifyAlarmStrategy(cmdbId) {
       this.$router.push({
         path: "/modifyAlarmStrategy",
-        query: { title: "告警策略管理",cmdbId,type:this.roomType}
+        query: { title: "告警策略管理", cmdbId, type: this.roomType }
       });
     },
     addAlarmStrategy() {
-      this.$router.push({ path: "/addAlarmStrategy", query: { title: "告警策略管理",type:this.roomType } });
+      this.$router.push({
+        path: "/addAlarmStrategy",
+        query: { title: "告警策略管理", type: this.roomType }
+      });
     },
     confirmDelete(user) {
       this.$http.toDeleteRole(user.id).then(res => {
@@ -231,8 +263,7 @@ export default {
       });
     },
     addOrder(type) {
-      console.log(type,this.page)
-      let i = 1 +(this.page-1)*12;
+      let i = 1 + (this.page - 1) * 12;
       if (type == 1) {
         this.convergeData = this.convergeData.filter(item => {
           item["key"] = i++;
@@ -246,33 +277,28 @@ export default {
       }
     },
     callback(key) {
-        this.roomType= key==1? "NKD_AGG_DEVICE" :"NKD_WEAK_ELECTRIC_ADVICE";
-        this.$nextTick(()=>{
-            this.current=1;
-            this.page=1;
-            this.$nextTick(()=>{
-                this.getAlarmStrategy(key,this.roomType,this.page);
-            })
-
-        })
+      this.roomType = key == 1 ? "NKD_AGG_DEVICE" : "NKD_WEAK_ELECTRIC_ADVICE";
+      this.$nextTick(() => {
+        this.current = 1;
+        this.page = 1;
+        this.$nextTick(() => {
+          this.getAlarmStrategy(key, this.roomType, this.page);
+        });
+      });
     },
     getAlarmStrategy(roomType, roomName, page) {
-      this.isLoading=true;
-      console.log(roomType)
+      this.isLoading = true;
       this.$http.toGetAlarmStrategy(roomName, page).then(res => {
         if (res.data.success) {
           if (roomType == 1) {
             this.convergeData = res.data.data;
-            this.$nextTick(()=>{
-
-            })
+            this.$nextTick(() => {});
           } else {
             this.electronicData = res.data.data;
           }
           this.$nextTick(() => {
-            console.log(res);
             this.recordsTotal = res.data.recordsTotal;
-            this.isLoading=false;
+            this.isLoading = false;
             this.addOrder(roomType);
           });
         } else {
@@ -281,7 +307,7 @@ export default {
       });
     },
     toGetConvergeRoomAlarmSettings(type, key) {
-      this.isLoading=true;
+      this.isLoading = true;
       if (key == 1) {
         this.$http
           .toGetConvergeRoomAlarmSettings(this.currentFualtId, type)
@@ -290,7 +316,7 @@ export default {
               this.convergeData = res.data.data;
               this.allDataArray = this.electronicData.concat(this.convergeData);
               this.$nextTick(() => {
-                this.isLoading=false;
+                this.isLoading = false;
                 this.addOrder(1);
               });
             } else {
@@ -305,7 +331,7 @@ export default {
               this.electronicData = res.data.data;
               this.allDataArray = this.electronicData.concat(this.convergeData);
               this.$nextTick(() => {
-                this.isLoading=false;
+                this.isLoading = false;
                 this.addOrder(2);
               });
             } else {
@@ -318,32 +344,26 @@ export default {
       this.$http
         .toChangeFualtException({ faultId: this.currentFualtId, exceptionId })
         .then(res => {
-          console.log(res);
           if (res.data.success) {
             this.$message.success("设置成功");
-            console.log(roomType);
             this.FualtException(roomType);
           } else {
             this.$message.error("设置失败，请重试");
           }
         });
     },
-    changePageOnConvergeRoom(page){
-      console.log(page)
-
-      this.page=page;
-      this.$nextTick(()=>{
-          console.log(this.roomType,this.page)
-          this.getAlarmStrategy(1,this.roomType,this.page)
-          this.type=1
-      })
+    changePageOnConvergeRoom(page) {
+      this.page = page;
+      this.$nextTick(() => {
+        this.getAlarmStrategy(1, this.roomType, this.page);
+        this.type = 1;
+      });
     },
-    changePageOnLovaltageRoom(page){
-        this.page=page;
-        this.$nextTick(()=>{
-            console.log(this.roomType,this.page)
-            this.getAlarmStrategy(2,this.roomType,this.page)
-        })
+    changePageOnLovaltageRoom(page) {
+      this.page = page;
+      this.$nextTick(() => {
+        this.getAlarmStrategy(2, this.roomType, this.page);
+      });
     }
   },
   created() {
@@ -386,19 +406,19 @@ export default {
 #returnButton {
   margin-right: 100px;
 }
-#alarmSetWrapper{
-    max-height: calc(100% - 70px);
-    box-sizing: border-box;
-    padding-right: 10px;
+#alarmSetWrapper {
+  max-height: calc(100% - 70px);
+  box-sizing: border-box;
+  padding-right: 10px;
 }
-#addBox{
-    height: 20px;
-    margin-bottom:5px;
+#addBox {
+  height: 20px;
+  margin-bottom: 5px;
 }
-#pagination{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    margin-top: 15px;
+#pagination {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 15px;
 }
 </style>

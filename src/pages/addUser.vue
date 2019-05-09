@@ -108,9 +108,7 @@
         :wrapper-col="formItemLayout.wrapperCol"
         label="备注"
       >
-        <a-input 
-        type="textarea"
-        v-decorator="[
+        <a-input type="textarea" v-decorator="[
           'remark'
         ]"/>
       </a-form-item>
@@ -142,13 +140,11 @@ export default {
       form: this.$form.createForm(this),
       value: 1,
       roleName: "",
-      rolesGroup: [],
-
+      rolesGroup: []
     };
   },
   methods: {
     toReturn() {
-      console.log("return");
       this.$router.go("-1");
     },
     toSave() {
@@ -157,10 +153,7 @@ export default {
           let userInfo = { ...values };
           userInfo.status = this.value ? true : false;
           // 添加权限菜单
-
-          console.log(userInfo);
           this.$http.toAddUser(userInfo).then(res => {
-            console.log(res);
             if (res.data.success) {
               this.$message.success("添加用户成功");
               this.$router.push({
@@ -190,13 +183,10 @@ export default {
         this.openKeys = latestOpenKey ? [latestOpenKey] : [];
       }
     },
-    checkChange(e) {
-      console.log(`checked = ${e.target.checked}`);
-    }
+    checkChange(e) {}
   },
   created() {
     this.$http.toGetRoleManageList().then(res => {
-      console.log(res)
       if (res.data.success) {
         this.rolesGroup = res.data.data;
       }
@@ -236,7 +226,7 @@ export default {
 #addRoleWrapper {
   margin-top: 20px;
   width: 880px;
-  margin:0 auto;
+  margin: 0 auto;
 }
 .ant-form-item {
   margin-bottom: 20px !important;
@@ -250,13 +240,13 @@ export default {
   box-sizing: border-box;
   padding-left: 70px;
 }
-#permissionsMenu{
+#permissionsMenu {
   margin-top: 20px;
 }
-#permissionsMenuTitle{
+#permissionsMenuTitle {
   margin-bottom: 2px;
 }
-#returnButton{
+#returnButton {
   margin-right: 50px;
 }
 </style>

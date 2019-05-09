@@ -42,8 +42,8 @@ const toGetMenu = () => {
 
 // 请求所有异常列表
 const toGetAllExceptionList = (type) => {
-  console.log(type)
-  let typeParam= type ?   `?type=${type}`: "";
+
+  let typeParam = type ? `?type=${type}` : "";
 
   return ajax.get(
     "/api/exception/all" + typeParam, {
@@ -56,7 +56,7 @@ const toGetAllExceptionList = (type) => {
 
 // 改变菜单权限状态
 const toModifyPermissionStatus = (permissionId) => {
-  console.log(permissionId)
+
   return ajax.put(
     `/api/permission/status/${permissionId}`, {}, {
       headers: {
@@ -68,7 +68,7 @@ const toModifyPermissionStatus = (permissionId) => {
 }
 
 // 汇聚机房告警设置列表
-const toGetConvergeRoomAlarmSettings = (userId,type,currentPage=1) => {
+const toGetConvergeRoomAlarmSettings = (userId, type, currentPage = 1) => {
   return ajax.get(
     `/api/user/${userId}/device?currentPage=${currentPage}&type=${type}`, {
       headers: {
@@ -105,10 +105,10 @@ const toGetconvergeRoomList = () => {
 
 // 搜索汇聚机房
 const toSearchConvergeRoom = (roomId) => {
-  let roomIdParam = roomId ? `?searchRoom=${roomId}` : "" ;
-  console.log(roomIdParam)
+  let roomIdParam = roomId ? `?searchRoom=${roomId}` : "";
+
   return ajax.get(
-    "/api/data/machine"+roomIdParam, {
+    "/api/data/machine" + roomIdParam, {
       headers: {
         "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken"))
       }
@@ -120,7 +120,7 @@ const toSearchConvergeRoom = (roomId) => {
 // 请求汇聚机房详情
 const toGetconvergeRoomDetails = (id) => {
   return ajax.get(
-    "/api/data/machine/"+id, {
+    "/api/data/machine/" + id, {
       headers: {
         "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken"))
       }
@@ -131,7 +131,7 @@ const toGetconvergeRoomDetails = (id) => {
 // 请求弱电间详情
 const toGetLowVoltageRoomDetails = (id) => {
   return ajax.get(
-    "/api/data/electric/"+id, {
+    "/api/data/electric/" + id, {
       headers: {
         "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken"))
       }
@@ -153,9 +153,9 @@ const toGetlowVoltageRoomList = () => {
 
 // 搜索弱电间
 const toSearchlowVoltageRoom = (roomId) => {
-  let roomIdParam = roomId ? `?searchRoom=${roomId}` : "" ;
+  let roomIdParam = roomId ? `?searchRoom=${roomId}` : "";
   return ajax.get(
-    "/api/data/electric" +roomIdParam, {
+    "/api/data/electric" + roomIdParam, {
       headers: {
         "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken"))
       }
@@ -176,9 +176,9 @@ const toGetSummary = () => {
 }
 
 // 请求状态汇总信息
-const toGetExceptionManageList = (page=1) => {
+const toGetExceptionManageList = (page = 1) => {
   return ajax.get(
-    "/api/exception?currentPage="+page, {
+    "/api/exception?currentPage=" + page, {
       headers: {
         "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken"))
       }
@@ -187,11 +187,11 @@ const toGetExceptionManageList = (page=1) => {
 }
 
 // 请求pos机列表
-const toGetPosMechineList = (page , status,buildingId,searchRoom) => {
-  console.log(page , status,buildingId,searchRoom)
-  let statusQuery = status ===undefined || status ===null ?  "" : `&status=${status}`,
-    buildingIdQuery = buildingId ? `&buildingId=${buildingId}`: ""  ,
-    searchRoomQuery = searchRoom ?  `&searchRoom=${searchRoom}`: "";
+const toGetPosMechineList = (page, status, buildingId, searchRoom) => {
+
+  let statusQuery = status === undefined || status === null ? "" : `&status=${status}`,
+    buildingIdQuery = buildingId ? `&buildingId=${buildingId}` : "",
+    searchRoomQuery = searchRoom ? `&searchRoom=${searchRoom}` : "";
   return ajax.get(
     `/api/control/pos?currentPage=` + page + statusQuery + buildingIdQuery + searchRoomQuery, {
       headers: {
@@ -202,11 +202,11 @@ const toGetPosMechineList = (page , status,buildingId,searchRoom) => {
 }
 
 // 请求服务器列表
-const toGetServerRoomList = (page , status,buildingId,searchRoom) => {
-  console.log(page , status,buildingId,searchRoom)
-  let statusQuery = status ? `&status=${status}`:  "" ,
-    buildingIdQuery = buildingId ? `&buildingId=${buildingId}`: ""  ,
-    searchRoomQuery = searchRoom ?  `&searchRoom=${searchRoom}`: "";
+const toGetServerRoomList = (page, status, buildingId, searchRoom) => {
+
+  let statusQuery = status ? `&status=${status}` : "",
+    buildingIdQuery = buildingId ? `&buildingId=${buildingId}` : "",
+    searchRoomQuery = searchRoom ? `&searchRoom=${searchRoom}` : "";
   return ajax.get(
     `/api/control/server?currentPage=` + page + statusQuery + buildingIdQuery + searchRoomQuery, {
       headers: {
@@ -217,8 +217,8 @@ const toGetServerRoomList = (page , status,buildingId,searchRoom) => {
 }
 
 // 获取故障异常列表
-const toGetFualtExceptionList = (page =1,FaultId,exceptionType) => {
-  let exceptionTypeQuery = exceptionType !=undefined? `&exceptionType=${exceptionType}` : "";
+const toGetFualtExceptionList = (page = 1, FaultId, exceptionType) => {
+  let exceptionTypeQuery = exceptionType != undefined ? `&exceptionType=${exceptionType}` : "";
   return ajax.get(
     `/api/fault/${FaultId}/exception?currentPage=` + page + exceptionTypeQuery, {
       headers: {
@@ -231,7 +231,7 @@ const toGetFualtExceptionList = (page =1,FaultId,exceptionType) => {
 
 // 是否绑定异常
 const toChangeFualtException = (fualtException) => {
-  console.log(fualtException)
+
   return ajax.post(
     `/api/fault/${fualtException.faultId}/binding/${fualtException.exceptionId}`, qs.stringify(fualtException), {
       headers: {
@@ -244,11 +244,11 @@ const toChangeFualtException = (fualtException) => {
 
 
 // 请求圈存机列表
-const toGetTransferList = (page =1, status,buildingId,searchRoom) => {
-  console.log(status,buildingId,searchRoom)
-  let statusQuery = status ===undefined || status ===null ?  "" : `&status=${status}`,
-    buildingIdQuery = buildingId  ? `&buildingId=${buildingId}` : "",
-    searchRoomQuery = searchRoom  ? `&searchRoom=${searchRoom}` : "";
+const toGetTransferList = (page = 1, status, buildingId, searchRoom) => {
+
+  let statusQuery = status === undefined || status === null ? "" : `&status=${status}`,
+    buildingIdQuery = buildingId ? `&buildingId=${buildingId}` : "",
+    searchRoomQuery = searchRoom ? `&searchRoom=${searchRoom}` : "";
   return ajax.get(
     `/api/control/transfer?currentPage=` + page + statusQuery + buildingIdQuery + searchRoomQuery, {
       headers: {
@@ -259,11 +259,11 @@ const toGetTransferList = (page =1, status,buildingId,searchRoom) => {
 }
 
 // 请求门禁列表
-const toGetAccessList = (page, status,buildingId,searchRoom) => { 
-  let statusQuery = status ===undefined || status ==null ?  " " : `&status=${status}`,
+const toGetAccessList = (page, status, buildingId, searchRoom) => {
+  let statusQuery = status === undefined || status == null ? " " : `&status=${status}`,
     buildingIdQuery = buildingId ? `&buildingId=${buildingId}` : "",
     searchRoomQuery = searchRoom ? `&searchRoom=${searchRoom}` : "";
-    console.log(buildingIdQuery)
+
   return ajax.get(
     `/api/control/access?currentPage=` + page + statusQuery + buildingIdQuery + searchRoomQuery, {
       headers: {
@@ -274,10 +274,10 @@ const toGetAccessList = (page, status,buildingId,searchRoom) => {
 }
 
 // 请求广播列表
-const toGetBroadcastList = (page =1, status,buildingId,searchRoom) => {
-  let statusQuery = status ===undefined || status ===null ?  "" : `&status=${status}`,
-    buildingIdQuery = buildingId ?  `&buildingId=${buildingId}`:""  ,
-    searchRoomQuery = searchRoom ?  `&searchRoom=${searchRoom}` : "";
+const toGetBroadcastList = (page = 1, status, buildingId, searchRoom) => {
+  let statusQuery = status === undefined || status === null ? "" : `&status=${status}`,
+    buildingIdQuery = buildingId ? `&buildingId=${buildingId}` : "",
+    searchRoomQuery = searchRoom ? `&searchRoom=${searchRoom}` : "";
   return ajax.get(
     `/api/control/broadcast?currentPage=` + page + statusQuery + buildingIdQuery + searchRoomQuery, {
       headers: {
@@ -288,11 +288,11 @@ const toGetBroadcastList = (page =1, status,buildingId,searchRoom) => {
 }
 
 // 请求交换机列表
-const toGetinterchangerList = (page =1,status,buildingId,searchRoom) => {
-  let statusQuery = status === undefined || status == null ?  "" : `&status=${status}`,
-    buildingIdQuery = buildingId  ? `&buildingId=${buildingId}` : "",
+const toGetinterchangerList = (page = 1, status, buildingId, searchRoom) => {
+  let statusQuery = status === undefined || status == null ? "" : `&status=${status}`,
+    buildingIdQuery = buildingId ? `&buildingId=${buildingId}` : "",
     searchRoomQuery = searchRoom ? `&searchRoom=${searchRoom}` : "";
-    console.log(status,statusQuery,status === undefined || status == null,status === undefined,status === null)
+
   return ajax.get(
     `/api/control/network?currentPage=` + page + statusQuery + buildingIdQuery + searchRoomQuery, {
       headers: {
@@ -316,9 +316,9 @@ const toGetRoleManageList = () => {
 }
 
 // 获取异常详情
-const toGetExceptionInfo =(exceptionId) => {
+const toGetExceptionInfo = (exceptionId) => {
   return ajax.get(
-    "/api/exception/"+exceptionId, {
+    "/api/exception/" + exceptionId, {
       headers: {
         "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken"))
       }
@@ -329,7 +329,7 @@ const toGetExceptionInfo =(exceptionId) => {
 // 删除异常详情
 const toDeleteExceptionInfo = (exceptionId) => {
   return ajax.delete(
-    "/api/exception/"+exceptionId, {
+    "/api/exception/" + exceptionId, {
       headers: {
         "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken"))
       }
@@ -362,7 +362,7 @@ const toDeleteRole = (userId) => {
 // 删除故障
 const toDeleteFualt = (faultId) => {
   return ajax.delete(
-    "/api/fault/" + faultId,{
+    "/api/fault/" + faultId, {
       headers: {
         "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken"))
       }
@@ -383,11 +383,11 @@ const toDeleteUser = (userId) => {
 
 //用户添加
 const toAddUser = (userInfo) => {
-  let obj=userInfo;
-  obj.roleIds=[userInfo.role]
-  console.log(obj)
+  let obj = userInfo;
+  obj.roleIds = [userInfo.role]
+
   return ajax.post(
-    `/api/user?roleIds=${userInfo.role}`,obj, {
+    `/api/user?roleIds=${userInfo.role}`, obj, {
       headers: {
         "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken")),
         "Content-Type": "application/json"
@@ -398,9 +398,9 @@ const toAddUser = (userInfo) => {
 
 //新增故障
 const toAddFualt = (fualtInfo) => {
-  console.log(fualtInfo)
+
   return ajax.post(
-    `/api/fault`,qs.stringify(fualtInfo), {
+    `/api/fault`, qs.stringify(fualtInfo), {
       headers: {
         "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken")),
         "Content-Type": "application/x-www-form-urlencoded"
@@ -411,9 +411,9 @@ const toAddFualt = (fualtInfo) => {
 
 //新增异常
 const toAddException = (exceptionInfo) => {
-  console.log(exceptionInfo)
+
   return ajax.post(
-    `/api/exception?code=${exceptionInfo.code}&type=${exceptionInfo.type}&remark=${exceptionInfo.remark}`,qs.stringify(exceptionInfo), {
+    `/api/exception?code=${exceptionInfo.code}&type=${exceptionInfo.type}&remark=${exceptionInfo.remark}`, qs.stringify(exceptionInfo), {
       headers: {
         "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken")),
         "Content-Type": "application/json"
@@ -425,9 +425,9 @@ const toAddException = (exceptionInfo) => {
 
 //角色添加
 const toAddRole = (roleInfo) => {
-  console.log(roleInfo)
+
   return ajax.post(
-    "/api/role"+"?permissionIds="+ roleInfo.permissions.join(","), qs.stringify(roleInfo), {
+    "/api/role" + "?permissionIds=" + roleInfo.permissions.join(","), qs.stringify(roleInfo), {
       headers: {
         "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken")),
         "Content-Type": "application/x-www-form-urlencoded"
@@ -438,9 +438,9 @@ const toAddRole = (roleInfo) => {
 
 //角色修改
 const toModifyRole = (roleInfo) => {
-  console.log(roleInfo)
+
   return ajax.put(
-    "/api/role/" + roleInfo.id+"?permissionIds="+ roleInfo.permissions.join(","), qs.stringify(roleInfo), {
+    "/api/role/" + roleInfo.id + "?permissionIds=" + roleInfo.permissions.join(","), qs.stringify(roleInfo), {
       headers: {
         "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken")),
         "Content-Type": "application/x-www-form-urlencoded"
@@ -451,7 +451,6 @@ const toModifyRole = (roleInfo) => {
 
 //修改故障信息
 const toModifyFualt = (fualtInfo) => {
-  console.log(fualtInfo)
   return ajax.put(
     `/api/fault/${fualtInfo.faultId}?name=${fualtInfo.name}&remark=${fualtInfo.remark}`, qs.stringify(fualtInfo), {
       headers: {
@@ -465,7 +464,7 @@ const toModifyFualt = (fualtInfo) => {
 
 //修改异常
 const toModifyException = (exceptionInfo) => {
-  console.log(exceptionInfo)
+
   return ajax.put(
     `/api/exception/${exceptionInfo.exceptionId}?type=${exceptionInfo.code}&remark=${exceptionInfo.remark}`, qs.stringify(exceptionInfo), {
       headers: {
@@ -478,41 +477,41 @@ const toModifyException = (exceptionInfo) => {
 
 //用户修改
 const toModifyUser = (userInfo) => {
-  console.log(userInfo)
 
-let keyArray=Object.keys(userInfo),
-    itemArray=[],
-    i=0;
-    for(var item of  keyArray){
-      var obj={};
-      if(userInfo[item]){
-        if(i===0){
-          obj[item]=`?${item}=${userInfo[item]}`
-        }else{
-          obj[item]=`&${item}=${userInfo[item]}` ;
-        }
 
-        itemArray.push(obj);
-        i++;
+  let keyArray = Object.keys(userInfo),
+    itemArray = [],
+    i = 0;
+  for (var item of keyArray) {
+    var obj = {};
+    if (userInfo[item]) {
+      if (i === 0) {
+        obj[item] = `?${item}=${userInfo[item]}`
+      } else {
+        obj[item] = `&${item}=${userInfo[item]}`;
       }
-    }
-    
 
-  let ultimateParam =[],
-      ultimateKeyArray=[]
-    // 得到所有的key值
-    for(var j = 0;j<itemArray.length; j++ ){
-      console.log(Object.keys(itemArray[j])[0])
-      ultimateKeyArray.push(Object.keys(itemArray[j])[0]); 
+      itemArray.push(obj);
+      i++;
     }
-  // 得到所有的参数array
-  for(var j = 0;j<itemArray.length; j++ ){
-    ultimateParam.push(itemArray[j][(ultimateKeyArray[j])]) 
   }
 
-  console.log(ultimateParam.join(''))
+
+  let ultimateParam = [],
+    ultimateKeyArray = []
+  // 得到所有的key值
+  for (var j = 0; j < itemArray.length; j++) {
+
+    ultimateKeyArray.push(Object.keys(itemArray[j])[0]);
+  }
+  // 得到所有的参数array
+  for (var j = 0; j < itemArray.length; j++) {
+    ultimateParam.push(itemArray[j][(ultimateKeyArray[j])])
+  }
+
+
   return ajax.put(
-    `/api/user/${userInfo.userId}`+ultimateParam.join(''),qs.stringify(userInfo), {
+    `/api/user/${userInfo.userId}` + ultimateParam.join(''), qs.stringify(userInfo), {
       headers: {
         "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken")),
         "Content-Type": "application/json"
@@ -522,7 +521,7 @@ let keyArray=Object.keys(userInfo),
 }
 //修改告警策略
 const toModifyAlarmStrategy = (alarmStrategy) => {
-  console.log(alarmStrategy)
+
   return ajax.put(
     `/api/warning/strategy/device/${alarmStrategy.cmdbId}/?type=${alarmStrategy.type}`, alarmStrategy.warningStrategy, {
       headers: {
@@ -535,9 +534,9 @@ const toModifyAlarmStrategy = (alarmStrategy) => {
 
 //用户重置密码
 const toResetPassword = (userId) => {
-  console.log(userId)
+
   return ajax.put(
-    "/api/user/reset/password/" + userId, {},{
+    "/api/user/reset/password/" + userId, {}, {
       headers: {
         "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken")),
         "Content-Type": "application/x-www-form-urlencoded"
@@ -548,10 +547,9 @@ const toResetPassword = (userId) => {
 
 //用户设置告警设置
 const toSetAlarm = (userID, FaultId) => {
-  console.log(userID, FaultId)
+
   return ajax.post(
-    `/api/user/${userID}/warning/${FaultId}`, qs.stringify({
-    }), {
+    `/api/user/${userID}/warning/${FaultId}`, qs.stringify({}), {
       headers: {
         "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken")),
         "Content-Type": "application/x-www-form-urlencoded"
@@ -563,7 +561,7 @@ const toSetAlarm = (userID, FaultId) => {
 
 //用户开启告警设置
 const toSetAlarmOn = (obj) => {
-  console.log(obj)
+
   return ajax.post(
     `/api/user/${obj.userId}/device/${obj.cmdbId}/on`, qs.stringify(obj), {
       headers: {
@@ -577,7 +575,7 @@ const toSetAlarmOn = (obj) => {
 
 //用户禁用告警设置
 const toSetAlarmOff = (obj) => {
-  console.log(obj)
+
   return ajax.post(
     `/api/user/${obj.userId}/device/${obj.cmdbId}/off`, qs.stringify(obj), {
       headers: {
@@ -601,9 +599,9 @@ const toUserList = () => {
 }
 
 // 请求故障列表
-const toGetFualtManageList = (page=1) => {
+const toGetFualtManageList = (page = 1) => {
   return ajax.get(
-    "/api/fault?currentPage="+page, {
+    "/api/fault?currentPage=" + page, {
       headers: {
         "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken"))
       }
@@ -615,7 +613,7 @@ const toGetFualtManageList = (page=1) => {
 // 请求故障详情列表
 const toGetFualtInfo = (fualtId) => {
   return ajax.get(
-    "/api/fault/"+fualtId, {
+    "/api/fault/" + fualtId, {
       headers: {
         "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken"))
       }
@@ -636,10 +634,10 @@ const toGetUserAlarmSettings = (userId) => {
 
 // 请求告警记录列表
 
-const toGetWarningRecordList = (page =1,warningId,searchName) => {
-  console.log(warningId)
-  let warningIdQuery = warningId ?    `&exceptionId=${warningId}`: "",
-      searchNameQuery = searchName ? `&searchName=${searchName}`  : "" ;
+const toGetWarningRecordList = (page = 1, warningId, searchName) => {
+
+  let warningIdQuery = warningId ? `&exceptionId=${warningId}` : "",
+    searchNameQuery = searchName ? `&searchName=${searchName}` : "";
   return ajax.get(
     `/api/record/warning?currentPage=` + page + warningIdQuery + searchNameQuery, {
       headers: {
@@ -650,23 +648,21 @@ const toGetWarningRecordList = (page =1,warningId,searchName) => {
 }
 // 获取异常记录列表
 
-const toGetExceptionRecordList = (page =1,status,buildingId,floorId,roomId) => {
+const toGetExceptionRecordList = (page = 1, status, buildingId, floorId, roomId) => {
 
-  let roomIdQuery = roomId ?   `&roomId=${roomId}`: "",
-      statusQuery = status === undefined || status == null ?  "" : `&status=${status}`,
-      buildingIdQuery = buildingId ?  `&buildingId=${buildingId}`:""  ,
-      floorIdQuery = floorId ?  `&floorId=${floorId}`:""  ;
-      console.log(buildingIdQuery,floorIdQuery)
+  let roomIdQuery = roomId ? `&roomId=${roomId}` : "",
+    statusQuery = status === undefined || status == null ? "" : `&status=${status}`,
+    buildingIdQuery = buildingId ? `&buildingId=${buildingId}` : "",
+    floorIdQuery = floorId ? `&floorId=${floorId}` : "";
+
   return ajax.get(
-    `/api/record/exception?currentPage=` + page + roomIdQuery + statusQuery+buildingIdQuery+floorIdQuery, {
+    `/api/record/exception?currentPage=` + page + roomIdQuery + statusQuery + buildingIdQuery + floorIdQuery, {
       headers: {
         "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken"))
       }
     }
   )
 }
-
-
 
 // 进入编辑角色页面，获取角色信息
 const toRoleInfo = (userId) => {
@@ -715,7 +711,7 @@ const toGetUserInfoById = (userId) => {
 }
 
 // 告警策略信息
-const toGetAlarmStrategy = (type,page) => {
+const toGetAlarmStrategy = (type, page) => {
   return ajax.get(
     `/api/warning/strategy/device?type=${type}&currentPage=${page}`, {
       headers: {
@@ -726,7 +722,7 @@ const toGetAlarmStrategy = (type,page) => {
 }
 
 // 告警策略详情
-const toGetAlarmStrategyInfo = (cmdbId,type) => {
+const toGetAlarmStrategyInfo = (cmdbId, type) => {
   return ajax.get(
     `/api/warning/strategy/device/${cmdbId}?type=${type}`, {
       headers: {
@@ -758,10 +754,11 @@ ajax.interceptors.request.use((config) => {
 //拦截相应,对相应数据进行操作并返回,顺带关掉indicator
 ajax.interceptors.response.use((config) => {
 
-  if(!config.data.success){
-    if(httpCode==401){
-      this.$message.error("登录已失效，请重新登录");
-      window.location.href="/signInn"
+  if (!config.data.success) {
+    if (config.data.httpCode == 401) {
+      window.sessionStorage.removeItem('operationToken')
+      window.location.href = "/signIn"
+      alert("登录已失效，请重新登录");
     }
   }
   return config
@@ -826,6 +823,3 @@ export {
   toSearchlowVoltageRoom,
   toGetMenu
 }
-
-
-

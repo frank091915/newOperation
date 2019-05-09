@@ -1,7 +1,5 @@
 <template>
-<div>
-  位置展示
-</div>
+  <div>位置展示</div>
 </template>
 <script>
 export default {
@@ -11,7 +9,7 @@ export default {
       aloneMenu: [],
       parentMenu: [],
       // 含有状态的菜单数组
-      ultimateArray:[],
+      ultimateArray: [],
       //   完整权限菜单
       permissions: [],
       //  当前用户权限菜单
@@ -43,7 +41,6 @@ export default {
     });
     // 获取当前用户菜单权限
     this.$http.toGetUserInfoById(7).then(res => {
-      console.log(res);
       this.permissions = res.data.data.permissions;
       this.permissionsIdArray = res.data.data.permissionIds;
       //   选出用户当前权限菜单
@@ -99,10 +96,10 @@ export default {
             }
           });
           this.$nextTick(() => {
-            this.ultimateArray=this.aloneMenuArray.concat(this.parentMenuArray)
-            this.$nextTick(()=>{
-              console.log(this.ultimateArray)
-            })
+            this.ultimateArray = this.aloneMenuArray.concat(
+              this.parentMenuArray
+            );
+            this.$nextTick(() => {});
           });
         });
       });
@@ -119,10 +116,8 @@ export default {
         this.openKeys = latestOpenKey ? [latestOpenKey] : [];
       }
     },
-    checkChange(e) {
-      console.log(`checked = ${e.target.checked}`);
-    },
-    judge(id,type) {
+    checkChange(e) {},
+    judge(id, type) {
       switch (type) {
         case 0:
           return this.aloneMenuArray.filter(item => {
@@ -171,9 +166,7 @@ export default {
       }
     },
     // 有子菜单的父级菜单状态改编后，改变子菜单状态的方法
-    changeChildren(id) {
-      console.log(id);
-    },
+    changeChildren(id) {},
     // 用户点击复选框时，先改变对应的菜单数组中队像的是否授权属性，然后再重新去掉judge方法判断是否选中
 
     // 修改没有子菜单的一级菜单
@@ -188,7 +181,6 @@ export default {
         return item;
       });
       this.$nextTick(() => {
-        console.log(this.aloneMenuArray);
         this.judge(id, type);
       });
     },
@@ -199,22 +191,20 @@ export default {
       this.parentMenuArray = this.parentMenuArray.map(item => {
         if (item.id == id) {
           item.ifPermitted = !item.ifPermitted;
-            // 获取到新状态开始改变其子菜单权限属性
+          // 获取到新状态开始改变其子菜单权限属性
 
-            let newStatus=item.ifPermitted;
-            item.subPermissions.map((subItem)=>{
-              subItem.ifPermitted=newStatus
-              return subItem
-            })
+          let newStatus = item.ifPermitted;
+          item.subPermissions.map(subItem => {
+            subItem.ifPermitted = newStatus;
+            return subItem;
+          });
           return item;
         }
         return item;
       });
       this.$nextTick(() => {
-          this.ultimateArray=this.aloneMenuArray.concat(this.parentMenuArray)
-          this.$nextTick(()=>{
-            console.log(this.ultimateArray)
-          })
+        this.ultimateArray = this.aloneMenuArray.concat(this.parentMenuArray);
+        this.$nextTick(() => {});
       });
     },
     changeChildStatus(id, type) {
@@ -244,27 +234,25 @@ export default {
       });
 
       // 该父级菜单权限属性
-      let parentStatus=theParentMenu.subPermissions.every((item)=>{
-          return item.ifPermitted===true
+      let parentStatus = theParentMenu.subPermissions.every(item => {
+        return item.ifPermitted === true;
       });
-      console.log(parentStatus)
-      theParentMenu.ifPermitted=parentStatus;
-      
+
+      theParentMenu.ifPermitted = parentStatus;
+
       // 去改变有子菜单的二级菜单数组
-       this.parentMenuArray=this.parentMenuArray.map(parentItem => {
+      this.parentMenuArray = this.parentMenuArray.map(parentItem => {
         if (parentItem.id === theParentMenu.id) {
           return theParentMenu;
         }
         return parentItem;
       });
       this.$nextTick(() => {
-        this.ultimateArray=this.aloneMenuArray.concat(this.parentMenuArray)
-        this.$nextTick(()=>{
-          console.log(this.ultimateArray)
-        })
+        this.ultimateArray = this.aloneMenuArray.concat(this.parentMenuArray);
+        this.$nextTick(() => {});
       });
     }
-  },
+  }
 };
 </script>
 <style scoped>

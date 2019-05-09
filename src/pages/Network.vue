@@ -47,7 +47,12 @@
       <div id="searchByNames">
         <div id="searchByNamesLabel">名称：</div>
         <div id="searchByNamesInput">
-          <a-input v-model="searchParam" placeholder="请输入交换机房间名称" size="small" @keydown.enter="search(true)"/>
+          <a-input
+            v-model="searchParam"
+            placeholder="请输入交换机房间名称"
+            size="small"
+            @keydown.enter="search(true)"
+          />
           <a-button @click="search(true)" type="primary" size="small" style="margin-left:15px">搜索</a-button>
         </div>
       </div>
@@ -76,24 +81,23 @@
           </div>
         </template>
 
-      <template
-            v-for="col in ['name','age', 'address','highLight']"
-            slot="highLight"
-            slot-scope="text, record,highLight"
-          >
-            <div :key="col" :style='color(record.status)' >
-              <a-input
-                v-if="record.editable"
-                style=""
-                :value="text"
-                @change="e => handleChange(e.target.value, record.key, col)"
-              />
-              <template v-else>{{text}}</template>
-            </div>
-          </template>
-
+        <template
+          v-for="col in ['name','age', 'address','highLight']"
+          slot="highLight"
+          slot-scope="text, record,highLight"
+        >
+          <div :key="col" :style="color(record.status)">
+            <a-input
+              v-if="record.editable"
+              style
+              :value="text"
+              @change="e => handleChange(e.target.value, record.key, col)"
+            />
+            <template v-else>{{text}}</template>
+          </div>
+        </template>
       </a-table>
-      <div id="pagination"  v-show="!isLoading">
+      <div id="pagination" v-show="!isLoading">
         <div id="total">共{{recordsTotal}}条数据</div>
         <div id="paginationBox">
           <a-pagination
@@ -233,10 +237,9 @@ export default {
       //     }
       //   });
     },
-    color(type){
-      console.log(type)
-      if(type!=0){
-        return 'color : red'
+    color(type) {
+      if (type != 0) {
+        return "color : red";
       }
     },
     handleBuildingChange() {
@@ -265,21 +268,25 @@ export default {
       );
     },
     search(isSearching) {
-      let statusParam = this.status === "全部" || this.status === "null" ? null : this.status,
-        buildingIdParam = this.buildingId === "全部" ||this.buildingId === "null" ? null : this.buildingId;
-        console.log(statusParam)
-        if(isSearching){
-          this.page=1;
-          this.$nextTick(()=>{
-            this.GetinterchangerList(
-              this.page,
-              this.statusParam,
-              buildingIdParam,
-              this.searchParam,
-              isSearching
-            );
-          })
-        }
+      let statusParam =
+          this.status === "全部" || this.status === "null" ? null : this.status,
+        buildingIdParam =
+          this.buildingId === "全部" || this.buildingId === "null"
+            ? null
+            : this.buildingId;
+
+      if (isSearching) {
+        this.page = 1;
+        this.$nextTick(() => {
+          this.GetinterchangerList(
+            this.page,
+            this.statusParam,
+            buildingIdParam,
+            this.searchParam,
+            isSearching
+          );
+        });
+      }
       this.GetinterchangerList(
         this.page,
         this.statusParam,
@@ -289,26 +296,31 @@ export default {
       );
     },
     addOrder() {
-      var i = 1 + (this.page-1)*12;
+      var i = 1 + (this.page - 1) * 12;
       this.data = this.data.filter(item => {
         item["key"] = i++;
         return true;
       });
     },
-    GetinterchangerList(page, statusParam, buildingIdParam, searchParam,isSearching) {
+    GetinterchangerList(
+      page,
+      statusParam,
+      buildingIdParam,
+      searchParam,
+      isSearching
+    ) {
       this.isLoading = true;
       this.$http
         .toGetinterchangerList(page, statusParam, buildingIdParam, searchParam)
         .then(res => {
-          console.log(res);
           if (res.data.success) {
             this.isLoading = false;
             this.data = res.data.data;
             this.recordsTotal = res.data.recordsTotal;
-            if(isSearching){
-              this.current=1
+            if (isSearching) {
+              this.current = 1;
             }
-            console.log(isSearching)
+
             this.$nextTick(() => {
               this.addOrder();
             });
@@ -316,10 +328,8 @@ export default {
         });
     },
     changePage(page) {
-      console.log(page);
       this.page = page;
       this.$nextTick(() => {
-        console.log(this.page);
         this.search(false);
       });
     }
@@ -334,13 +344,13 @@ export default {
       }
     });
   },
-  mounted(){
-        let that = this;
+  mounted() {
+    let that = this;
     document.onkeypress = function(e) {
       var keycode = document.all ? event.keyCode : e.which;
       if (keycode == 13) {
-        that.search(true);// 登录方法名
-         return false;
+        that.search(true); // 登录方法名
+        return false;
       }
     };
   }

@@ -25,7 +25,7 @@
         <div class="label">楼宇名称：</div>
         <div id="buildingSearchInput">
           <a-select
-          size="small"
+            size="small"
             defaultValue="检测中心"
             showSearch
             placeholder="Select a person"
@@ -36,30 +36,36 @@
             v-model="buildingId"
           >
             <a-select-option :value="nullStatus" :key="8874">全部</a-select-option>
-            <a-select-option v-for="item in allBuildings" :value="item.Id" :key="item.Id">{{item.Address}}</a-select-option>
+            <a-select-option
+              v-for="item in allBuildings"
+              :value="item.Id"
+              :key="item.Id"
+            >{{item.Address}}</a-select-option>
           </a-select>
         </div>
       </div>
       <div id="searchByNames">
         <div id="searchByNamesLabel">名称：</div>
         <div id="searchByNamesInput">
-          <a-input v-model="searchParam" placeholder="请输入门禁房间名称" size="small" @keydown.enter="search(true)"/>
+          <a-input
+            v-model="searchParam"
+            placeholder="请输入门禁房间名称"
+            size="small"
+            @keydown.enter="search(true)"
+          />
           <a-button @click="search" type="primary" size="small" style="margin-left:15px">搜索</a-button>
         </div>
       </div>
     </div>
     <div id="tableWrapper">
-      <a-table 
-      :columns="columns" 
-      :dataSource="data"
-      :pagination="false"
-      :loading="isLoading"
-      bordered>
-        <template
-          v-for="col in ['name', 'age', 'address']"
-          :slot="col"
-          slot-scope="text, record"
-        >
+      <a-table
+        :columns="columns"
+        :dataSource="data"
+        :pagination="false"
+        :loading="isLoading"
+        bordered
+      >
+        <template v-for="col in ['name', 'age', 'address']" :slot="col" slot-scope="text, record">
           <div :key="col">
             <a-input
               v-if="record.editable"
@@ -71,114 +77,115 @@
           </div>
         </template>
 
-      <template
-            v-for="col in ['name','age', 'address','highLight']"
-            slot="highLight"
-            slot-scope="text, record,highLight"
-          >
-            <div :key="col" :style='color(record.status)' >
-              <a-input
-                v-if="record.editable"
-                style=""
-                :value="text"
-                @change="e => handleChange(e.target.value, record.key, col)"
-              />
-              <template v-else>{{text}}</template>
-            </div>
-          </template>
-
+        <template
+          v-for="col in ['name','age', 'address','highLight']"
+          slot="highLight"
+          slot-scope="text, record,highLight"
+        >
+          <div :key="col" :style="color(record.status)">
+            <a-input
+              v-if="record.editable"
+              style
+              :value="text"
+              @change="e => handleChange(e.target.value, record.key, col)"
+            />
+            <template v-else>{{text}}</template>
+          </div>
+        </template>
       </a-table>
-
     </div>
-        <div id="pagination" v-show="!isLoading"> 
-          <div id="total">
-            共{{recordsTotal}}条数据
-          </div>
-          <div id="paginationBox">
-            <a-pagination @change="changePage" v-model="current" :total="recordsTotal"   :pageSize="12" v-show="!isLoading"/>
-          </div>
-        </div>
+    <div id="pagination" v-show="!isLoading">
+      <div id="total">共{{recordsTotal}}条数据</div>
+      <div id="paginationBox">
+        <a-pagination
+          @change="changePage"
+          v-model="current"
+          :total="recordsTotal"
+          :pageSize="12"
+          v-show="!isLoading"
+        />
+      </div>
+    </div>
   </div>
 </template>
 <script>
-
 const columns = [
   {
     title: "序号",
     dataIndex: "key",
     width: "5%",
     scopedSlots: { customRender: "_id" },
-    align:"center"
+    align: "center"
   },
   {
     title: "状态",
     dataIndex: "statusDescription",
     width: "15%",
     scopedSlots: { customRender: "highLight" },
-    align:"center"
+    align: "center"
   },
   {
     title: "门禁名称",
     dataIndex: "Description",
     width: "8%",
     scopedSlots: { customRender: "address" },
-    align:"center"
+    align: "center"
   },
   {
     title: "品牌",
     dataIndex: "Brand",
     width: "8%",
     scopedSlots: { customRender: "address" },
-    align:"center"
+    align: "center"
   },
   {
     title: "型号",
     dataIndex: "Model",
     width: "9%",
     scopedSlots: { customRender: "address" },
-    align:"center"
+    align: "center"
   },
-   {
+  {
     title: "楼宇名称",
     dataIndex: "buildingName",
     width: "8%",
     scopedSlots: { customRender: "address" },
-    align:"center"
+    align: "center"
   },
   {
     title: "楼层",
     dataIndex: "floorName",
     width: "10%",
     scopedSlots: { customRender: "address" },
-    align:"center"
+    align: "center"
   },
   {
     title: "房间",
     dataIndex: "roomName",
     width: "16%",
     scopedSlots: { customRender: "address" },
-    align:"center"
+    align: "center"
   },
   {
     title: "编号",
     dataIndex: "Code",
     width: "6%",
     scopedSlots: { customRender: "address" },
-    align:"center"
+    align: "center"
   },
   {
     title: "ip地址",
     dataIndex: "SerialNumber",
     width: "8%",
     scopedSlots: { customRender: "SerialNumber" },
-    align:"center"
+    align: "center"
   },
   {
     title: "备注",
     dataIndex: "remarks",
     width: "8%",
     scopedSlots: { customRender: "address" },
-    align:"center"
+    align: "center"
   }
 ];
 
@@ -197,27 +204,27 @@ export default {
   data() {
     this.cacheData = data.map(item => ({ ...item }));
     return {
-      data:[],
+      data: [],
       columns,
-      recordsTotal:0,
-      status:"全部",
-      allBuildings:[],
-      buildingId:"全部",
-      nullStatus:"null",
-      normalStatus:1,
-      abnormalStatus:0,
-      unknowStatus:-1,
-      statusParam:"",
-      buildingIdParam:"",
-      page:1,
-      searchParam:"",
-      isLoading:true,
-      current:1
+      recordsTotal: 0,
+      status: "全部",
+      allBuildings: [],
+      buildingId: "全部",
+      nullStatus: "null",
+      normalStatus: 1,
+      abnormalStatus: 0,
+      unknowStatus: -1,
+      statusParam: "",
+      buildingIdParam: "",
+      page: 1,
+      searchParam: "",
+      isLoading: true,
+      current: 1
     };
   },
   methods: {
     handleStatusChange() {
-      this.statusParam=this.status==="null" ? null : this.status;
+      this.statusParam = this.status === "null" ? null : this.status;
       // this.isLoading=true;
       // this.$http.toGetAccessList(1,this.statusParam,this.buildingIdParam).then((res)=>{
       //   if(res.data.success){
@@ -228,19 +235,19 @@ export default {
       //       this.addOrder()
       //   })
       //   }else{
-          
+
       //   }
       // })
     },
-    color(type){
-      console.log(type)
-      if(type!=0){
-        return 'color : red'
+    color(type) {
+      if (type != 0) {
+        return "color : red";
       }
     },
-    handleBuildingChange(){
-            // this.isLoading=true;
-      this.buildingIdParam=this.buildingId==="null" ? null : this.buildingId;
+    handleBuildingChange() {
+      // this.isLoading=true;
+      this.buildingIdParam =
+        this.buildingId === "null" ? null : this.buildingId;
       // this.$http.toGetAccessList(1,this.statusParam,this.buildingIdParam).then((res)=>{
       //   if(res.data.success){
       //           this.isLoading=false;
@@ -250,7 +257,7 @@ export default {
       //       this.addOrder()
       //   })
       //   }else{
-          
+
       //   }
       // })
     },
@@ -261,85 +268,105 @@ export default {
           .indexOf(input.toLowerCase()) >= 0
       );
     },
-    search(isSearching){
-          let statusParam=this.status === "全部" || this.status === "null" ? null : this.status,
-            buildingIdParam= this.buildingId === "全部" || this.buildingId === "null"  ? null : this.buildingId;          
-           console.log(this.page,statusParam,buildingIdParam,this.searchParam);
-           if(isSearching){
-             this.page=1;
-              this.GetAccessList(this.page,statusParam,buildingIdParam,this.searchParam,isSearching)         
-           }
-            this.GetAccessList(this.page,statusParam,buildingIdParam,this.searchParam,isSearching)
-    },
-    addOrder(){
-        var i = 1 + (this.page-1)*12;
-          this.data=this.data.filter((item)=>{
-          item["key"]=i++;
-          return true
-        })
-    },
-    GetAccessList(page,statusParam,buildingIdParam,searchParam,isSearching){
-      this.isLoading=true;
-          this.$http.toGetAccessList(page,statusParam,buildingIdParam,searchParam).then((res)=>{
-        console.log(res)
-        if(res.data.success){
-        this.data=res.data.data
-        this.recordsTotal=res.data.recordsTotal
-        if(isSearching){
-          this.current=1
-        }
-        this.$nextTick(()=>{
-          this.isLoading=false
-            this.addOrder()
-        })
+    search(isSearching) {
+      let statusParam =
+          this.status === "全部" || this.status === "null" ? null : this.status,
+        buildingIdParam =
+          this.buildingId === "全部" || this.buildingId === "null"
+            ? null
+            : this.buildingId;
+
+      if (isSearching) {
+        this.page = 1;
+        this.GetAccessList(
+          this.page,
+          statusParam,
+          buildingIdParam,
+          this.searchParam,
+          isSearching
+        );
       }
-    })
+      this.GetAccessList(
+        this.page,
+        statusParam,
+        buildingIdParam,
+        this.searchParam,
+        isSearching
+      );
     },
-    changePage(page){
-      console.log(page)
-      this.page=page;
-      this.$nextTick(()=>{
-        console.log(this.page)
-        this.search(false)
-      })
+    addOrder() {
+      var i = 1 + (this.page - 1) * 12;
+      this.data = this.data.filter(item => {
+        item["key"] = i++;
+        return true;
+      });
+    },
+    GetAccessList(
+      page,
+      statusParam,
+      buildingIdParam,
+      searchParam,
+      isSearching
+    ) {
+      this.isLoading = true;
+      this.$http
+        .toGetAccessList(page, statusParam, buildingIdParam, searchParam)
+        .then(res => {
+          if (res.data.success) {
+            this.data = res.data.data;
+            this.recordsTotal = res.data.recordsTotal;
+            if (isSearching) {
+              this.current = 1;
+            }
+            this.$nextTick(() => {
+              this.isLoading = false;
+              this.addOrder();
+            });
+          }
+        });
+    },
+    changePage(page) {
+      this.page = page;
+      this.$nextTick(() => {
+        this.search(false);
+      });
     }
   },
   created() {
     // 获得门禁列表
-    this.GetAccessList(this.page)
+    this.GetAccessList(this.page);
     // 获取所有楼宇名称
-    this.$http.toGetBuildingList().then((res)=>{
-      if(res.data.success){
-        this.allBuildings=res.data.data
-
+    this.$http.toGetBuildingList().then(res => {
+      if (res.data.success) {
+        this.allBuildings = res.data.data;
       }
-    })
+    });
   },
-  mounted(){
-        let that = this;
+  mounted() {
+    let that = this;
     document.onkeypress = function(e) {
       var keycode = document.all ? event.keyCode : e.which;
       if (keycode == 13) {
-        that.search(true);// 登录方法名
-         return false;
+        that.search(true); // 登录方法名
+        return false;
       }
     };
   }
 };
 </script>
 <style scoped>
-html{
+html {
   height: 100%;
 }
-body{
+body {
   height: 100%;
 }
-#pageWrapper{
+#pageWrapper {
   width: 95%;
   margin-left: 20px;
-  box-sizing: border-box；
+  box-sizing: border-box；;
 }
-#frame{
+#frame {
   height: 100%;
 }
 #searchBox {
@@ -369,25 +396,23 @@ body{
   justify-content: space-between;
   align-items: center;
 }
-.ant-table-row td{
+.ant-table-row td {
   background-color: aqua;
-  padding:10px !important;
+  padding: 10px !important;
 }
-#pagination{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    margin-top: 15px;
+#pagination {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 15px;
 }
-#total{
+#total {
   font-size: 15px;
 }
-#buildingSearch{
+#buildingSearch {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
 }
-
-
 </style>

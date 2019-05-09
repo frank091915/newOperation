@@ -8,22 +8,24 @@
         <div class="logo" >
           <img id="logo" src="../assets/sustech.png">
         </div>
-        <a-menu theme="dark" :defaultSelectedKeys="['1']" mode="inline" >
+        
+        <a-menu theme="dark" :selectedKeys="[currentMenuId]" mode="inline"  :openKeys="[openedMenu]">
           <!-- 渲染一级菜单 -->
-          <a-menu-item v-for="item in aloneMenu"  :key="item.id" @click="toNavigate(item.path,item.title)">
+          <a-menu-item v-for="item in aloneMenu"  :key="item.id" @click="toNavigate(item.path,item.title,item.id)">
            
             <span>{{item.title}}</span>
           </a-menu-item>
 
           <a-sub-menu
             v-for="item in parentMenu" 
-            :key="item.id"
+            :key="item.id"  
+            @titleClick='handleSelect'
           >
             <span slot="title" ><span>{{item.title}}</span></span>
             <a-menu-item 
             v-for="subItem in item.subPermissions"
             :key="subItem.id"
-            @click="toNavigate(subItem.path,subItem.title)"
+            @click="toNavigate(subItem.path,subItem.title,subItem.id)"
             class="childrenMenu"
             >{{subItem.title}}</a-menu-item>
           </a-sub-menu>
@@ -39,12 +41,17 @@ export default {
     return {
       collapsed: false,
       aloneMenu:[],
-      parentMenu:[]
+      parentMenu:[],
+      currentMenuId:Number.parseInt(this.$route.query.menuId),
+      allParentMenu:[],
+      openedMenu:0, 
     }
   },
   created(){
+
     // 获取侧边栏菜单数据
     this.$http.toGetAsideMenu().then((res)=>{
+      this.fullPath=
       this.aloneMenu=res.data.data.filter((item)=>{
         if(item.subPermissions.length===0){
           return true
@@ -60,23 +67,47 @@ export default {
         }
       })
       this.$nextTick(()=>{
-        console.log(this.aloneMenu)
+            this.openedParentMenu()
       })
-    })
+    });
+
   },
   computed:{
     ...mapState(["accessToken"])
   },
   methods:{
-    toNavigate(path,title){
+    toNavigate(path,title,menuId){
       // 获取需要的路径字符串
+      this.currentMenuId=menuId;
       let processedPath=path.slice(0,(path.length-3)).split("/").pop();
       let ultimatePath=path.split('/')
       ultimatePath=ultimatePath.slice(2,(ultimatePath.length-1))
       ultimatePath=ultimatePath.join("/")
-      console.log(ultimatePath)
+      this.$router.push({path:"/"+ ultimatePath,query:{title,menuId}})
+    },
+    // 获取需要展开的父级菜单
+    openedParentMenu(){
+      let
+      openedParentMenu=this.parentMenu.filter((item)=>{
+        return item.subPermissions.some((subItem)=>{
+          if(subItem.id==this.currentMenuId){
+            return true
+          }else{
+            return false
+          }
+        })
+      });
+      console.log(openedParentMenu[0].id)
+      this.openedMenu=Number.parseInt(openedParentMenu[0].id) 
+    },
+    handleSelect(item){
+      console.log(item)
+      if(this.openedMenu==item.key){
+        this.openedMenu=''
+      }else{
+      this.openedMenu=item.key
+      }
 
-      this.$router.push({path:"/"+ ultimatePath,query:{title}})
     }
   }
 }

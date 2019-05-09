@@ -224,14 +224,6 @@ export default {
       //   });
     },
     color(type){
-      switch(type){
-        case 1 :
-        return
-      }
-
-    },
-    color(type){
-      console.log(type)
       if(type!=0){
         return 'color : red'
       }
@@ -262,7 +254,7 @@ export default {
       let statusParam=this.status === "全部" || this.status === "null" ? null : this.status,
           searchParam=this.searchParam === "全部" ? null : this.searchParam,
           buildingIdParam= this.buildingId === "全部" || this.buildingId === "null" ? null : this.buildingId;          
-      console.log(this.searchParam,statusParam,buildingIdParam);
+
       if(isSearching){
           this.page=1;
         this.$nextTick(()=>{
@@ -283,7 +275,7 @@ export default {
     GetPosMechineList(page,status,buildingId,searchRoom,isSearching){
       this.isLoading=true;
       this.$http.toGetPosMechineList(page,status,buildingId,searchRoom).then(res => {
-        console.log(res);
+
         if (res.data.success) {
           this.recordsTotal = res.data.recordsTotal;
           this.data=res.data.data
@@ -299,10 +291,10 @@ export default {
       });
     },
     changePage(page){
-      console.log(page)
+
       this.page=page;
       this.$nextTick(()=>{
-        console.log(this.page)
+
         this.search(false)
       })
     },

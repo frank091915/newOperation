@@ -88,8 +88,7 @@ export default {
       }
     },
     toShowDetails(id){
-
-      this.$router.push({path:"/roomDetails",query:{title:"弱电间详情",detailsId:id,roomType:2}})
+      this.$router.push({path:"/roomDetails",query:{title:"弱电间详情",detailsId:id,roomType:2,roomName:'弱电间'}})
     }
   },
   created() {

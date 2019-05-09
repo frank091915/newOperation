@@ -1,15 +1,14 @@
 <template>
   <div id="pageWrapper">
     <div id="addBox">
-        <div id="addButton">
-            <a-button @click="addRole"  type="primary" size="small">新增</a-button>
-        </div>
-      
+      <div id="addButton">
+        <a-button @click="addRole" type="primary" size="small">新增</a-button>
+      </div>
     </div>
     <div id="tableWrapper">
       <a-table :columns="columns" :dataSource="data" bordered :pagination="false">
         <template
-          v-for="col in ['name', 'age', 'address']" 
+          v-for="col in ['name', 'age', 'address']"
           :slot="col"
           slot-scope="text, record,index"
         >
@@ -33,7 +32,7 @@
               okText="确定"
               cancelText="取消"
             >
-              <a-button type="danger"  size="small">删除</a-button>
+              <a-button type="danger" size="small">删除</a-button>
             </a-popconfirm>
 
             <a-button @click="modifyRole(record)" type="primary" size="small">编辑</a-button>
@@ -50,36 +49,36 @@ const columns = [
     dataIndex: "key",
     width: "5%",
     scopedSlots: { customRender: "key" },
-    align:"center"
+    align: "center"
   },
   {
     title: "角色名称",
     dataIndex: "name",
     width: "10%",
     scopedSlots: { customRender: "name" },
-    align:"center",
-    align:"center"
+    align: "center",
+    align: "center"
   },
   {
     title: "状态",
     dataIndex: "status",
     width: "15%",
     scopedSlots: { customRender: "address" },
-    align:"center"
+    align: "center"
   },
   {
     title: "备注",
     dataIndex: "remark",
     width: "10%",
     scopedSlots: { customRender: "remark" },
-    align:"center"
+    align: "center"
   },
   {
     title: "操作",
     dataIndex: "operation",
     width: "10%",
     scopedSlots: { customRender: "operation" },
-    align:"center"
+    align: "center"
   }
 ];
 
@@ -96,32 +95,27 @@ export default {
     };
   },
   methods: {
-      modifyRole(userInfo){
-
-        this.$router.push({path:"/modifyRole",query:{title:"角色管理",id:userInfo.id}})
-      },
-      addRole(){
-          this.$router.push({path:"/addRole",query:{title:"角色管理"}})
-      },
-    confirmDelete (user) {
- 
-        this.$http.toDeleteRole(user.id).then((res)=>{
-
-            if(res.data.success){
-                this.$message.success('删除成功')
-                this.getRoleList()
-            }else{
-                this.$message.success('删除失败，请重试')
-            }
-        })
+    modifyRole(userInfo) {
+      this.$router.push({
+        path: "/modifyRole",
+        query: { title: "角色管理", id: userInfo.id }
+      });
     },
-    cancelDelete (e) {
-      console.log(e)
-
+    addRole() {
+      this.$router.push({ path: "/addRole", query: { title: "角色管理" } });
     },
-    toDelete(record) {
-      console.log(record);
+    confirmDelete(user) {
+      this.$http.toDeleteRole(user.id).then(res => {
+        if (res.data.success) {
+          this.$message.success("删除成功");
+          this.getRoleList();
+        } else {
+          this.$message.success("删除失败，请重试");
+        }
+      });
     },
+    cancelDelete(e) {},
+    toDelete(record) {},
     handleChange(value, key, column) {
       const newData = [...this.data];
       const target = newData.filter(item => key === item.key)[0];
@@ -159,15 +153,9 @@ export default {
         this.data = newData;
       }
     },
-    handleChange(value) {
-      console.log(`selected ${value}`);
-    },
-    handleBlur() {
-      console.log("blur");
-    },
-    handleFocus() {
-      console.log("focus");
-    },
+    handleChange(value) {},
+    handleBlur() {},
+    handleFocus() {},
     filterOption(input, option) {
       return (
         option.componentOptions.children[0].text
@@ -175,26 +163,23 @@ export default {
           .indexOf(input.toLowerCase()) >= 0
       );
     },
-    getRoleList(){
-    this.$http.toGetRoleManageList().then(res => {
-      console.log(res)
-      var i=1;
-      if(res.data.success){
-        this.data=res.data.data.filter((res)=>{
-          res["key"]=i++;
-          res.status=res.status ? "正常" : "异常"
-          return true
-        })
-        this.recordsTotal=res.data.recordsTotal
-        this.$nextTick(()=>{
-
-        })
-      }
-    });
+    getRoleList() {
+      this.$http.toGetRoleManageList().then(res => {
+        var i = 1;
+        if (res.data.success) {
+          this.data = res.data.data.filter(res => {
+            res["key"] = i++;
+            res.status = res.status ? "正常" : "异常";
+            return true;
+          });
+          this.recordsTotal = res.data.recordsTotal;
+          this.$nextTick(() => {});
+        }
+      });
     }
   },
   created() {
-      this.getRoleList()
+    this.getRoleList();
   }
 };
 </script>
@@ -248,10 +233,10 @@ body {
   overflow: auto;
 }
 #addButton {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-end;
-    align-items: center;
-    height: 40px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  height: 40px;
 }
 </style>

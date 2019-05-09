@@ -62,15 +62,12 @@ export default {
   },
   methods: {
     toReturn() {
-      console.log("return");
       this.$router.go("-1");
     },
     toSave() {
       this.form.validateFields((err, values) => {
         if (!err) {
-
           this.$http.toAddFualt(values).then(res => {
-            console.log(res);
             if (res.data.success) {
               this.$message.success("添加角色成功");
               this.$router.push({

@@ -122,14 +122,17 @@
           </div>
         </template>
       </a-table>
-              <div id="pagination" v-show="!isLoading"> 
-          <div id="total">
-            共{{recordsTotal}}条数据
-          </div>
-          <div id="paginationBox">
-            <a-pagination @change="changePage" v-model="current" :total="recordsTotal"   :pageSize="12" />
-          </div>
+      <div id="pagination" v-show="!isLoading">
+        <div id="total">共{{recordsTotal}}条数据</div>
+        <div id="paginationBox">
+          <a-pagination
+            @change="changePage"
+            v-model="current"
+            :total="recordsTotal"
+            :pageSize="12"
+          />
         </div>
+      </div>
     </div>
   </div>
 </template>
@@ -140,77 +143,77 @@ const columns = [
     dataIndex: "key",
     width: "8%",
     scopedSlots: { customRender: "address" },
-    align:"center"
+    align: "center"
   },
   {
     title: "异常名称",
     dataIndex: "exceptionRecord.exceptionName",
     width: "8%",
     scopedSlots: { customRender: "address" },
-    align:"center"
+    align: "center"
   },
   {
     title: "告警状态",
     dataIndex: "exceptionRecord.warningStatusDescription",
     width: "8%",
     scopedSlots: { customRender: "address" },
-    align:"center"
+    align: "center"
   },
   {
     title: "告警次数",
     dataIndex: "exceptionRecord.waringCount",
     width: "8%",
     scopedSlots: { customRender: "address" },
-    align:"center"
+    align: "center"
   },
   {
     title: "起始时间",
     dataIndex: "exceptionRecord.startTime",
     width: "8%",
     scopedSlots: { customRender: "address" },
-    align:"center"
+    align: "center"
   },
   {
     title: "结束时间",
     dataIndex: "exceptionRecord.endTime",
     width: "8%",
     scopedSlots: { customRender: "address" },
-    align:"center"
+    align: "center"
   },
   {
     title: "记录状态",
     dataIndex: "exceptionRecord.recordingStatusDescription",
     width: "8%",
     scopedSlots: { customRender: "address" },
-    align:"center"
+    align: "center"
   },
   {
     title: "楼宇名称",
     dataIndex: "deviceInfo.buildingName",
     width: "8%",
     scopedSlots: { customRender: "address" },
-    align:"center"
+    align: "center"
   },
   {
     title: "楼层",
     dataIndex: "deviceInfo.floorName",
     width: "8%",
     scopedSlots: { customRender: "address" },
-    align:"center"
+    align: "center"
   },
   {
     title: "房间",
     dataIndex: "deviceInfo.roomName",
     width: "8%",
     scopedSlots: { customRender: "address" },
-    align:"center"
+    align: "center"
   },
   {
     title: "设备MAC",
     dataIndex: "deviceInfo.MacAddress",
     width: "8%",
     scopedSlots: { customRender: "address" },
-    align:"center"
+    align: "center"
   }
 ];
 
@@ -236,8 +239,8 @@ export default {
       allBuildings: [],
       buildingId: "全部",
       nullStatus: "null",
-      ended:1,
-      notEnded:0,
+      ended: 1,
+      notEnded: 0,
       statusParam: "",
       buildingIdParam: "",
       page: 1,
@@ -247,48 +250,45 @@ export default {
       allRooms: [],
       floor: "全部",
       room: "全部",
-      current:1
+      current: 1
     };
   },
   methods: {
     handleStatusChange() {
       this.statusParam = this.status === "null" ? null : this.status;
-      switch(this.status){
-        case "全部" :
-        this.statusParam=null;
+      switch (this.status) {
+        case "全部":
+          this.statusParam = null;
         case 1:
-        this.statusParam=true;
+          this.statusParam = true;
         case 0:
-        this.statusParam=false;
+          this.statusParam = false;
       }
-
     },
     handleBuildingChange(e) {
-          this.floor= "全部";
-          this.room= "全部";
-          this.allFloors=[];
-          this.allRooms=[];
-          if(this.buildingId!="null"){
-            this.$http.toGetAllFloors(e).then(res => {
-              if (res.data.success) {
-                this.allFloors = res.data.data;
-                this.$nextTick(() => {});
-              }
-            });
+      this.floor = "全部";
+      this.room = "全部";
+      this.allFloors = [];
+      this.allRooms = [];
+      if (this.buildingId != "null") {
+        this.$http.toGetAllFloors(e).then(res => {
+          if (res.data.success) {
+            this.allFloors = res.data.data;
+            this.$nextTick(() => {});
           }
+        });
+      }
     },
     handleFloorChange(e) {
-      console.log(e)
-      this.room= "全部";
-      this.allRooms=[];
-      if(this.floor!="null"){
+      this.room = "全部";
+      this.allRooms = [];
+      if (this.floor != "null") {
         this.$http.toGetAllRooms(e).then(res => {
           if (res.data.success) {
             this.allRooms = res.data.data;
           }
         });
       }
-
     },
     handleRoomChange() {},
     filterOption(input, option) {
@@ -299,23 +299,29 @@ export default {
       );
     },
     search(isSearching) {
-      let buildingQuery = this.buildingId === "全部"  || this.buildingId === "null" ? null : this.buildingId,
-          floorQuery = this.floor === "全部" || this.floor === "null" ? null : this.floor,
-          roomQuery = this.room === "全部" || this.room === "null" ? null : this.room,
-          statusQuery=this.status ==="全部" || this.status === "null"  ? null : this.status;
+      let buildingQuery =
+          this.buildingId === "全部" || this.buildingId === "null"
+            ? null
+            : this.buildingId,
+        floorQuery =
+          this.floor === "全部" || this.floor === "null" ? null : this.floor,
+        roomQuery =
+          this.room === "全部" || this.room === "null" ? null : this.room,
+        statusQuery =
+          this.status === "全部" || this.status === "null" ? null : this.status;
       this.isLoading = true;
-      if(isSearching){
-        this.page=1;
-        this.$nextTick(()=>{
-            this.getExceptionList(
-              this.page,
-              statusQuery,
-              buildingQuery,
-              floorQuery,
-              roomQuery,
-              isSearching
-            );
-        })
+      if (isSearching) {
+        this.page = 1;
+        this.$nextTick(() => {
+          this.getExceptionList(
+            this.page,
+            statusQuery,
+            buildingQuery,
+            floorQuery,
+            roomQuery,
+            isSearching
+          );
+        });
       }
       this.getExceptionList(
         this.page,
@@ -326,57 +332,60 @@ export default {
         isSearching
       );
     },
-    getAllRooms() {
-      console.log("获取所有房间");
-    },
-    getAllFloors() {
-      console.log("获取所有楼层");
-    },
+    getAllRooms() {},
+    getAllFloors() {},
     addOrder() {
-      var i = 1 + (this.page-1)*12;
+      var i = 1 + (this.page - 1) * 12;
       this.data = this.data.filter(item => {
         item["key"] = i++;
         return true;
       });
     },
-    addStatusDescription(){
-      console.log(this.data)
-      this.data=this.data.map((item)=>{
-           item.exceptionRecord.warningStatusDescription= item.exceptionRecord.warningStatus ? "已完结" :"未完结";
-           item.exceptionRecord.recordingStatusDescription= item.exceptionRecord.status ? "已完结" :"未完结";
-           return item
-      })
-      this.$nextTick(()=>{
-        console.log(this.data)
-      })
+    addStatusDescription() {
+      this.data = this.data.map(item => {
+        item.exceptionRecord.warningStatusDescription = item.exceptionRecord
+          .warningStatus
+          ? "已完结"
+          : "未完结";
+        item.exceptionRecord.recordingStatusDescription = item.exceptionRecord
+          .status
+          ? "已完结"
+          : "未完结";
+        return item;
+      });
+      this.$nextTick(() => {});
     },
-    getExceptionList(page = 1, status, buildingId, floorId, roomId,isSearching) {
+    getExceptionList(
+      page = 1,
+      status,
+      buildingId,
+      floorId,
+      roomId,
+      isSearching
+    ) {
       this.$http
         .toGetExceptionRecordList(page, status, buildingId, floorId, roomId)
         .then(res => {
-          console.log(res);
           if (res.data.success) {
             this.data = res.data.data;
             this.isLoading = false;
             this.recordsTotal = res.data.recordsTotal;
-            if(isSearching){
-              this.current=1
+            if (isSearching) {
+              this.current = 1;
             }
             this.$nextTick(() => {
               this.addOrder();
-              this.addStatusDescription()
+              this.addStatusDescription();
             });
           }
         });
     },
-    changePage(page){
-      console.log(page)
-      this.page=page;
-      this.$nextTick(()=>{
-        console.log(this.page)
-        this.search(false)
-      })
-    },
+    changePage(page) {
+      this.page = page;
+      this.$nextTick(() => {
+        this.search(false);
+      });
+    }
   },
   created() {
     // 获取所有楼宇名称
@@ -387,13 +396,13 @@ export default {
     });
     this.getExceptionList(1);
   },
-  mounted(){
-        let that = this;
+  mounted() {
+    let that = this;
     document.onkeypress = function(e) {
       var keycode = document.all ? event.keyCode : e.which;
       if (keycode == 13) {
-        that.search(true);// 登录方法名
-         return false;
+        that.search(true); // 登录方法名
+        return false;
       }
     };
   }
@@ -466,16 +475,16 @@ body {
   height: calc(100% - 100px);
   overflow: auto;
 }
-#pagination{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    margin-top: 15px;
+#pagination {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 15px;
 }
-#total{
+#total {
   font-size: 15px;
 }
-#buildingSearch{
+#buildingSearch {
   display: flex;
   flex-direction: row;
   justify-content: space-between;

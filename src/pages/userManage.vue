@@ -1,18 +1,16 @@
 <template>
   <div id="pageWrapper">
     <div id="addBox">
-        <div id="addButton">
-            <a-button @click="addUser"  type="primary" size="small">新增</a-button>
-        </div>
-      
+      <div id="addButton">
+        <a-button @click="addUser" type="primary" size="small">新增</a-button>
+      </div>
     </div>
     <div id="tableWrapper">
       <a-table :columns="columns" :dataSource="data" bordered :pagination="false">
         <template
-          v-for="col in ['name', 'age', 'address']" 
+          v-for="col in ['name', 'age', 'address']"
           :slot="col"
           slot-scope="text, record,index"
-          
         >
           <div :key="col">
             <a-input
@@ -34,7 +32,7 @@
               okText="确定"
               cancelText="取消"
             >
-              <a-button type="danger"  size="small">删除</a-button>
+              <a-button type="danger" size="small">删除</a-button>
             </a-popconfirm>
 
             <a-button type="primary" @click="modifyUser(record)" size="small">编辑</a-button>
@@ -53,67 +51,67 @@ const columns = [
     dataIndex: "key",
     width: "5%",
     scopedSlots: { customRender: "key" },
-    align:"center"
-  },{
+    align: "center"
+  },
+  {
     title: "工号",
     dataIndex: "jobNum",
     width: "8%",
     scopedSlots: { customRender: "jobNum" },
-    align:"center"
+    align: "center"
   },
   {
     title: "姓名",
     dataIndex: "username",
     width: "8%",
     scopedSlots: { customRender: "name" },
-    align:"center"
+    align: "center"
   },
   {
     title: "手机号",
     dataIndex: "phone",
     width: "8%",
     scopedSlots: { customRender: "phone" },
-    align:"center"
+    align: "center"
   },
   {
     title: "邮箱地址",
     dataIndex: "eMail",
     width: "8%",
     scopedSlots: { customRender: "eMail" },
-    align:"center"
+    align: "center"
   },
   {
     title: "角色",
     dataIndex: "name",
     width: "8%",
     scopedSlots: { customRender: "role" },
-    align:"center"
+    align: "center"
   },
   {
     title: "状态",
     dataIndex: "status",
     width: "8%",
     scopedSlots: { customRender: "status" },
-    align:"center"
+    align: "center"
   },
   {
     title: "备注",
     dataIndex: "remark",
     width: "8%",
     scopedSlots: { customRender: "remark" },
-    align:"center"
+    align: "center"
   },
   {
     title: "操作",
     dataIndex: "operation",
     width: "18%",
     scopedSlots: { customRender: "operation" },
-    align:"center"
+    align: "center"
   }
 ];
 
 const data = [];
-
 
 export default {
   name: "posMechine",
@@ -126,48 +124,45 @@ export default {
     };
   },
   methods: {
-      addUser(){
-          this.$router.push({path:"/addUser",query:{title:"用户管理"}})
-      },
-      modifyUser(e){
-          this.$router.push({path:"/modifyUser",query:{title:"用户管理",id:e.id}})
-      },      
-      alarmSet(e){
-          this.$router.push({path:"/alarmSet",query:{title:"用户管理",id:e.id}})
-      },
-    confirmDelete (user) {
-        this.$http.toDeleteUser(user.id).then((res)=>{
-            console.log(res)
-            if(res.data.success){
-                this.$message.success('删除成功')
-                this.getUserList()
-            }else{
-                this.$message.success('删除失败，请重试')
-            }
-        })
+    addUser() {
+      this.$router.push({ path: "/addUser", query: { title: "用户管理" } });
     },
-    ResetPassword(user){
-      console.log(user.id,window.currentUserId)
-        this.$http.toResetPassword(user.id).then((res)=>{
-            if(res.data.success){
-              if(user.id===window.currentUserId){
-                this.$router.push("/signIn")
-              }
-                this.$message.success('重置成功')
-
-            }else{
-                this.$message.success('重置密码失败，请重试')
-            }
-        })
-    }
-    ,
-    cancelDelete (e) {
-      console.log(e)
-
+    modifyUser(e) {
+      this.$router.push({
+        path: "/modifyUser",
+        query: { title: "用户管理", id: e.id }
+      });
     },
-    toDelete(record) {
-      console.log(record);
+    alarmSet(e) {
+      this.$router.push({
+        path: "/alarmSet",
+        query: { title: "用户管理", id: e.id }
+      });
     },
+    confirmDelete(user) {
+      this.$http.toDeleteUser(user.id).then(res => {
+        if (res.data.success) {
+          this.$message.success("删除成功");
+          this.getUserList();
+        } else {
+          this.$message.success("删除失败，请重试");
+        }
+      });
+    },
+    ResetPassword(user) {
+      this.$http.toResetPassword(user.id).then(res => {
+        if (res.data.success) {
+          if (user.id === window.currentUserId) {
+            this.$router.push("/signIn");
+          }
+          this.$message.success("重置成功");
+        } else {
+          this.$message.success("重置密码失败，请重试");
+        }
+      });
+    },
+    cancelDelete(e) {},
+    toDelete(record) {},
     handleChange(value, key, column) {
       const newData = [...this.data];
       const target = newData.filter(item => key === item.key)[0];
@@ -205,15 +200,9 @@ export default {
         this.data = newData;
       }
     },
-    handleChange(value) {
-      console.log(`selected ${value}`);
-    },
-    handleBlur() {
-      console.log("blur");
-    },
-    handleFocus() {
-      console.log("focus");
-    },
+    handleChange(value) {},
+    handleBlur() {},
+    handleFocus() {},
     filterOption(input, option) {
       return (
         option.componentOptions.children[0].text
@@ -222,25 +211,23 @@ export default {
       );
     },
     // 获取用户列表
-    getUserList(){
-    this.$http.toUserList().then(res => {
-      var i=1;
-      if(res.data.success){
-        this.data=res.data.data.filter((res)=>{
-          res["key"]=i++;
-          res.status=res.status ? "正常" : "禁用"
-          return true
-        })
-        this.recordsTotal=res.data.recordsTotal
-        this.$nextTick(()=>{
-          console.log(this.data)
-        })
-      }
-    });
+    getUserList() {
+      this.$http.toUserList().then(res => {
+        var i = 1;
+        if (res.data.success) {
+          this.data = res.data.data.filter(res => {
+            res["key"] = i++;
+            res.status = res.status ? "正常" : "禁用";
+            return true;
+          });
+          this.recordsTotal = res.data.recordsTotal;
+          this.$nextTick(() => {});
+        }
+      });
     }
   },
   created() {
-      this.getUserList()
+    this.getUserList();
   }
 };
 </script>
@@ -292,13 +279,12 @@ body {
 #tableWrapper {
   height: calc(100% - 100px);
   overflow: auto;
-
 }
 #addButton {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-end;
-    align-items: center;
-    height: 40px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  height: 40px;
 }
 </style>

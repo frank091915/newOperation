@@ -15,7 +15,7 @@
           <div class="detailParam">{{details.deviceInfo.roomName}}</div>
         </div>
         <div class="singleParamsBox">
-          <div class="detailTitle" style="margin-right:10px">汇聚机房编号</div>
+          <div class="detailTitle" style="margin-right:10px">{{roomName}}编号</div>
           <div class="detailParam">{{details.deviceInfo.Code}}</div>
         </div>
         <div class="singleParamsBox">
@@ -85,14 +85,13 @@ export default {
     return {
       details: {},
       roomType: this.$route.query.roomType,
-      detailsId: this.$route.query.detailsId
+      detailsId: this.$route.query.detailsId,
+      roomName:this.$route.query.roomName
     };
   },
   created() {
     if (this.roomType === 1) {
-      console.log(this.roomType);
       this.$http.toGetconvergeRoomDetails(this.detailsId).then(res => {
-        console.log(res);
         if (res.data.success) {
           this.details = res.data.data;
         } else {
@@ -101,7 +100,6 @@ export default {
       });
     } else {
       this.$http.toGetLowVoltageRoomDetails(this.detailsId).then(res => {
-        console.log(res);
         if (res.data.success) {
           this.details = res.data.data;
         } else {
@@ -112,7 +110,6 @@ export default {
   },
   methods: {
     color(type, status) {
-      console.log(status)
       switch (status) {
         case undefined:
           return `../../static/assets/${type}Grey.png`;

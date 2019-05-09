@@ -1,8 +1,6 @@
 <template>
   <div id="addRoleWrapper">
-      <div id="pageTitle">
-          编辑故障
-      </div>
+    <div id="pageTitle">编辑故障</div>
     <a-form :form="form">
       <a-form-item
         :label-col="formItemLayout.labelCol"
@@ -24,7 +22,7 @@
         label="备注"
       >
         <a-input
-        type="textarea"
+          type="textarea"
           v-decorator="[
           'remark',
           
@@ -61,21 +59,19 @@ export default {
       form: this.$form.createForm(this),
       value: 1,
       roleName: "",
-      name:"",
-      remark:""
+      name: "",
+      remark: ""
     };
   },
   methods: {
     toReturn() {
-      console.log("return");
       this.$router.go("-1");
     },
     toSave() {
       this.form.validateFields((err, values) => {
         if (!err) {
-            values.faultId=this.$route.query.fualtId
+          values.faultId = this.$route.query.fualtId;
           this.$http.toModifyFualt(values).then(res => {
-            console.log(res);
             if (res.data.success) {
               this.$message.success("添加角色成功");
               this.$router.push({
@@ -96,20 +92,19 @@ export default {
       });
     }
   },
-  created(){
-      this.$http.toGetFualtInfo(this.$route.query.fualtId).then((res)=>{
-          console.log(res)
-          if(res.data.success){
-              this.name=res.data.data.name;
-              this.remark=res.data.data.remark;
-          }
-      })
+  created() {
+    this.$http.toGetFualtInfo(this.$route.query.fualtId).then(res => {
+      if (res.data.success) {
+        this.name = res.data.data.name;
+        this.remark = res.data.data.remark;
+      }
+    });
   }
 };
 </script>
 <style scoped>
-#pageTitle{
-    margin-left: 52px;
+#pageTitle {
+  margin-left: 52px;
 }
 #radioBox {
   box-sizing: border-box;
@@ -124,8 +119,8 @@ export default {
   margin-right: 20px;
   color: rgba(0, 0, 0, 0.85);
 }
-#radioText span{
-    margin-left: 2px;
+#radioText span {
+  margin-left: 2px;
 }
 #addRoleWrapper {
   margin-top: 20px;

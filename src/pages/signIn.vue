@@ -1,48 +1,49 @@
 <template>
   <div id="signInForm">
-     <a-card title="监控系统登录">
-
-
-    <div id="signInFormWraper">
-      <a-form :form="form">
-        <a-form-item
-          :label-col="formItemLayout.labelCol"
-          :wrapper-col="formItemLayout.wrapperCol"
-          label="用户名"
-        >
-          <a-input
-          @keydown.enter="check"
-            v-decorator="[
+    <a-card title="监控系统登录">
+      <div id="signInFormWraper">
+        <a-form :form="form">
+          <a-form-item
+            :label-col="formItemLayout.labelCol"
+            :wrapper-col="formItemLayout.wrapperCol"
+            label="用户名"
+          >
+            <a-input
+              @keydown.enter="check"
+              v-decorator="[
           'username',
           {rules: [{ required: true, message: '请输入用户名' }]}
         ]"
-            placeholder="请输入用户名"
-          />
-        </a-form-item>
-        <a-form-item
-          :label-col="formItemLayout.labelCol"
-          :wrapper-col="formItemLayout.wrapperCol"
-          label="密码"
-        >
-          <a-input
-          @keydown.enter="check"
-            type="password"
-            v-decorator="[
+              placeholder="请输入用户名"
+            />
+          </a-form-item>
+          <a-form-item
+            :label-col="formItemLayout.labelCol"
+            :wrapper-col="formItemLayout.wrapperCol"
+            label="密码"
+          >
+            <a-input
+              @keydown.enter="check"
+              type="password"
+              v-decorator="[
           'password',
           {rules: [{ required: true, message: '请输入密码' }]}
         ]"
-            placeholder="请输入密码"
-          />
-        </a-form-item>
-        <a-form-item :label-col="formTailLayout.labelCol" :wrapper-col="formTailLayout.wrapperCol">
-          <a-button type="primary" @click="check">登陆</a-button>
-        </a-form-item>
-      </a-form>
-    </div>
-    <!-- 模态框 -->
-    <a-button v-show="visible" @click="showConfirm">Confirm</a-button>
-    <a-button duration="errorDuration" v-show="hasError" @click="error"></a-button>
-      </a-card>
+              placeholder="请输入密码"
+            />
+          </a-form-item>
+          <a-form-item
+            :label-col="formTailLayout.labelCol"
+            :wrapper-col="formTailLayout.wrapperCol"
+          >
+            <a-button type="primary" @click="check">登陆</a-button>
+          </a-form-item>
+        </a-form>
+      </div>
+      <!-- 模态框 -->
+      <a-button v-show="visible" @click="showConfirm">Confirm</a-button>
+      <a-button duration="errorDuration" v-show="hasError" @click="error"></a-button>
+    </a-card>
   </div>
 </template>
 
@@ -72,7 +73,7 @@ export default {
   },
   methods: {
     check() {
-      this.form.validateFields((err,values) => {
+      this.form.validateFields((err, values) => {
         if (!err) {
           this.signIn(values);
         } else {
@@ -94,8 +95,8 @@ export default {
           );
           // 提示用户登录成功，之后再跳转页面
           this.$router.push({
-            path:"/summary",
-            query:{title:"状态汇总"}
+            path: "/summary",
+            query: { title: "状态汇总", menuId: 1 }
           });
           // this.showConfirm();
         } else {
@@ -109,8 +110,8 @@ export default {
         content: "立即跳转",
         onOk: () => {
           this.$router.push({
-            path:"/summary",
-            query:{title:"状态汇总"}
+            path: "/summary",
+            query: { title: "状态汇总" }
           });
         },
         onCancel() {}
@@ -118,7 +119,7 @@ export default {
     },
     error() {
       this.$message.config({
-        duration: 1,
+        duration: 1
       });
       this.$message.error("登录失败，请重新登录");
     }

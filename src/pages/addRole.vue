@@ -69,7 +69,7 @@
 
         <a-form-item :label-col="formTailLayout.labelCol" :wrapper-col="formTailLayout.wrapperCol">
           <div id="opetarionBox">
-            <a-button @click="toReturn" id="returnButton" >返回</a-button>
+            <a-button @click="toReturn" id="returnButton">返回</a-button>
 
             <a-button type="primary" @click="toSave">保存</a-button>
           </div>
@@ -108,7 +108,6 @@
                         @click="changeParentMenu(item.id,1)"
                       >
                     </span>
-
                     {{item.title}}
                   </span>
                 </span>
@@ -121,7 +120,6 @@
                       @click="changeChildStatus(subItem.id,2)"
                     >
                   </span>
-
                   {{subItem.title}}
                 </a-menu-item>
               </a-sub-menu>
@@ -168,52 +166,64 @@ export default {
   },
   methods: {
     toReturn() {
-      console.log("return");
       this.$router.go("-1");
     },
     toSave() {
-  // 计算出用户权限菜单数组
-      let tempIdArray=[],
-          tempParentMenuIdArray=[],
-          tempChildrenMenuIdArray=[],
-          tempaloneMenuIdArray=[];
+      // 计算出用户权限菜单数组
+      let tempIdArray = [],
+        tempParentMenuIdArray = [],
+        tempChildrenMenuIdArray = [],
+        tempaloneMenuIdArray = [];
       // 得到无子菜单的权限id
-      tempaloneMenuIdArray=this.aloneMenuArray.filter((item)=>{
-          if(item.ifPermitted){
-            return true
-          }else{return false}
-      }).map((item)=>{
-        return item.id
-      })
+      tempaloneMenuIdArray = this.aloneMenuArray
+        .filter(item => {
+          if (item.ifPermitted) {
+            return true;
+          } else {
+            return false;
+          }
+        })
+        .map(item => {
+          return item.id;
+        });
       // 得到有子菜单的权限id
-      tempParentMenuIdArray=this.parentMenuArray.filter((item)=>{
-          if(item.ifPermitted){
-            return true
-          }else{return false}
-      }).map((item)=>{
-        return item.id
-      })
+      tempParentMenuIdArray = this.parentMenuArray
+        .filter(item => {
+          if (item.ifPermitted) {
+            return true;
+          } else {
+            return false;
+          }
+        })
+        .map(item => {
+          return item.id;
+        });
       // 得到所有子菜单
-      let childrenMenuArray=this.parentMenuArray.reduce((pre,nex)=>{
-        return pre.concat([...nex.subPermissions])
-      },[])
+      let childrenMenuArray = this.parentMenuArray.reduce((pre, nex) => {
+        return pre.concat([...nex.subPermissions]);
+      }, []);
       // 得到所有子菜单权限
-      tempChildrenMenuIdArray=childrenMenuArray.filter((item)=>{
-          if(item.ifPermitted){
-            return true
-          }else{return false}
-      }).map((item)=>{
-        return item.id
-      })
+      tempChildrenMenuIdArray = childrenMenuArray
+        .filter(item => {
+          if (item.ifPermitted) {
+            return true;
+          } else {
+            return false;
+          }
+        })
+        .map(item => {
+          return item.id;
+        });
       // 得到所有权限菜单
-      let ultimatePermissionIdsArray=tempaloneMenuIdArray.concat(tempParentMenuIdArray.concat(tempChildrenMenuIdArray))
+      let ultimatePermissionIdsArray = tempaloneMenuIdArray.concat(
+        tempParentMenuIdArray.concat(tempChildrenMenuIdArray)
+      );
       this.form.validateFields((err, values) => {
         if (!err) {
           let userInfo = { ...values };
           userInfo.status = this.value ? true : false;
-          userInfo.permissions=ultimatePermissionIdsArray;
+          userInfo.permissions = ultimatePermissionIdsArray;
           this.$http.toAddRole(userInfo).then(res => {
-            console.log(res);
             if (res.data.success) {
               this.$message.success("添加角色成功");
               this.$router.push({
@@ -243,13 +253,9 @@ export default {
         this.openKeys = latestOpenKey ? [latestOpenKey] : [];
       }
     },
-    checkChange(e) {
-      console.log(`checked = ${e.target.checked}`);
-    },
+    checkChange(e) {},
     // 有子菜单的父级菜单状态改编后，改变子菜单状态的方法
-    changeChildren(id) {
-      console.log(id);
-    },
+    changeChildren(id) {},
     // 用户点击复选框时，先改变对应的菜单数组中队像的是否授权属性，然后再重新去掉judge方法判断是否选中
 
     // 修改没有子菜单的一级菜单
@@ -263,10 +269,7 @@ export default {
         }
         return item;
       });
-      this.$nextTick(() => {
-        console.log(this.aloneMenuArray);
-
-      });
+      this.$nextTick(() => {});
     },
     // 修改有子菜单的一级菜单
     changeParentMenu(id, type) {
@@ -288,9 +291,7 @@ export default {
       });
       this.$nextTick(() => {
         this.ultimateArray = this.aloneMenuArray.concat(this.parentMenuArray);
-        this.$nextTick(() => {
-          console.log(this.ultimateArray);
-        });
+        this.$nextTick(() => {});
       });
     },
     changeChildStatus(id, type) {
@@ -323,7 +324,7 @@ export default {
       let parentStatus = theParentMenu.subPermissions.every(item => {
         return item.ifPermitted === true;
       });
-      console.log(parentStatus);
+
       theParentMenu.ifPermitted = parentStatus;
 
       // 去改变有子菜单的二级菜单数组
@@ -335,9 +336,7 @@ export default {
       });
       this.$nextTick(() => {
         this.ultimateArray = this.aloneMenuArray.concat(this.parentMenuArray);
-        this.$nextTick(() => {
-          console.log(this.ultimateArray);
-        });
+        this.$nextTick(() => {});
       });
     }
   },
@@ -361,7 +360,6 @@ export default {
     });
     // 获取当前用户菜单权限
     this.$http.toGetUserInfoById(1).then(res => {
-
       this.permissions = res.data.data.permissions;
       this.permissionsIdArray = res.data.data.permissionIds;
       //   选出用户当前权限菜单
@@ -420,9 +418,7 @@ export default {
             this.ultimateArray = this.aloneMenuArray.concat(
               this.parentMenuArray
             );
-            this.$nextTick(() => {
-              console.log(this.ultimateArray);
-            });
+            this.$nextTick(() => {});
           });
         });
       });
@@ -517,10 +513,10 @@ export default {
   min-height: 50px !important;
   border: 1px solid #e8e8e8;
 }
-#returnButton{
+#returnButton {
   margin-right: 50px;
 }
-#permissionsMenuTitle{
+#permissionsMenuTitle {
   margin-top: 10px;
   text-align: center;
 }

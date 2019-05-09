@@ -1,5 +1,5 @@
 <template>
-  <div id="pageWrapper" >
+  <div id="pageWrapper">
     <div id="chartWrapper" v-show="!isLoading">
       <div id="convergeRoomChart" :style="{width: '300px', height: '300px'}"></div>
       <div id="lowVoltageRoomChart" :style="{width: '300px', height: '300px'}"></div>
@@ -324,7 +324,6 @@ export default {
   },
   created() {
     this.$http.toGetSummary().then(res => {
-      console.log(res);
       if (res.data.success) {
         this.WeakElectricStatistics = res.data.data.WeakElectricStatistics;
         this.MachineRoomStatistics = res.data.data.MachineRoomStatistics;
@@ -342,7 +341,7 @@ export default {
 </script>
 
 <style>
-#pageWrapper{
+#pageWrapper {
   width: 100%;
 }
 #convergeRoomChart {

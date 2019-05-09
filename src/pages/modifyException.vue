@@ -61,21 +61,21 @@ export default {
   methods: {
     onChange (e) {
       this.type=e.target.value
-      console.log(e.target.value)
+
     },
     toReturn() {
-      console.log("return");
+
       this.$router.go("-1");
     },
     toSave() {
       this.form.validateFields((err, values) => {
-        console.log(values)
+
         if (!err) {
             values.exceptionId=this.$route.query.exceptionId;
             values.remark=this.remark;
             values.code=this.type;
           this.$http.toModifyException(values).then(res => {
-            console.log(res);
+
             if (res.data.success) {
               this.$message.success("修改异常管理成功");
               this.$router.push({
@@ -98,13 +98,13 @@ export default {
   },
   created(){
       this.$http.toGetExceptionInfo(this.$route.query.exceptionId).then((res)=>{
-          console.log(res)
+
           if(res.data.success){
               this.type=res.data.data.type;
               this.name=res.data.data.name;
               this.remark=res.data.data.remark;
               this.$nextTick(()=>{
-                console.log(this.remark)
+
               })
           }{
 

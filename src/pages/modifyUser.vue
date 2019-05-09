@@ -1,8 +1,6 @@
 <template>
   <div id="addRoleWrapper">
-      <div id="pageTitle">
-          编辑用户
-      </div>
+    <div id="pageTitle">编辑用户</div>
     <a-form :form="form">
       <a-form-item
         :label-col="formItemLayout.labelCol"
@@ -16,7 +14,6 @@
           initialValue:userInformation.jobNum
           }
         ]"
-        
         />
       </a-form-item>
       <a-form-item
@@ -33,7 +30,7 @@
         ]"
         />
       </a-form-item>
-            <a-form-item
+      <a-form-item
         :label-col="formItemLayout.labelCol"
         :wrapper-col="formItemLayout.wrapperCol"
         label="手机号"
@@ -47,7 +44,7 @@
         ]"
         />
       </a-form-item>
-            <a-form-item
+      <a-form-item
         :label-col="formItemLayout.labelCol"
         :wrapper-col="formItemLayout.wrapperCol"
         label="邮箱地址"
@@ -59,7 +56,6 @@
           initialValue:userInformation.eMail
           }
         ]"
-        
         />
       </a-form-item>
       <a-form-item
@@ -82,7 +78,10 @@
         </a-select>
       </a-form-item>
       <div id="radioBox">
-        <div id="radioText">状态<span>:</span></div>
+        <div id="radioText">
+          状态
+          <span>:</span>
+        </div>
         <a-radio-group v-model="value">
           <a-radio :value="1">正常</a-radio>
           <a-radio :value="0">关闭</a-radio>
@@ -130,9 +129,9 @@ export default {
       form: this.$form.createForm(this),
       value: 1,
       roleName: "",
-      id:"",
-      userInformation:{},
-      rolesGroup: [],
+      id: "",
+      userInformation: {},
+      rolesGroup: []
     };
   },
   methods: {
@@ -144,12 +143,10 @@ export default {
         if (!err) {
           let userInfo = { ...values };
           userInfo.status = this.value ? true : false;
-          userInfo.userId=this.$route.query.id
+          userInfo.userId = this.$route.query.id;
           // 添加权限菜单
 
-          console.log(userInfo);
           this.$http.toModifyUser(userInfo).then(res => {
-            console.log(res);
             if (res.data.success) {
               this.$message.success("用户编辑成功");
               this.$router.push({
@@ -169,7 +166,7 @@ export default {
         this.form.validateFields(["nickname"], { force: true });
       });
     },
-        onOpenChange(openKeys) {
+    onOpenChange(openKeys) {
       const latestOpenKey = openKeys.find(
         key => this.openKeys.indexOf(key) === -1
       );
@@ -179,30 +176,26 @@ export default {
         this.openKeys = latestOpenKey ? [latestOpenKey] : [];
       }
     },
-    checkChange(e) {
-      console.log(`checked = ${e.target.checked}`);
-    },
+    checkChange(e) {}
   },
-      created () {
-        this.$http.toGetUserInfoById(this.$route.query.id).then((res)=>{
-            if(res.data.success){
-                this.userInformation=res.data.data
-                this.$nextTick(()=>{
-                  console.log(this.userInformation)
-                })
-            }
-        });
-      this.$http.toGetRoleManageList().then(res => {
+  created() {
+    this.$http.toGetUserInfoById(this.$route.query.id).then(res => {
+      if (res.data.success) {
+        this.userInformation = res.data.data;
+        this.$nextTick(() => {});
+      }
+    });
+    this.$http.toGetRoleManageList().then(res => {
       if (res.data.success) {
         this.rolesGroup = res.data.data;
       }
     });
-    }
+  }
 };
 </script>
 <style scoped>
-#pageTitle{
-    margin-left: 52px;
+#pageTitle {
+  margin-left: 52px;
 }
 #radioBox {
   box-sizing: border-box;
@@ -217,8 +210,8 @@ export default {
   margin-right: 20px;
   color: rgba(0, 0, 0, 0.85);
 }
-#radioText span{
-    margin-left: 2px;
+#radioText span {
+  margin-left: 2px;
 }
 #addRoleWrapper {
   margin-top: 20px;
@@ -226,7 +219,7 @@ export default {
 .ant-form-item {
   margin-bottom: 20px !important;
 }
-#permissionsMenu{
+#permissionsMenu {
   margin-top: 20px;
 }
 #opetarionBox {
@@ -238,13 +231,13 @@ export default {
   box-sizing: border-box;
   padding-left: 145px;
 }
-#supremeWrapper{
+#supremeWrapper {
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: flex-start;
 }
-#addRoleWrapper{
+#addRoleWrapper {
   width: 650px;
 }
 #opetarionBox {
@@ -257,7 +250,7 @@ export default {
   padding-left: 70px;
 }
 
-#returnButton{
+#returnButton {
   margin-right: 50px;
 }
 #menuSelection {
@@ -272,7 +265,7 @@ export default {
 #addRoleWrapper {
   margin-top: 20px;
   width: 880px;
-  margin:0 auto;
+  margin: 0 auto;
 }
 #radioBox {
   box-sizing: border-box;

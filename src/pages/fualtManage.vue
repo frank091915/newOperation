@@ -1,18 +1,19 @@
 <template>
   <div id="pageWrapper">
     <div id="addBox">
-        <div id="addButton">
-            <a-button @click="addRole"  type="primary" size="small">新增</a-button>
-        </div>
-      
+      <div id="addButton">
+        <a-button @click="addRole" type="primary" size="small">新增</a-button>
+      </div>
     </div>
     <div id="tableWrapper">
-      <a-table :columns="columns" :dataSource="data" bordered :loading="isLoading" :pagination="false">
-        <template
-          v-for="col in ['name', 'age', 'address']" 
-          :slot="col"
-          slot-scope="text, record"
-        >
+      <a-table
+        :columns="columns"
+        :dataSource="data"
+        bordered
+        :loading="isLoading"
+        :pagination="false"
+      >
+        <template v-for="col in ['name', 'age', 'address']" :slot="col" slot-scope="text, record">
           <div :key="col">
             <a-input
               v-if="record.editable"
@@ -33,7 +34,7 @@
               okText="确定"
               cancelText="取消"
             >
-              <a-button type="danger"  size="small">删除</a-button>
+              <a-button type="danger" size="small">删除</a-button>
             </a-popconfirm>
             <a-button @click="modifyFualt(record)" type="primary" size="small">编辑</a-button>
             <a-button @click="bindFualt(record)" type="primary" size="small">异常绑定</a-button>
@@ -50,28 +51,28 @@ const columns = [
     dataIndex: "key",
     width: "5%",
     scopedSlots: { customRender: "key" },
-    align:"center"
+    align: "center"
   },
   {
     title: "故障名称",
     dataIndex: "name",
     width: "10%",
     scopedSlots: { customRender: "name" },
-    align:"center"
+    align: "center"
   },
   {
     title: "备注",
     dataIndex: "remark",
     width: "10%",
     scopedSlots: { customRender: "remark" },
-    align:"center"
+    align: "center"
   },
   {
     title: "操作",
     dataIndex: "operation",
     width: "10%",
     scopedSlots: { customRender: "operation" },
-    align:"center"
+    align: "center"
   }
 ];
 
@@ -85,33 +86,37 @@ export default {
       data,
       columns,
       recordsTotal: "",
-      isLoading:true
+      isLoading: true
     };
   },
   methods: {
-    modifyFualt(record){
-      console.log(record)
-      this.$router.push({path:"/ModifyFualt",query:{title:"异常绑定",fualtId:record.id}})
+    modifyFualt(record) {
+      this.$router.push({
+        path: "/ModifyFualt",
+        query: { title: "异常绑定", fualtId: record.id }
+      });
     },
-      bindFualt(userInfo){
-        this.$router.push({path:"/fualtBinding",query:{title:"异常绑定",fualtId:userInfo.id}})
-      },
-      addRole(){
-          this.$router.push({path:"/addFualt",query:{title:"故障管理"}})
-      },
-    confirmDelete (fualt) {
-        this.$http.toDeleteFualt(fualt.id).then((res)=>{
-            if(res.data.success){
-                this.$message.success('删除成功')
-                this.GetFualtManageList()
-            }else{
-                this.$message.success('删除失败，请重试')
-            }
-        })
+    bindFualt(userInfo) {
+      this.$router.push({
+        path: "/fualtBinding",
+        query: { title: "异常绑定", fualtId: userInfo.id }
+      });
     },
-    cancelDelete (e) {
-      console.log(e)
-
+    addRole() {
+      this.$router.push({ path: "/addFualt", query: { title: "故障管理" } });
+    },
+    confirmDelete(fualt) {
+      this.$http.toDeleteFualt(fualt.id).then(res => {
+        if (res.data.success) {
+          this.$message.success("删除成功");
+          this.GetFualtManageList();
+        } else {
+          this.$message.success("删除失败，请重试");
+        }
+      });
+    },
+    cancelDelete(e) {
+      console.log(e);
     },
     toDelete(record) {
       console.log(record);
@@ -153,15 +158,9 @@ export default {
         this.data = newData;
       }
     },
-    handleChange(value) {
-      console.log(`selected ${value}`);
-    },
-    handleBlur() {
-      console.log("blur");
-    },
-    handleFocus() {
-      console.log("focus");
-    },
+    handleChange(value) {},
+    handleBlur() {},
+    handleFocus() {},
     filterOption(input, option) {
       return (
         option.componentOptions.children[0].text
@@ -169,26 +168,23 @@ export default {
           .indexOf(input.toLowerCase()) >= 0
       );
     },
-    GetFualtManageList(){
-
-    this.$http.toGetFualtManageList().then(res => {
-      var i=0;
-      if(res.data.success){
-        this.isLoading=false
-        this.data=res.data.data.filter((res)=>{
-          res["key"]=i++;
-          return true
-        })
-        this.recordsTotal=res.data.recordsTotal
-        this.$nextTick(()=>{
-
-        })
-      }
-    });
+    GetFualtManageList() {
+      this.$http.toGetFualtManageList().then(res => {
+        var i = 0;
+        if (res.data.success) {
+          this.isLoading = false;
+          this.data = res.data.data.filter(res => {
+            res["key"] = i++;
+            return true;
+          });
+          this.recordsTotal = res.data.recordsTotal;
+          this.$nextTick(() => {});
+        }
+      });
     }
   },
   created() {
-      this.GetFualtManageList()
+    this.GetFualtManageList();
   }
 };
 </script>
@@ -242,10 +238,10 @@ body {
   overflow: auto;
 }
 #addButton {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-end;
-    align-items: center;
-    height: 40px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  height: 40px;
 }
 </style>

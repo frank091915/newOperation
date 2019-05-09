@@ -22,10 +22,7 @@
                 </div>
               </template>
               <template slot="weChatcheckBox" slot-scope="text, record">
-                <a-switch
-                  :checked="record.mark"
-                  @change="onChangeFualtBinding(record.id,1)"
-                />
+                <a-switch :checked="record.mark" @change="onChangeFualtBinding(record.id,1)"/>
               </template>
             </a-table>
           </div>
@@ -49,10 +46,7 @@
                 </div>
               </template>
               <template slot="weChatcheckBox" slot-scope="text, record">
-                <a-switch
-                  :checked="record.mark"
-                  @change="onChangeFualtBinding(record.id,2)"
-                />
+                <a-switch :checked="record.mark" @change="onChangeFualtBinding(record.id,2)"/>
               </template>
             </a-table>
           </div>
@@ -68,28 +62,28 @@ const columns = [
     dataIndex: "key",
     width: "5%",
     scopedSlots: { customRender: "num" },
-    align:"center"
+    align: "center"
   },
   {
     title: "异常编号",
     dataIndex: "code",
     width: "10%",
     scopedSlots: { customRender: "age" },
-    align:"center"
+    align: "center"
   },
   {
     title: "描述",
     dataIndex: "remark",
     width: "15%",
     scopedSlots: { customRender: "address" },
-    align:"center"
+    align: "center"
   },
   {
     title: "是否绑定",
     dataIndex: "mark",
     width: "10%",
     scopedSlots: { customRender: "weChatcheckBox" },
-    align:"center"
+    align: "center"
   }
 ];
 export default {
@@ -107,22 +101,22 @@ export default {
     };
   },
   methods: {
-    addOrder(type=1) {
+    addOrder(type = 1) {
       let i = 1;
-      if(type===1){
-      this.convergeData = this.convergeData.filter(item => {
-        item["key"] = i++;
-        return true;
-      });
-      }else{
-    this.electronicData = this.electronicData.filter(item => {
-        item["key"] = i++;
-        return true;
-      });
+      if (type === 1) {
+        this.convergeData = this.convergeData.filter(item => {
+          item["key"] = i++;
+          return true;
+        });
+      } else {
+        this.electronicData = this.electronicData.filter(item => {
+          item["key"] = i++;
+          return true;
+        });
       }
     },
     callback(key) {
-        this.FualtException(key)
+      this.FualtException(key);
     },
     changeStatus(typeId, $event) {
       this.$http.toSetAlarm(this.currentFualtId, typeId).then(res => {
@@ -135,22 +129,23 @@ export default {
       });
     },
     FualtException(roomType) {
-      this.$http.toGetFualtExceptionList(1,this.currentFualtId,roomType).then(res => {
-        if (res.data.success) {
-          if(roomType===1){
-          this.convergeData = res.data.data;
-          }else{
-            this.electronicData = res.data.data;
-          }
+      this.$http
+        .toGetFualtExceptionList(1, this.currentFualtId, roomType)
+        .then(res => {
+          if (res.data.success) {
+            if (roomType === 1) {
+              this.convergeData = res.data.data;
+            } else {
+              this.electronicData = res.data.data;
+            }
 
-        this.$nextTick(()=>{
-          console.log(res)
-            this.addOrder(roomType)
-        })
-        } else {
-          this.$message.error("获取数据失败，请重试");
-        }
-      });
+            this.$nextTick(() => {
+              this.addOrder(roomType);
+            });
+          } else {
+            this.$message.error("获取数据失败，请重试");
+          }
+        });
     },
     toGetConvergeRoomAlarmSettings(type, key) {
       if (key == 2) {
@@ -183,17 +178,17 @@ export default {
           });
       }
     },
-    onChangeFualtBinding(exceptionId,roomType) {
-      this.$http.toChangeFualtException({faultId:this.currentFualtId,exceptionId}).then((res)=>{
-        console.log(res);
-        if (res.data.success) {
-          this.$message.success("设置成功");
-          console.log(roomType)
-          this.FualtException(roomType)
-        } else {
-          this.$message.error("设置失败，请重试");
-        }
-      })
+    onChangeFualtBinding(exceptionId, roomType) {
+      this.$http
+        .toChangeFualtException({ faultId: this.currentFualtId, exceptionId })
+        .then(res => {
+          if (res.data.success) {
+            this.$message.success("设置成功");
+            this.FualtException(roomType);
+          } else {
+            this.$message.error("设置失败，请重试");
+          }
+        });
     }
   },
   created() {

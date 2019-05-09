@@ -1,199 +1,196 @@
 <template>
   <div id="alarmSetWrapper">
     <div id="tabWrapper">
+      汇聚机房告警策略
+      <div id="convergeRoomtitle"></div>
 
-          汇聚机房告警策略
-          <div id="convergeRoomtitle"></div>
-
-          <div id="convergeTableWrapper">
-              <div id="formOneWrapper">
-            <a-form :form="form">
-              <a-form-item
-                :label-col="theFormItemLayout.labelCol"
-                :wrapper-col="formItemLayout.wrapperCol"
-                label="温度时长告警（s）"
-              >
-                <a-input
-                  size="small"
-                  v-decorator="[
+      <div id="convergeTableWrapper">
+        <div id="formOneWrapper">
+          <a-form :form="form">
+            <a-form-item
+              :label-col="theFormItemLayout.labelCol"
+              :wrapper-col="formItemLayout.wrapperCol"
+              label="温度时长告警（s）"
+            >
+              <a-input
+                size="small"
+                v-decorator="[
                   
           'temperatureDuration',
           {rules: [{message:'请输入温度时长告警'}],initialValue:(warningStrategy.temperatureDuration ? (warningStrategy.temperatureDuration+'') : '')}
         ]"
-                  style="margin-left:5px;width:280px;"
-                />
-              </a-form-item>
-              <a-form-item
-                :label-col="theFormItemLayout.labelCol"
-                :wrapper-col="formItemLayout.wrapperCol"
-                label="湿度时长告警（s）"
-              >
-                <a-input
-                  size="small"
-                  v-decorator="[
+                style="margin-left:5px;width:280px;"
+              />
+            </a-form-item>
+            <a-form-item
+              :label-col="theFormItemLayout.labelCol"
+              :wrapper-col="formItemLayout.wrapperCol"
+              label="湿度时长告警（s）"
+            >
+              <a-input
+                size="small"
+                v-decorator="[
                   
           'humidityDuration',
           {rules: [{message:'请输入湿度时长告警'}],initialValue:warningStrategy.humidityDuration ? (warningStrategy.humidityDuration+'') : '',}
         ]"
-                  style="margin-left:5px;width:280px;"
-                />
-              </a-form-item>
-              <a-form-item
-                :label-col="theFormItemLayout.labelCol"
-                :wrapper-col="formItemLayout.wrapperCol"
-                label="烟雾时长告警（s）"
-              >
-                <a-input
-                  size="small"
-                  v-decorator="[
+                style="margin-left:5px;width:280px;"
+              />
+            </a-form-item>
+            <a-form-item
+              :label-col="theFormItemLayout.labelCol"
+              :wrapper-col="formItemLayout.wrapperCol"
+              label="烟雾时长告警（s）"
+            >
+              <a-input
+                size="small"
+                v-decorator="[
                   
           'smokeDuration',
           {rules: [{message:'请输入烟雾时长告警'}],initialValue:warningStrategy.smokeDuration? (warningStrategy.smokeDuration+'') : ''}
          
         ]"
-                  style="margin-left:5px;width:280px;"
-                />
-              </a-form-item>
-              <a-form-item
-                :label-col="theFormItemLayout.labelCol"
-                :wrapper-col="formItemLayout.wrapperCol"
-                label="门禁时长告警（s）"
-              >
-                <a-input
-                  size="small"
-                  v-decorator="[
+                style="margin-left:5px;width:280px;"
+              />
+            </a-form-item>
+            <a-form-item
+              :label-col="theFormItemLayout.labelCol"
+              :wrapper-col="formItemLayout.wrapperCol"
+              label="门禁时长告警（s）"
+            >
+              <a-input
+                size="small"
+                v-decorator="[
                   
           'doorDuration',
           {rules: [{message:'请输入门禁时长告警'}],initialValue:warningStrategy.doorDuration ? (warningStrategy.doorDuration+'') : ''}
         ]"
-                  style="margin-left:5px;width:280px;"
-                />
-              </a-form-item>
-              <a-form-item
-                :label-col="theFormItemLayout.labelCol"
-                :wrapper-col="formItemLayout.wrapperCol"
-                label="电力时长告警（s）"
-              >
-                <a-input
-                  size="small"
-                  v-decorator="[
+                style="margin-left:5px;width:280px;"
+              />
+            </a-form-item>
+            <a-form-item
+              :label-col="theFormItemLayout.labelCol"
+              :wrapper-col="formItemLayout.wrapperCol"
+              label="电力时长告警（s）"
+            >
+              <a-input
+                size="small"
+                v-decorator="[
                   
           'powerDuration',
           {rules: [{message:'请输入电力时长告警'}],initialValue:warningStrategy.powerDuration ? (warningStrategy.powerDuration+'') : ''}
         ]"
-                  style="margin-left:5px;width:280px;"
-                />
-              </a-form-item>
-              <a-form-item
-                :label-col="theFormItemLayout.labelCol"
-                :wrapper-col="formItemLayout.wrapperCol"
-                label="告警通知间隔（s）"
-              >
-                <a-input
-                  size="small"
-                  v-decorator="[
+                style="margin-left:5px;width:280px;"
+              />
+            </a-form-item>
+            <a-form-item
+              :label-col="theFormItemLayout.labelCol"
+              :wrapper-col="formItemLayout.wrapperCol"
+              label="告警通知间隔（s）"
+            >
+              <a-input
+                size="small"
+                v-decorator="[
                   
           'warningInterval',
           {rules: [{message:'请输入告警通知间隔'}],initialValue:warningStrategy.warningInterval ? (warningStrategy.warningInterval+'') : ''}
         ]"
-                  style="margin-left:5px;width:280px;"
-                />
-              </a-form-item>
-              <a-form-item
-                :label-col="theFormItemLayout.labelCol"
-                :wrapper-col="formItemLayout.wrapperCol"
-                label="最大警告次数"
-              >
-                <a-input
-                  size="small"
-                  v-decorator="[
+                style="margin-left:5px;width:280px;"
+              />
+            </a-form-item>
+            <a-form-item
+              :label-col="theFormItemLayout.labelCol"
+              :wrapper-col="formItemLayout.wrapperCol"
+              label="最大警告次数"
+            >
+              <a-input
+                size="small"
+                v-decorator="[
                   
           'maxWarningCount',
           {rules: [{message:'请输入最大警告次数'}],initialValue:warningStrategy.maxWarningCount ? (warningStrategy.maxWarningCount+'') : ''}
         ]"
-                  style="margin-left:5px;width:280px;"
-                />
-              </a-form-item>
-              <a-form-item
-                :label-col="theFormItemLayout.labelCol"
-                :wrapper-col="formTailLayout.wrapperCol"
-              >
-              </a-form-item>
-            </a-form>
-            </div>
-        <a-form  :form="form">
-              <a-form-item
-                :label-col="formItemLayout.labelCol"
-                :wrapper-col="formItemLayout.wrapperCol"
-                label="最低温度"
-              >
-                <a-input
-                  size="small"
-                  v-decorator="[
+                style="margin-left:5px;width:280px;"
+              />
+            </a-form-item>
+            <a-form-item
+              :label-col="theFormItemLayout.labelCol"
+              :wrapper-col="formTailLayout.wrapperCol"
+            ></a-form-item>
+          </a-form>
+        </div>
+        <a-form :form="form">
+          <a-form-item
+            :label-col="formItemLayout.labelCol"
+            :wrapper-col="formItemLayout.wrapperCol"
+            label="最低温度"
+          >
+            <a-input
+              size="small"
+              v-decorator="[
                   
           'minTemperature',
           {rules: [{message:'请输入最低温度'}],initialValue:warningStrategy.minTemperature ? (warningStrategy.minTemperature+'') : ''}
         ]"
-                  style="margin-left:5px;width:280px;"
-                />
-              </a-form-item>
-              <a-form-item
-                :label-col="formItemLayout.labelCol"
-                :wrapper-col="formItemLayout.wrapperCol"
-                label="最低湿度"
-              >
-                <a-input
-                  size="small"
-                  v-decorator="[
+              style="margin-left:5px;width:280px;"
+            />
+          </a-form-item>
+          <a-form-item
+            :label-col="formItemLayout.labelCol"
+            :wrapper-col="formItemLayout.wrapperCol"
+            label="最低湿度"
+          >
+            <a-input
+              size="small"
+              v-decorator="[
                   
           'minHumidity',
           {rules: [{message:'请输入最低湿度'}],initialValue:warningStrategy.minHumidity ? (warningStrategy.minHumidity+'') : ''}
         ]"
-                  style="margin-left:5px;width:280px;"
-                />
-              </a-form-item>
-            </a-form>
+              style="margin-left:5px;width:280px;"
+            />
+          </a-form-item>
+        </a-form>
 
-        <a-form  :form="form">
-              <a-form-item
-                :label-col="formItemLayout.labelCol"
-                :wrapper-col="formItemLayout.wrapperCol"
-                label="最高温度"
-              >
-                <a-input
-                  size="small"
-                  v-decorator="[
+        <a-form :form="form">
+          <a-form-item
+            :label-col="formItemLayout.labelCol"
+            :wrapper-col="formItemLayout.wrapperCol"
+            label="最高温度"
+          >
+            <a-input
+              size="small"
+              v-decorator="[
                   
           'maxTemperature',
           {rules: [{message:'请输入最高温度'}],initialValue:warningStrategy.maxTemperature ? (warningStrategy.maxTemperature+'') : ''}
         ]"
-                  style="margin-left:5px;width:280px;"
-                />
-              </a-form-item>
-              <a-form-item
-                :label-col="formItemLayout.labelCol"
-                :wrapper-col="formItemLayout.wrapperCol"
-                label="最高湿度"
-              >
-                <a-input
-                  size="small"
-                  v-decorator="[
+              style="margin-left:5px;width:280px;"
+            />
+          </a-form-item>
+          <a-form-item
+            :label-col="formItemLayout.labelCol"
+            :wrapper-col="formItemLayout.wrapperCol"
+            label="最高湿度"
+          >
+            <a-input
+              size="small"
+              v-decorator="[
                  
           'maxHumidity',
           {rules: [{message:'请输入最高湿度'}], initialValue:warningStrategy.maxHumidity ? (warningStrategy.maxHumidity+'') : ''}
         ]"
-                  style="margin-left:5px;width:280px;"
-                />
-              </a-form-item>
-
-            </a-form>
-          </div>
-        <div id="convergeRoomOperationBox">
-                <div id="opetarionBox">
-                  <a-button  @click="toReturn" id="returnButton">返回</a-button>
-                  <a-button  type="primary" @click="toSave">保存</a-button>
-                </div>
-          </div>
+              style="margin-left:5px;width:280px;"
+            />
+          </a-form-item>
+        </a-form>
+      </div>
+      <div id="convergeRoomOperationBox">
+        <div id="opetarionBox">
+          <a-button @click="toReturn" id="returnButton">返回</a-button>
+          <a-button type="primary" @click="toSave">保存</a-button>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -202,7 +199,7 @@ const formItemLayout = {
   labelCol: { span: 4 },
   wrapperCol: { span: 8 }
 };
- const theFormItemLayout = {
+const theFormItemLayout = {
   labelCol: { span: 8 },
   wrapperCol: { span: 8 }
 };
@@ -254,27 +251,24 @@ export default {
       electronicData: [],
       columns,
       allDataArray: [],
-      cmdbId:this.$route.query.cmdbId,
-      warningStrategy:{}
+      cmdbId: this.$route.query.cmdbId,
+      warningStrategy: {}
     };
   },
   methods: {
     toReturn() {
-      console.log("return");
       this.$router.go("-1");
     },
     toSave() {
       this.form.validateFields((err, values) => {
         if (!err) {
           let alarmStrategy = {};
-          alarmStrategy.warningStrategy	 = values;
-          alarmStrategy.cmdbId=this.cmdbId;
-          alarmStrategy.type=this.$route.query.type
+          alarmStrategy.warningStrategy = values;
+          alarmStrategy.cmdbId = this.cmdbId;
+          alarmStrategy.type = this.$route.query.type;
           // 添加权限菜单
 
-          console.log(alarmStrategy);
           this.$http.toModifyAlarmStrategy(alarmStrategy).then(res => {
-            console.log(res);
             if (res.data.success) {
               this.$message.success("修改告警策略成功");
               this.$router.push({
@@ -288,20 +282,15 @@ export default {
         }
       });
     },
-    GetAlarmStrategyInfo(cmdbId,roomType) {
-      this.$http
-        .toGetAlarmStrategyInfo(cmdbId,roomType)
-        .then(res => {
-          if (res.data.success) {
-            console.log(res)
-            this.warningStrategy= res.data.data.warningStrategy;
-            this.$nextTick(()=>{
-                console.log(this.warningStrategy)
-            })
-          } else {
-            this.$message.error("获取数据失败，请重试");
-          }
-        });
+    GetAlarmStrategyInfo(cmdbId, roomType) {
+      this.$http.toGetAlarmStrategyInfo(cmdbId, roomType).then(res => {
+        if (res.data.success) {
+          this.warningStrategy = res.data.data.warningStrategy;
+          this.$nextTick(() => {});
+        } else {
+          this.$message.error("获取数据失败，请重试");
+        }
+      });
     },
     toGetConvergeRoomAlarmSettings(type, key) {
       if (key == 1) {
@@ -333,10 +322,10 @@ export default {
             }
           });
       }
-    },
+    }
   },
   created() {
-    this.GetAlarmStrategyInfo(this.cmdbId,this.$route.query.type);
+    this.GetAlarmStrategyInfo(this.cmdbId, this.$route.query.type);
   }
 };
 </script>
@@ -359,20 +348,20 @@ export default {
 .ant-form-item {
   margin-bottom: 0 !important;
 }
-#convergeTableWrapper{
-    margin: 0 auto;
-    display: flex;
-    width: 1280px;
-    flex-direction: row;
-    justify-content: space-around;
+#convergeTableWrapper {
+  margin: 0 auto;
+  display: flex;
+  width: 1280px;
+  flex-direction: row;
+  justify-content: space-around;
 }
-#convergeRoomOperationBox{
-    margin-top: 20px;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
+#convergeRoomOperationBox {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
 }
-#returnButton{
-    margin-right: 100px;
+#returnButton {
+  margin-right: 100px;
 }
 </style>
