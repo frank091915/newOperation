@@ -225,14 +225,14 @@ export default {
             isSearching
           );
         });
+      }else{
+        this.getWarningList(
+          this.page,
+          warningTypeParam,
+          this.searchName,
+          isSearching
+        );
       }
-
-      this.getWarningList(
-        this.page,
-        warningTypeParam,
-        this.searchName,
-        isSearching
-      );
     },
     addOrder() {
       var i = 1 + (this.page - 1) * 12;

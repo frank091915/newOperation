@@ -244,11 +244,12 @@ const toChangeFualtException = (fualtException) => {
 
 
 // 请求圈存机列表
-const toGetTransferList = (page = 1, status, buildingId, searchRoom) => {
+const toGetTransferList = (page,status, buildingId, searchRoom) => {
 
   let statusQuery = status === undefined || status === null ? "" : `&status=${status}`,
     buildingIdQuery = buildingId ? `&buildingId=${buildingId}` : "",
     searchRoomQuery = searchRoom ? `&searchRoom=${searchRoom}` : "";
+    console.log(status,statusQuery,status === undefined,status === null)
   return ajax.get(
     `/api/control/transfer?currentPage=` + page + statusQuery + buildingIdQuery + searchRoomQuery, {
       headers: {
@@ -478,7 +479,6 @@ const toModifyException = (exceptionInfo) => {
 //用户修改
 const toModifyUser = (userInfo) => {
 
-
   let keyArray = Object.keys(userInfo),
     itemArray = [],
     i = 0;
@@ -490,12 +490,10 @@ const toModifyUser = (userInfo) => {
       } else {
         obj[item] = `&${item}=${userInfo[item]}`;
       }
-
       itemArray.push(obj);
       i++;
     }
   }
-
 
   let ultimateParam = [],
     ultimateKeyArray = []
@@ -521,7 +519,6 @@ const toModifyUser = (userInfo) => {
 }
 //修改告警策略
 const toModifyAlarmStrategy = (alarmStrategy) => {
-
   return ajax.put(
     `/api/warning/strategy/device/${alarmStrategy.cmdbId}/?type=${alarmStrategy.type}`, alarmStrategy.warningStrategy, {
       headers: {
@@ -753,7 +750,6 @@ ajax.interceptors.request.use((config) => {
 
 //拦截相应,对相应数据进行操作并返回,顺带关掉indicator
 ajax.interceptors.response.use((config) => {
-
   if (!config.data.success) {
     if (config.data.httpCode == 401) {
       window.sessionStorage.removeItem('operationToken')

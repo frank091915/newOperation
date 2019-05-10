@@ -62,6 +62,13 @@ const columns = [
   },
   {
     title: "姓名",
+    dataIndex: "name",
+    width: "8%",
+    scopedSlots: { customRender: "name" },
+    align: "center"
+  },
+  {
+    title: "用户名",
     dataIndex: "username",
     width: "8%",
     scopedSlots: { customRender: "name" },
@@ -70,6 +77,13 @@ const columns = [
   {
     title: "手机号",
     dataIndex: "phone",
+    width: "8%",
+    scopedSlots: { customRender: "phone" },
+    align: "center"
+  }, 
+  {
+    title: "微信号",
+    dataIndex: "wxId",
     width: "8%",
     scopedSlots: { customRender: "phone" },
     align: "center"

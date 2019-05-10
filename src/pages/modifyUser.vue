@@ -71,8 +71,9 @@
           v-decorator="[
           'roleIds',
           {initialValue:userInformation.roles.length ? userInformation.roles[0].name : ''
-          }
+          },
         ]"
+        @select="select"
         >
           <a-select-option v-for=" item in rolesGroup" :value="item.id" :key="item.id">{{item.name}}</a-select-option>
         </a-select>
@@ -83,8 +84,8 @@
           <span>:</span>
         </div>
         <a-radio-group v-model="value">
-          <a-radio :value="1">正常</a-radio>
-          <a-radio :value="0">关闭</a-radio>
+          <a-radio :value=1>正常</a-radio>
+          <a-radio :value=0>关闭</a-radio>
         </a-radio-group>
       </div>
       <a-form-item
@@ -127,25 +128,31 @@ export default {
       formItemLayout,
       formTailLayout,
       form: this.$form.createForm(this),
-      value: 1,
+      value: true,
       roleName: "",
       id: "",
       userInformation: {},
-      rolesGroup: []
+      rolesGroup: [],
+      roleIds:''
     };
   },
   methods: {
     toReturn() {
       this.$router.go("-1");
     },
+    select(value){
+        console.log(value)
+        this.roleIds=value;
+    },
     toSave() {
       this.form.validateFields((err, values) => {
         if (!err) {
           let userInfo = { ...values };
-          userInfo.status = this.value ? true : false;
+          userInfo.status = this.value ? 'true' : 'false';
           userInfo.userId = this.$route.query.id;
+          userInfo.roleIds=this.roleIds
           // 添加权限菜单
-
+console.log(userInfo)
           this.$http.toModifyUser(userInfo).then(res => {
             if (res.data.success) {
               this.$message.success("用户编辑成功");
@@ -182,13 +189,21 @@ export default {
     this.$http.toGetUserInfoById(this.$route.query.id).then(res => {
       if (res.data.success) {
         this.userInformation = res.data.data;
-        this.$nextTick(() => {});
+        // this.roleIds=res.data.data
+        this.$nextTick(() => {
+          console.log(this.userInformation)
+          this.roleIds=this.userInformation.roles[0].id;
+          this.value=this.userInformation.status ? 1 : 0;
+        });
       }
     });
     this.$http.toGetRoleManageList().then(res => {
       if (res.data.success) {
         this.rolesGroup = res.data.data;
       }
+      this.$nextTick(()=>{
+        console.log(this.rolesGroup)
+      })
     });
   }
 };

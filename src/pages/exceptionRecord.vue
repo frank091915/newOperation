@@ -322,15 +322,17 @@ export default {
             isSearching
           );
         });
+      }else{
+        this.getExceptionList(
+          this.page,
+          statusQuery,
+          buildingQuery,
+          floorQuery,
+          roomQuery,
+          isSearching
+        );
       }
-      this.getExceptionList(
-        this.page,
-        statusQuery,
-        buildingQuery,
-        floorQuery,
-        roomQuery,
-        isSearching
-      );
+
     },
     getAllRooms() {},
     getAllFloors() {},

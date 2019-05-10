@@ -9,7 +9,7 @@
             showSearch
             placeholder="Select a person"
             optionFilterProp="children"
-            style="width: 200px"
+            style="width: 230px"
             @change="handleStatusChange"
             :filterOption="filterOption"
             v-model="status"
@@ -18,6 +18,8 @@
             <a-select-option :value="nullStatus">全部</a-select-option>
             <a-select-option :value="normalStatus">正常</a-select-option>
             <a-select-option :value="abnormalStatus">异常</a-select-option>
+            <a-select-option :value="unknownTwo">异常（cmdb中数据未存储ip）</a-select-option>
+            <a-select-option :value="unknownThree">异常（该ip未在zabbix中存储）</a-select-option>
           </a-select>
         </div>
       </div>
@@ -213,7 +215,8 @@ export default {
       nullStatus: "null",
       normalStatus: 1,
       abnormalStatus: 0,
-      unknowStatus: -1,
+       unknownTwo: 2,
+      unknownThree: 3,
       statusParam: "",
       buildingIdParam: "",
       page: 1,
@@ -285,14 +288,16 @@ export default {
           this.searchParam,
           isSearching
         );
+      }else{
+        this.GetAccessList(
+          this.page,
+          statusParam,
+          buildingIdParam,
+          this.searchParam,
+          isSearching
+        );
       }
-      this.GetAccessList(
-        this.page,
-        statusParam,
-        buildingIdParam,
-        this.searchParam,
-        isSearching
-      );
+
     },
     addOrder() {
       var i = 1 + (this.page - 1) * 12;
