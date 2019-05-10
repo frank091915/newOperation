@@ -77,7 +77,7 @@ export default {
           },
           // itemGap设置各个item之间的间隔，单位px，默认为10，横向布局时为水平间隔，纵向布局时为纵向间隔
           itemGap: 10,
-          data: ["正常", "异常", "未知"]
+          data: ["正常", "故障", "异常"]
         },
         series: [
           {
@@ -88,8 +88,8 @@ export default {
             center: ["50%", "50%"], // 设置饼状图位置，第一个百分数调水平位置，第二个百分数调垂直位置
             data: [
               { value: this.MachineRoomStatistics.normalCount, name: "正常" },
-              { value: this.MachineRoomStatistics.faultCount, name: "异常" },
-              { value: this.MachineRoomStatistics.exceptionCount, name: "未知" }
+              { value: this.MachineRoomStatistics.faultCount, name: "故障" },
+              { value: this.MachineRoomStatistics.exceptionCount, name: "异常" }
             ],
             // itemStyle 设置饼状图扇形区域样式
             itemStyle: {
@@ -171,7 +171,7 @@ export default {
           },
           // itemGap设置各个item之间的间隔，单位px，默认为10，横向布局时为水平间隔，纵向布局时为纵向间隔
           itemGap: 10,
-          data: ["正常", "异常", "未知"]
+          data: ["正常", "故障", "异常"]
         },
         series: [
           {
@@ -182,10 +182,10 @@ export default {
             center: ["50%", "50%"], // 设置饼状图位置，第一个百分数调水平位置，第二个百分数调垂直位置
             data: [
               { value: this.WeakElectricStatistics.normalCount, name: "正常" },
-              { value: this.WeakElectricStatistics.faultCount, name: "异常" },
+              { value: this.WeakElectricStatistics.faultCount, name: "故障" },
               {
                 value: this.WeakElectricStatistics.exceptionCount,
-                name: "未知"
+                name: "异常"
               }
             ],
             // itemStyle 设置饼状图扇形区域样式
@@ -268,7 +268,12 @@ export default {
           },
           // itemGap设置各个item之间的间隔，单位px，默认为10，横向布局时为水平间隔，纵向布局时为纵向间隔
           itemGap: 10,
-          data: ["正常", "故障", "未知"]
+          data: [
+            "正常",
+            "异常",
+            "异常(cmdb没有ip信息)",
+            "异常(zabbix中没有数据)"
+          ]
         },
         series: [
           {
@@ -284,11 +289,15 @@ export default {
               },
               {
                 value: this.ControlNetworkStatistics.problemCount,
-                name: "故障"
+                name: "异常"
               },
               {
-                value: this.ControlNetworkStatistics.unknownCount,
-                name: "未知"
+                value: this.ControlNetworkStatistics.cmdbNoIpCount,
+                name: "异常(cmdb没有ip信息)"
+              },
+              {
+                value: this.ControlNetworkStatistics.zabbixNoDataCount,
+                name: "异常(zabbix中没有数据)"
               }
             ],
             // itemStyle 设置饼状图扇形区域样式
