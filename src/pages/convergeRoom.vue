@@ -2,7 +2,7 @@
   <div id="convergeRoomWraper">
     <div id="statusBar">
       <div id="convergeRoomHeaderWraper">
-        <div v-show="normal" id="statusBox">
+        <div id="statusBox">
           <div class="faultyCountBox">故障：{{fauly}}</div>
           <div class="abnormalCountBox">异常：{{abnormal}}</div>
           <div class="normalCountBox">正常：{{normal}}</div>
@@ -95,7 +95,12 @@ export default {
     toShowDetails(id) {
       this.$router.push({
         path: "/roomDetails",
-        query: { title: "汇聚机房详情", detailsId: id, roomType: 1,roomName:'汇聚机房' }
+        query: {
+          title: "汇聚机房详情",
+          detailsId: id,
+          roomType: 1,
+          roomName: "汇聚机房"
+        }
       });
     }
   },
