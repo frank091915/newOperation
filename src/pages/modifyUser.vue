@@ -44,6 +44,22 @@
         ]"
         />
       </a-form-item>
+
+      <a-form-item
+        :label-col="formItemLayout.labelCol"
+        :wrapper-col="formItemLayout.wrapperCol"
+        label="微信号"
+      >
+        <a-input
+          v-decorator="[
+          'wxId',
+          {rules: [{ required: true,message:'请输入微信号'}],
+            initialValue:userInformation.wxId
+          }
+        ]"
+        />
+      </a-form-item>
+
       <a-form-item
         :label-col="formItemLayout.labelCol"
         :wrapper-col="formItemLayout.wrapperCol"
@@ -70,10 +86,10 @@
           style="width: 218px"
           v-decorator="[
           'roleIds',
-          {initialValue:userInformation.roles.length ? userInformation.roles[0].name : ''
+          {rules: [{ required: true,message:'请选择角色'}],initialValue:userInformation.roles.length ? userInformation.roles[0].name : ''
           },
         ]"
-        @select="select"
+          @select="select"
         >
           <a-select-option v-for=" item in rolesGroup" :value="item.id" :key="item.id">{{item.name}}</a-select-option>
         </a-select>
@@ -84,8 +100,8 @@
           <span>:</span>
         </div>
         <a-radio-group v-model="value">
-          <a-radio :value=1>正常</a-radio>
-          <a-radio :value=0>关闭</a-radio>
+          <a-radio :value="1">正常</a-radio>
+          <a-radio :value="0">关闭</a-radio>
         </a-radio-group>
       </div>
       <a-form-item
@@ -93,14 +109,9 @@
         :wrapper-col="formItemLayout.wrapperCol"
         label="备注"
       >
-        <a-input
-          v-decorator="[
-          'remark',
-          {rules: [{ required: true, message: '请输入备注' }],
-            initialValue:userInformation.remark
-          }
-        ]"
-        />
+        <a-input v-decorator="[
+          'remark'
+        ]"/>
       </a-form-item>
       <a-form-item :label-col="formTailLayout.labelCol" :wrapper-col="formTailLayout.wrapperCol">
         <div id="opetarionBox">
@@ -133,26 +144,27 @@ export default {
       id: "",
       userInformation: {},
       rolesGroup: [],
-      roleIds:''
+      roleIds: ""
     };
   },
   methods: {
     toReturn() {
       this.$router.go("-1");
     },
-    select(value){
-        console.log(value)
-        this.roleIds=value;
+    select(value) {
+      console.log(value);
+      this.roleIds = value;
     },
     toSave() {
       this.form.validateFields((err, values) => {
         if (!err) {
           let userInfo = { ...values };
-          userInfo.status = this.value ? 'true' : 'false';
+          console.log(userInfo);
+          userInfo.status = this.value ? "true" : "false";
           userInfo.userId = this.$route.query.id;
-          userInfo.roleIds=this.roleIds
+          userInfo.roleIds = this.roleIds;
           // 添加权限菜单
-console.log(userInfo)
+          console.log(userInfo);
           this.$http.toModifyUser(userInfo).then(res => {
             if (res.data.success) {
               this.$message.success("用户编辑成功");
@@ -191,9 +203,9 @@ console.log(userInfo)
         this.userInformation = res.data.data;
         // this.roleIds=res.data.data
         this.$nextTick(() => {
-          console.log(this.userInformation)
-          this.roleIds=this.userInformation.roles[0].id;
-          this.value=this.userInformation.status ? 1 : 0;
+          console.log(this.userInformation);
+          this.roleIds = this.userInformation.roles[0].id;
+          this.value = this.userInformation.status ? 1 : 0;
         });
       }
     });
@@ -201,9 +213,9 @@ console.log(userInfo)
       if (res.data.success) {
         this.rolesGroup = res.data.data;
       }
-      this.$nextTick(()=>{
-        console.log(this.rolesGroup)
-      })
+      this.$nextTick(() => {
+        console.log(this.rolesGroup);
+      });
     });
   }
 };

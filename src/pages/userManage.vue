@@ -80,7 +80,7 @@ const columns = [
     width: "8%",
     scopedSlots: { customRender: "phone" },
     align: "center"
-  }, 
+  },
   {
     title: "微信号",
     dataIndex: "wxId",
@@ -97,7 +97,7 @@ const columns = [
   },
   {
     title: "角色",
-    dataIndex: "name",
+    dataIndex: "roles[0].name",
     width: "8%",
     scopedSlots: { customRender: "role" },
     align: "center"
@@ -235,6 +235,7 @@ export default {
             return true;
           });
           this.recordsTotal = res.data.recordsTotal;
+
           this.$nextTick(() => {});
         }
       });
