@@ -215,11 +215,13 @@ export default {
     search(isSearching) {
       let warningTypeParam =
         this.warningType === "全部" ? null : this.warningType;
+      let deviceTypeParam = this.deviceType === "全部" ? null : this.deviceType;
       if (isSearching) {
         this.page = 1;
         this.$nextTick(() => {
           this.getWarningList(
             this.page,
+            deviceTypeParam,
             warningTypeParam,
             this.searchName,
             isSearching
@@ -228,6 +230,7 @@ export default {
       }else{
         this.getWarningList(
           this.page,
+          deviceTypeParam,
           warningTypeParam,
           this.searchName,
           isSearching
@@ -241,19 +244,21 @@ export default {
         return true;
       });
     },
-    getWarningList(page, type, searchName, isSearching) {
+    getWarningList(page, deviceType, type, searchName, isSearching) {
       this.isLoading = true;
-      this.$http.toGetWarningRecordList(page, type, searchName).then(res => {
-        this.data = res.data.data;
-        this.recordsTotal = res.data.recordsTotal;
-        this.isLoading = false;
-        if (isSearching) {
-          this.current = 1;
-        }
-        this.$nextTick(() => {
-          this.addOrder();
+      this.$http
+        .toGetWarningRecordList(page, deviceType, type, searchName)
+        .then(res => {
+          this.data = res.data.data;
+          this.recordsTotal = res.data.recordsTotal;
+          this.isLoading = false;
+          if (isSearching) {
+            this.current = 1;
+          }
+          this.$nextTick(() => {
+            this.addOrder();
+          });
         });
-      });
     },
     handleDeviceTypeChange() {
       this.warningType = "全部";

@@ -2,13 +2,19 @@
   <div id="convergeRoomWraper">
     <div id="statusBar">
       <div id="convergeRoomHeaderWraper">
-        <div v-show="normal" id="statusBox">
+        <div id="statusBox">
           <div class="faultyCountBox">故障：{{fauly}}</div>
           <div class="abnormalCountBox">异常：{{abnormal}}</div>
           <div class="normalCountBox">正常：{{normal}}</div>
           <div class="normalCountBox">合计：{{total}}</div>
         </div>
-        <a-input-search placeholder="搜索汇聚机房名称" style="width: 200px" @search="onSearch" @keydown.enter="onSearch" v-model="searchParam"/>
+        <a-input-search
+          placeholder="搜索汇聚机房名称"
+          style="width: 200px"
+          @search="onSearch"
+          @keydown.enter="onSearch"
+          v-model="searchParam"
+        />
       </div>
     </div>
     <div id="convergeRoomBox" v-show="!isLoading">
@@ -19,7 +25,11 @@
         class="statusDisplay"
       >
         <div class="imgWrapper">
-          <img :src='color(item.statusDescription)' @click="toShowDetails(item.Id)" style="cursor:pointer">
+          <img
+            :src="color(item.statusDescription)"
+            @click="toShowDetails(item.Id)"
+            style="cursor:pointer"
+          >
         </div>
 
         <p @click="toShowDetails(item.Id)" style="cursor:pointer">{{item.roomName}}</p>
@@ -43,88 +53,95 @@ export default {
       abnormal: "",
       fauly: "",
       unknown: 0,
-      title:"",
-      searchParam:'',
-      noData:false,
-      isLoading:false,
-      total:0
+      title: "",
+      searchParam: "",
+      noData: false,
+      isLoading: false,
+      total: 0
     };
   },
   methods: {
     onSearch(value) {
-
-
-              this.isLoading=true;
-      this.$http.toSearchlowVoltageRoom(this.searchParam).then((res)=>{
-
-        if(res.data.success){
-          this.$nextTick(()=>{
-              if(res.data.deviceData){
-                  this.noData=true;
-              }else{
-                this.roomList = res.data.data.device;
-                if(res.data.data.device.length===0){
-                  this.noData=true;
-                }else{
-                  this.noData=false;
-                }
-              } 
-          })
-          this.isLoading=false
-        }else{
-          this.isLoading=false
-          this.$message.error(res.data.errorInfo) 
+      this.isLoading = true;
+      this.$http.toSearchlowVoltageRoom(this.searchParam).then(res => {
+        if (res.data.success) {
+          this.$nextTick(() => {
+            if (res.data.deviceData) {
+              this.noData = true;
+            } else {
+              this.roomList = res.data.data.device;
+              if (res.data.data.device.length === 0) {
+                this.noData = true;
+              } else {
+                this.noData = false;
+              }
+            }
+          });
+          this.isLoading = false;
+        } else {
+          this.isLoading = false;
+          this.$message.error(res.data.errorInfo);
         }
-      })
+      });
     },
     color(status) {
       switch (status) {
         case "异常":
-          return ('../../static/assets/lowVoltageRoomYellow.png');
+          return "../../static/assets/lowVoltageRoomYellow.png";
         case "正常":
-          return ('../../static/assets/lowVoltageRoomGreen.png');
+          return "../../static/assets/lowVoltageRoomGreen.png";
         case "故障":
-          return ('../../static/assets/lowVoltageRoomRed.png');
+          return "../../static/assets/lowVoltageRoomRed.png";
       }
     },
-    toShowDetails(id){
-      this.$router.push({path:"/roomDetails",query:{title:"弱电间详情",detailsId:id,roomType:2,roomName:'弱电间'}})
+    toShowDetails(id) {
+      this.$router.push({
+        path: "/roomDetails",
+        query: {
+          title: "弱电间详情",
+          detailsId: id,
+          roomType: 2,
+          roomName: "弱电间"
+        }
+      });
     }
   },
   created() {
-    this.title=this.$route.query.title;
+    this.title = this.$route.query.title;
     this.$http.toGetlowVoltageRoomList().then(res => {
       if (res.data.success) {
         this.roomList = res.data.data.device;
         this.normal = res.data.data.normalCount;
         this.abnormal = res.data.data.exceptionCount;
         this.fauly = res.data.data.faultCount;
-        this.total=res.data.data.normalCount + res.data.data.exceptionCount + res.data.data.faultCount;
-        this.$nextTick(() => {
-
-        });
+        this.total =
+          res.data.data.normalCount +
+          res.data.data.exceptionCount +
+          res.data.data.faultCount;
+        this.$nextTick(() => {});
       } else {
         // 错误请求处理
       }
     });
   },
-  mounted(){
-        let that = this;
+  mounted() {
+    let that = this;
     document.onkeypress = function(e) {
       var keycode = document.all ? event.keyCode : e.which;
       if (keycode == 13) {
-        that.onSearch();// 登录方法名
-         return false;
+        that.onSearch(); // 登录方法名
+        return false;
       }
     };
   }
 };
 </script>
 <style scoped>
-html,body{
+html,
+body {
   height: 100%;
 }
-#main{
+#main {
   max-height: 100%;
   overflow: auto;
   font-size: 14px;
@@ -175,7 +192,7 @@ html,body{
   height: 40px;
   margin-bottom: 10px;
 }
-.imgWrapper img{
+.imgWrapper img {
   width: 40px;
   height: 40px;
 }
@@ -194,7 +211,7 @@ html,body{
   background-color: #e6f7ff;
   padding: 30px;
 }
-#noData{
-      color: rgba(0, 0, 0, 0.45);
+#noData {
+  color: rgba(0, 0, 0, 0.45);
 }
 </style>

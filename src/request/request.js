@@ -631,12 +631,13 @@ const toGetUserAlarmSettings = (userId) => {
 
 // 请求告警记录列表
 
-const toGetWarningRecordList = (page = 1, warningId, searchName) => {
+const toGetWarningRecordList = (page = 1, deviceType, warningId, searchName) => {
 
-  let warningIdQuery = warningId ? `&exceptionId=${warningId}` : "",
+  let deviceTypeQuery = deviceType ? `&type=${deviceType}` : "",
+    warningIdQuery = warningId ? `&exceptionId=${warningId}` : "",
     searchNameQuery = searchName ? `&searchName=${searchName}` : "";
   return ajax.get(
-    `/api/record/warning?currentPage=` + page + warningIdQuery + searchNameQuery, {
+    `/api/record/warning?currentPage=` + page + deviceTypeQuery + warningIdQuery + searchNameQuery, {
       headers: {
         "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken"))
       }
