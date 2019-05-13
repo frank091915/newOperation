@@ -66,24 +66,24 @@
       <a-form-item
         :label-col="formItemLayout.labelCol"
         :wrapper-col="formItemLayout.wrapperCol"
-        label="邮箱地址"
-      >
-        <a-input
-          v-decorator="[
-          'email',
-          {rules: [{ required: true,message:'请输入邮箱地址'}]}
-        ]"
-        />
-      </a-form-item>
-            <a-form-item
-        :label-col="formItemLayout.labelCol"
-        :wrapper-col="formItemLayout.wrapperCol"
         label="微信号"
       >
         <a-input
           v-decorator="[
           'wxId',
           {rules: [{ required: true,message:'请输入微信号'}]}
+        ]"
+        />
+      </a-form-item>
+      <a-form-item
+        :label-col="formItemLayout.labelCol"
+        :wrapper-col="formItemLayout.wrapperCol"
+        label="邮箱地址"
+      >
+        <a-input
+          v-decorator="[
+          'email',
+          {rules: [{ required: true,message:'请输入邮箱地址'}]}
         ]"
         />
       </a-form-item>

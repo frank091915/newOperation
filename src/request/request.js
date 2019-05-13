@@ -457,7 +457,7 @@ const toModifyFualt = (fualtInfo) => {
     `/api/fault/${fualtInfo.faultId}?name=${fualtInfo.name}&remark=${fualtInfo.remark}`, qs.stringify(fualtInfo), {
       headers: {
         "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken")),
-        "Content-Type": "application/x-www-form-urlencoded"
+        "Content-Type": "application/json"
       }
     }
   )
@@ -524,7 +524,7 @@ const toModifyAlarmStrategy = (alarmStrategy) => {
     `/api/warning/strategy/device/${alarmStrategy.cmdbId}/?type=${alarmStrategy.type}`, alarmStrategy.warningStrategy, {
       headers: {
         "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken")),
-        "Content-Type": "application/x-www-form-urlencoded"
+        "Content-Type": "application/json"
       }
     }
   )
@@ -586,7 +586,7 @@ const toSetAlarmOff = (obj) => {
 }
 
 // 请求用户列表
-const toUserList = (page,searchName) => {
+const toUserList = (page, searchName) => {
   return ajax.get(
     `/api/user?currentPage=${page}&searchNname=${searchName}`, {
       headers: {
@@ -754,12 +754,12 @@ ajax.interceptors.request.use((config) => {
 ajax.interceptors.response.use((config) => {
   if (!config.data.success) {
     if (config.data.httpCode == 401) {
-        window.sessionStorage.removeItem('operationToken')
-        window.location.href = "/#/signIn"
-        alert("登录已失效，请重新登录");
-        return config
+      window.sessionStorage.removeItem('operationToken')
+      window.location.href = "/#/signIn"
+      alert("登录已失效，请重新登录");
+      return config
     }
-  }else{
+  } else {
     return config
   }
 })
