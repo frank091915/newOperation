@@ -30,34 +30,34 @@
       <div id="statusBox">
         <div class="singleStatusBox">
           <div class="iconBox">
-            <img :src="color('smoke',details.deviceData.smoke)">
+            <img :src="color('smoke',details.dataList.smoke)">
           </div>
           <div class="statusDescription">
             <div
               class="textDescription"
-            >{{details.deviceData.smoke ? (details.deviceData.smoke ? " 正常 " : " 异常" ) : " 未知"}}</div>
+            >{{details.dataList.smoke ? (details.dataList.smoke ? " 正常 " : " 异常" ) : " 未知"}}</div>
             <div class="status">烟雾状态</div>
           </div>
         </div>
         <div class="singleStatusBox">
           <div class="iconBox">
-            <img :src="color('electric',details.deviceData.ups)" id="ups">
+            <img :src="color('electric',details.dataList.ups)" id="ups">
           </div>
           <div class="statusDescription">
             <div
               class="textDescription"
-            >{{details.deviceData.ups ? (details.deviceData.ups ? " 正常 " : " 异常" ) : " 未知"}}</div>
+            >{{details.dataList.ups ? (details.dataList.ups ? " 正常 " : " 异常" ) : " 未知"}}</div>
             <div class="status">ups状态</div>
           </div>
         </div>
         <div class="singleStatusBox">
           <div class="iconBox">
-            <img :src="color('lock',details.deviceData.door)" id="lock">
+            <img :src="color('lock',details.dataList.door)" id="lock">
           </div>
           <div class="statusDescription">
             <div
               class="textDescription"
-            >{{details.deviceData.door ? (details.deviceData.door ? " 正常 " : " 异常" ) : " 未知"}}</div>
+            >{{details.dataList.door ? (details.dataList.door ? " 正常 " : " 异常" ) : " 未知"}}</div>
             <div class="status">门禁状态</div>
           </div>
         </div>
@@ -94,6 +94,7 @@ export default {
       this.$http.toGetconvergeRoomDetails(this.detailsId).then(res => {
         if (res.data.success) {
           this.details = res.data.data;
+          console.log(res.data.data)
         } else {
           this.$message.error(res.data.errorInfo);
         }
@@ -102,6 +103,7 @@ export default {
       this.$http.toGetLowVoltageRoomDetails(this.detailsId).then(res => {
         if (res.data.success) {
           this.details = res.data.data;
+          console.log(res.data.data)
         } else {
           this.$message.error(res.data.errorInfo);
         }

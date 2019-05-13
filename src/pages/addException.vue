@@ -15,7 +15,7 @@
         />
       </a-form-item>
       <div style="margin-bottom:20px;;margin-top:30px">
-        <span style="margin-left:130px">异常类型 ：</span>
+        <span style="margin-left:106px">异常类型 ：</span>
         <a-radio-group @change="onChange" v-model="type" style="margin-left:10px">
           <a-radio :value="1">汇聚机房异常</a-radio>
           <a-radio :value="2">弱电间异常</a-radio>

@@ -524,7 +524,7 @@ const toModifyAlarmStrategy = (alarmStrategy) => {
     `/api/warning/strategy/device/${alarmStrategy.cmdbId}/?type=${alarmStrategy.type}`, alarmStrategy.warningStrategy, {
       headers: {
         "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken")),
-        "Content-Type": "application/x-www-form-urlencoded"
+        "Content-Type": "application/json"
       }
     }
   )
@@ -757,7 +757,7 @@ ajax.interceptors.response.use((config) => {
         window.sessionStorage.removeItem('operationToken')
         window.location.href = "/#/signIn"
         alert("登录已失效，请重新登录");
-        return config
+        // return config
     }
   }else{
     return config

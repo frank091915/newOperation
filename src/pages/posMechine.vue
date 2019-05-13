@@ -107,28 +107,28 @@ const columns = [
   {
     title: "序号",
     dataIndex: "key",
-    width: "5%",
+    width: "4%",
     scopedSlots: { customRender: "_id" },
     align:"center"
   },
   {
     title: "状态",
     dataIndex: "statusDescription",
-    width: "14%",
+    width: "18%",
     scopedSlots: { customRender: "highLight" },
     align:"center"
   },
   {
     title: "pos机名称",
     dataIndex: "Description",
-    width: "8%",
+    width: "11%",
     scopedSlots: { customRender: "address" },
     align:"center"
   },
   {
     title: "型号",
     dataIndex: "modelNumber",
-    width: "8%",
+    width: "6%",
     scopedSlots: { customRender: "address" },
     align:"center"
   },
@@ -156,7 +156,7 @@ const columns = [
   {
     title: "编号",
     dataIndex: "Code",
-    width: "10%",
+    width: "8%",
     scopedSlots: { customRender: "address" },
     align:"center"
   },

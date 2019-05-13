@@ -210,11 +210,12 @@ export default {
               this.$message.error(res.data.errorInfo);
             }
     });
-    this.$http.toGetRoleManageList().then(res => {
+    this.$http.toGetRoleManageList(1).then(res => {
       if (res.data.success) {
         this.rolesGroup = res.data.data;
       }
       this.$nextTick(()=>{
+        console.log(this.rolesGroup)
       })
 
     });

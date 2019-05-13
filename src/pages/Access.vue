@@ -115,14 +115,14 @@ const columns = [
   {
     title: "序号",
     dataIndex: "key",
-    width: "5%",
+    width: "4%",
     scopedSlots: { customRender: "_id" },
     align: "center"
   },
   {
     title: "状态",
     dataIndex: "statusDescription",
-    width: "15%",
+    width: "18%",
     scopedSlots: { customRender: "highLight" },
     align: "center"
   },
@@ -143,7 +143,7 @@ const columns = [
   {
     title: "型号",
     dataIndex: "Model",
-    width: "9%",
+    width: "8%",
     scopedSlots: { customRender: "address" },
     align: "center"
   },
@@ -185,7 +185,7 @@ const columns = [
   {
     title: "备注",
     dataIndex: "remarks",
-    width: "8%",
+    width: "6%",
     scopedSlots: { customRender: "address" },
     align: "center"
   }

@@ -175,7 +175,8 @@ body {
   flex-direction: row;
   justify-content: flex-start;
   flex-wrap: wrap;
-  align-items: center;
+  align-items: baseline;
+  height: 100%;
 }
 .statusDisplay {
   width: 90px;

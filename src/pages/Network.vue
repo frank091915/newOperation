@@ -119,14 +119,14 @@ const columns = [
   {
     title: "序号",
     dataIndex: "key",
-    width: "6%",
+    width: "5%",
     scopedSlots: { customRender: "_id" },
     align: "center"
   },
   {
     title: "状态",
     dataIndex: "statusDescription",
-    width: "14%",
+    width: "15%",
     scopedSlots: { customRender: "highLight" },
     align: "center"
   },

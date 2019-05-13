@@ -77,7 +77,7 @@
             showSearch
             placeholder="Select a person"
             optionFilterProp="children"
-            style="width:165px;height:25px"
+            style="width:200px;height:25px"
             @change="handleRoomChange"
             :filterOption="filterOption"
             v-model="room"

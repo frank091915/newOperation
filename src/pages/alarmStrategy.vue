@@ -1,8 +1,8 @@
 <template>
   <div id="alarmSetWrapper">
     <div id="tabWrapper">
-      <a-tabs defaultActiveKey="1" @change="callback">
-        <a-tab-pane tab="汇聚机房告警策略" key="1" forceRender>
+      <a-tabs :activeKey=defualfKey @change="callback">
+        <a-tab-pane tab="汇聚机房告警策略" key='1' forceRender>
           <div id="tableWrapper">
             <a-table
               :columns="columns"
@@ -38,7 +38,7 @@
                 </div>
               </template>
             </a-table>
-            <div id="pagination">
+            <div id="pagination" v-show="!isLoading">
               <div id="total">共{{recordsTotal}}条数据</div>
               <div id="paginationBox">
                 <a-pagination
@@ -52,7 +52,7 @@
             </div>
           </div>
         </a-tab-pane>
-        <a-tab-pane tab="弱电间告警策略" key="2">
+        <a-tab-pane tab="弱电间告警策略" key='2'>
           <div id="lowVolttageTableWrapper">
             <div id="tableWrapper">
               <a-table
@@ -89,7 +89,7 @@
                   </div>
                 </template>
               </a-table>
-              <div id="pagination">
+              <div id="pagination" v-show="!isLoading">
                 <div id="total">共{{recordsTotal}}条数据</div>
                 <div id="paginationBox">
                   <a-pagination
@@ -205,18 +205,19 @@ export default {
       columns,
       allDataArray: [],
       recordsTotal: 0,
-      roomType: "NKD_AGG_DEVICE",
+      roomType: this.$route.query.roomType ? this.$route.query.roomType :  "NKD_AGG_DEVICE",
       isLoading: true,
       current: 1,
       page: 1,
-      type: 1
+      type: 1,
+      defualfKey:this.$route.query.defualfKey ? this.$route.query.defualfKey : '1',
     };
   },
   methods: {
     modifyAlarmStrategy(cmdbId) {
       this.$router.push({
         path: "/modifyAlarmStrategy",
-        query: { title: "告警策略管理", cmdbId, type: this.roomType }
+        query: { title: "告警策略管理", cmdbId, type: this.roomType,defualfKey:this.defualfKey }
       });
     },
     addAlarmStrategy() {
@@ -277,12 +278,15 @@ export default {
       }
     },
     callback(key) {
+
+      this.defualfKey=key;
       this.roomType = key == 1 ? "NKD_AGG_DEVICE" : "NKD_WEAK_ELECTRIC_ADVICE";
       this.$nextTick(() => {
         this.current = 1;
         this.page = 1;
         this.$nextTick(() => {
           this.getAlarmStrategy(key, this.roomType, this.page);
+              console.log(this.defualfKey,key)
         });
       });
     },
@@ -367,7 +371,8 @@ export default {
     }
   },
   created() {
-    this.getAlarmStrategy(1, this.roomType, 1);
+    console.log(this.defualfKey)
+    this.getAlarmStrategy(this.$route.query.defualfKey, this.roomType, 1);
   }
 };
 </script>

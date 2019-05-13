@@ -120,10 +120,12 @@ export default {
     },
     confirmDelete(fualt) {
       this.$http.toDeleteExceptionInfo(fualt.id).then(res => {
+        console.log(res)
         if (res.data.success) {
           this.$message.success("删除成功");
           this.GetExceptionManageList();
-        } else {
+        }else {
+          alert(111)
           this.$message.error(res.data.errorInfo);
         }
       });

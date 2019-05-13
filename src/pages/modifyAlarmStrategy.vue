@@ -252,12 +252,16 @@ export default {
       columns,
       allDataArray: [],
       cmdbId: this.$route.query.cmdbId,
-      warningStrategy: {}
+      warningStrategy: {},
+      defualfKey:this.$route.query.defualfKey
     };
   },
   methods: {
     toReturn() {
-      this.$router.go("-1");
+      this.$router.push({
+                path: "warning/strategy",
+                query: { title: "告警策略管理",defualfKey:this.defualfKey }
+              });
     },
     toSave() {
       this.form.validateFields((err, values) => {
@@ -273,7 +277,7 @@ export default {
               this.$message.success("修改告警策略成功");
               this.$router.push({
                 path: "warning/strategy",
-                query: { title: "告警策略管理" }
+                query: { title: "告警策略管理",defualfKey:this.defualfKey }
               });
             } else {
               this.$message.error(res.data.errorInfo);
@@ -286,7 +290,9 @@ export default {
       this.$http.toGetAlarmStrategyInfo(cmdbId, roomType).then(res => {
         if (res.data.success) {
           this.warningStrategy = res.data.data.warningStrategy;
-          this.$nextTick(() => {});
+          this.$nextTick(() => {
+            console.log(this.warningStrategy)
+          });
         }else {
               this.$message.error(res.data.errorInfo);
             }
