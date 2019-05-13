@@ -94,7 +94,7 @@ const columns = [
     width: "8%",
     scopedSlots: { customRender: "phone" },
     align: "center"
-  }, 
+  },
   {
     title: "微信号",
     dataIndex: "wxId",
