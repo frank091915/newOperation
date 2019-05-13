@@ -1,6 +1,7 @@
 import axios from "axios"
 import qs from 'qs';
 
+
 const ajax = axios.create({
   baseURL: "http://127.0.0.1:8181"
 })
@@ -68,7 +69,7 @@ const toModifyPermissionStatus = (permissionId) => {
 }
 
 // 汇聚机房告警设置列表
-const toGetConvergeRoomAlarmSettings = (userId, type, currentPage = 1) => {
+const toGetConvergeRoomAlarmSettings = (userId, type, currentPage) => {
   return ajax.get(
     `/api/user/${userId}/device?currentPage=${currentPage}&type=${type}`, {
       headers: {
@@ -176,7 +177,7 @@ const toGetSummary = () => {
 }
 
 // 请求状态汇总信息
-const toGetExceptionManageList = (page = 1) => {
+const toGetExceptionManageList = (page) => {
   return ajax.get(
     "/api/exception?currentPage=" + page, {
       headers: {
@@ -306,9 +307,9 @@ const toGetinterchangerList = (page = 1, status, buildingId, searchRoom) => {
 
 
 // 请求角色管理列表
-const toGetRoleManageList = () => {
+const toGetRoleManageList = (currentPage) => {
   return ajax.get(
-    "/api/role", {
+    `/api/role?currentPage=${currentPage}`, {
       headers: {
         "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken"))
       }
@@ -585,9 +586,9 @@ const toSetAlarmOff = (obj) => {
 }
 
 // 请求用户列表
-const toUserList = () => {
+const toUserList = (page,searchName) => {
   return ajax.get(
-    "/api/user", {
+    `/api/user?currentPage=${page}&searchNname=${searchName}`, {
       headers: {
         "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken"))
       }
@@ -753,12 +754,14 @@ ajax.interceptors.request.use((config) => {
 ajax.interceptors.response.use((config) => {
   if (!config.data.success) {
     if (config.data.httpCode == 401) {
-      window.sessionStorage.removeItem('operationToken')
-      window.location.href = "/signIn"
-      alert("登录已失效，请重新登录");
+        window.sessionStorage.removeItem('operationToken')
+        window.location.href = "/#/signIn"
+        alert("登录已失效，请重新登录");
+        return config
     }
+  }else{
+    return config
   }
-  return config
 })
 
 

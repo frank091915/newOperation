@@ -152,7 +152,6 @@ export default {
           userInfo.userId = this.$route.query.id;
           userInfo.roleIds=this.roleIds
           // 添加权限菜单
-console.log(userInfo)
           this.$http.toModifyUser(userInfo).then(res => {
             if (res.data.success) {
               this.$message.success("用户编辑成功");
@@ -195,14 +194,15 @@ console.log(userInfo)
           this.roleIds=this.userInformation.roles[0].id;
           this.value=this.userInformation.status ? 1 : 0;
         });
-      }
+      }else {
+              this.$message.error(res.data.errorInfo);
+            }
     });
     this.$http.toGetRoleManageList().then(res => {
       if (res.data.success) {
         this.rolesGroup = res.data.data;
       }
       this.$nextTick(()=>{
-        console.log(this.rolesGroup)
       })
     });
   }

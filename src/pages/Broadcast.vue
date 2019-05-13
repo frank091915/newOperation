@@ -318,7 +318,9 @@ export default {
               this.isLoading = false;
               this.addOrder();
             });
-          }
+          }else {
+              this.$message.error(res.data.errorInfo);
+            }
         });
     },
     changePage(page) {

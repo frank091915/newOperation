@@ -44,6 +44,14 @@
           </div>
         </template>
       </a-table>
+      <div id="pagination" v-show="!isLoading"> 
+          <div id="total">
+            共{{recordsTotal}}条数据
+          </div>
+          <div id="paginationBox">
+            <a-pagination @change="changePage" v-model="page" :total="recordsTotal"   :pageSize="12" />
+          </div>
+      </div>
     </div>
   </div>
 </template>
@@ -95,8 +103,9 @@ export default {
     return {
       data,
       columns,
-      recordsTotal: "",
-      isLoading: true
+      recordsTotal:0,
+      isLoading: true,
+      page:1
     };
   },
   methods: {
@@ -170,7 +179,7 @@ export default {
     },
     GetExceptionManageList() {
       this.isLoading = true;
-      this.$http.toGetExceptionManageList().then(res => {
+      this.$http.toGetExceptionManageList(this.page).then(res => {
         var i = 1;
         if (res.data.success) {
           this.isLoading = false;
@@ -180,8 +189,16 @@ export default {
             return res;
           });
           this.recordsTotal = res.data.recordsTotal;
-        }
+        }else {
+              this.$message.error(res.data.errorInfo);
+            }
       });
+    },
+    changePage(page){
+        this.page=page;
+        this.$nextTick(()=>{
+          this.GetExceptionManageList()
+        })
     }
   },
   created() {
@@ -244,5 +261,14 @@ body {
   justify-content: flex-end;
   align-items: center;
   height: 40px;
+}
+#pagination{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 15px;
+}
+#total{
+  font-size: 15px;
 }
 </style>

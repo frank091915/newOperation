@@ -287,9 +287,9 @@ export default {
         if (res.data.success) {
           this.warningStrategy = res.data.data.warningStrategy;
           this.$nextTick(() => {});
-        } else {
-          this.$message.error("获取数据失败，请重试");
-        }
+        }else {
+              this.$message.error(res.data.errorInfo);
+            }
       });
     },
     toGetConvergeRoomAlarmSettings(type, key) {

@@ -278,7 +278,9 @@ export default {
             this.$nextTick(() => {
               this.addOrder();
             });
-          }
+          }else {
+              this.$message.error(res.data.errorInfo);
+            }
         });
     },
     changePage(page) {

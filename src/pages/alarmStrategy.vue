@@ -301,9 +301,9 @@ export default {
             this.isLoading = false;
             this.addOrder(roomType);
           });
-        } else {
-          this.$message.error("获取数据失败，请重试");
-        }
+        }else {
+              this.$message.error(res.data.errorInfo);
+            }
       });
     },
     toGetConvergeRoomAlarmSettings(type, key) {

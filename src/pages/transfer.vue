@@ -320,8 +320,9 @@ export default {
             }
             this.recordsTotal = res.data.recordsTotal;
             this.isLoading = false;
-          } else {
-          }
+          }else {
+              this.$message.error(res.data.errorInfo);
+            }
         });
     },
     changePage(page) {

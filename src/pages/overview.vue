@@ -343,7 +343,9 @@ export default {
           this.drawLowVoltageRoomLine();
           this.drawControlNetRoomLine();
         });
-      }
+      }else {
+              this.$message.error(res.data.errorInfo);
+            }
     });
   }
 };

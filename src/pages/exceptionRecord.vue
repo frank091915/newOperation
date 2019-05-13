@@ -379,7 +379,9 @@ export default {
               this.addOrder();
               this.addStatusDescription();
             });
-          }
+          }else {
+              this.$message.error(res.data.errorInfo);
+            }
         });
     },
     changePage(page) {

@@ -106,7 +106,9 @@ export default {
           this.$nextTick(() => {
             this.isLoading = false;
           });
-        }
+        }else {
+              this.$message.error(res.data.errorInfo);
+            }
       });
     }
   },

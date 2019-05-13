@@ -118,8 +118,8 @@ export default {
           res.data.data.faultCount;
         this.$nextTick(() => {});
       } else {
-        // 错误请求处理
-      }
+              this.$message.error(res.data.errorInfo);
+            }
     });
   },
   mounted() {

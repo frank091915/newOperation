@@ -39,6 +39,14 @@
           </div>
         </template>
       </a-table>
+              <div id="pagination" v-show="!isLoading"> 
+          <div id="total">
+            共{{recordsTotal}}条数据
+          </div>
+          <div id="paginationBox">
+            <a-pagination @change="changePage" v-model="page" :total="recordsTotal"   :pageSize="12" />
+          </div>
+        </div>
     </div>
   </div>
 </template>
@@ -91,7 +99,9 @@ export default {
     return {
       data,
       columns,
-      recordsTotal: ""
+      recordsTotal:0,
+      page:1,
+      isLoading:true
     };
   },
   methods: {
@@ -110,8 +120,8 @@ export default {
           this.$message.success("删除成功");
           this.getRoleList();
         } else {
-          this.$message.success("删除失败，请重试");
-        }
+              this.$message.error(res.data.errorInfo);
+            }
       });
     },
     cancelDelete(e) {},
@@ -164,7 +174,8 @@ export default {
       );
     },
     getRoleList() {
-      this.$http.toGetRoleManageList().then(res => {
+      this.$http.toGetRoleManageList(this.page).then(res => {
+        this.isLoading=true;
         var i = 1;
         if (res.data.success) {
           this.data = res.data.data.filter(res => {
@@ -173,9 +184,18 @@ export default {
             return true;
           });
           this.recordsTotal = res.data.recordsTotal;
+          this.isLoading=false;
           this.$nextTick(() => {});
-        }
+        }else {
+              this.$message.error(res.data.errorInfo);
+            }
       });
+    },
+    changePage(page){
+      this.page=page;
+      this.$nextTick(()=>{
+        this.getRoleList()
+      })
     }
   },
   created() {
@@ -238,5 +258,14 @@ body {
   justify-content: flex-end;
   align-items: center;
   height: 40px;
+}
+#pagination{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 15px;
+}
+#total{
+  font-size: 15px;
 }
 </style>

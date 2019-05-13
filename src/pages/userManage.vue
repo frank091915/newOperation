@@ -1,8 +1,14 @@
 <template>
   <div id="pageWrapper">
-    <div id="addBox">
-      <div id="addButton">
-        <a-button @click="addUser" type="primary" size="small">新增</a-button>
+    <div id="headerWrapper">
+      <div id="searchByNamesInput">
+          <a-input v-model="searchName" @keydown.enter="search" placeholder="请输入姓名"  size="small"/>
+          <a-button  @click="search" type="primary" size="small" style="margin-left:10px">搜索</a-button>
+      </div>
+      <div id="addBox">
+        <div id="addButton">
+          <a-button @click="addUser" type="primary" size="small">新增</a-button>
+        </div>
       </div>
     </div>
     <div id="tableWrapper">
@@ -41,6 +47,14 @@
           </div>
         </template>
       </a-table>
+      <div id="pagination" v-show="!isLoading"> 
+          <div id="total">
+            共{{recordsTotal}}条数据
+          </div>
+          <div id="paginationBox">
+            <a-pagination @change="changePage" v-model="page" :total="recordsTotal"   :pageSize="12" />
+          </div>
+      </div>
     </div>
   </div>
 </template>
@@ -97,7 +111,7 @@ const columns = [
   },
   {
     title: "角色",
-    dataIndex: "name",
+    dataIndex: "roles[0].name",
     width: "8%",
     scopedSlots: { customRender: "role" },
     align: "center"
@@ -134,12 +148,18 @@ export default {
     return {
       data,
       columns,
-      recordsTotal: ""
+      recordsTotal: 0,
+      page:1,
+      isLoading:true,
+      searchName:''
     };
   },
   methods: {
     addUser() {
       this.$router.push({ path: "/addUser", query: { title: "用户管理" } });
+    },
+    search(){
+        this.getUserList()
     },
     modifyUser(e) {
       this.$router.push({
@@ -158,9 +178,9 @@ export default {
         if (res.data.success) {
           this.$message.success("删除成功");
           this.getUserList();
-        } else {
-          this.$message.success("删除失败，请重试");
-        }
+        }else {
+              this.$message.error(res.data.errorInfo);
+            }
       });
     },
     ResetPassword(user) {
@@ -170,9 +190,9 @@ export default {
             this.$router.push("/signIn");
           }
           this.$message.success("重置成功");
-        } else {
-          this.$message.success("重置密码失败，请重试");
-        }
+        }else {
+              this.$message.error(res.data.errorInfo);
+            }
       });
     },
     cancelDelete(e) {},
@@ -226,7 +246,8 @@ export default {
     },
     // 获取用户列表
     getUserList() {
-      this.$http.toUserList().then(res => {
+      this.isLoading=true;
+      this.$http.toUserList(this.page,this.searchName).then(res => {
         var i = 1;
         if (res.data.success) {
           this.data = res.data.data.filter(res => {
@@ -235,9 +256,18 @@ export default {
             return true;
           });
           this.recordsTotal = res.data.recordsTotal;
+          this.isLoading=false;
           this.$nextTick(() => {});
-        }
+        }else {
+              this.$message.error(res.data.errorInfo);
+            }
       });
+    },
+    changePage(page){
+      this.page=page;
+      this.$nextTick(()=>{
+        this.getUserList()
+      })
     }
   },
   created() {
@@ -300,5 +330,20 @@ body {
   justify-content: flex-end;
   align-items: center;
   height: 40px;
+}
+#pagination{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 15px;
+}
+#total{
+  font-size: 15px;
+}
+#headerWrapper{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
 }
 </style>

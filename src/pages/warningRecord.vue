@@ -249,15 +249,20 @@ export default {
       this.$http
         .toGetWarningRecordList(page, deviceType, type, searchName)
         .then(res => {
-          this.data = res.data.data;
-          this.recordsTotal = res.data.recordsTotal;
-          this.isLoading = false;
-          if (isSearching) {
-            this.current = 1;
-          }
-          this.$nextTick(() => {
-            this.addOrder();
-          });
+          if(res.data.success){
+            this.data = res.data.data;
+            this.recordsTotal = res.data.recordsTotal;
+            this.isLoading = false;
+            if (isSearching) {
+              this.current = 1;
+            }
+            this.$nextTick(() => {
+              this.addOrder();
+            });
+          }else {
+              this.$message.error(res.data.errorInfo);
+            }
+
         });
     },
     handleDeviceTypeChange() {

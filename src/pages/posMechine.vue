@@ -72,7 +72,6 @@
               <template v-else>{{text}}</template>
             </div>
           </template>
-
           <template
             v-for="col in ['name','age', 'address','highLight']"
             slot="highLight"
@@ -296,10 +295,8 @@ export default {
       });
     },
     changePage(page){
-
       this.page=page;
       this.$nextTick(()=>{
-
         this.search(false)
       })
     },
@@ -310,7 +307,9 @@ export default {
     this.$http.toGetBuildingList().then(res => {
       if (res.data.success) {
         this.allBuildings = res.data.data;
-      }
+      }else {
+              this.$message.error(res.data.errorInfo);
+            }
     });
   },
   mounted(){

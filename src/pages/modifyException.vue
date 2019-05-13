@@ -98,7 +98,6 @@ export default {
   },
   created(){
       this.$http.toGetExceptionInfo(this.$route.query.exceptionId).then((res)=>{
-
           if(res.data.success){
               this.type=res.data.data.type;
               this.name=res.data.data.name;
@@ -106,9 +105,9 @@ export default {
               this.$nextTick(()=>{
 
               })
-          }{
-
-          }
+          }else {
+              this.$message.error(res.data.errorInfo);
+            }
       })
   }
 };

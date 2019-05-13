@@ -344,7 +344,9 @@ export default {
     this.$http.toGetBuildingList().then(res => {
       if (res.data.success) {
         this.allBuildings = res.data.data;
-      }
+      }else {
+              this.$message.error(res.data.errorInfo);
+            }
     });
   },
   mounted() {

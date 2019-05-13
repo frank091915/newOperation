@@ -12,7 +12,6 @@
           </div>
         </a-tab-pane>
         <a-tab-pane tab="汇聚机房" key="2" forceRender>
-
           <div id="convergeTableWrapper">
             <a-table :columns="columns" :dataSource="convergeData" :pagination="false" bordered :scroll="{y:790}" :loading="isLoading">
               <template
@@ -49,6 +48,14 @@
                 />
               </template>
             </a-table>
+          <div id="pagination" v-show="!isLoading"> 
+            <div id="total">
+              共{{recordsTotal}}条数据
+            </div>
+            <div id="paginationBox">
+              <a-pagination @change="changePage" v-model="page" :total="recordsTotal"   :pageSize="12" />
+            </div>
+        </div>
           </div>
         </a-tab-pane>
         <a-tab-pane tab="弱电间" key="3">
@@ -88,6 +95,14 @@
                 />
               </template>
             </a-table>
+            <div id="pagination" v-show="!isLoading"> 
+              <div id="total">
+                共{{recordsTotal}}条数据
+              </div>
+              <div id="paginationBox">
+                <a-pagination @change="changePage" v-model="page" :total="recordsTotal"   :pageSize="12" />
+              </div>
+            </div>
           </div>
         </a-tab-pane>
       </a-tabs>
@@ -159,16 +174,23 @@ export default {
       electronicData: [],
       columns,
       allDataArray: [],
-      isLoading:true
+      isLoading:true,
+      page:1,
+      recordsTotal:0,
+      type:'NKD_AGG_DEVICE'
     };
   },
   methods: {
     callback(key) {
-      if (key == 2) {
-        this.toGetConvergeRoomAlarmSettings("NKD_AGG_DEVICE", key);
-      } else if (key == 3) {
-        this.toGetConvergeRoomAlarmSettings("NKD_WEAK_ELECTRIC_ADVICE", key);
-      }
+      this.page=1;
+      this.$nextTick(()=>{
+        if (key == 2) {
+          this.toGetConvergeRoomAlarmSettings("NKD_AGG_DEVICE", key);
+        } else if (key == 3) {
+          this.toGetConvergeRoomAlarmSettings("NKD_WEAK_ELECTRIC_ADVICE", key);
+        }
+      })
+
     },
     changeStatus(typeId, $event) {
       this.$http.toSetAlarm(this.currentUserId, typeId).then(res => {
@@ -189,23 +211,28 @@ export default {
           this.$nextTick(()=>{
             this.addOrder()
           })
-        } else {
-          this.$message.success("获取数据失败，请重试");
-        }
+        }else {
+              this.$message.error(res.data.errorInfo);
+            }
       });
     },
     toGetConvergeRoomAlarmSettings(type, key) {
+      console.log(type)
+      this.type=type ? type : 'NKD_AGG_DEVICE';
+      this.key= key ? key : 2;
       this.isLoading=true;
-      if (key == 2) {
+      this.$nextTick(()=>{
+              if (this.key == 2) {
         this.$http
-          .toGetConvergeRoomAlarmSettings(this.currentUserId, type)
+          .toGetConvergeRoomAlarmSettings(this.currentUserId,this.type,this.page)
           .then(res => {
             if (res.data.success) {
               this.convergeData = res.data.data;
               this.isLoading=false;
               this.allDataArray = this.electronicData.concat(this.convergeData);
+              this.recordsTotal=res.data.recordsTotal;
               this.$nextTick(()=>{
-                  this.addOrder(key)
+                  this.addOrder(this.key)
               })
             } else {
               this.$message.success("获取数据失败，请重试");
@@ -213,20 +240,23 @@ export default {
           });
       } else {
         this.$http
-          .toGetConvergeRoomAlarmSettings(this.currentUserId, type)
+          .toGetConvergeRoomAlarmSettings(this.currentUserId, this.type,this.page)
           .then(res => {
             if (res.data.success) {
               this.isLoading=false;
               this.electronicData = res.data.data;
+              this.recordsTotal=res.data.recordsTotal;
               this.allDataArray = this.electronicData.concat(this.convergeData);
               this.$nextTick(()=>{
-                  this.addOrder(key)
+                  this.addOrder(this.key)
               })
             } else {
               this.$message.success("获取数据失败，请重试");
             }
           });
       }
+      })
+
     },
     onChangeInformingMethod(noticeType, id, type) {
       let infoObj = {};
@@ -274,13 +304,13 @@ export default {
             this.toGetConvergeRoomAlarmSettings("NKD_AGG_DEVICE", 2);
             this.toGetConvergeRoomAlarmSettings("NKD_WEAK_ELECTRIC_ADVICE", 3);
           }else{
-            this.$message.success("设置失败，请重试");
+            this.$message.error("设置失败，请重试");
           }
         });
       }
     },
     addOrder(key){
-              var i=1;
+              var i=1+ (this.page - 1)*12;
       if(key==2){
           this.convergeData=this.convergeData.filter((item)=>{
           item["key"]=i++;
@@ -292,8 +322,12 @@ export default {
           return true
         })
       }
-
-
+    },
+    changePage(page){
+      this.page=page;
+      this.$nextTick(()=>{
+        this.toGetConvergeRoomAlarmSettings(this.type,this.key)
+      })
     }
   },
   created() {
@@ -316,5 +350,14 @@ export default {
 }
 .ant-table {
   line-height: 1 !important;
+}
+#pagination{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 15px;
+}
+#total{
+  font-size: 15px;
 }
 </style>
