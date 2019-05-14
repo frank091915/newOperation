@@ -28,6 +28,7 @@ build-test:
   - tar czf ../$VER.tar.gz ./
   - cp -r ../$VER.tar.gz /opt/build/machine-integration-frnt/
   - VER=`git log -n1|head -n1|cut -d " " -f2`
+  - cd ../
   - sed -i "s/VER/$VER/" Dockerfile
   - docker build -f ./Dockerfile -t 172.18.14.1:5000/machine-integration-frnt:$VER .
   - docker tag 172.18.14.1:5000/machine-integration-frnt:$VER 172.18.14.1:5000/machine-integration-frnt:test
@@ -52,6 +53,7 @@ build-prod:
   - tar czf ../$VER.tar.gz ./
   - cp -r ../$VER.tar.gz /opt/build/machine-integration-frnt/
   - VER=`git log -n1|head -n1|cut -d " " -f2`
+  - cd ../
   - sed -i "s/VER/$VER/" Dockerfile
   - docker build -f ./Dockerfile -t 172.18.14.1:5000/machine-integration-frnt:$VER .
   - docker tag 172.18.14.1:5000/machine-integration-frnt:$VER 172.18.14.1:5000/machine-integration-frnt:latest
