@@ -11,7 +11,7 @@ stages:
   - test
   - deploy
 
-build:
+build-test:
   stage: build-test
   tags:
   - cnpmbuild
@@ -35,6 +35,7 @@ build:
   only:
   - master
   
+build-prod:
   stage: build-prod
   tags:
   - cnpmbuild
