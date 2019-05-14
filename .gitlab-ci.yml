@@ -17,6 +17,7 @@ build:
   script:
   - VER=`git log -n1|head -n1|cut -d " " -f2`
   - echo "Building Project Ver $VER"
+  - sed -i 's/127.0.0.1/172.18.8.75/' ./src/request/request.js
   - cnpm install
   - cnpm run build
   - sonar-scanner  -Dsonar.projectKey=2019_machineintegrationfrnt  -Dsonar.sources=./src  -Dsonar.host.url=http://172.18.14.1:8001  -Dsonar.login=51bec2811fd8cc2ca39345bab5446cf57b651557
