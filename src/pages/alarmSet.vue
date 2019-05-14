@@ -32,19 +32,19 @@
               <template slot="weChatcheckBox" slot-scope="text, record">
                 <a-switch
                   :checked="record.switchWx"
-                  @change="onChangeInformingMethod(3,record.Id,'NKD_AGG_DEVICE')"
+                  @change="onChangeInformingMethod(3,record.Id,'NKD_AGG_DEVICE','2')"
                 />
               </template>
               <template slot="messagecheckBox" slot-scope="text, record">
                 <a-switch
                   :checked="record.switchPhone"
-                  @change="onChangeInformingMethod(2,record.Id,'NKD_AGG_DEVICE')"
+                  @change="onChangeInformingMethod(2,record.Id,'NKD_AGG_DEVICE','2')"
                 />
               </template>
               <template slot="emailcheckBox" slot-scope="text, record">
                 <a-switch
                   :checked="record.switchEmail"
-                  @change="onChangeInformingMethod(1,record.Id,'NKD_AGG_DEVICE')"
+                  @change="onChangeInformingMethod(1,record.Id,'NKD_AGG_DEVICE','2')"
                 />
               </template>
             </a-table>
@@ -79,19 +79,19 @@
               <template slot="weChatcheckBox" slot-scope="text, record">
                 <a-switch
                   :checked="record.switchWx"
-                  @change="onChangeInformingMethod(3,record.Id,'NKD_WEAK_ELECTRIC_ADVICE')"
+                  @change="onChangeInformingMethod(3,record.Id,'NKD_WEAK_ELECTRIC_ADVICE','3')"
                 />
               </template>
               <template slot="messagecheckBox" slot-scope="text, record">
                 <a-switch
                   :checked="record.switchPhone"
-                  @change="onChangeInformingMethod(2,record.Id,'NKD_WEAK_ELECTRIC_ADVICE')"
+                  @change="onChangeInformingMethod(2,record.Id,'NKD_WEAK_ELECTRIC_ADVICE','3')"
                 />
               </template>
               <template slot="emailcheckBox" slot-scope="text, record">
                 <a-switch
                   :checked="record.switchEmail"
-                  @change="onChangeInformingMethod(1,record.Id,'NKD_WEAK_ELECTRIC_ADVICE')"
+                  @change="onChangeInformingMethod(1,record.Id,'NKD_WEAK_ELECTRIC_ADVICE','3')"
                 />
               </template>
             </a-table>
@@ -233,6 +233,7 @@ export default {
               this.recordsTotal=res.data.recordsTotal;
               this.$nextTick(()=>{
                   this.addOrder(this.key)
+                  console.log(this.convergeData)
               })
             } else {
               this.$message.success("获取数据失败，请重试");
@@ -249,16 +250,17 @@ export default {
               this.allDataArray = this.electronicData.concat(this.convergeData);
               this.$nextTick(()=>{
                   this.addOrder(this.key)
+                  console.log(this.electronicData)
               })
             } else {
-              this.$message.success("获取数据失败，请重试");
+              this.$message.error("获取数据失败，请重试");
             }
           });
       }
       })
 
     },
-    onChangeInformingMethod(noticeType, id, type) {
+    onChangeInformingMethod(noticeType, id, type,key) {
       let infoObj = {};
       infoObj.userId = this.$route.query.id;
       infoObj.type = type;
@@ -291,18 +293,16 @@ export default {
         this.$http.toSetAlarmOn(infoObj).then((res)=>{
           if(res.data.success){
             this.$message.success("设置成功");
-            this.toGetConvergeRoomAlarmSettings("NKD_AGG_DEVICE", 2);
-            this.toGetConvergeRoomAlarmSettings("NKD_WEAK_ELECTRIC_ADVICE", 3);
+            this.toGetConvergeRoomAlarmSettings(type,key);
           }else{
-            this.$message.success("设置失败，请重试");
+            this.$message.error("设置失败，请重试");
           }
         });
       }else{
         this.$http.toSetAlarmOff(infoObj).then((res)=>{
           if(res.data.success){
             this.$message.success("设置成功");
-            this.toGetConvergeRoomAlarmSettings("NKD_AGG_DEVICE", 2);
-            this.toGetConvergeRoomAlarmSettings("NKD_WEAK_ELECTRIC_ADVICE", 3);
+            this.toGetConvergeRoomAlarmSettings(type,key);
           }else{
             this.$message.error("设置失败，请重试");
           }

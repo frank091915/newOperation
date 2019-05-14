@@ -78,7 +78,7 @@
         </template>
       </a-table>
       <div id="pagination" v-show="!isLoading">
-        <div id="total">共{{recordsTotal}}条数据</div>
+        <div id="total">共<span style="margin:0 5px;">{{recordsTotal}}</span>条数据</div>
         <div id="paginationBox">
           <a-pagination
             @change="changePage"
@@ -117,7 +117,7 @@ const columns = [
   {
     title: "房间",
     dataIndex: "deviceInfo.roomName",
-    width: "12%",
+    width: "14%",
     scopedSlots: { customRender: "address" },
     align: "center"
   },
@@ -131,7 +131,7 @@ const columns = [
   {
     title: "告警通知方式",
     dataIndex: "warningRecord.way",
-    width: "9%",
+    width: "8%",
     scopedSlots: { customRender: "address" },
     align: "center"
   },

@@ -1,9 +1,9 @@
 <template>
   <div id="pageWrapper">
     <div id="chartWrapper" v-show="!isLoading">
-      <div id="convergeRoomChart" :style="{width: '300px', height: '300px'}"></div>
-      <div id="lowVoltageRoomChart" :style="{width: '300px', height: '300px'}"></div>
-      <div id="controlNetChart" :style="{width: '300px', height: '300px'}"></div>
+      <div id="convergeRoomChart" :style="{width: '320px', height: '320px'}"></div>
+      <div id="lowVoltageRoomChart" :style="{width: '320px', height: '320px'}"></div>
+      <div id="controlNetChart" :style="{width: '320px', height: '320px'}"></div>
     </div>
     <div v-if="isLoading">
       <a-spin tip="数据正在加载中...">

@@ -1,13 +1,16 @@
 <template>
+<div>
+  <div id="pageTitle">新增用户</div>
   <div id="addRoleWrapper">
-    <div id="pageTitle">新增用户</div>
     <a-form :form="form">
       <a-form-item
+              style="margin-top:20px"
         :label-col="formItemLayout.labelCol"
         :wrapper-col="formItemLayout.wrapperCol"
         label="工号"
       >
         <a-input
+
           v-decorator="[
           'jobNum',
           {rules: [{ required: true,message:'请输入工号'}]}
@@ -132,6 +135,7 @@
       </a-form-item>
     </a-form>
   </div>
+  </div>
 </template>
 
 <script>
@@ -208,7 +212,11 @@ export default {
 </script>
 <style scoped>
 #pageTitle {
-  margin-left: 52px;
+  padding-left: 69px;
+  height: 50px;
+  border-bottom: 1px solid #bdbdbd;
+  line-height: 50px;
+  font-weight: 600;
 }
 #menuSelection {
   max-height: calc(100% - 49px);

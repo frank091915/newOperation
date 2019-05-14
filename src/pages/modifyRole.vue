@@ -1,7 +1,8 @@
 <template>
+<div>
+  <div id="pageTitle">编辑角色</div>
   <div id="supremeWrapper">
     <div id="addRoleWrapper">
-      <div id="pageTitle">编辑角色</div>
       <a-form :form="form">
         <a-form-item
           :label-col="formItemLayout.labelCol"
@@ -115,6 +116,7 @@
         </a-layout>
       </div>
     </div>
+  </div>
   </div>
 </template>
 
@@ -453,7 +455,11 @@ export default {
 </script>
 <style scoped>
 #pageTitle {
-  margin-left: 165px;
+  padding-left: 69px;
+  height: 50px;
+  border-bottom: 1px solid #bdbdbd;
+  line-height: 50px;
+  font-weight: 600;
 }
 #radioBox {
   box-sizing: border-box;

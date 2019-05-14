@@ -123,7 +123,7 @@
         </template>
       </a-table>
       <div id="pagination" v-show="!isLoading">
-        <div id="total">共{{recordsTotal}}条数据</div>
+        <div id="total">共<span style="margin:0 5px;">{{recordsTotal}}</span>条数据</div>
         <div id="paginationBox">
           <a-pagination
             @change="changePage"
@@ -141,7 +141,7 @@ const columns = [
   {
     title: "异常标号",
     dataIndex: "key",
-    width: "8%",
+    width: "5%",
     scopedSlots: { customRender: "address" },
     align: "center"
   },
@@ -155,35 +155,35 @@ const columns = [
   {
     title: "告警状态",
     dataIndex: "exceptionRecord.warningStatusDescription",
-    width: "8%",
+    width: "6%",
     scopedSlots: { customRender: "address" },
     align: "center"
   },
   {
     title: "告警次数",
     dataIndex: "exceptionRecord.waringCount",
-    width: "8%",
+    width: "5%",
     scopedSlots: { customRender: "address" },
     align: "center"
   },
   {
     title: "起始时间",
     dataIndex: "exceptionRecord.startTime",
-    width: "8%",
+    width: "12%",
     scopedSlots: { customRender: "address" },
     align: "center"
   },
   {
     title: "结束时间",
     dataIndex: "exceptionRecord.endTime",
-    width: "8%",
+    width: "12%",
     scopedSlots: { customRender: "address" },
     align: "center"
   },
   {
     title: "记录状态",
     dataIndex: "exceptionRecord.recordingStatusDescription",
-    width: "8%",
+    width: "6%",
     scopedSlots: { customRender: "address" },
     align: "center"
   },
@@ -204,7 +204,7 @@ const columns = [
   {
     title: "房间",
     dataIndex: "deviceInfo.roomName",
-    width: "8%",
+    width: "12%",
     scopedSlots: { customRender: "address" },
     align: "center"
   },

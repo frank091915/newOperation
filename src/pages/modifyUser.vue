@@ -1,11 +1,13 @@
 <template>
+<div>
+      <div id="pageTitle">编辑用户</div>
   <div id="addRoleWrapper">
-    <div id="pageTitle">编辑用户</div>
     <a-form :form="form">
       <a-form-item
         :label-col="formItemLayout.labelCol"
         :wrapper-col="formItemLayout.wrapperCol"
         label="工号"
+        style="margin-top:20px;"
       >
         <a-input
           v-decorator="[
@@ -109,8 +111,12 @@
         :wrapper-col="formItemLayout.wrapperCol"
         label="备注"
       >
-        <a-input v-decorator="[
-          'remark'
+        <a-input 
+        type="textarea"
+        v-decorator="[
+          'remark',
+          {initialValue:userInformation ? userInformation.remark : ''
+          }
         ]"/>
       </a-form-item>
       <a-form-item :label-col="formTailLayout.labelCol" :wrapper-col="formTailLayout.wrapperCol">
@@ -120,6 +126,7 @@
         </div>
       </a-form-item>
     </a-form>
+  </div>
   </div>
 </template>
 
@@ -223,7 +230,11 @@ export default {
 </script>
 <style scoped>
 #pageTitle {
-  margin-left: 52px;
+  padding-left: 69px;
+  height: 50px;
+  border-bottom: 1px solid #bdbdbd;
+  line-height: 50px;
+  font-weight: 600;
 }
 #radioBox {
   box-sizing: border-box;

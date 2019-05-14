@@ -1,8 +1,8 @@
 <template>
+<div>
+    <div id="pageTitle">新增角色</div>
   <div id="supremeWrapper">
     <div id="addRoleWrapper">
-      <div id="pageTitle">新增角色</div>
-
       <a-form :form="form">
         <a-form-item
           :label-col="formItemLayout.labelCol"
@@ -11,9 +11,7 @@
         >
           <a-input
             v-decorator="[
-    
               'name',
-    
               {rules: [{ required: true,message:'请输入角色名称'}]}
     
             ]"
@@ -27,11 +25,8 @@
         >
           <a-input
             v-decorator="[
-    
               'code',
-    
               {rules: [{ required: true,message:'请输入以ROLE_开头的Code'}]}
-    
             ]"
             placeholder="请输入以ROLE_开头"
           />
@@ -129,6 +124,7 @@
         </a-layout>
       </div>
     </div>
+  </div>
   </div>
 </template>
 
@@ -438,9 +434,12 @@ export default {
 </script>
 <style scoped>
 #pageTitle {
-  margin-left: 165px;
+  padding-left: 69px;
+  height: 50px;
+  border-bottom: 1px solid #bdbdbd;
+  line-height: 50px;
+  font-weight: 600;
 }
-
 #radioBox {
   box-sizing: border-box;
   padding-left: 230px;
@@ -501,7 +500,7 @@ export default {
 }
 
 #permissionsMenu {
-  margin-top: 20px;
+  margin-top: 10px;
     width:300px;
 }
 
