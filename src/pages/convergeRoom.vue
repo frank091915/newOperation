@@ -24,11 +24,14 @@
         :type="item.statusDescription"
         class="statusDisplay"
       >
+      <div class="imgWrapper">
         <img
           :src="color(item.statusDescription)"
           @click="toShowDetails(item.Id)"
-          style="cursor:pointer"
+          style="cursor:pointer;height:40px !important"
         >
+      </div>
+
         <p @click="toShowDetails(item.Id)" style="cursor:pointer">{{item.roomName}}</p>
       </div>
     </div>
@@ -167,18 +170,25 @@ export default {
 }
 .statusDisplay {
   width: 90px;
-  height: 100px;
+  height: 120px;
   margin-top: 30px;
   margin-right: 102px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
 }
 .statusDisplay img {
   width: 40px;
   height: 40px;
-  margin-bottom: 10px;
+}
+.statusDisplay p{
+  height: calc(100% - 55px)
+}
+.imgWrapper{
+ width: 40px;
+  height: 40px;
+  margin-bottom: 15px;
 }
 #statusBox {
   width: 500px;

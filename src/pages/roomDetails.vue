@@ -30,50 +30,50 @@
       <div id="statusBox">
         <div class="singleStatusBox">
           <div class="iconBox">
-            <img :src="color('smoke',details.dataList.smoke)">
+            <img :src="color('smoke',details.dataList[0].smoke)">
           </div>
           <div class="statusDescription">
             <div
               class="textDescription"
-            >{{details.dataList.smoke ? (details.dataList.smoke ? " 正常 " : " 异常" ) : "无数据上报"}}</div>
+            >{{details.dataList[0].smoke ? (details.dataList[0].smoke ? " 正常 " : " 异常" ) : "无数据上报"}}</div>
             <div class="status">烟雾状态</div>
           </div>
         </div>
         <div class="singleStatusBox">
           <div class="iconBox">
-            <img :src="color('electric',details.dataList.ups)" id="ups">
+            <img :src="color('electric',details.dataList[0].ups)" id="ups">
           </div>
           <div class="statusDescription">
             <div
               class="textDescription"
-            >{{details.dataList.ups ? (details.dataList.ups ? " 正常 " : " 异常" ) : " 无数据上报"}}</div>
+            >{{details.dataList[0].ups ? (details.dataList[0].ups ? " 正常 " : " 异常" ) : " 无数据上报"}}</div>
             <div class="status">ups状态</div>
           </div>
         </div>
         <div class="singleStatusBox">
           <div class="iconBox">
-            <img :src="color('lock',details.dataList.door)" id="lock">
+            <img :src="color('lock',details.dataList[0].door)" id="lock">
           </div>
           <div class="statusDescription">
             <div
               class="textDescription"
-            >{{details.dataList.door ? (details.dataList.door ? " 正常 " : " 异常" ) : " 无数据上报"}}</div>
+            >{{details.dataList[0].door ? (details.dataList[0].door ? " 正常 " : " 异常" ) : " 无数据上报"}}</div>
             <div class="status">门禁状态</div>
           </div>
         </div>
       </div>
       <div id="currentStatusBox">
         <div class="singleCureentStatusBox">
-          <div class="currentTitle">实时温度</div>
-          <div class="currentDetails"></div>
+          <div class="currentTitle" style="padding-left:20px;">实时温度</div>
+          <div class="currentDetails" id="tempChart"></div>
         </div>
         <div class="singleCureentStatusBox">
-          <div class="currentTitle">实时湿度</div>
-          <div class="currentDetails"></div>
+          <div class="currentTitle" style="padding-left:20px;">实时湿度</div>
+          <div class="currentDetails" id="humilityChart"></div>
         </div>
         <div class="singleCureentStatusBox">
-          <div class="currentTitle">门禁截屏</div>
-          <div class="currentDetails"></div>
+          <div class="currentTitle" style="padding-left:20px;">门禁截屏</div>
+          <div class="currentDetails" ></div>
         </div>
       </div>
     </div>
@@ -86,40 +86,209 @@ export default {
       details: {},
       roomType: this.$route.query.roomType,
       detailsId: this.$route.query.detailsId,
-      roomName:this.$route.query.roomName
+      roomName: this.$route.query.roomName,
+      humilityList: [],
+      temperatureList: [],
+      dataList:[]
     };
   },
   created() {
-    if (this.roomType === 1) {
-      this.$http.toGetconvergeRoomDetails(this.detailsId).then(res => {
-        if (res.data.success) {
-          this.details = res.data.data;
-          console.log(res.data.data)
-        } else {
-          this.$message.error(res.data.errorInfo);
-        }
-      });
-    } else {
-      this.$http.toGetLowVoltageRoomDetails(this.detailsId).then(res => {
-        if (res.data.success) {
-          this.details = res.data.data;
-          console.log(res.data.data)
-        } else {
-          this.$message.error(res.data.errorInfo);
-        }
-      });
-    }
+    this.getData();
   },
   methods: {
     color(type, status) {
       switch (status) {
         case undefined:
-          return `../../static/assets/${type}Grey.png`;
+          return `../../static/assets/${type}Red.png`;
         case true:
           return `../../static/assets/${type}Green.png`;
         case false:
           return `../../static/assets/${type}Red.png`;
       }
+    },
+    getData() {
+      if (this.roomType == 1) {
+        this.$http.toGetconvergeRoomDetails(this.detailsId).then(res => {
+          if (res.data.success) {
+            this.details = res.data.data;
+            this.dataList=res.data.data.dataList;
+            this.$nextTick(()=>{
+              this.drawTempChart()
+              this.drawHumilityChart()
+              console.log(this.details,this.dataList)
+            })
+          } else {
+            this.$message.error(res.data.errorInfo);
+          }
+        });
+      } else {
+        this.$http.toGetLowVoltageRoomDetails(this.detailsId).then(res => {
+          if (res.data.success) {
+            this.details = res.data.data;
+            this.dataList=res.data.data.dataList;
+            this.$nextTick(()=>{
+              this.drawTempChart()
+              this.drawHumilityChart()
+              console.log(this.details,this.dataList)
+            })
+          } else {
+            this.$message.error(res.data.errorInfo);
+          }
+        });
+      }
+    },
+    drawTempChart() {
+      let convergeRoomChart = this.$echarts.init(
+        document.getElementById("tempChart")
+      );
+      let xTime = [];
+      let yTemp = [];
+      let yHumi = [];
+      for (let i in this.dataList) {
+        let item = this.dataList[i];
+        let timestamp = item.timestamp.substring(11);
+        xTime.push(timestamp);
+        yTemp.push(item.temp);
+        yHumi.push(item.humi);
+      }
+      let tempOption = {
+        tooltip: {
+          trigger: "axis",
+          axisPointer: {
+            type: "cross",
+            label: {
+              backgroundColor: "#6a7985"
+            }
+          }
+        },
+        xAxis: {
+          type: "category",
+          boundaryGap: false,
+          data: xTime,
+          axisLabel: {  
+            interval:1
+          }  
+        },
+        yAxis: {
+          type: "value",
+          offset: 5
+        },
+        series: [
+          {
+            name: "温度",
+            data: yTemp,
+            type: "line",
+            areaStyle: {},
+            // 告警阈值线配置
+            // markLine: {
+            //   lineStyle: {
+            //     color: "#61a0a8",
+            //     width: 2,
+            //     type: "solid"
+            //   },
+            //   data: [
+            //     [
+            //       {
+            //         name: "最低警告阈值",
+            //         coord: [0, this.tempConfig.min]
+            //       },
+            //       {
+            //         coord: [19, this.tempConfig.min]
+            //       }
+            //     ],
+            //     [
+            //       {
+            //         name: "警告最高阈值",
+            //         coord: [0, this.tempConfig.max]
+            //       },
+            //       {
+            //         coord: [19, this.tempConfig.max]
+            //       }
+            //     ]
+            //   ]
+            // }
+          }
+        ],
+        color: ["#c23531"]
+      };
+      convergeRoomChart.setOption(tempOption);
+    },
+    drawHumilityChart() {
+      let convergeRoomChart = this.$echarts.init(
+        document.getElementById("humilityChart")
+      );
+      let xTime = [];
+      let yTemp = [];
+      let yHumi = [];
+      for (let i in this.dataList) {
+        let item = this.dataList[i];
+        let timestamp = item.timestamp.substring(11);
+        xTime.push(timestamp);
+        yTemp.push(item.temp);
+        yHumi.push(item.humi);
+      }
+      console.log(yHumi)
+      let tempOption = {
+        tooltip: {
+          trigger: "axis",
+          axisPointer: {
+            type: "cross",
+            label: {
+              backgroundColor: "#6a7985"
+            }
+          }
+        },
+        xAxis: {
+          type: "category",
+          boundaryGap: false,
+          data: xTime,
+          axisLabel: {  
+            interval:1
+          }  
+        },
+        yAxis: {
+          type: "value",
+          offset: 5
+        },
+        series: [
+          {
+            name: "温度",
+            data: yTemp,
+            type: "line",
+            areaStyle: {},
+            // 告警阈值线配置
+            // markLine: {
+            //   lineStyle: {
+            //     color: "#61a0a8",
+            //     width: 2,
+            //     type: "solid"
+            //   },
+            //   data: [
+            //     [
+            //       {
+            //         name: "最低警告阈值",
+            //         coord: [0, this.tempConfig.min]
+            //       },
+            //       {
+            //         coord: [19, this.tempConfig.min]
+            //       }
+            //     ],
+            //     [
+            //       {
+            //         name: "警告最高阈值",
+            //         coord: [0, this.tempConfig.max]
+            //       },
+            //       {
+            //         coord: [19, this.tempConfig.max]
+            //       }
+            //     ]
+            //   ]
+            // }
+          }
+        ],
+        color: ["#c23531"]
+      };
+      convergeRoomChart.setOption(tempOption);
     }
   }
 };
@@ -240,5 +409,13 @@ body {
   height: calc(100% - 50px);
   box-sizing: border-box;
   padding-top: 20px;
+}
+#tempChart{
+  height: 300px;
+  width: 680px;
+}
+#humilityChart{
+    height: 300px;
+  width: 680px;
 }
 </style>

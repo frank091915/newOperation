@@ -180,7 +180,7 @@ body {
 }
 .statusDisplay {
   width: 90px;
-  height: 100px;
+  height: 110px;
   margin-top: 30px;
   margin-right: 102px;
   display: flex;
