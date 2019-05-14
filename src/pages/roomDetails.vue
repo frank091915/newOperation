@@ -35,7 +35,7 @@
           <div class="statusDescription">
             <div
               class="textDescription"
-            >{{details.dataList.smoke ? (details.dataList.smoke ? " 正常 " : " 异常" ) : " 未知"}}</div>
+            >{{details.dataList.smoke ? (details.dataList.smoke ? " 正常 " : " 异常" ) : "无数据上报"}}</div>
             <div class="status">烟雾状态</div>
           </div>
         </div>
@@ -46,7 +46,7 @@
           <div class="statusDescription">
             <div
               class="textDescription"
-            >{{details.dataList.ups ? (details.dataList.ups ? " 正常 " : " 异常" ) : " 未知"}}</div>
+            >{{details.dataList.ups ? (details.dataList.ups ? " 正常 " : " 异常" ) : " 无数据上报"}}</div>
             <div class="status">ups状态</div>
           </div>
         </div>
@@ -57,7 +57,7 @@
           <div class="statusDescription">
             <div
               class="textDescription"
-            >{{details.dataList.door ? (details.dataList.door ? " 正常 " : " 异常" ) : " 未知"}}</div>
+            >{{details.dataList.door ? (details.dataList.door ? " 正常 " : " 异常" ) : " 无数据上报"}}</div>
             <div class="status">门禁状态</div>
           </div>
         </div>

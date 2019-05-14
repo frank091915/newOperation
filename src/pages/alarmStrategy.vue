@@ -31,7 +31,7 @@
               <template slot="operation" slot-scope="text, record, index">
                 <div class="editable-row-operations">
                   <a-button
-                    @click="modifyAlarmStrategy(record.warningStrategy.cmdbId)"
+                    @click="modifyAlarmStrategy(record.warningStrategy.cmdbId,'1')"
                     type="primary"
                     size="small"
                   >编辑</a-button>
@@ -82,7 +82,7 @@
                 <template slot="operation" slot-scope="text, record, index">
                   <div class="editable-row-operations">
                     <a-button
-                      @click="modifyAlarmStrategy(record.warningStrategy.cmdbId)"
+                      @click="modifyAlarmStrategy(record.warningStrategy.cmdbId,'2')"
                       type="primary"
                       size="small"
                     >编辑</a-button>
@@ -109,6 +109,7 @@
   </div>
 </template>
 <script>
+import {mapState,mapMutations} from "vuex"
 const columns = [
   {
     title: "序号",
@@ -120,14 +121,14 @@ const columns = [
   {
     title: "汇聚机房编号",
     dataIndex: "deviceInfo.Code",
-    width: "10%",
+    width: "8%",
     scopedSlots: { customRender: "name" },
     align: "center"
   },
   {
     title: "描述",
     dataIndex: "deviceInfo.Description",
-    width: "12%",
+    width: "15%",
     scopedSlots: { customRender: "address" },
     align: "center"
   },
@@ -162,7 +163,7 @@ const columns = [
   {
     title: "校园地图坐标点",
     dataIndex: "deviceInfo.location",
-    width: "10%",
+    width: "9%",
     scopedSlots: { customRender: "name" },
     align: "center"
   },
@@ -188,6 +189,7 @@ const formTailLayout = {
 };
 
 export default {
+  
   data() {
     return {
       checkNick: false,
@@ -214,7 +216,8 @@ export default {
     };
   },
   methods: {
-    modifyAlarmStrategy(cmdbId) {
+    modifyAlarmStrategy(cmdbId,selectedKey) {
+      this.changeDefualtKey(selectedKey)
       this.$router.push({
         path: "/modifyAlarmStrategy",
         query: { title: "告警策略管理", cmdbId, type: this.roomType,defualfKey:this.defualfKey }
@@ -278,7 +281,8 @@ export default {
       }
     },
     callback(key) {
-
+      this.changeDefualtKey(key)
+      console.log(this.defualtKeyFromVuex)
       this.defualfKey=key;
       this.roomType = key == 1 ? "NKD_AGG_DEVICE" : "NKD_WEAK_ELECTRIC_ADVICE";
       this.$nextTick(() => {
@@ -286,7 +290,6 @@ export default {
         this.page = 1;
         this.$nextTick(() => {
           this.getAlarmStrategy(key, this.roomType, this.page);
-              console.log(this.defualfKey,key)
         });
       });
     },
@@ -368,11 +371,23 @@ export default {
       this.$nextTick(() => {
         this.getAlarmStrategy(2, this.roomType, this.page);
       });
-    }
+    },
+    ...mapMutations(['changeDefualtKey']),
   },
   created() {
-    console.log(this.defualfKey)
-    this.getAlarmStrategy(this.$route.query.defualfKey, this.roomType, 1);
+    window.sessionStorage.setItem('alarmStrageSelectedKey',JSON.stringify({key:1}))
+    console.log(this.defualtKeyFromVuex)
+    this.getAlarmStrategy(this.defualfKey, this.roomType, 1);
+  },
+  computed:{
+    ...mapState(['defualtKeyFromVuex'])
+  },
+  beforeRouteLeave (to, from, next) {
+    // 导航离开该组件的对应路由时调用
+    // 可以访问组件实例 `this`
+    console.log('leave')
+    this.changeDefualtKey('1')
+    next()
   }
 };
 </script>
