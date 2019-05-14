@@ -69,8 +69,8 @@
 
       <div id="menuSelection">
         <a-layout id="components-layout-demo-side" style="min-height: 100vh" class="frame">
-          <a-layout-sider width="250px" v-model="collapsed">
-            <a-menu theme="light" :defaultSelectedKeys="['1']" mode="inline">
+          <a-layout-sider width="290px" v-model="collapsed">
+            <a-menu theme="light" :defaultSelectedKeys="['1']" mode="inline" :openKeys="[openedMenu]">
               <!-- 渲染一级菜单 -->
 
               <a-menu-item v-for="item in aloneMenuArray" :key="item.id">
@@ -84,7 +84,7 @@
                 <span>{{item.title}}</span>
               </a-menu-item>
 
-              <a-sub-menu v-for="item in parentMenuArray" :key="item.id">
+              <a-sub-menu v-for="item in parentMenuArray" :key="item.id" @titleClick='handleSelect'>
                 <span slot="title">
                   <span>
                     <span>
@@ -104,6 +104,7 @@
                       type="checkbox"
                       :checked="subItem.ifPermitted"
                       @click="changeChildStatus(subItem.id,2)"
+                      style="margin-left:20px;"
                     >
                   </span>
                   {{subItem.title}}
@@ -152,12 +153,22 @@ export default {
       parentMenuArray: [],
       aloneMenuArray: [],
       //   权限菜单id
-      permissionsIdArray: []
+      permissionsIdArray: [],
+      openedMenu:0,
     };
   },
   methods: {
     toReturn() {
       this.$router.go("-1");
+    },
+    handleSelect(item){
+      console.log(item)
+      if(this.openedMenu==item.key){
+        this.openedMenu=''
+      }else{
+      this.openedMenu=item.key
+      }
+
     },
     toSave() {
       // 计算出用户权限菜单数组
@@ -480,6 +491,7 @@ export default {
 #menuSelection {
   max-height: calc(100% - 49px);
   margin-top: 5px;
+  width:300px;
 }
 #components-layout-demo-side {
   min-height: 50px !important;
@@ -490,12 +502,15 @@ export default {
   flex-direction: row;
   justify-content: center;
   align-items: flex-start;
+  min-height: calc( 100% - 100px );
+  overflow: auto;
 }
 #addRoleWrapper {
   width: 650px;
 }
 #permissionsMenu {
   margin-top: 20px;
+  width:300px;
 }
 #radioBox {
   box-sizing: border-box;
@@ -520,5 +535,8 @@ export default {
 }
 #permissionsMenuTitle {
   text-align: center;
+}
+.ant-menu-item{
+  margin-bottom: 0 !important;
 }
 </style>

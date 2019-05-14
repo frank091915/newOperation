@@ -82,7 +82,7 @@ export default {
     onChangePermissionStatus(e) {
       this.$http.toModifyPermissionStatus(e.id).then(res => {
         if (res.data.success) {
-          this.$message.success("修改状态成功");
+          this.$message.success("设置成功");
           this.getMenu();
         } else {
           this.$message.error(res.data.data.errorInfo);
@@ -106,9 +106,9 @@ export default {
           this.$nextTick(() => {
             this.isLoading = false;
           });
-        }else {
-              this.$message.error(res.data.errorInfo);
-            }
+        } else {
+          this.$message.error(res.data.errorInfo);
+        }
       });
     }
   },

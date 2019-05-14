@@ -1,8 +1,6 @@
 <template>
   <div id="addRoleWrapper">
-      <div id="pageTitle">
-          新增故障
-      </div>
+    <div id="pageTitle">新增故障</div>
     <a-form :form="form">
       <a-form-item
         :label-col="formItemLayout.labelCol"
@@ -22,7 +20,7 @@
         label="备注"
       >
         <a-input
-        type="textarea"
+          type="textarea"
           v-decorator="[
           'remark',
           
@@ -69,7 +67,7 @@ export default {
         if (!err) {
           this.$http.toAddFualt(values).then(res => {
             if (res.data.success) {
-              this.$message.success("添加角色成功");
+              this.$message.success("添加故障成功");
               this.$router.push({
                 path: "/fault",
                 query: { title: "故障管理" }
@@ -91,8 +89,8 @@ export default {
 };
 </script>
 <style scoped>
-#pageTitle{
-    margin-left: 52px;
+#pageTitle {
+  margin-left: 52px;
 }
 #radioBox {
   box-sizing: border-box;
@@ -107,8 +105,8 @@ export default {
   margin-right: 20px;
   color: rgba(0, 0, 0, 0.85);
 }
-#radioText span{
-    margin-left: 2px;
+#radioText span {
+  margin-left: 2px;
 }
 #addRoleWrapper {
   margin-top: 20px;

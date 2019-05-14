@@ -73,7 +73,7 @@ export default {
           values.faultId = this.$route.query.fualtId;
           this.$http.toModifyFualt(values).then(res => {
             if (res.data.success) {
-              this.$message.success("编辑故障成功");
+              this.$message.success("修改故障成功");
               this.$router.push({
                 path: "/fault",
                 query: { title: "故障管理" }
@@ -97,9 +97,9 @@ export default {
       if (res.data.success) {
         this.name = res.data.data.name;
         this.remark = res.data.data.remark;
-      }else {
-              this.$message.error(res.data.errorInfo);
-            }
+      } else {
+        this.$message.error(res.data.errorInfo);
+      }
     });
   }
 };

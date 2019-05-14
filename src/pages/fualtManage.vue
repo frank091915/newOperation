@@ -41,13 +41,11 @@
           </div>
         </template>
       </a-table>
-      <div id="pagination" v-show="!isLoading"> 
-          <div id="total">
-            共{{recordsTotal}}条数据
-          </div>
-          <div id="paginationBox">
-            <a-pagination @change="changePage" v-model="page" :total="recordsTotal"   :pageSize="12" />
-          </div>
+      <div id="pagination" v-show="!isLoading">
+        <div id="total">共{{recordsTotal}}条数据</div>
+        <div id="paginationBox">
+          <a-pagination @change="changePage" v-model="page" :total="recordsTotal" :pageSize="12"/>
+        </div>
       </div>
     </div>
   </div>
@@ -95,15 +93,14 @@ export default {
       columns,
       recordsTotal: 0,
       isLoading: true,
-      page:1,
-
+      page: 1
     };
   },
   methods: {
     modifyFualt(record) {
       this.$router.push({
         path: "/ModifyFualt",
-        query: { title: "异常绑定", fualtId: record.id }
+        query: { title: "故障管理", fualtId: record.id }
       });
     },
     bindFualt(userInfo) {
@@ -189,16 +186,16 @@ export default {
           });
           this.recordsTotal = res.data.recordsTotal;
           this.$nextTick(() => {});
-        }else {
-              this.$message.error(res.data.errorInfo);
-            }
+        } else {
+          this.$message.error(res.data.errorInfo);
+        }
       });
     },
-    changePage(page){
-      this.page=page;
-      this.$nextTick(()=>{
-        this.GetFualtManageList()
-      })
+    changePage(page) {
+      this.page = page;
+      this.$nextTick(() => {
+        this.GetFualtManageList();
+      });
     }
   },
   created() {
@@ -262,13 +259,13 @@ body {
   align-items: center;
   height: 40px;
 }
-#pagination{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    margin-top: 15px;
+#pagination {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 15px;
 }
-#total{
+#total {
   font-size: 15px;
 }
 </style>
