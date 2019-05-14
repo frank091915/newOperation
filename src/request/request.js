@@ -245,12 +245,12 @@ const toChangeFualtException = (fualtException) => {
 
 
 // 请求圈存机列表
-const toGetTransferList = (page,status, buildingId, searchRoom) => {
+const toGetTransferList = (page, status, buildingId, searchRoom) => {
 
   let statusQuery = status === undefined || status === null ? "" : `&status=${status}`,
     buildingIdQuery = buildingId ? `&buildingId=${buildingId}` : "",
     searchRoomQuery = searchRoom ? `&searchRoom=${searchRoom}` : "";
-    console.log(status,statusQuery,status === undefined,status === null)
+  console.log(status, statusQuery, status === undefined, status === null)
   return ajax.get(
     `/api/control/transfer?currentPage=` + page + statusQuery + buildingIdQuery + searchRoomQuery, {
       headers: {
@@ -310,6 +310,17 @@ const toGetinterchangerList = (page = 1, status, buildingId, searchRoom) => {
 const toGetRoleManageList = (currentPage) => {
   return ajax.get(
     `/api/role?currentPage=${currentPage}`, {
+      headers: {
+        "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken"))
+      }
+    }
+  )
+}
+
+// 请求角色管理列表
+const toGetAllRoleManageList = () => {
+  return ajax.get(
+    `/api/role/all`, {
       headers: {
         "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken"))
       }
@@ -382,7 +393,16 @@ const toDeleteUser = (userId) => {
     }
   )
 }
-
+// 模板删除操作
+const toDeleteTemplate = (templateId) => {
+  return ajax.delete(
+    "/api/template/" + templateId, {
+      headers: {
+        "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken"))
+      }
+    }
+  )
+}
 //用户添加
 const toAddUser = (userInfo) => {
   let obj = userInfo;
@@ -390,6 +410,19 @@ const toAddUser = (userInfo) => {
 
   return ajax.post(
     `/api/user?roleIds=${userInfo.role}`, obj, {
+      headers: {
+        "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken")),
+        "Content-Type": "application/json"
+      }
+    }
+  )
+}
+
+//模板添加
+const toAddTemplate = (templateInfo) => {
+  let obj = templateInfo;
+  return ajax.post(
+    `/api/template`, obj, {
       headers: {
         "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken")),
         "Content-Type": "application/json"
@@ -518,6 +551,19 @@ const toModifyUser = (userInfo) => {
     }
   )
 }
+
+//修改告警模板
+const toModifyTemplate = (template) => {
+  return ajax.put(
+    `/api/template/${template.id}`, template, {
+      headers: {
+        "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken")),
+        "Content-Type": "application/json"
+      }
+    }
+  )
+}
+
 //修改告警策略
 const toModifyAlarmStrategy = (alarmStrategy) => {
   return ajax.put(
@@ -589,6 +635,17 @@ const toSetAlarmOff = (obj) => {
 const toUserList = (page, searchName) => {
   return ajax.get(
     `/api/user?currentPage=${page}&searchNname=${searchName}`, {
+      headers: {
+        "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken"))
+      }
+    }
+  )
+}
+
+// 请求用户列表
+const toTemplateList = (page) => {
+  return ajax.get(
+    `/api/template?currentPage=${page}`, {
       headers: {
         "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken"))
       }
@@ -675,6 +732,17 @@ const toRoleInfo = (userId) => {
 }
 
 
+// 获取所有没有模板的异常记录
+const toGetNoTemplateException = (type) => {
+  return ajax.get(
+    `/api/template/exception?type=` + type, {
+      headers: {
+        "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken"))
+      }
+    }
+  )
+}
+
 // 获取所有楼层列表
 const toGetAllFloors = (buildingId) => {
   return ajax.get(
@@ -702,6 +770,16 @@ const toGetAllRooms = (floorId) => {
 const toGetUserInfoById = (userId) => {
   return ajax.get(
     "/api/user/" + userId, {
+      headers: {
+        "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken"))
+      }
+    }
+  )
+}
+// 请求模板信息
+const toGetTemplateById = (templateId) => {
+  return ajax.get(
+    "/api/template/" + templateId, {
       headers: {
         "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken"))
       }
@@ -754,12 +832,10 @@ ajax.interceptors.request.use((config) => {
 ajax.interceptors.response.use((config) => {
   if (!config.data.success) {
     if (config.data.httpCode == 401) {
-
       window.sessionStorage.removeItem('operationToken')
       window.location.href = "/#/signIn"
       alert("登录已失效，请重新登录");
       return config
-
     }
   } else {
     return config
@@ -775,15 +851,21 @@ export {
   toGetlowVoltageRoomList,
   toGetPosMechineList,
   toGetRoleManageList,
+  toGetAllRoleManageList,
   toDeleteRole,
   toAddRole,
   toUserList,
+  toTemplateList,
   toRoleInfo,
   toModifyRole,
   toDeleteUser,
+  toDeleteTemplate,
   toAddUser,
+  toAddTemplate,
   toGetUserInfoById,
+  toGetTemplateById,
   toModifyUser,
+  toModifyTemplate,
   toSetAlarm,
   toGetUserAlarmSettings,
   toResetPassword,
@@ -811,6 +893,7 @@ export {
   toGetAlarmStrategyInfo,
   toModifyAlarmStrategy,
   toGetAllFloors,
+  toGetNoTemplateException,
   toGetAllRooms,
   toGetExceptionRecordList,
   toSignOut,

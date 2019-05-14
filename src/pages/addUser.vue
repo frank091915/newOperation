@@ -198,7 +198,7 @@ export default {
     checkChange(e) {}
   },
   created() {
-    this.$http.toGetRoleManageList(1).then(res => {
+    this.$http.toGetAllRoleManageList(1).then(res => {
       if (res.data.success) {
         this.rolesGroup = res.data.data;
       }
