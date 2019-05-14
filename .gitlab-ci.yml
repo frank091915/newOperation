@@ -67,7 +67,7 @@ test:
   - DOCKERID=`docker ps |grep machine-integration-frnt |awk '{print $1}'`
   - docker stop $DOCKERID
   - docker rm $DOCKERID
-  - docker run -d --name=machine-integration-frnt -p 8181:8188 172.18.14.1:5000/machine-integration-frnt:test
+  - docker run -d --name=machine-integration-frnt -p 80:80 172.18.14.1:5000/machine-integration-frnt:test
   only:
   - master
 
@@ -80,6 +80,6 @@ production:
   - DOCKERID=`docker ps |grep machine-integration-frnt |awk '{print $1}'`
   - docker stop $DOCKERID
   - docker rm $DOCKERID
-  - docker run -d --name=machine-integration-frnt -p 8181:8188 172.18.14.1:5000/machine-integration-frnt:latest
+  - docker run -d --name=machine-integration-frnt -p 80:80 172.18.14.1:5000/machine-integration-frnt:latest
   only:
   - prod
