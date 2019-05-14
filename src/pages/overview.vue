@@ -87,9 +87,9 @@ export default {
             radius: ["30%", "60%"], // 设置环形饼状图， 第一个百分数设置内圈大小，第二个百分数设置外圈大小
             center: ["50%", "50%"], // 设置饼状图位置，第一个百分数调水平位置，第二个百分数调垂直位置
             data: [
-              { value: this.MachineRoomStatistics.normalCount, name: "正常" },
-              { value: this.MachineRoomStatistics.faultCount, name: "故障" },
-              { value: this.MachineRoomStatistics.exceptionCount, name: "异常" }
+              { value: this.MachineRoomStatistics.normalCount ? this.MachineRoomStatistics.normalCount : '', name: "正常" },
+              { value: this.MachineRoomStatistics.faultCount ? this.MachineRoomStatistics.faultCount : '', name: "故障" },
+              { value: this.MachineRoomStatistics.exceptionCount ? this.MachineRoomStatistics.exceptionCount : '', name: "异常" }
             ],
             // itemStyle 设置饼状图扇形区域样式
             itemStyle: {
@@ -104,7 +104,7 @@ export default {
             // 设置值域的那指向线
             labelLine: {
               normal: {
-                show: false // show设置线是否显示，默认为true，可选值：true ¦ false
+                show: true // show设置线是否显示，默认为true，可选值：true ¦ false
               }
             },
             // 设置值域的标签
@@ -181,27 +181,27 @@ export default {
             radius: ["30%", "60%"], // 设置环形饼状图， 第一个百分数设置内圈大小，第二个百分数设置外圈大小
             center: ["50%", "50%"], // 设置饼状图位置，第一个百分数调水平位置，第二个百分数调垂直位置
             data: [
-              { value: this.WeakElectricStatistics.normalCount, name: "正常" },
-              { value: this.WeakElectricStatistics.faultCount, name: "故障" },
+              { value: this.WeakElectricStatistics.normalCount ? this.WeakElectricStatistics.normalCount : '', name: "正常" },
+              { value: this.WeakElectricStatistics.faultCount ? this.WeakElectricStatistics.faultCount : '', name: "故障" },
               {
-                value: this.WeakElectricStatistics.exceptionCount,
+                value: this.WeakElectricStatistics.exceptionCount ? this.WeakElectricStatistics.exceptionCount : '',
                 name: "异常"
               }
             ],
             // itemStyle 设置饼状图扇形区域样式
-            itemStyle: {
+            itemStyle:{
               // emphasis：英文意思是 强调;着重;（轮廓、图形等的）鲜明;突出，重读
               // emphasis：设置鼠标放到哪一块扇形上面的时候，扇形样式、阴影
-              emphasis: {
+              emphasis:{
                 shadowBlur: 10,
                 shadowOffsetX: 0,
                 shadowColor: "rgba(30, 144, 255，0.5)"
               }
             },
             // 设置值域的那指向线
-            labelLine: {
+            labelLine:{
               normal: {
-                show: false // show设置线是否显示，默认为true，可选值：true ¦ false
+                show: true // show设置线是否显示，默认为true，可选值：true ¦ false
               }
             },
             // 设置值域的标签
@@ -245,7 +245,7 @@ export default {
           // y 设置垂直安放位置，默认全图顶端，可选值：'top' ¦ 'bottom' ¦ 'center' ¦ {number}（y坐标，单位px）
           y: "top",
           // itemGap设置主副标题纵向间隔，单位px，默认为10，
-          itemGap: 30,
+          itemGap: 10,
           // 主标题文本样式设置
           textStyle: {
             fontSize: 20,
@@ -284,19 +284,19 @@ export default {
             center: ["50%", "50%"], // 设置饼状图位置，第一个百分数调水平位置，第二个百分数调垂直位置
             data: [
               {
-                value: this.ControlNetworkStatistics.noProblemCount,
+                value: this.ControlNetworkStatistics.noProblemCount ? this.ControlNetworkStatistics.noProblemCount  : '' ,
                 name: "正常"
               },
               {
-                value: this.ControlNetworkStatistics.problemCount,
+                value: this.ControlNetworkStatistics.problemCount ? this.ControlNetworkStatistics.problemCount : '' ,
                 name: "异常"
               },
               {
-                value: this.ControlNetworkStatistics.cmdbNoIpCount,
+                value: this.ControlNetworkStatistics.cmdbNoIpCount ? this.ControlNetworkStatistics.cmdbNoIpCount : '',
                 name: "异常(cmdb没有ip信息)"
               },
               {
-                value: this.ControlNetworkStatistics.zabbixNoDataCount,
+                value: this.ControlNetworkStatistics.zabbixNoDataCount ? this.ControlNetworkStatistics.zabbixNoDataCount : '',
                 name: "异常(zabbix中没有数据)"
               }
             ],
@@ -313,7 +313,7 @@ export default {
             // 设置值域的那指向线
             labelLine: {
               normal: {
-                show: false // show设置线是否显示，默认为true，可选值：true ¦ false
+                show: true // show设置线是否显示，默认为true，可选值：true ¦ false
               }
             },
             // 设置值域的标签

@@ -9,7 +9,6 @@
               :dataSource="convergeData"
               bordered
               :pagination="false"
-              :scroll="{y:700}"
               :loading="isLoading"
             >
               <template
@@ -61,7 +60,6 @@
                 :dataSource="electronicData"
                 bordered
                 :pagination="false"
-                :scroll="{y:700}"
                 :loading="isLoading"
               >
                 <template
