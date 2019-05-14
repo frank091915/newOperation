@@ -1,46 +1,17 @@
 <template>
   <div id="addRoleWrapper">
-    <div id="pageTitle">编辑用户</div>
+    <div id="pageTitle">编辑模板</div>
     <a-form :form="form">
       <a-form-item
         :label-col="formItemLayout.labelCol"
         :wrapper-col="formItemLayout.wrapperCol"
-        label="工号"
-      >
-        <a-input
-          v-decorator="[
-          'jobNum',
-          {rules: [{ required: true,message:'请输入工号'}],
-          initialValue:userInformation.jobNum
-          }
-        ]"
-        />
-      </a-form-item>
-      <a-form-item
-        :label-col="formItemLayout.labelCol"
-        :wrapper-col="formItemLayout.wrapperCol"
-        label="姓名"
+        label="模板名称"
       >
         <a-input
           v-decorator="[
           'name',
-          {rules: [{ required: true,message:'请输入姓名'}],
-          initialValue:userInformation.name
-          }
-        ]"
-        />
-      </a-form-item>
-      <a-form-item
-        :label-col="formItemLayout.labelCol"
-        :wrapper-col="formItemLayout.wrapperCol"
-        label="手机号"
-      >
-        <a-input
-          v-decorator="[
-          'phone',
-          {rules: [{ required: true,message:'请输入手机号'}],
-            initialValue:userInformation.phone
-          }
+          {rules: [{ required: true,message:'请输入模板名称'}],initialValue:templateInfo.name}
+          
         ]"
         />
       </a-form-item>
@@ -48,70 +19,80 @@
       <a-form-item
         :label-col="formItemLayout.labelCol"
         :wrapper-col="formItemLayout.wrapperCol"
-        label="微信号"
-      >
-        <a-input
-          v-decorator="[
-          'wxId',
-          {rules: [{ required: true,message:'请输入微信号'}],
-            initialValue:userInformation.wxId
-          }
-        ]"
-        />
-      </a-form-item>
-
-      <a-form-item
-        :label-col="formItemLayout.labelCol"
-        :wrapper-col="formItemLayout.wrapperCol"
-        label="邮箱地址"
-      >
-        <a-input
-          v-decorator="[
-          'email',
-          {rules: [{ required: true,message:'请输入邮箱地址'}],
-          initialValue:userInformation.eMail
-          }
-        ]"
-        />
-      </a-form-item>
-      <a-form-item
-        :label-col="formItemLayout.labelCol"
-        :wrapper-col="formItemLayout.wrapperCol"
-        label="角色"
+        label="模板类型"
       >
         <a-select
           showSearch
-          placeholder="请选择角色"
+          placeholder="模板类型"
           optionFilterProp="children"
           style="width: 218px"
+          disabled="disabled"
           v-decorator="[
-          'roleIds',
-          {rules: [{ required: true,message:'请选择角色'}],initialValue:userInformation.roles.length ? userInformation.roles[0].name : ''
-          },
+          'type',
+          {rules: [{ required: true,message:'请选择模板类型'}],initialValue:templateInfo.type ? templateInfo.type : ''}
         ]"
-          @select="select"
         >
-          <a-select-option v-for=" item in rolesGroup" :value="item.id" :key="item.id">{{item.name}}</a-select-option>
+          <a-select-option :value="1" :key="1">汇聚机房</a-select-option>
+          <a-select-option :value="2" :key="2">弱电间</a-select-option>
         </a-select>
       </a-form-item>
-      <div id="radioBox">
-        <div id="radioText">
-          状态
-          <span>:</span>
-        </div>
-        <a-radio-group v-model="value">
-          <a-radio :value="1">正常</a-radio>
-          <a-radio :value="0">关闭</a-radio>
-        </a-radio-group>
-      </div>
+
       <a-form-item
         :label-col="formItemLayout.labelCol"
         :wrapper-col="formItemLayout.wrapperCol"
-        label="备注"
+        label="异常类型"
       >
-        <a-input v-decorator="[
-          'remark'
-        ]"/>
+        <a-select
+          showSearch
+          placeholder="异常类型"
+          optionFilterProp="children"
+          disabled="disabled"
+          style="width: 218px"
+          v-decorator="[
+          'exceptionId',
+          {rules: [{ required: true,message:'请选择异常类型'}],initialValue:templateInfo.exceptionId ? templateInfo.exceptionId : ''}
+        ]"
+        >
+          <a-select-option
+            v-for=" item in allExceptions"
+            :value="item.id"
+            :key="item.id"
+          >{{item.remark}}</a-select-option>
+        </a-select>
+      </a-form-item>
+
+      <a-form-item
+        :label-col="formItemLayout.labelCol"
+        :wrapper-col="formItemLayout.wrapperCol"
+        label="通知方式"
+      >
+        <a-select
+          showSearch
+          placeholder="通知方式"
+          optionFilterProp="children"
+          style="width: 218px"
+          v-decorator="[
+          'way',
+          {rules: [{ required: true,message:'请选择通知方式'}],initialValue:templateInfo.way+'' ? templateInfo.way : ''}
+        ]"
+        >
+          <a-select-option :value="0" :key="0">通用</a-select-option>
+          <a-select-option :value="1" :key="1">邮件</a-select-option>
+          <a-select-option :value="2" :key="2">短信</a-select-option>
+          <a-select-option :value="3" :key="3">微信</a-select-option>
+        </a-select>
+      </a-form-item>
+      <a-form-item
+        :label-col="formItemLayout.labelCol"
+        :wrapper-col="formItemLayout.wrapperCol"
+        label="通知内容"
+      >
+        <a-input
+          type="textarea"
+          v-decorator="[
+          'content', {initialValue:templateInfo.content ? templateInfo.content : ''}
+        ]"
+        />
       </a-form-item>
       <a-form-item :label-col="formTailLayout.labelCol" :wrapper-col="formTailLayout.wrapperCol">
         <div id="opetarionBox">
@@ -142,9 +123,8 @@ export default {
       value: true,
       roleName: "",
       id: "",
-      userInformation: {},
-      rolesGroup: [],
-      roleIds: ""
+      templateInfo: {},
+      allExceptions: []
     };
   },
   methods: {
@@ -158,18 +138,14 @@ export default {
     toSave() {
       this.form.validateFields((err, values) => {
         if (!err) {
-          let userInfo = { ...values };
-          console.log(userInfo);
-          userInfo.status = this.value ? "true" : "false";
-          userInfo.userId = this.$route.query.id;
-          userInfo.roleIds = this.roleIds;
-          // 添加权限菜单
-          this.$http.toModifyUser(userInfo).then(res => {
+          let templateInfo = { ...values };
+          templateInfo.id = this.$route.query.id;
+          this.$http.toModifyTemplate(templateInfo).then(res => {
             if (res.data.success) {
-              this.$message.success("用户编辑成功");
+              this.$message.success("添加模板成功");
               this.$router.push({
-                path: "/user",
-                query: { title: "用户管理" }
+                path: "/template",
+                query: { title: "告警消息模板" }
               });
             } else {
               this.$message.error(res.data.errorInfo);
@@ -178,45 +154,32 @@ export default {
         }
       });
     },
-    handleChange(e) {
-      this.checkNick = e.target.checked;
-      this.$nextTick(() => {
-        this.form.validateFields(["nickname"], { force: true });
-      });
-    },
-    onOpenChange(openKeys) {
-      const latestOpenKey = openKeys.find(
-        key => this.openKeys.indexOf(key) === -1
-      );
-      if (this.rootSubmenuKeys.indexOf(latestOpenKey) === -1) {
-        this.openKeys = openKeys;
-      } else {
-        this.openKeys = latestOpenKey ? [latestOpenKey] : [];
-      }
-    },
     checkChange(e) {}
   },
+
   created() {
-    this.$http.toGetUserInfoById(this.$route.query.id).then(res => {
+    this.$http.toGetTemplateById(this.$route.query.id).then(res => {
       if (res.data.success) {
-        this.userInformation = res.data.data;
-        // this.roleIds=res.data.data
+        this.templateInfo = res.data.data;
         this.$nextTick(() => {
-          console.log(this.userInformation);
-          this.roleIds = this.userInformation.roles[0].id;
-          this.value = this.userInformation.status ? 1 : 0;
+          console.log(this.templateInfo);
+          if (this.templateInfo.type != "null") {
+            console.log(this.templateInfo.type);
+            this.$http
+              .toGetAllExceptionList(this.templateInfo.type)
+              .then(res => {
+                if (res.data.success) {
+                  this.allExceptions = res.data.data;
+                  this.$nextTick(() => {
+                    console.log(this.allExceptions);
+                  });
+                }
+              });
+          }
         });
       } else {
         this.$message.error(res.data.errorInfo);
       }
-    });
-    this.$http.toGetAllRoleManageList(1).then(res => {
-      if (res.data.success) {
-        this.rolesGroup = res.data.data;
-      }
-      this.$nextTick(() => {
-        console.log(this.rolesGroup);
-      });
     });
   }
 };
