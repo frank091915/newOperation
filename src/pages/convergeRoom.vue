@@ -119,7 +119,9 @@ export default {
           res.data.data.normalCount +
           res.data.data.exceptionCount +
           res.data.data.faultCount;
-        this.$nextTick(() => {});
+        this.$nextTick(() => {
+        
+        });
       } else {
               this.$message.error(res.data.errorInfo);
             }

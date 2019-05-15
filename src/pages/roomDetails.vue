@@ -30,49 +30,62 @@
       <div id="statusBox">
         <div class="singleStatusBox">
           <div class="iconBox">
-            <img :src="color('smoke',details.dataList[0].smoke)">
+            <img :src="color('smoke',details.dataList[0] ? details.dataList[0].smoke : undefined)">
           </div>
           <div class="statusDescription">
             <div
               class="textDescription"
-            >{{details.dataList[0].smoke ? (details.dataList[0].smoke ? " 正常 " : " 异常" ) : "无数据上报"}}</div>
+            >{{details.dataList[0] ? (details.dataList[0].smoke ? " 正常 " : " 异常" ) : "无数据上报"}}</div>
             <div class="status">烟雾状态</div>
           </div>
         </div>
         <div class="singleStatusBox">
           <div class="iconBox">
-            <img :src="color('electric',details.dataList[0].ups)" id="ups">
+            <img :src="color('electric',details.dataList[0] ? details.dataList[0].power : undefined)" id="ups">
           </div>
           <div class="statusDescription">
             <div
               class="textDescription"
-            >{{details.dataList[0].ups ? (details.dataList[0].ups ? " 正常 " : " 异常" ) : " 无数据上报"}}</div>
+            >{{details.dataList[0] ? (details.dataList[0].power ? " 正常 " : " 异常" ) : " 无数据上报"}}</div>
             <div class="status">ups状态</div>
           </div>
         </div>
         <div class="singleStatusBox">
           <div class="iconBox">
-            <img :src="color('lock',details.dataList[0].door)" id="lock">
+            <img :src="color('lock',details.dataList[0] ? details.dataList[0].door : undefined)" id="lock">
           </div>
           <div class="statusDescription">
             <div
               class="textDescription"
-            >{{details.dataList[0].door ? (details.dataList[0].door ? " 正常 " : " 异常" ) : " 无数据上报"}}</div>
+            >{{details.dataList[0] ? ( details.dataList[0].door ? " 正常 " : " 异常" ) : " 无数据上报"}}</div>
             <div class="status">门禁状态</div>
           </div>
         </div>
       </div>
       <div id="currentStatusBox">
         <div class="singleCureentStatusBox">
-          <div class="currentTitle" style="padding-left:20px;">实时温度</div>
-          <div class="currentDetails" id="tempChart"></div>
+          <div class="currentStatusTitle" style="padding-left:10px;">
+              <img src="../../static/assets/temperature.png" style="width:13px;height:13px;">
+              <span> 实时温度</span>
+          </div>
+          <div class="currentDetails" id="tempChart" v-show='showCharts'>
+          </div>
+           <div class="errorTip" v-show='!showCharts'> 暂无上报数据</div>
         </div>
         <div class="singleCureentStatusBox">
-          <div class="currentTitle" style="padding-left:20px;">实时湿度</div>
-          <div class="currentDetails" id="humilityChart"></div>
+          <div class="currentStatusTitle" style="padding-left:10px;">
+            <img src="../../static/assets/umbrella.png" style="width:13px;height:13px;">
+            <span>实时湿度</span>
+          </div>
+          <div class="currentDetails" id="humilityChart" v-show='showCharts'>
+          </div>
+           <div class="errorTip" v-show='!showCharts'>暂无上报数据</div>
         </div>
         <div class="singleCureentStatusBox">
-          <div class="currentTitle" style="padding-left:20px;">门禁截屏</div>
+          <div class="currentStatusTitle" style="padding-left:10px;">
+             <img src="../../static/assets/camera.png" style="width:13px;height:13px;">
+            <span>门禁截屏</span>
+          </div>
           <div class="currentDetails" ></div>
         </div>
       </div>
@@ -89,7 +102,8 @@ export default {
       roomName: this.$route.query.roomName,
       humilityList: [],
       temperatureList: [],
-      dataList:[]
+      dataList:[],
+      showCharts:true,
     };
   },
   created() {
@@ -112,10 +126,14 @@ export default {
           if (res.data.success) {
             this.details = res.data.data;
             this.dataList=res.data.data.dataList;
+            this.showCharts=res.data.data.dataList.length;
             this.$nextTick(()=>{
-              this.drawTempChart()
-              this.drawHumilityChart()
-              console.log(this.details,this.dataList)
+              if(this.showCharts){
+                this.drawTempChart()
+                this.drawHumilityChart()
+              }else{
+                this.showCharts=false
+              }
             })
           } else {
             this.$message.error(res.data.errorInfo);
@@ -126,10 +144,14 @@ export default {
           if (res.data.success) {
             this.details = res.data.data;
             this.dataList=res.data.data.dataList;
+            this.showCharts=res.data.data.dataList.length;
             this.$nextTick(()=>{
-              this.drawTempChart()
-              this.drawHumilityChart()
-              console.log(this.details,this.dataList)
+              if(this.showCharts){
+                this.drawTempChart()
+                this.drawHumilityChart()
+              }else{
+                this.showCharts=false
+              }
             })
           } else {
             this.$message.error(res.data.errorInfo);
@@ -227,7 +249,6 @@ export default {
         yTemp.push(item.temp);
         yHumi.push(item.humi);
       }
-      console.log(yHumi)
       let tempOption = {
         tooltip: {
           trigger: "axis",
@@ -382,10 +403,10 @@ body {
   justify-content: flex-start;
   border-radius: 5px;
 }
-.currentTitle {
-  height: 45px;
+.currentStatusTitle {
+  height: 40px;
   border-bottom: 1px solid #dbdbdb;
-  line-height: 45px;
+  line-height: 40px;
 }
 .iconBox img {
   width: 80px;
@@ -417,5 +438,12 @@ body {
 #humilityChart{
     height: 300px;
   width: 680px;
+}
+.errorTip{
+  color: #bfbfbf;
+  font-weight: 600;
+  margin:0 auto;
+  font-size: 20px;
+  margin-top:80px;
 }
 </style>
