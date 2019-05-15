@@ -128,7 +128,7 @@ export default {
             this.dataList=res.data.data.dataList;
             this.showCharts=res.data.data.dataList.length;
             this.$nextTick(()=>{
-              console.log(this.dataList)
+              console.log(this.details)
               if(this.showCharts){
                 this.drawTempChart()
                 this.drawHumilityChart()
@@ -167,6 +167,12 @@ export default {
       let xTime = [];
       let yTemp = [];
       let yHumi = [];
+      let maxTemperature=0,
+          tempMaxTemperature=0,
+          maxTemperatureIndex=0;
+      let maxHumidity=0,
+          tempMaxHumidity=0,
+          maxHumidityIndex=0;
       for (let i in this.dataList.reverse()) {
         let item = this.dataList[i];
         let timestamp = item.timestamp.substring(11);
@@ -174,6 +180,16 @@ export default {
         yTemp.push(item.temp);
         yHumi.push(item.humi);
       }
+
+      // 找出最高温度
+      for(var i=0;i<yTemp.length;i++){
+        if(maxTemperatureIndex < yTemp[i] ){
+            maxTemperatureIndex=yTemp[i];
+            maxTemperatureIndex=i;
+        }
+      }
+      console.log(yTemp[maxTemperatureIndex] )
+
       let tempOption = {
         tooltip: {
           trigger: "axis",
@@ -194,7 +210,8 @@ export default {
         },
         yAxis: {
           type: "value",
-          offset: 5
+          offset: 5,
+          max:yTemp[maxTemperatureIndex] > 80 ? 100 : undefined,
         },
         series: [
           {
@@ -203,33 +220,33 @@ export default {
             type: "line",
             areaStyle: {},
             // 告警阈值线配置
-            // markLine: {
-            //   lineStyle: {
-            //     color: "#61a0a8",
-            //     width: 2,
-            //     type: "solid"
-            //   },
-            //   data: [
-            //     [
-            //       {
-            //         name: "最低警告阈值",
-            //         coord: [0, this.tempConfig.min]
-            //       },
-            //       {
-            //         coord: [19, this.tempConfig.min]
-            //       }
-            //     ],
-            //     [
-            //       {
-            //         name: "警告最高阈值",
-            //         coord: [0, this.tempConfig.max]
-            //       },
-            //       {
-            //         coord: [19, this.tempConfig.max]
-            //       }
-            //     ]
-            //   ]
-            // }
+            markLine: {
+              lineStyle: {
+                color: "#61a0a8",
+                width: 1,
+                type: "solid"
+              },
+              data: [
+                [
+                  {
+                    name: "最低警告阈值",
+                    coord: [0,this.details.minTemperature]
+                  },
+                  {
+                    coord: [19,this.details.minTemperature]
+                  }
+                ],
+                [
+                  {
+                    name: "最高警告阈值",
+                    coord: [0, this.details.maxTemperature]
+                  },
+                  {
+                    coord: [19,this.details.maxTemperature]
+                  }
+                ]
+              ]
+            }
           }
         ],
         color: ["#c23531"]
@@ -243,6 +260,8 @@ export default {
       let xTime = [];
       let yTemp = [];
       let yHumi = [];
+      let maxTemperature=0,
+          maxTemperatureIndex=0;
       for (let i in this.dataList) {
         let item = this.dataList[i];
         let timestamp = item.timestamp.substring(11);
@@ -250,6 +269,16 @@ export default {
         yTemp.push(item.temp);
         yHumi.push(item.humi);
       }
+
+      // 找出最高湿度
+      for(var i=0;i<yHumi.length;i++){
+        if(maxTemperature < yHumi[i] ){
+          maxTemperature=yHumi[i]
+          maxTemperatureIndex=i
+        }
+      }
+      console.log(yHumi[maxTemperatureIndex])
+
       let tempOption = {
         tooltip: {
           trigger: "axis",
@@ -270,42 +299,43 @@ export default {
         },
         yAxis: {
           type: "value",
-          offset: 5
+          offset: 5,
+          max : yHumi[maxTemperatureIndex] > 80 ? 100: undefined,
         },
         series: [
           {
-            name: "温度",
+            name: "湿度",
             data: yHumi,
             type: "line",
             areaStyle: {},
             // 告警阈值线配置
-            // markLine: {
-            //   lineStyle: {
-            //     color: "#61a0a8",
-            //     width: 2,
-            //     type: "solid"
-            //   },
-            //   data: [
-            //     [
-            //       {
-            //         name: "最低警告阈值",
-            //         coord: [0, this.tempConfig.min]
-            //       },
-            //       {
-            //         coord: [19, this.tempConfig.min]
-            //       }
-            //     ],
-            //     [
-            //       {
-            //         name: "警告最高阈值",
-            //         coord: [0, this.tempConfig.max]
-            //       },
-            //       {
-            //         coord: [19, this.tempConfig.max]
-            //       }
-            //     ]
-            //   ]
-            // }
+            markLine: {
+              lineStyle: {
+                color: "#61a0a8",
+                width: 2,
+                type: "solid"
+              },
+              data: [
+                [
+                  {
+                    name: "最低警告阈值",
+                    coord: [0, this.details.minHumidity]
+                  },
+                  {
+                    coord: [19, this.details.minHumidity]
+                  }
+                ],
+                [
+                  {
+                    name: "警告最高阈值",
+                    coord: [0, this.details.maxHumidity]
+                  },
+                  {
+                    coord: [19, this.details.maxHumidity]
+                  }
+                ]
+              ]
+            }
           }
         ],
         color: ["#c23531"]
@@ -434,11 +464,11 @@ body {
 }
 #tempChart{
   height: 300px;
-  width: 680px;
+  width: 800px;
 }
 #humilityChart{
     height: 300px;
-  width: 680px;
+  width: 800px;
 }
 .errorTip{
   color: #bfbfbf;
