@@ -28,6 +28,18 @@ const toGetAsideMenu = () => {
   )
 }
 
+// 请求所有一级菜单
+const toGetParentMenu = () => {
+  return ajax.get(
+    "/api/permission/grading", {
+      headers: {
+        "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken"))
+      }
+    }
+  )
+}
+
+
 // 获取所有菜单
 const toGetMenu = () => {
   return ajax.get(
@@ -821,20 +833,19 @@ const toSignOut = () => {
 }
 
 
-
-
-//拦截请求,并进行操作,显示等待图标
 ajax.interceptors.request.use((config) => {
   return config
 });
 
-//拦截相应,对相应数据进行操作并返回,顺带关掉indicator
+
 ajax.interceptors.response.use((config) => {
   if (!config.data.success) {
     if (config.data.httpCode == 401) {
       window.sessionStorage.removeItem('operationToken')
-      window.location.href = "/#/signIn"
       alert("登录已失效，请重新登录");
+      window.location.href = "/"
+      return config
+    }else{
       return config
     }
   } else {
@@ -906,5 +917,7 @@ export {
   toGetServerRoomList,
   toSearchConvergeRoom,
   toSearchlowVoltageRoom,
-  toGetMenu
+  toGetMenu,
+  toGetParentMenu
+
 }

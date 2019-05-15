@@ -1,6 +1,6 @@
 <template>
 <div>
-      <div id="pageTitle">编辑用户</div>
+  <div id="pageTitle">编辑用户</div>
   <div id="addRoleWrapper">
     <a-form :form="form">
       <a-form-item

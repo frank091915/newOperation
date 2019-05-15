@@ -65,10 +65,9 @@
         </a-form-item>
       </a-form>
     </div>
-    <div id="permissionsMenu">
-      <div id="permissionsMenuTitle">权限菜单</div>
-
-      <div id="menuSelection">
+    <div id="permissionsMenu" v-cloak>
+      <div id="permissionsMenuTitle" v-cloak>权限菜单</div>
+      <div id="menuSelection" v-cloak>
         <a-layout id="components-layout-demo-side" style="min-height: 100vh" class="frame">
           <a-layout-sider width="290px" v-model="collapsed">
             <a-menu theme="light" :defaultSelectedKeys="['1']" mode="inline" :openKeys="[openedMenu]">
@@ -383,15 +382,18 @@ export default {
       });
       this.$nextTick(() => {});
     });
-    // 获取当前用户菜单权限
-    this.$http.toGetUserInfoById(1).then(res => {
-      this.permissions = res.data.data.permissions;
+
+
+     // 获取所有一级菜单
+    this.$http.toGetParentMenu().then(res => {
+      console.log(res)
+      this.permissions = res.data.data;
 
       // 角色详情权限菜单结构改一下，按照用户权限结构来，再添加一个所有当前角色所有权限id数组
 
       //   选出用户当前权限菜单
       this.$nextTick(() => {
-        // 选出用户一级菜单
+        // 选出一级菜单
         this.aloneMenuArray = this.permissions.filter(item => {
           if (item.subPermissions.length === 0) {
             return true;
@@ -399,7 +401,7 @@ export default {
             return false;
           }
         });
-        // 选出用户二级菜单
+        // 选出二级菜单
         this.parentMenuArray = this.permissions.filter(item => {
           if (item.subPermissions.length != 0) {
             return true;
@@ -477,9 +479,6 @@ export default {
 #radioText span {
   margin-left: 2px;
 }
-#addRoleWrapper {
-  margin-top: 20px;
-}
 .ant-form-item {
   margin-bottom: 20px !important;
 }
@@ -513,6 +512,7 @@ export default {
 }
 #addRoleWrapper {
   width: 650px;
+  margin-top:55px;
 }
 #permissionsMenu {
   margin-top: 20px;

@@ -1,9 +1,7 @@
 <template>
   <div id="alarmSetWrapper">
-    <div id="tabWrapper">
-      汇聚机房告警策略
-      <div id="convergeRoomtitle"></div>
-
+    <div id="pageTitle">
+      {{roomName}}告警策略
       <div id="convergeTableWrapper">
         <div id="formOneWrapper">
           <a-form :form="form">
@@ -253,7 +251,8 @@ export default {
       allDataArray: [],
       cmdbId: this.$route.query.cmdbId,
       warningStrategy: {},
-      defualfKey:this.$route.query.defualfKey
+      defualfKey:this.$route.query.defualfKey,
+      roomName:this.$route.query.roomName
     };
   },
   methods: {
@@ -360,6 +359,7 @@ export default {
   width: 1280px;
   flex-direction: row;
   justify-content: space-around;
+  margin-top: 20px;
 }
 #convergeRoomOperationBox {
   margin-top: 20px;
@@ -369,5 +369,12 @@ export default {
 }
 #returnButton {
   margin-right: 100px;
+}
+#pageTitle {
+  padding-left: 69px;
+  height: 50px;
+  border-bottom: 1px solid #bdbdbd;
+  line-height: 50px;
+  font-weight: 600;
 }
 </style>

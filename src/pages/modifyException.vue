@@ -1,10 +1,11 @@
 <template>
-  <div id="addRoleWrapper">
-      <div id="pageTitle">
+<div>
+        <div id="pageTitle">
           编辑异常
       </div>
-      <div style="margin-bottom:20px;;margin-top:30px">
-        <span style="margin-left:130px">异常类型 ：</span>
+  <div id="addRoleWrapper">
+      <div style="margin-bottom:20px;margin-top:30px">
+        <span style="margin-left:206px">异常类型 ：</span>
         <a-radio-group @change="onChange" v-model="type" style="margin-left:10px">
           <a-radio :value="1">汇聚机房异常</a-radio>
           <a-radio :value="2">弱电间异常</a-radio>
@@ -17,6 +18,7 @@
       >
         <a-input
         v-model="remark"
+        style="width:250px;height:100px;"
         type="textarea"
           v-decorator="[
           'remark',
@@ -32,6 +34,7 @@
         </div>
       </a-form-item>
     </a-form>
+  </div>
   </div>
 </template>
 
@@ -113,8 +116,12 @@ export default {
 };
 </script>
 <style scoped>
-#pageTitle{
-    margin-left: 52px;
+#pageTitle {
+  padding-left: 69px;
+  height: 50px;
+  border-bottom: 1px solid #bdbdbd;
+  line-height: 50px;
+  font-weight: 600;
 }
 #radioBox {
   box-sizing: border-box;

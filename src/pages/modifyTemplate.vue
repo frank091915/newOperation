@@ -1,6 +1,7 @@
 <template>
+<div>
+  <div id="pageTitle">编辑模板</div>
   <div id="addRoleWrapper">
-    <div id="pageTitle">编辑模板</div>
     <a-form :form="form">
       <a-form-item
         :label-col="formItemLayout.labelCol"
@@ -25,7 +26,6 @@
           showSearch
           placeholder="模板类型"
           optionFilterProp="children"
-          style="width: 218px"
           disabled="disabled"
           v-decorator="[
           'type',
@@ -47,7 +47,6 @@
           placeholder="异常类型"
           optionFilterProp="children"
           disabled="disabled"
-          style="width: 218px"
           v-decorator="[
           'exceptionId',
           {rules: [{ required: true,message:'请选择异常类型'}],initialValue:templateInfo.exceptionId ? templateInfo.exceptionId : ''}
@@ -70,7 +69,7 @@
           showSearch
           placeholder="通知方式"
           optionFilterProp="children"
-          style="width: 218px"
+          disabled="disabled"
           v-decorator="[
           'way',
           {rules: [{ required: true,message:'请选择通知方式'}],initialValue:templateInfo.way+'' ? templateInfo.way : ''}
@@ -88,6 +87,7 @@
         label="通知内容"
       >
         <a-input
+          style="height:100px"
           type="textarea"
           v-decorator="[
           'content', {initialValue:templateInfo.content ? templateInfo.content : ''}
@@ -101,6 +101,7 @@
         </div>
       </a-form-item>
     </a-form>
+  </div>
   </div>
 </template>
 
@@ -186,7 +187,12 @@ export default {
 </script>
 <style scoped>
 #pageTitle {
-  margin-left: 52px;
+  padding-left: 69px;
+  height: 50px;
+  border-bottom: 1px solid #bdbdbd;
+  line-height: 50px;
+  font-weight: 600;
+  margin-bottom: 20px;
 }
 #radioBox {
   box-sizing: border-box;
@@ -203,9 +209,6 @@ export default {
 }
 #radioText span {
   margin-left: 2px;
-}
-#addRoleWrapper {
-  margin-top: 20px;
 }
 .ant-form-item {
   margin-bottom: 20px !important;
@@ -227,9 +230,6 @@ export default {
   flex-direction: row;
   justify-content: center;
   align-items: flex-start;
-}
-#addRoleWrapper {
-  width: 650px;
 }
 #opetarionBox {
   display: flex;
@@ -254,7 +254,7 @@ export default {
   border: 1px solid #e8e8e8;
 }
 #addRoleWrapper {
-  margin-top: 20px;
+  margin-top: 30px;
   width: 880px;
   margin: 0 auto;
 }

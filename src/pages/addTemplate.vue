@@ -1,6 +1,8 @@
 <template>
+<div>
+      <div id="pageTitle">新增模板</div>
   <div id="addRoleWrapper">
-    <div id="pageTitle">新增模板</div>
+
     <a-form :form="form">
       <a-form-item
         :label-col="formItemLayout.labelCol"
@@ -23,7 +25,6 @@
           showSearch
           placeholder="模板类型"
           optionFilterProp="children"
-          style="width: 218px"
           @change="handleTemplateChange"
           v-decorator="[
           'type',
@@ -44,7 +45,6 @@
           showSearch
           placeholder="异常类型"
           optionFilterProp="children"
-          style="width: 218px"
           v-decorator="[
           'exceptionId',
           {rules: [{ required: true,message:'请选择异常类型'}]}
@@ -67,7 +67,6 @@
           showSearch
           placeholder="通知方式"
           optionFilterProp="children"
-          style="width: 218px"
           v-decorator="[
           'way',
           {rules: [{ required: true,message:'请选择通知方式'}]}
@@ -84,7 +83,7 @@
         :wrapper-col="formItemLayout.wrapperCol"
         label="通知内容"
       >
-        <a-input type="textarea" v-decorator="[
+        <a-input style="height:120px" type="textarea" v-decorator="[
           'content'
         ]"/>
       </a-form-item>
@@ -96,6 +95,7 @@
         </div>
       </a-form-item>
     </a-form>
+  </div>
   </div>
 </template>
 
@@ -161,7 +161,12 @@ export default {
 </script>
 <style scoped>
 #pageTitle {
-  margin-left: 52px;
+  padding-left: 69px;
+  height: 50px;
+  border-bottom: 1px solid #bdbdbd;
+  line-height: 50px;
+  font-weight: 600;
+  margin-bottom: 20px;
 }
 #menuSelection {
   max-height: calc(100% - 49px);

@@ -21,89 +21,89 @@ export default {
     };
   },
   created() {
-    // 获取侧边栏菜单数据
-    this.$http.toGetAsideMenu().then(res => {
-      this.aloneMenu = res.data.data.filter(item => {
-        if (item.subPermissions.length === 0) {
-          return true;
-        } else {
-          return false;
-        }
-      });
-      this.parentMenu = res.data.data.filter(item => {
-        if (item.subPermissions.length != 0) {
-          return true;
-        } else {
-          return false;
-        }
-      });
-      this.$nextTick(() => {});
-    });
-    // 获取当前用户菜单权限
-    this.$http.toGetUserInfoById(7).then(res => {
-      this.permissions = res.data.data.permissions;
-      this.permissionsIdArray = res.data.data.permissionIds;
-      //   选出用户当前权限菜单
-      this.$nextTick(() => {
-        // 选出用户一级菜单
-        this.aloneMenuArray = this.permissions.filter(item => {
-          if (item.subPermissions.length === 0) {
-            return true;
-          } else {
-            return false;
-          }
-        });
-        // 选出用户二级菜单
-        this.parentMenuArray = this.permissions.filter(item => {
-          if (item.subPermissions.length != 0) {
-            return true;
-          } else {
-            return false;
-          }
-        });
-        this.$nextTick(() => {
-          // 给各个菜单添加状态
-          this.parentMenuArray = this.parentMenuArray.map(item => {
-            if (this.permissionsIdArray.includes(item.id)) {
-              item.ifPermitted = true;
-              return item;
-            } else {
-              item.ifPermitted = false;
-              return item;
-            }
-          });
-          // 给二级目录添加状态
-          this.parentMenuArray = this.parentMenuArray.map(item => {
-            item.subPermissions.map(subItem => {
-              if (this.permissionsIdArray.includes(subItem.id)) {
-                subItem.ifPermitted = true;
-                return subItem;
-              } else {
-                subItem.ifPermitted = false;
-                return subItem;
-              }
-            });
-            return item;
-          });
+    // // 获取侧边栏菜单数据
+    // this.$http.toGetAsideMenu().then(res => {
+    //   this.aloneMenu = res.data.data.filter(item => {
+    //     if (item.subPermissions.length === 0) {
+    //       return true;
+    //     } else {
+    //       return false;
+    //     }
+    //   });
+    //   this.parentMenu = res.data.data.filter(item => {
+    //     if (item.subPermissions.length != 0) {
+    //       return true;
+    //     } else {
+    //       return false;
+    //     }
+    //   });
+    //   this.$nextTick(() => {});
+    // });
+    // // 获取当前用户菜单权限
+    // this.$http.toGetUserInfoById(7).then(res => {
+    //   this.permissions = res.data.data.permissions;
+    //   this.permissionsIdArray = res.data.data.permissionIds;
+    //   //   选出用户当前权限菜单
+    //   this.$nextTick(() => {
+    //     // 选出用户一级菜单
+    //     this.aloneMenuArray = this.permissions.filter(item => {
+    //       if (item.subPermissions.length === 0) {
+    //         return true;
+    //       } else {
+    //         return false;
+    //       }
+    //     });
+    //     // 选出用户二级菜单
+    //     this.parentMenuArray = this.permissions.filter(item => {
+    //       if (item.subPermissions.length != 0) {
+    //         return true;
+    //       } else {
+    //         return false;
+    //       }
+    //     });
+    //     this.$nextTick(() => {
+    //       // 给各个菜单添加状态
+    //       this.parentMenuArray = this.parentMenuArray.map(item => {
+    //         if (this.permissionsIdArray.includes(item.id)) {
+    //           item.ifPermitted = true;
+    //           return item;
+    //         } else {
+    //           item.ifPermitted = false;
+    //           return item;
+    //         }
+    //       });
+    //       // 给二级目录添加状态
+    //       this.parentMenuArray = this.parentMenuArray.map(item => {
+    //         item.subPermissions.map(subItem => {
+    //           if (this.permissionsIdArray.includes(subItem.id)) {
+    //             subItem.ifPermitted = true;
+    //             return subItem;
+    //           } else {
+    //             subItem.ifPermitted = false;
+    //             return subItem;
+    //           }
+    //         });
+    //         return item;
+    //       });
 
-          this.aloneMenuArray = this.aloneMenuArray.map(item => {
-            if (this.permissionsIdArray.includes(item.id)) {
-              item.ifPermitted = true;
-              return item;
-            } else {
-              item.ifPermitted = false;
-              return item;
-            }
-          });
-          this.$nextTick(() => {
-            this.ultimateArray = this.aloneMenuArray.concat(
-              this.parentMenuArray
-            );
-            this.$nextTick(() => {});
-          });
-        });
-      });
-    });
+    //       this.aloneMenuArray = this.aloneMenuArray.map(item => {
+    //         if (this.permissionsIdArray.includes(item.id)) {
+    //           item.ifPermitted = true;
+    //           return item;
+    //         } else {
+    //           item.ifPermitted = false;
+    //           return item;
+    //         }
+    //       });
+    //       this.$nextTick(() => {
+    //         this.ultimateArray = this.aloneMenuArray.concat(
+    //           this.parentMenuArray
+    //         );
+    //         this.$nextTick(() => {});
+    //       });
+    //     });
+    //   });
+    // });
   },
   methods: {
     onOpenChange(openKeys) {

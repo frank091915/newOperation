@@ -128,6 +128,7 @@ export default {
             this.dataList=res.data.data.dataList;
             this.showCharts=res.data.data.dataList.length;
             this.$nextTick(()=>{
+              console.log(this.dataList)
               if(this.showCharts){
                 this.drawTempChart()
                 this.drawHumilityChart()
@@ -166,7 +167,7 @@ export default {
       let xTime = [];
       let yTemp = [];
       let yHumi = [];
-      for (let i in this.dataList) {
+      for (let i in this.dataList.reverse()) {
         let item = this.dataList[i];
         let timestamp = item.timestamp.substring(11);
         xTime.push(timestamp);
@@ -274,7 +275,7 @@ export default {
         series: [
           {
             name: "温度",
-            data: yTemp,
+            data: yHumi,
             type: "line",
             areaStyle: {},
             // 告警阈值线配置

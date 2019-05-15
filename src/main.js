@@ -163,7 +163,6 @@ router.beforeEach((to, from, next) => {
       }else{
         next({path:"/signIn"})
       }
-
     }
   })
 

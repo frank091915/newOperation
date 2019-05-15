@@ -218,9 +218,10 @@ export default {
   methods: {
     modifyAlarmStrategy(cmdbId,selectedKey) {
       this.changeDefualtKey(selectedKey)
+      let roomName=selectedKey == '1' ? "汇聚机房"  : " 弱电间";
       this.$router.push({
         path: "/modifyAlarmStrategy",
-        query: { title: "告警策略管理", cmdbId, type: this.roomType,defualfKey:this.defualfKey }
+        query: { title: "告警策略管理", cmdbId, type: this.roomType,defualfKey:this.defualfKey, roomName}
       });
     },
     addAlarmStrategy() {

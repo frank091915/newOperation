@@ -1,6 +1,7 @@
 <template>
+<div>
+  <div id="pageTitle">编辑故障</div>
   <div id="addRoleWrapper">
-    <div id="pageTitle">编辑故障</div>
     <a-form :form="form">
       <a-form-item
         :label-col="formItemLayout.labelCol"
@@ -8,6 +9,7 @@
         label="故障名称"
       >
         <a-input
+        style="width:290px;"
           v-decorator="[
           'name',
           {rules: [{ required: true,message:'请输入故障名称'}],
@@ -23,9 +25,9 @@
       >
         <a-input
           type="textarea"
+          style="width:290px;height:120px"
           v-decorator="[
           'remark',
-          
           {rules: [{ required: true, message: '请输入备注' }],
           initialValue:remark}
         ]"
@@ -38,6 +40,7 @@
         </div>
       </a-form-item>
     </a-form>
+  </div>
   </div>
 </template>
 
@@ -106,7 +109,11 @@ export default {
 </script>
 <style scoped>
 #pageTitle {
-  margin-left: 52px;
+  padding-left: 69px;
+  height: 50px;
+  border-bottom: 1px solid #bdbdbd;
+  line-height: 50px;
+  font-weight: 600;
 }
 #radioBox {
   box-sizing: border-box;

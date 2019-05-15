@@ -1,6 +1,7 @@
 <template>
+<div>
+  <div id="pageTitle">新增异常</div>
   <div id="addRoleWrapper">
-    <div id="pageTitle">新增异常</div>
     <a-form :form="form">
       <a-form-item
         :label-col="formItemLayout.labelCol"
@@ -8,6 +9,7 @@
         label="异常code"
       >
         <a-input
+         style="width:290px;"
           v-decorator="[
           'code',
           {rules: [{ required: true,message:'请输入异常code'}]}
@@ -15,7 +17,7 @@
         />
       </a-form-item>
       <div style="margin-bottom:20px;;margin-top:30px">
-        <span style="margin-left:106px">异常类型 ：</span>
+        <span style="margin-left:205px">异常类型 ：</span>
         <a-radio-group @change="onChange" v-model="type" style="margin-left:10px">
           <a-radio :value="1">汇聚机房异常</a-radio>
           <a-radio :value="2">弱电间异常</a-radio>
@@ -28,6 +30,7 @@
       >
         <a-input
           type="textarea"
+           style="width:290px;height:120px"
           v-decorator="[
           'remark',
           
@@ -42,6 +45,7 @@
         </div>
       </a-form-item>
     </a-form>
+  </div>
   </div>
 </template>
 
@@ -104,7 +108,11 @@ export default {
 </script>
 <style scoped>
 #pageTitle {
-  margin-left: 52px;
+  padding-left: 69px;
+  height: 50px;
+  border-bottom: 1px solid #bdbdbd;
+  line-height: 50px;
+  font-weight: 600;
 }
 #radioBox {
   box-sizing: border-box;

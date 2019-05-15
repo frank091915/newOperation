@@ -364,10 +364,10 @@ export default {
         }
       });
     });
-    // 获取当前用户菜单权限
-    this.$http.toGetUserInfoById(1).then(res => {
-      this.permissions = res.data.data.permissions;
-      this.permissionsIdArray = res.data.data.permissionIds;
+    // 获取菜单权限
+    this.$http.toGetParentMenu().then(res => {
+      this.permissions = res.data.data;
+      // this.permissionsIdArray = res.data.data.permissionIds;
       //   选出用户当前权限菜单
       this.$nextTick(() => {
         // 选出用户一级菜单
@@ -389,36 +389,35 @@ export default {
         this.$nextTick(() => {
           // 给各个菜单添加状态
           this.parentMenuArray = this.parentMenuArray.map(item => {
-            if (this.permissionsIdArray.includes(item.id)) {
+            // if (this.permissionsIdArray.includes(item.id)) {
               item.ifPermitted = true;
+            //   return item;
+            // } else {
+              // item.ifPermitted = false;
               return item;
-            } else {
-              item.ifPermitted = false;
-              return item;
-            }
+            // }
           });
           // 给二级目录添加状态
           this.parentMenuArray = this.parentMenuArray.map(item => {
             item.subPermissions.map(subItem => {
-              if (this.permissionsIdArray.includes(subItem.id)) {
+              // if (this.permissionsIdArray.includes(subItem.id)) {
                 subItem.ifPermitted = true;
                 return subItem;
-              } else {
-                subItem.ifPermitted = false;
-                return subItem;
-              }
+              // } else {
+              //   subItem.ifPermitted = false;
+              //   return subItem;
+              // }
             });
             return item;
           });
-
           this.aloneMenuArray = this.aloneMenuArray.map(item => {
-            if (this.permissionsIdArray.includes(item.id)) {
+            // if (this.permissionsIdArray.includes(item.id)) {
               item.ifPermitted = true;
+            //   return item;
+            // } else {
+            //   item.ifPermitted = false;
               return item;
-            } else {
-              item.ifPermitted = false;
-              return item;
-            }
+            // }
           });
           this.$nextTick(() => {
             this.ultimateArray = this.aloneMenuArray.concat(
@@ -460,11 +459,7 @@ export default {
 }
 
 #addRoleWrapper {
-  margin-top: 20px;
-}
-
-#addRoleWrapper {
-  margin-top: 20px;
+  margin-top: 55px;
   width: 650px;
 }
 
