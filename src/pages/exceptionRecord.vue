@@ -102,7 +102,6 @@
         :columns="columns"
         :dataSource="data"
         :pagination="false"
-        size="small"
         :loading="isLoading"
         bordered
       >
@@ -141,7 +140,7 @@ const columns = [
   {
     title: "异常标号",
     dataIndex: "key",
-    width: "5%",
+    width: "6%",
     scopedSlots: { customRender: "address" },
     align: "center"
   },

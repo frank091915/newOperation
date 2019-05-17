@@ -821,6 +821,30 @@ const toGetAlarmStrategyInfo = (cmdbId, type) => {
   )
 }
 
+// 获取弱电间统计报表
+const toGetlowVoltageRoomStatements = (page,type) => {
+  return ajax.get(
+    `/api/statistical/weak-electric?currentPage=${page}&type=${type}`, {
+      headers: {
+        "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken"))
+      }
+    }
+  )
+}
+
+// 弱电间统计报表详情
+// /api/statistical/weak-electric/detail?type=2&startTime=2019-05-06
+const toGetlowVoltageRoomStatementsDetails = (type,startTime) => {
+  return ajax.get(
+    `/api/statistical/weak-electric/detail?type=${type}&startTime=${startTime}`, {
+      headers: {
+        "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken"))
+      }
+
+    }
+  )
+}
+
 // 用户推出
 const toSignOut = () => {
   return ajax.get(
@@ -918,6 +942,7 @@ export {
   toSearchConvergeRoom,
   toSearchlowVoltageRoom,
   toGetMenu,
-  toGetParentMenu
-
+  toGetParentMenu,
+  toGetlowVoltageRoomStatements,
+  toGetlowVoltageRoomStatementsDetails
 }

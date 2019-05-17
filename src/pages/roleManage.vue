@@ -39,7 +39,7 @@
           </div>
         </template>
       </a-table>
-              <div id="pagination" v-show="!isLoading"> 
+          <div id="pagination" v-show="!isLoading"> 
           <div id="total">
             
             共<span style="margin:0 5px;">{{recordsTotal}}</span>条数据

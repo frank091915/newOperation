@@ -7,7 +7,7 @@ Vue.use(Vuex)
 export default new Vuex.Store({
     state:{
         accessToken:window.sessionStorage.getItem("operationToken")? JSON.parse(window.sessionStorage.getItem("operationToken")) : null,
-        defualtKeyFromVuex:window.sessionStorage.getItem("alarmStrageSelectedKey")? JSON.parse(window.sessionStorage.getItem("alarmStrageSelectedKey"))['key'] : '1',
+        defualtKeyFromVuex:window.sessionStorage.getItem("alarmStrageSelectedKey") ? JSON.parse(window.sessionStorage.getItem("alarmStrageSelectedKey"))['key'] : '1',
     },
     mutations:{
         hasLogin(state){

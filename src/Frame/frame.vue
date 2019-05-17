@@ -11,7 +11,7 @@
         
         <a-menu theme="dark" :selectedKeys="[currentMenuId]" mode="inline"  :openKeys="[openedMenu]">
           <!-- 渲染一级菜单 -->
-          <a-menu-item v-for="item in aloneMenu"  :key="item.id" @click="toNavigate(item.path,item.title,item.id)">
+          <a-menu-item v-for="item in aloneMenu"  :key="item.id" @click="toNavigate(item.path,item.title,item.id,item)">
            
             <span>{{item.title}}</span>
           </a-menu-item>
@@ -19,13 +19,13 @@
           <a-sub-menu
             v-for="item in parentMenu" 
             :key="item.id"  
-            @titleClick='handleSelect'
+            @titleClick='handleSelect' 
           >
             <span slot="title" ><span>{{item.title}}</span></span>
             <a-menu-item 
             v-for="subItem in item.subPermissions"
             :key="subItem.id"
-            @click="toNavigate(subItem.path,subItem.title,subItem.id)"
+            @click="toNavigate(subItem.path,subItem.title,subItem.id,subItem)"
             class="childrenMenu"
             >{{subItem.title}}</a-menu-item>
           </a-sub-menu>
@@ -67,7 +67,7 @@ export default {
         }
       })
       this.$nextTick(()=>{
-            this.openedParentMenu()
+          this.openedParentMenu()
       })
     });
 
@@ -76,7 +76,8 @@ export default {
     ...mapState(["accessToken"])
   },
   methods:{
-    toNavigate(path,title,menuId){
+    toNavigate(path,title,menuId,item){
+      console.log(path)
       // 获取需要的路径字符串
       this.currentMenuId=menuId;
       let processedPath=path.slice(0,(path.length-3)).split("/").pop();
@@ -97,11 +98,9 @@ export default {
           }
         })
       });
-      console.log(openedParentMenu[0].id)
       this.openedMenu=Number.parseInt(openedParentMenu[0].id) 
     },
     handleSelect(item){
-      console.log(item)
       if(this.openedMenu==item.key){
         this.openedMenu=''
       }else{

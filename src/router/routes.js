@@ -37,6 +37,8 @@ import ModifyAlarmStrategy from "../pages/modifyAlarmStrategy.vue"
 import AddAlarmStrategy from "../pages/addAlarmStrategy.vue"
 import MenuManage from "../pages/menuManage.vue"
 import RoomDetails from "../pages/roomDetails.vue"
+import lowVoltageRoomStatements from "../pages/lowVoltageRoomStatements.vue"
+import lowVoltageRoomStatementsDetails from "../pages/lowVoltageRoomStatementsDetails.vue"
 // 将所有组件集中管理进行配置
 
 export default [{
@@ -364,6 +366,24 @@ export default [{
   components: {
     frame: Frame,
     main: RoomDetails,
+    header: Header,
+  }
+},
+{
+  path: '/statistics/electric',
+  name: 'statistics/electric',
+  components: {
+    frame: Frame,
+    main: lowVoltageRoomStatements,
+    header: Header,
+  }
+},
+{
+  path: '/lowVoltageRoomStatementsDetails',
+  name: 'lowVoltageRoomStatementsDetails',
+  components: {
+    frame: Frame,
+    main: lowVoltageRoomStatementsDetails,
     header: Header,
   }
 }

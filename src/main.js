@@ -14,6 +14,9 @@ import 'moment/locale/zh-cn';
 // 引入echarts
 import echarts from 'echarts'
 
+import htmlToPdf from './lib/htmlToPdf/htmlToPdf.js'
+Vue.use(htmlToPdf)
+
 // 引入请求方法
 import * as $http from "./request/request"
 // 引入store
