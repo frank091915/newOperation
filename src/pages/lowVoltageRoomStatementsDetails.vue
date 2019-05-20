@@ -13,7 +13,7 @@
           <!-- <div id="searchByNamesLabel">名称：</div> -->
           <div id="searchByNamesInput">
             <!-- <a-input v-model="searchParam" @keydown.enter="search(true)" placeholder="请输入POS机房间名称"  size="small"/> -->
-            <a-button  @click="getPdf" type="primary" size="small" style="margin-left:10px">导出</a-button>
+            <a-button  @click="print" type="primary" size="small" style="margin-left:10px">导出</a-button>
           </div>
         </div>
       </div>
@@ -57,8 +57,8 @@
             <span>备注：</span><span>{{remarks}}</span>
         </template>
         </a-table>
-        <div id="tip" style="margin-top:20px;">注：正常填写正常，有问题填写异常，问题及处理情况6小时内必须以书面形式报至终端组主管人员，实行表年月周查制. 每周巡检1次，间隔禁止超过7个工作日</div>
-        <div id="signatureBox">
+        <div id="tip" style="margin-top:20px;padding-left:16px">注：正常填写正常，有问题填写异常，问题及处理情况6小时内必须以书面形式报至终端组主管人员，实行表年月周查制. 每周巡检1次，间隔禁止超过7个工作日</div>
+        <div id="signatureBox" style="padding-left:16px">
             <div id="engineerSigature" style="width:200px;">
                 <span>运维工程师签名：</span> 
             </div>
@@ -189,6 +189,9 @@ export default {
     };
   },
   methods: {
+    print(){
+      this.getPdf()
+    },
     changeTimeScale(e){
           console.log(e.target.value)
           this.timeScale=e.target.value;
@@ -273,7 +276,7 @@ export default {
     // },f  
     getlowVoltageRoomStatementsDetails(){
         this.isLoading=true;
-        this.$http.toGetlowVoltageRoomStatementsDetails(this.$route.query.id,this.$route.query.startTime).then((res)=>{
+        this.$http.toGetlowVoltageRoomStatementsDetails(this.$route.query.type,this.$route.query.startTime).then((res)=>{
             console.log(res)
             if(res.data.success){
                 this.data=res.data.data.map((item)=>{
@@ -326,8 +329,7 @@ body {
 }
 #pageWrapper {
   height: calc(100% - 50px);
-  width: 95%;
-  margin-left: 20px;
+  width: 100%;
 }
 #frame {
   height: 100%;
@@ -365,6 +367,8 @@ body {
 #pdfDom {
   height: calc(100% - 100px);
   overflow: auto;
+  box-sizing: border-box;
+  padding:0 15px;
 }
 .spin-content {
   border: 1px solid #91d5ff;

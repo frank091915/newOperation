@@ -17,6 +17,9 @@ import echarts from 'echarts'
 import htmlToPdf from './lib/htmlToPdf/htmlToPdf.js'
 Vue.use(htmlToPdf)
 
+// import Print from './lib'
+// Vue.use(Print) // 注册
+
 // 引入请求方法
 import * as $http from "./request/request"
 // 引入store

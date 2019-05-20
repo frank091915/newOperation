@@ -209,7 +209,9 @@ export default {
             this.current=1
           }
 
-        }
+        }else {
+              this.$message.error(res.data.errorInfo);
+            }
       });
     },
     changePage(page){
@@ -220,7 +222,7 @@ export default {
     },
     seeDetails(item){
         console.log(item)
-        this.$router.push({ path: "/lowVoltageRoomStatementsDetails", query: { title: "弱电间周次巡检表",id:item.id,startTime:item.startTime.substring(0,10)}});
+        this.$router.push({ path: "/lowVoltageRoomStatementsDetails", query: { title: "弱电间周次巡检表",id:item.id,startTime:item.startTime.substring(0,10),type:item.type}});
     }
   },
   created() {
