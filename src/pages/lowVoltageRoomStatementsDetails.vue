@@ -18,6 +18,7 @@
         </div>
       </div>
       <div id="pdfDom">
+        <h4 id="printTitle" > {{printTitle}}</h4>
         <a-table :columns="columns" :dataSource="data" :pagination="false"  bordered :loading="isLoading">
           <template
             v-for="col in ['name', 'age', 'address']"
@@ -185,12 +186,36 @@ export default {
       current: 1,
       data:[],
       timeScale:2,
-      remarks:"备注"
+      remarks:"",
+      printTitle:this.$route.query.title,
+      isPrinting:false
     };
   },
   methods: {
     print(){
-      this.getPdf()
+      this.isPrinting=true;
+      let _this=this;
+      this.$nextTick(()=>{
+        console.log(this.isPrinting)
+      new Promise(function(resolve, reject){
+            //做一些异步操作
+            setTimeout(function(){
+                _this.getPdf();
+                resolve('随便什么数据');
+            }, 20);
+        }).then(()=>{
+          _this.isPrinting=false;
+          _this.$nextTick(()=>{
+            console.log(this.isPrinting)
+          })
+        });
+
+
+        
+        // setTimeout(function(){
+        //   this.isPrinting=false;
+        // },1000)
+      })
     },
     changeTimeScale(e){
           console.log(e.target.value)
@@ -397,5 +422,12 @@ body {
     justify-content: flex-start;
     align-items: center;
     margin-top: 20px;
+}
+#printTitle{
+  height:56px;
+  line-height:56px;
+  text-align:center;
+  font-size:16px;
+  font-variant: normal;
 }
 </style>
