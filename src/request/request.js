@@ -329,6 +329,17 @@ const toGetRoleManageList = (currentPage) => {
   )
 }
 
+// 请求楼栋坐标信息列表
+const toGetBuildingPositionList = (currentPage) => {
+  return ajax.get(
+    `/api/position?currentPage=${currentPage}`, {
+      headers: {
+        "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken"))
+      }
+    }
+  )
+}
+
 // 请求角色管理列表
 const toGetAllRoleManageList = () => {
   return ajax.get(
@@ -588,6 +599,18 @@ const toModifyAlarmStrategy = (alarmStrategy) => {
   )
 }
 
+//修改楼栋坐标信息
+const toModifyBuildingPosition = (buildingPositionInfo) => {
+  return ajax.put(
+    `/api/position/${buildingPositionInfo.id}?xPosition=${buildingPositionInfo.xPosition}&yPosition=${buildingPositionInfo.yPosition}`, qs.stringify(buildingPositionInfo), {
+      headers: {
+        "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken")),
+        "Content-Type": "application/x-www-form-urlencoded"
+      }
+    }
+  )
+}
+
 //用户重置密码
 const toResetPassword = (userId) => {
 
@@ -799,6 +822,17 @@ const toGetTemplateById = (templateId) => {
   )
 }
 
+// 请求模板信息
+const toGetBuildingPositionById = (positionId) => {
+  return ajax.get(
+    "/api/position/" + positionId, {
+      headers: {
+        "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken"))
+      }
+    }
+  )
+}
+
 // 告警策略信息
 const toGetAlarmStrategy = (type, page) => {
   return ajax.get(
@@ -822,7 +856,7 @@ const toGetAlarmStrategyInfo = (cmdbId, type) => {
 }
 
 // 获取弱电间统计报表
-const toGetlowVoltageRoomStatements = (page,type) => {
+const toGetlowVoltageRoomStatements = (page, type) => {
   return ajax.get(
     `/api/statistical/weak-electric?currentPage=${page}&type=${type}`, {
       headers: {
@@ -834,7 +868,7 @@ const toGetlowVoltageRoomStatements = (page,type) => {
 
 // 弱电间统计报表详情
 // /api/statistical/weak-electric/detail?type=2&startTime=2019-05-06
-const toGetlowVoltageRoomStatementsDetails = (type,startTime) => {
+const toGetlowVoltageRoomStatementsDetails = (type, startTime) => {
   return ajax.get(
     `/api/statistical/weak-electric/detail?type=${type}&startTime=${startTime}`, {
       headers: {
@@ -869,7 +903,7 @@ ajax.interceptors.response.use((config) => {
       alert("登录已失效，请重新登录");
       window.location.href = "/"
       return config
-    }else{
+    } else {
       return config
     }
   } else {
@@ -886,6 +920,7 @@ export {
   toGetlowVoltageRoomList,
   toGetPosMechineList,
   toGetRoleManageList,
+  toGetBuildingPositionList,
   toGetAllRoleManageList,
   toDeleteRole,
   toAddRole,
@@ -944,5 +979,7 @@ export {
   toGetMenu,
   toGetParentMenu,
   toGetlowVoltageRoomStatements,
-  toGetlowVoltageRoomStatementsDetails
+  toGetlowVoltageRoomStatementsDetails,
+  toGetBuildingPositionById,
+  toModifyBuildingPosition
 }

@@ -39,6 +39,8 @@ import MenuManage from "../pages/menuManage.vue"
 import RoomDetails from "../pages/roomDetails.vue"
 import lowVoltageRoomStatements from "../pages/lowVoltageRoomStatements.vue"
 import lowVoltageRoomStatementsDetails from "../pages/lowVoltageRoomStatementsDetails.vue"
+import position from "../pages/buildingPosition.vue"
+import modifyBuildingPosition from "../pages/modifyBuildingPosition.vue"
 // 将所有组件集中管理进行配置
 
 export default [{
@@ -384,6 +386,24 @@ export default [{
   components: {
     frame: Frame,
     main: lowVoltageRoomStatementsDetails,
+    header: Header,
+  }
+},
+{
+  path: '/position',
+  name: 'position',
+  components: {
+    frame: Frame,
+    main: position,
+    header: Header,
+  }
+},
+{
+  path: '/modifyBuildingPosition',
+  name: 'modifyBuildingPosition',
+  components: {
+    frame: Frame,
+    main: modifyBuildingPosition,
     header: Header,
   }
 }
