@@ -3,10 +3,10 @@
     <div id="pageWrapper" @keydown.enter="search(true)">
       <div id="searchBox">
         <div>
-        <a-radio-group defaultValue="2" buttonStyle="solid" @change='changeTimeScale'>
-            <a-radio-button value="2">按周次</a-radio-button>
-            <a-radio-button value="3">按月份</a-radio-button>
-            <a-radio-button value="4">按年份</a-radio-button>
+        <a-radio-group defaultValue=2 buttonStyle="solid" @change='changeTimeScale'>
+            <a-radio-button value=2>按周次</a-radio-button>
+            <a-radio-button value=3>按月份</a-radio-button>
+            <a-radio-button value=4>按年份</a-radio-button>
         </a-radio-group>
         </div>
         <!-- <div id="searchByNames">
@@ -180,7 +180,7 @@ export default {
     },
     search(isSearching) {
         this.$nextTick(()=>{
-          this.GetlowVoltageRoomStatements(this.page,this.timeScale,isSearching)
+          this.GetconvergeRoomStatements(this.page,this.timeScale,isSearching)
         })
  
     },
@@ -191,9 +191,9 @@ export default {
         return true;
       });
     },
-    GetlowVoltageRoomStatements(page,timeScale,isSearching){
+    GetconvergeRoomStatements(page,timeScale,isSearching){
       this.isLoading=true;
-      this.$http.toGetlowVoltageRoomStatements(page,timeScale).then(res => {
+      this.$http.toGetconvergeRoomStatements(page,timeScale).then(res => {
         if (res.data.success) {
           this.recordsTotal = res.data.recordsTotal;
             this.data=res.data.data.map((item)=>{
@@ -222,12 +222,25 @@ export default {
     },
     seeDetails(item){
         console.log(item)
-        this.$router.push({ path: "/lowVoltageRoomStatementsDetails", query: { title: "弱电间周次巡检表",id:item.id,startTime:item.startTime.substring(0,10),type:item.type}});
+        this.$router.push({ path: "/convergeRoomStatementsDetails", query: { title: this.printTitle,id:item.id,startTime:item.startTime.substring(0,10),type:item.type}});
+    }
+  },
+  computed:{
+    printTitle (){
+      console.log(this.timeScale)
+      switch(this.timeScale){
+        case 2:
+        return '汇聚机房周次巡检表';
+        case 3:
+        return '汇聚机房月次巡检表';
+        case 4:
+        return '汇聚机房年次巡检表';
+      }
     }
   },
   created() {
     // 默认请求第一页，按周统计
-    this.GetlowVoltageRoomStatements(1,2,false)
+    this.GetconvergeRoomStatements(1,2,false)
     
   },
   mounted(){

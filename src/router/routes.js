@@ -41,6 +41,16 @@ import lowVoltageRoomStatements from "../pages/lowVoltageRoomStatements.vue"
 import lowVoltageRoomStatementsDetails from "../pages/lowVoltageRoomStatementsDetails.vue"
 import position from "../pages/buildingPosition.vue"
 import modifyBuildingPosition from "../pages/modifyBuildingPosition.vue"
+import ConvergeRoomStatements from "../pages/convergeRoomStatements.vue"
+import ConvergeRoomStatementsDetails from "../pages/convergeRoomStatementsDetails.vue"
+import posMechineStatements from "../pages/posMechineStatements.vue"
+import posMechineRoomStatementsDetails from "../pages/posMechineStatementsDetails.vue"
+import transferRoomStatements from "../pages/transferRoomStatements.vue"
+import transferRoomStatementsDetails from "../pages/transferRoomStatementsDetails.vue"
+import accessStatements from "../pages/accessStatements.vue"
+import accessStatementsDetails from "../pages/accessStatementsDetails.vue"
+import broadcastStatements from "../pages/broadcastStatements.vue"
+import broadcastStatementsDetails from "../pages/broadcastStatementsDetails.vue"
 // 将所有组件集中管理进行配置
 
 export default [{
@@ -404,6 +414,96 @@ export default [{
   components: {
     frame: Frame,
     main: modifyBuildingPosition,
+    header: Header,
+  }
+},
+{
+  path: '/statistics/machine',
+  name: 'statistics/machine',
+  components: {
+    frame: Frame,
+    main: ConvergeRoomStatements,
+    header: Header,
+  }
+},
+{
+  path: '/convergeRoomStatementsDetails',
+  name: 'ConvergeRoomStatementsDetails',
+  components: {
+    frame: Frame,
+    main: ConvergeRoomStatementsDetails,
+    header: Header,
+  }
+},
+{
+  path: '/statistics/pos',
+  name: 'statistics/pos',
+  components: {
+    frame: Frame,
+    main: posMechineStatements,
+    header: Header,
+  }
+},
+{
+  path: '/posMechineRoomStatementsDetails',
+  name: 'posMechineRoomStatementsDetails',
+  components: {
+    frame: Frame,
+    main: posMechineRoomStatementsDetails,
+    header: Header,
+  }
+},
+{
+  path: '/statistics/transfer',
+  name: 'statistics/transfer',
+  components: {
+    frame: Frame,
+    main: transferRoomStatements,
+    header: Header,
+  }
+},
+{
+  path: '/transferRoomStatementsDetails',
+  name: 'transferRoomStatementsDetails',
+  components: {
+    frame: Frame,
+    main: transferRoomStatementsDetails,
+    header: Header,
+  }
+},
+{
+  path: '/statistics/access',
+  name: 'statistics/access',
+  components: {
+    frame: Frame,
+    main: accessStatements,
+    header: Header,
+  }
+},
+{
+  path: '/accessStatementsDetails',
+  name: 'accessStatementsDetails',
+  components: {
+    frame: Frame,
+    main: accessStatementsDetails,
+    header: Header,
+  }
+},
+{
+  path: '/statistics/broadcast',
+  name: 'statistics/broadcast',
+  components: {
+    frame: Frame,
+    main: broadcastStatements,
+    header: Header,
+  }
+},
+{
+  path: '/broadcastStatementsDetails',
+  name: 'broadcastStatementsDetails',
+  components: {
+    frame: Frame,
+    main: broadcastStatementsDetails,
     header: Header,
   }
 }

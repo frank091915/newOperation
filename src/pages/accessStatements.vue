@@ -180,7 +180,7 @@ export default {
     },
     search(isSearching) {
         this.$nextTick(()=>{
-          this.GetlowVoltageRoomStatements(this.page,this.timeScale,isSearching)
+          this.GetconvergeRoomStatements(this.page,this.timeScale,isSearching)
         })
  
     },
@@ -191,9 +191,9 @@ export default {
         return true;
       });
     },
-    GetlowVoltageRoomStatements(page,timeScale,isSearching){
+    GetaccessStatements(page,timeScale,isSearching){
       this.isLoading=true;
-      this.$http.toGetlowVoltageRoomStatements(page,timeScale).then(res => {
+      this.$http.toGetaccessStatements(page,timeScale).then(res => {
         if (res.data.success) {
           this.recordsTotal = res.data.recordsTotal;
             this.data=res.data.data.map((item)=>{
@@ -222,7 +222,7 @@ export default {
     },
     seeDetails(item){
         console.log(item)
-        this.$router.push({ path: "/lowVoltageRoomStatementsDetails", query: { title: this.printTitle,id:item.id,startTime:item.startTime.substring(0,10),type:item.type}});
+        this.$router.push({ path: "/accessStatementsDetails", query: { title: this.printTitle,id:item.id,startTime:item.startTime.substring(0,10),type:item.type}});
     }
   },
   computed:{
@@ -230,17 +230,17 @@ export default {
       console.log(this.timeScale)
       switch(this.timeScale){
         case 2:
-        return '广播系统周次巡检表';
+        return '门禁控制器周次巡检表';
         case 3:
-        return '广播系统月次巡检表';
+        return '门禁控制器月次巡检表';
         case 4:
-        return '广播系统年次巡检表';
+        return '门禁控制器年次巡检表';
       }
     }
   },
   created() {
     // 默认请求第一页，按周统计
-    this.GetlowVoltageRoomStatements(1,2,false)
+    this.GetaccessStatements(1,2,false)
     
   },
   mounted(){

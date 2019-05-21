@@ -180,7 +180,7 @@ export default {
     },
     search(isSearching) {
         this.$nextTick(()=>{
-          this.GetlowVoltageRoomStatements(this.page,this.timeScale,isSearching)
+          this.GetposMechineRoomStatements(this.page,this.timeScale,isSearching)
         })
  
     },
@@ -191,9 +191,9 @@ export default {
         return true;
       });
     },
-    GetlowVoltageRoomStatements(page,timeScale,isSearching){
+    GetbroadcastStatements(page,timeScale,isSearching){
       this.isLoading=true;
-      this.$http.toGetlowVoltageRoomStatements(page,timeScale).then(res => {
+      this.$http.toGetbroadcastStatements(page,timeScale).then(res => {
         if (res.data.success) {
           this.recordsTotal = res.data.recordsTotal;
             this.data=res.data.data.map((item)=>{
@@ -222,7 +222,7 @@ export default {
     },
     seeDetails(item){
         console.log(item)
-        this.$router.push({ path: "/lowVoltageRoomStatementsDetails", query: { title: this.printTitle,id:item.id,startTime:item.startTime.substring(0,10),type:item.type}});
+        this.$router.push({ path: "/broadcastStatementsDetails", query: { title: this.printTitle,id:item.id,startTime:item.startTime.substring(0,10),type:item.type}});
     }
   },
   computed:{
@@ -239,8 +239,9 @@ export default {
     }
   },
   created() {
+      
     // 默认请求第一页，按周统计
-    this.GetlowVoltageRoomStatements(1,2,false)
+    this.GetbroadcastStatements(1,2,false)
     
   },
   mounted(){

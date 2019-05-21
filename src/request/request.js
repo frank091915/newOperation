@@ -879,6 +879,121 @@ const toGetlowVoltageRoomStatementsDetails = (type, startTime) => {
   )
 }
 
+
+// 获取汇聚机房统计报表
+const toGetconvergeRoomStatements = (page, type) => {
+  return ajax.get(
+    `/api/statistical/machine-room?currentPage=${page}&type=${type}`, {
+      headers: {
+        "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken"))
+      }
+    }
+  )
+}
+
+
+// 汇聚机房统计报表详情
+const toGetconvergeRoomStatementsDetails = (type, startTime) => {
+  return ajax.get(
+    `/api/statistical/machine-room/detail?type=${type}&startTime=${startTime}`, {
+      headers: {
+        "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken"))
+      }
+    }
+  )
+}
+
+// 获取pos机房间统计报表
+const toGetposMechineRoomStatements = (page, type) => {
+  return ajax.get(
+    `/api/statistical/pos?currentPage=${page}&type=${type}`, {
+      headers: {
+        "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken"))
+      }
+    }
+  )
+}
+
+
+// pos机房统计报表详情
+const toGetposMechineRoomStatementsDetails = (type, startTime) => {
+  return ajax.get(
+    `/api/statistical/pos/detail?type=${type}&startTime=${startTime}`, {
+      headers: {
+        "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken"))
+      }
+    }
+  )
+}
+
+// 获取圈存机房间统计报表
+const toGettransferRoomStatements = (page, type) => {
+  return ajax.get(
+    `/api/statistical/transfer?currentPage=${page}&type=${type}`, {
+      headers: {
+        "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken"))
+      }
+    }
+  )
+}
+
+// 圈存机房统计报表详情
+const toGetTransferRoomStatementsDetails = (type, startTime) => {
+  return ajax.get(
+    `/api/statistical/transfer/detail?type=${type}&startTime=${startTime}`, {
+      headers: {
+        "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken"))
+      }
+    }
+  )
+}
+
+// 门禁房间统计报表
+const toGetaccessStatements = (page, type) => {
+  return ajax.get(
+    `/api/statistical/access?currentPage=${page}&type=${type}`, {
+      headers: {
+        "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken"))
+      }
+    }
+  )
+}
+
+// 门禁统计报表详情
+const toGetaccessStatementsDetails = (type, startTime) => {
+  return ajax.get(
+    `/api/statistical/access/detail?type=${type}&startTime=${startTime}`, {
+      headers: {
+        "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken"))
+      }
+    }
+  )
+}
+
+
+// 广播系统统计报表
+const toGetbroadcastStatements = (page, type) => {
+  return ajax.get(
+    `/api/statistical/broadcast?currentPage=${page}&type=${type}`, {
+      headers: {
+        "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken"))
+      }
+    }
+  )
+}
+
+// 广播系统统计报表详情
+const toGetbroadcastStatementsDetails = (type, startTime) => {
+  return ajax.get(
+    `/api/statistical/broadcast/detail?type=${type}&startTime=${startTime}`, {
+      headers: {
+        "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken"))
+      }
+    }
+  )
+}
+
+
 // 用户推出
 const toSignOut = () => {
   return ajax.get(
@@ -981,5 +1096,15 @@ export {
   toGetlowVoltageRoomStatements,
   toGetlowVoltageRoomStatementsDetails,
   toGetBuildingPositionById,
-  toModifyBuildingPosition
+  toModifyBuildingPosition,
+  toGetconvergeRoomStatements,
+  toGetconvergeRoomStatementsDetails,
+  toGetposMechineRoomStatements,
+  toGetposMechineRoomStatementsDetails,
+  toGettransferRoomStatements,
+  toGetTransferRoomStatementsDetails,
+  toGetaccessStatements,
+  toGetaccessStatementsDetails,
+  toGetbroadcastStatements,
+  toGetbroadcastStatementsDetails
 }

@@ -92,7 +92,7 @@ const columns = [
     align:"center"
   },
   {
-    title: "弱电间电源及照明灯情况",
+    title: "电源及照明灯情况",
     dataIndex: " 1",
     width: "10%",
     scopedSlots: { customRender: "highLight" },
@@ -165,7 +165,7 @@ const columns = [
   },
   {
     title: "线路有无乱线及飞线情况存在",
-    dataIndex: "count",
+    dataIndex: " 5",
     width: "10%",
     scopedSlots: { customRender: "address" },
     align:"center"

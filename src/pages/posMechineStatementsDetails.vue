@@ -2,22 +2,23 @@
   <div>
     <div id="pageWrapper" @keydown.enter="search(true)">
       <div id="searchBox">
-        <div>
-        <a-radio-group defaultValue=2 buttonStyle="solid" @change='changeTimeScale'>
-            <a-radio-button value=2>按周次</a-radio-button>
-            <a-radio-button value=3>按月份</a-radio-button>
-            <a-radio-button value=4>按年份</a-radio-button>
+        <!-- <div>
+        <a-radio-group defaultValue="2" buttonStyle="solid" @change='changeTimeScale'>
+            <a-radio-button value="2">按周次</a-radio-button>
+            <a-radio-button value="3">按月份</a-radio-button>
+            <a-radio-button value="4">按年份</a-radio-button>
         </a-radio-group>
-        </div>
-        <!-- <div id="searchByNames">
-          <div id="searchByNamesLabel">名称：</div>
-          <div id="searchByNamesInput">
-            <a-input v-model="searchParam" @keydown.enter="search(true)" placeholder="请输入POS机房间名称"  size="small"/>
-            <a-button  @click="search(true)" type="primary" size="small" style="margin-left:10px">搜索</a-button>
-          </div>
         </div> -->
+        <div id="searchByNames" style="float:right">
+          <!-- <div id="searchByNamesLabel">名称：</div> -->
+          <div id="searchByNamesInput">
+            <!-- <a-input v-model="searchParam" @keydown.enter="search(true)" placeholder="请输入POS机房间名称"  size="small"/> -->
+            <a-button  @click="print" type="primary" size="small" style="margin-left:10px">导出</a-button>
+          </div>
+        </div>
       </div>
-      <div id="tableWrapper">
+      <div id="pdfDom">
+        <h4 id="printTitle" > {{printTitle}}</h4>
         <a-table :columns="columns" :dataSource="data" :pagination="false"  bordered :loading="isLoading">
           <template
             v-for="col in ['name', 'age', 'address']"
@@ -53,15 +54,30 @@
             <a-button @click="seeDetails(record)" type="primary" size="small">详情</a-button>
           </div>
         </template>
+        <template slot="footer" slot-scope="currentPageData" style="background:white !important">
+            <span>备注：</span><span>{{remarks}}</span>
+        </template>
         </a-table>
-        <div id="pagination" v-show="!isLoading"> 
+        <div id="tip" style="margin-top:20px;padding-left:16px">注：正常填写正常，有问题填写异常，问题及处理情况6小时内必须以书面形式报至终端组主管人员，实行表年月周查制. 每周巡检1次，间隔禁止超过7个工作日</div>
+        <div id="signatureBox" style="padding-left:16px">
+            <div id="engineerSigature" style="width:200px;">
+                <span>运维工程师签名：</span> 
+            </div>
+            <div id="leaderSigature" style="width:200px;margin-left:300px">
+                <span>负责人签名：</span> 
+            </div>
+            <div id="leaderTeacherSigature" style="width:200px;margin-left:200px">
+                <span> 主管老师签名：</span> 
+            </div>
+        </div>
+        <!-- <div id="pagination" v-show="!isLoading"> 
           <div id="total">
             共<span style="margin:0 5px;">{{recordsTotal}}</span>条数据
           </div>
           <div id="paginationBox">
             <a-pagination @change="changePage" v-model="current" :total="recordsTotal"   :pageSize="12" />
           </div>
-        </div>
+        </div> -->
       </div>
     </div>
   </div>
@@ -69,45 +85,89 @@
 <script>
 const columns = [
   {
-    title: "序号",
-    dataIndex: "key",
-    width: "4%",
+    title: "巡检日期",
+    dataIndex: "startTime",
+    width: "8%",
     scopedSlots: { customRender: "_id" },
     align:"center"
   },
   {
-    title: "巡查周次",
-    dataIndex: "weekNum",
+    title: "电源及照明灯情况",
+    dataIndex: " 1",
     width: "10%",
     scopedSlots: { customRender: "highLight" },
     align:"center"
   },
   {
-    title: "日期范围",
-    dataIndex: "timeRange",
-    width: "11%",
+    title: "是否有异味",
+    dataIndex: " 2",
+    width: "7%",
     scopedSlots: { customRender: "address" },
     align:"center"
   },
   {
-    title: "弱电间检查数量",
-    dataIndex: "inspectionCount",
-    width: "6%",
+    title: "室内有无杂物",
+    dataIndex: " 3",
+    width: "8%",
     scopedSlots: { customRender: "address" },
     align:"center"
   },
   {
-    title: "弱电间异常数量",
+    title: "卫生",
+    dataIndex: " 4",
+    width: "4%",
+    scopedSlots: { customRender: "address" },
+    align:"center"
+  },{
+    title: "门锁",
+    dataIndex: " ",
+    width: "4%",
+    scopedSlots: { customRender: "address" },
+    align:"center"
+  },
+    {
+    title: "异常个数",
     dataIndex: "count",
-    width: "9%",
+    width: "7%",
     scopedSlots: { customRender: "address" },
     align:"center"
   },
+//     {
+//     title: "UPS异常个数",
+//     dataIndex: "upsCount",
+//     width: "7%",
+//     scopedSlots: { customRender: "address" },
+//     align:"center"
+//   },{
+//     title: "门禁异常个数",
+//     dataIndex: "doorCount",
+//     width: "7%",
+//     scopedSlots: { customRender: "address" },
+//     align:"center"
+//   },{
+//     title: "烟雾异常个数",
+//     dataIndex: "smokeCount",
+//     width: "7%",
+//     scopedSlots: { customRender: "address" },
+//     align:"center"
+//   },{
+//     title: "温度异常个数",
+//     dataIndex: "temperatureCount",
+//     width: "7%",
+//     scopedSlots: { customRender: "address" },
+//     align:"center"
+//   },{
+//     title: "湿度异常个数",
+//     dataIndex: "humidityCount",
+//     width: "7%",
+//     scopedSlots: { customRender: "address" },
+//     align:"center"
+//   },
   {
-    title: "操作",
-    dataIndex: "",
+    title: "线路有无乱线及飞线情况存在",
+    dataIndex: " 5",
     width: "10%",
-    scopedSlots: { customRender: "operation" },
+    scopedSlots: { customRender: "address" },
     align:"center"
   }
 ];
@@ -125,10 +185,38 @@ export default {
       isLoading: true,
       current: 1,
       data:[],
-      timeScale:2
+      timeScale:2,
+      remarks:"",
+      printTitle:this.$route.query.title,
+      isPrinting:false
     };
   },
   methods: {
+    print(){
+      this.isPrinting=true;
+      let _this=this;
+      this.$nextTick(()=>{
+        console.log(this.isPrinting)
+      new Promise(function(resolve, reject){
+            //做一些异步操作
+            setTimeout(function(){
+                _this.getPdf();
+                resolve('随便什么数据');
+            }, 20);
+        }).then(()=>{
+          _this.isPrinting=false;
+          _this.$nextTick(()=>{
+            console.log(this.isPrinting)
+          })
+        });
+
+
+        
+        // setTimeout(function(){
+        //   this.isPrinting=false;
+        // },1000)
+      })
+    },
     changeTimeScale(e){
           console.log(e.target.value)
           this.timeScale=e.target.value;
@@ -191,28 +279,43 @@ export default {
         return true;
       });
     },
-    GetlowVoltageRoomStatements(page,timeScale,isSearching){
-      this.isLoading=true;
-      this.$http.toGetlowVoltageRoomStatements(page,timeScale).then(res => {
-        if (res.data.success) {
-          this.recordsTotal = res.data.recordsTotal;
-            this.data=res.data.data.map((item)=>{
-                item.weekNum="第"+item.weekNum+"周";
-                item.timeRange=item.startTime.substring(0,11) + " 至 " + item.endTime.substring(0,11);
-                return item
-            })
-            this.$nextTick(() => {
-            this.isLoading = false;
-            this.addOrder()
+    // GetlowVoltageRoomStatements(page,timeScale,isSearching){
+    //   this.isLoading=true;
+    //   this.$http.toGetlowVoltageRoomStatements(page,timeScale).then(res => {
+    //     if (res.data.success) {
+    //       this.recordsTotal = res.data.recordsTotal;
+    //         this.data=res.data.data.map((item)=>{
+    //             item.weekNum="第"+item.weekNum+"周";
+    //             item.timeRange=item.startTime.substring(0,11) + " 至 " + item.endTime.substring(0,11);
+    //             return item
+    //         })
+    //         this.$nextTick(() => {
+    //         this.isLoading = false;
+    //         this.addOrder()
+    //       });
+    //       if(isSearching){
+    //         this.current=1
+    //       }
+    //     }
+    //   });
+    // },f  
+    GetposMechineRoomStatementsDetails(){
+        this.isLoading=true;
+        this.$http.toGetposMechineRoomStatementsDetails(this.$route.query.type,this.$route.query.startTime).then((res)=>{
+            console.log(res)
+            if(res.data.success){
+                this.data=res.data.data.map((item)=>{
+                    item.startTime=item.startTime.substring(0,10);
+                    return item
+                });
+                this.$nextTick(() => {
+                this.isLoading = false;
+                // this.addOrder()
           });
-          if(isSearching){
-            this.current=1
-          }
-
-        }else {
+            }else{
               this.$message.error(res.data.errorInfo);
             }
-      });
+        })
     },
     changePage(page){
       this.page=page;
@@ -222,25 +325,12 @@ export default {
     },
     seeDetails(item){
         console.log(item)
-        this.$router.push({ path: "/lowVoltageRoomStatementsDetails", query: { title: this.printTitle,id:item.id,startTime:item.startTime.substring(0,10),type:item.type}});
-    }
-  },
-  computed:{
-    printTitle (){
-      console.log(this.timeScale)
-      switch(this.timeScale){
-        case 2:
-        return '广播系统周次巡检表';
-        case 3:
-        return '广播系统月次巡检表';
-        case 4:
-        return '广播系统年次巡检表';
-      }
     }
   },
   created() {
     // 默认请求第一页，按周统计
-    this.GetlowVoltageRoomStatements(1,2,false)
+    // this.GetlowVoltageRoomStatements(1,2,false)
+    this.GetposMechineRoomStatementsDetails()
     
   },
   mounted(){
@@ -264,18 +354,17 @@ body {
 }
 #pageWrapper {
   height: calc(100% - 50px);
-  width: 95%;
-  margin-left: 20px;
+  width: 100%;
 }
 #frame {
   height: 100%;
 }
 #searchBox {
   height: 50px;
-  width: 880px;
+  width: 1560px;
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
 }
 #statusSearch {
@@ -285,10 +374,10 @@ body {
   align-items: center;
 }
 #searchByNames {
-  display: flex;
+  /* display: flex;
   flex-direction: row;
   justify-content: space-between;
-  align-items: center;
+  align-items: center; */
 }
 #searchByNamesInput {
   display: flex;
@@ -300,9 +389,12 @@ body {
   background-color: aqua;
   padding: 10px !important;
 }
-#tableWrapper {
+#pdfDom {
   height: calc(100% - 100px);
   overflow: auto;
+  box-sizing: border-box;
+  padding:0 15px;
+  padding-top: 10px;
 }
 .spin-content {
   border: 1px solid #91d5ff;
@@ -324,5 +416,19 @@ body {
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+}
+#signatureBox{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    margin-top: 20px;
+}
+#printTitle{
+  height:56px;
+  line-height:56px;
+  text-align:center;
+  font-size:16px;
+  font-variant: normal;
 }
 </style>
