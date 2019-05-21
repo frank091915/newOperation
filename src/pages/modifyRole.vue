@@ -192,11 +192,13 @@ export default {
       // 得到有子菜单的权限id
       tempParentMenuIdArray = this.parentMenuArray
         .filter(item => {
-          if (item.ifPermitted) {
-            return true;
-          } else {
-            return false;
-          }
+            if(item.subPermissions.some((subItem)=>{
+              return subItem.ifPermitted=true;
+            })){
+              return true;
+            }else{
+              return false;
+            }
         })
         .map(item => {
           return item.id;
@@ -411,15 +413,7 @@ export default {
         });
         this.$nextTick(() => {
           // 给各个菜单添加状态
-          this.parentMenuArray = this.parentMenuArray.map(item => {
-            if (this.permissionsIdArray.includes(item.id)) {
-              item.ifPermitted = true;
-              return item;
-            } else {
-              item.ifPermitted = false;
-              return item;
-            }
-          });
+
           // 给二级目录添加状态
           this.parentMenuArray = this.parentMenuArray.map(item => {
             item.subPermissions.map(subItem => {
@@ -432,6 +426,21 @@ export default {
               }
             });
             return item;
+          });
+
+          this.$nextTick(()=>{
+              console.log(this.parentMenuArray)
+              this.parentMenuArray = this.parentMenuArray.map(item => {
+                  if(item.subPermissions.every((subItem)=>{
+                      return subItem.ifPermitted
+                    })){
+                      item.ifPermitted=true
+                    }else{
+                      item.ifPermitted=false
+                    }
+                    return item
+              });
+
           });
 
           this.aloneMenuArray = this.aloneMenuArray.map(item => {

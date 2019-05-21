@@ -394,6 +394,7 @@ body {
   overflow: auto;
   box-sizing: border-box;
   padding:0 15px;
+  padding-top: 10px;
 }
 .spin-content {
   border: 1px solid #91d5ff;

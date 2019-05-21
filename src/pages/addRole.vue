@@ -209,13 +209,15 @@ export default {
         return pre.concat([...nex.subPermissions]);
       }, []);
       // 得到所有子菜单权限
-      tempChildrenMenuIdArray = childrenMenuArray
+      tempParentMenuIdArray = this.parentMenuArray
         .filter(item => {
-          if (item.ifPermitted) {
-            return true;
-          } else {
-            return false;
-          }
+            if(item.subPermissions.some((subItem)=>{
+              return subItem.ifPermitted=true;
+            })){
+              return true;
+            }else{
+              return false;
+            }
         })
         .map(item => {
           return item.id;
