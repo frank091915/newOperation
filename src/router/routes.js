@@ -55,6 +55,7 @@ import networkStatements from "../pages/networkStatements.vue"
 import networkStatementsDetails from "../pages/networkStatementsDetails.vue"
 import serverRoomStatements from "../pages/serverRoomStatements.vue"
 import terminal from "../pages/terminal.vue"
+import warningRecordDetail from "../pages/warningRecordDetail.vue"
 // 将所有组件集中管理进行配置
 
 export default [{
@@ -545,6 +546,15 @@ export default [{
     frame: Frame,
     main: terminal,
     header: Header,
+  }
+},
+{
+  path: '/warningRecordDetail',
+  name: 'warningRecordDetail',
+  components: {
+    frame: Frame,
+    main: warningRecordDetail,
+    header: Header
   }
 }
 ]

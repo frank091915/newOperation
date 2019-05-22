@@ -130,6 +130,17 @@ const toSearchConvergeRoom = (roomId) => {
 }
 
 
+// 请求告警记录详情
+const getWarningRecordDetail = (id) => {
+  return ajax.get(
+    "/api/record/warning/" + id, {
+      headers: {
+        "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken"))
+      }
+    }
+  )
+}
+
 // 请求汇聚机房详情
 const toGetconvergeRoomDetails = (id) => {
   return ajax.get(
@@ -1111,6 +1122,7 @@ export {
   toModifyException,
   toModifyPermissionStatus,
   toGetconvergeRoomDetails,
+  getWarningRecordDetail,
   toGetLowVoltageRoomDetails,
   toGetAllExceptionList,
   toGetServerRoomList,

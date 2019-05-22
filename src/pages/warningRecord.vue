@@ -76,9 +76,17 @@
             <template v-else>{{text}}</template>
           </div>
         </template>
+        <template slot="operation" slot-scope="text, record, index">
+          <div class="editable-row-operations">
+            <a-button @click="getWarningRecordDetail(record)" type="primary" size="small">详情</a-button>
+          </div>
+        </template>
       </a-table>
       <div id="pagination" v-show="!isLoading">
-        <div id="total">共<span style="margin:0 5px;">{{recordsTotal}}</span>条数据</div>
+        <div id="total">
+          共
+          <span style="margin:0 5px;">{{recordsTotal}}</span>条数据
+        </div>
         <div id="paginationBox">
           <a-pagination
             @change="changePage"
@@ -150,17 +158,17 @@ const columns = [
     align: "center"
   },
   {
-    title: "通知人员",
-    dataIndex: "warningRecord.userName",
-    width: "10%",
-    scopedSlots: { customRender: "SerialNumber" },
-    align: "center"
-  },
-  {
     title: "备注",
     dataIndex: "warningRecord.exceptionRemark",
     width: "10%",
     scopedSlots: { customRender: "address" },
+    align: "center"
+  },
+  {
+    title: "操作",
+    dataIndex: "operation",
+    width: "10%",
+    scopedSlots: { customRender: "operation" },
     align: "center"
   }
 ];
@@ -204,6 +212,12 @@ export default {
     };
   },
   methods: {
+    getWarningRecordDetail(record) {
+      this.$router.push({
+        path: "/warningRecordDetail",
+        query: { title: "告警记录", record: record }
+      });
+    },
     handleStatusChange() {},
     filterOption(input, option) {
       return (
@@ -227,7 +241,7 @@ export default {
             isSearching
           );
         });
-      }else{
+      } else {
         this.getWarningList(
           this.page,
           deviceTypeParam,
@@ -249,7 +263,7 @@ export default {
       this.$http
         .toGetWarningRecordList(page, deviceType, type, searchName)
         .then(res => {
-          if(res.data.success){
+          if (res.data.success) {
             this.data = res.data.data;
             this.recordsTotal = res.data.recordsTotal;
             this.isLoading = false;
@@ -259,10 +273,9 @@ export default {
             this.$nextTick(() => {
               this.addOrder();
             });
-          }else {
-              this.$message.error(res.data.errorInfo);
-            }
-
+          } else {
+            this.$message.error(res.data.errorInfo);
+          }
         });
     },
     handleDeviceTypeChange() {
