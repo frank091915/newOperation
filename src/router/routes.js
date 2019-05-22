@@ -55,6 +55,7 @@ import networkStatements from "../pages/networkStatements.vue"
 import networkStatementsDetails from "../pages/networkStatementsDetails.vue"
 import serverRoomStatements from "../pages/serverRoomStatements.vue"
 import terminal from "../pages/terminal.vue"
+import displayFirst from "../pages/display-first.vue"
 // 将所有组件集中管理进行配置
 
 export default [{
@@ -544,6 +545,15 @@ export default [{
   components: {
     frame: Frame,
     main: terminal,
+    header: Header,
+  }
+},
+{
+  path: '/display/first',
+  name: 'display/first',
+  components: {
+    frame: Frame,
+    main: displayFirst,
     header: Header,
   }
 }
