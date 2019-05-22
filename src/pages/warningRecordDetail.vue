@@ -17,7 +17,7 @@
             <div class="detailParam">{{details.deviceInfo.roomName}}</div>
           </div>
           <div class="singleParamsBox">
-            <div class="detailTitle" style="margin-right:10px">{{details.deviceInfo.roomName}}编号</div>
+            <div class="detailTitle" style="margin-right:10px">编号</div>
             <div class="detailParam">{{details.deviceInfo.Code}}</div>
           </div>
           <div class="singleParamsBox" style="margin-bottom: 15px;">
