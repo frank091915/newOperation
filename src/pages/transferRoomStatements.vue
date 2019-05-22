@@ -180,7 +180,7 @@ export default {
     },
     search(isSearching) {
         this.$nextTick(()=>{
-          this.GetposMechineRoomStatements(this.page,this.timeScale,isSearching)
+          this.GettransferRoomStatements(this.page,this.timeScale,isSearching)
         })
  
     },

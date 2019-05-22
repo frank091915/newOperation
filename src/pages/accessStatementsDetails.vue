@@ -266,12 +266,12 @@ export default {
           .indexOf(input.toLowerCase()) >= 0
       );
     },
-    search(isSearching) {
-        this.$nextTick(()=>{
-          this.GetbroadcastStatementsDetails(this.page,this.timeScale,isSearching)
-        })
+    // search(isSearching) {
+    //     this.$nextTick(()=>{
+    //       this.GetbroadcastStatementsDetails(this.page,this.timeScale,isSearching)
+    //     })
  
-    },
+    // },
     addOrder() {
       var i = 1 + (this.page-1)*12;
       this.data = this.data.filter(item => {

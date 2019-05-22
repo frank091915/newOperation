@@ -318,6 +318,8 @@ const toGetinterchangerList = (page = 1, status, buildingId, searchRoom) => {
 
 
 
+
+
 // 请求角色管理列表
 const toGetRoleManageList = (currentPage) => {
   return ajax.get(
@@ -994,6 +996,29 @@ const toGetbroadcastStatementsDetails = (type, startTime) => {
 }
 
 
+// 交换机统计报表
+const toGetNetworkStatements = (page, type) => {
+  return ajax.get(
+    `/api/statistical/network?currentPage=${page}&type=${type}`, {
+      headers: {
+        "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken"))
+      }
+    }
+  )
+}
+
+// 交换机统计报表详情
+const toGetNetworkStatementsDetails = (type, startTime) => {
+  return ajax.get(
+    `/api/statistical/network/detail?type=${type}&startTime=${startTime}`, {
+      headers: {
+        "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken"))
+      }
+    }
+  )
+}
+
+
 // 用户推出
 const toSignOut = () => {
   return ajax.get(
@@ -1106,5 +1131,7 @@ export {
   toGetaccessStatements,
   toGetaccessStatementsDetails,
   toGetbroadcastStatements,
-  toGetbroadcastStatementsDetails
+  toGetbroadcastStatementsDetails,
+  toGetNetworkStatements,
+  toGetNetworkStatementsDetails
 }

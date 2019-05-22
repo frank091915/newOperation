@@ -268,7 +268,7 @@ export default {
     },
     // search(isSearching) {
     //     this.$nextTick(()=>{
-    //       this.GetlowVoltageRoomStatements(this.page,this.timeScale,isSearching)
+    //       this.GetNetworkStatementsDetails(this.page,this.timeScale,isSearching)
     //     })
  
     // },
@@ -299,9 +299,9 @@ export default {
     //     }
     //   });
     // },f  
-    GetTransferRoomStatementsDetails(){
+    GetNetworkStatementsDetails(){
         this.isLoading=true;
-        this.$http.toGetTransferRoomStatementsDetails(this.$route.query.type,this.$route.query.startTime).then((res)=>{
+        this.$http.toGetNetworkStatementsDetails(this.$route.query.type,this.$route.query.startTime).then((res)=>{
             console.log(res)
             if(res.data.success){
                 this.data=res.data.data.map((item)=>{
@@ -330,7 +330,7 @@ export default {
   created() {
     // 默认请求第一页，按周统计
     // this.GetlowVoltageRoomStatements(1,2,false)
-    this.GetTransferRoomStatementsDetails()
+    this.GetNetworkStatementsDetails()
     
   },
   mounted(){

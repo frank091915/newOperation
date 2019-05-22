@@ -51,6 +51,10 @@ import accessStatements from "../pages/accessStatements.vue"
 import accessStatementsDetails from "../pages/accessStatementsDetails.vue"
 import broadcastStatements from "../pages/broadcastStatements.vue"
 import broadcastStatementsDetails from "../pages/broadcastStatementsDetails.vue"
+import networkStatements from "../pages/networkStatements.vue"
+import networkStatementsDetails from "../pages/networkStatementsDetails.vue"
+import serverRoomStatements from "../pages/serverRoomStatements.vue"
+import terminal from "../pages/terminal.vue"
 // 将所有组件集中管理进行配置
 
 export default [{
@@ -504,6 +508,42 @@ export default [{
   components: {
     frame: Frame,
     main: broadcastStatementsDetails,
+    header: Header,
+  }
+},
+{
+  path: '/statistics/network',
+  name: 'statistics/network',
+  components: {
+    frame: Frame,
+    main: networkStatements,
+    header: Header,
+  }
+},
+{
+  path: '/networkStatementsDetails',
+  name: 'networkStatementsDetails',
+  components: {
+    frame: Frame,
+    main: networkStatementsDetails,
+    header: Header,
+  }
+},
+{
+  path: '/statistics/server',
+  name: 'statistics/server',
+  components: {
+    frame: Frame,
+    main: serverRoomStatements,
+    header: Header,
+  }
+},
+{
+  path: '/statistics/terminal',
+  name: 'statistics/terminal',
+  components: {
+    frame: Frame,
+    main: terminal,
     header: Header,
   }
 }
