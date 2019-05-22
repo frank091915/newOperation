@@ -9,15 +9,13 @@
           <img id="logo" src="../assets/sustech.png">
         </div>
         
-        <a-menu theme="dark" :selectedKeys="[currentMenuId]" mode="inline"  :openKeys="[openedMenu]">
+        <a-menu  theme="dark" :selectedKeys="[currentMenuId]" mode="inline"  :openKeys="[openedMenu]" v-for=" item in allParentMenu">
           <!-- 渲染一级菜单 -->
-          <a-menu-item v-for="item in aloneMenu"  :key="item.id" @click="toNavigate(item.path,item.title,item.id,item)">
-           
+          <a-menu-item v-if="!item.subPermissions.length"  :key="item.id" @click="toNavigate(item.path,item.title,item.id,item)">
             <span>{{item.title}}</span>
           </a-menu-item>
-
           <a-sub-menu
-            v-for="item in parentMenu" 
+            v-else
             :key="item.id"  
             @titleClick='handleSelect' 
           >
@@ -51,7 +49,7 @@ export default {
 
     // 获取侧边栏菜单数据
     this.$http.toGetAsideMenu().then((res)=>{
-      this.fullPath=
+      this.allParentMenu=res.data.data;
       this.aloneMenu=res.data.data.filter((item)=>{
         if(item.subPermissions.length===0){
           return true
@@ -67,6 +65,7 @@ export default {
         }
       })
       this.$nextTick(()=>{
+        console.log(this.allParentMenu)
           this.openedParentMenu()
       })
     });
