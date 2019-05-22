@@ -98,11 +98,23 @@
             <template v-else>{{text}}</template>
           </div>
         </template>
+        <template slot="operation" slot-scope="text, record, index">
+          <div class="editable-row-operations">
+            <a-button
+              :disabled="record.status != 1 ? true  : false "
+              @click="getControlDetail(record.SerialNumber,'广播系统')"
+              type="primary"
+              size="small"
+            >详情</a-button>
+          </div>
+        </template>
       </a-table>
     </div>
     <div id="pagination" v-show="!isLoading">
-      
-      <div id="total">共<span style="margin:0 5px;">{{recordsTotal}}</span>条数据</div>
+      <div id="total">
+        共
+        <span style="margin:0 5px;">{{recordsTotal}}</span>条数据
+      </div>
       <div id="paginationBox">
         <a-pagination @change="changePage" v-model="current" :total="recordsTotal" :pageSize="12"/>
       </div>
@@ -175,10 +187,10 @@ const columns = [
     align: "center"
   },
   {
-    title: "备注",
-    dataIndex: "remarks",
-    width: "8%",
-    scopedSlots: { customRender: "address" },
+    title: "操作",
+    dataIndex: "operation",
+    width: "10%",
+    scopedSlots: { customRender: "operation" },
     align: "center"
   }
 ];
@@ -207,7 +219,7 @@ export default {
       nullStatus: "null",
       normalStatus: 1,
       abnormalStatus: 0,
-       unknownTwo: 2,
+      unknownTwo: 2,
       unknownThree: 3,
       statusParam: "",
       buildingIdParam: "",
@@ -218,6 +230,12 @@ export default {
     };
   },
   methods: {
+    getControlDetail(ip, name) {
+      this.$router.push({
+        path: "/controlDetail",
+        query: { title: name + "异常状态详情", ip: ip, name: name }
+      });
+    },
     handleStatusChange() {
       // this.isLoading = true;
       // this.statusParam = this.status === "null" ? null : this.status;
@@ -285,7 +303,7 @@ export default {
             isSearching
           );
         });
-      }else{
+      } else {
         this.GetBroadcastList(
           this.page,
           statusParam,
@@ -294,8 +312,6 @@ export default {
           isSearching
         );
       }
-
-
     },
     addOrder() {
       var i = 1 + (this.page - 1) * 12;
@@ -319,9 +335,9 @@ export default {
               this.isLoading = false;
               this.addOrder();
             });
-          }else {
-              this.$message.error(res.data.errorInfo);
-            }
+          } else {
+            this.$message.error(res.data.errorInfo);
+          }
         });
     },
     changePage(page) {

@@ -99,11 +99,23 @@
               <template v-else>{{text}}</template>
             </div>
           </template>
+          <template slot="operation" slot-scope="text, record, index">
+            <div class="editable-row-operations">
+              <a-button
+                :disabled="record.status != 1 ? true  : false "
+                @click="getControlDetail(record.SerialNumber,'圈存机')"
+                type="primary"
+                size="small"
+              >详情</a-button>
+            </div>
+          </template>
         </a-table>
       </div>
       <div id="pagination" v-show="!isLoading">
-                    
-        <div id="total">共<span style="margin:0 5px;">{{recordsTotal}}</span>条数据</div>
+        <div id="total">
+          共
+          <span style="margin:0 5px;">{{recordsTotal}}</span>条数据
+        </div>
         <div id="paginationBox">
           <a-pagination
             @change="changePage"
@@ -183,10 +195,10 @@ const columns = [
     align: "center"
   },
   {
-    title: "备注",
-    dataIndex: "remarks",
-    width: "8%",
-    scopedSlots: { customRender: "address" },
+    title: "操作",
+    dataIndex: "operation",
+    width: "10%",
+    scopedSlots: { customRender: "operation" },
     align: "center"
   }
 ];
@@ -226,6 +238,12 @@ export default {
     };
   },
   methods: {
+    getControlDetail(ip, name) {
+      this.$router.push({
+        path: "/controlDetail",
+        query: { title: name + "异常状态详情", ip: ip, name: name }
+      });
+    },
     handleStatusChange() {
       this.statusParam = this.status === "null" ? null : this.status;
       // console.log(this.statusParam)
@@ -275,7 +293,12 @@ export default {
           this.buildingId === "全部" || this.buildingId === "null"
             ? null
             : this.buildingId;
-      console.log(statusParam,this.status,this.status === "全部",this.status === "null")
+      console.log(
+        statusParam,
+        this.status,
+        this.status === "全部",
+        this.status === "null"
+      );
       if (isSearching) {
         this.page = 1;
         this.$nextTick(() => {
@@ -287,7 +310,7 @@ export default {
             isSearching
           );
         });
-      }else{
+      } else {
         this.GetTransferList(
           this.page,
           statusParam,
@@ -296,8 +319,6 @@ export default {
           isSearching
         );
       }
-
-
     },
     addOrder() {
       var i = 1 + (this.page - 1) * 12;
@@ -321,9 +342,9 @@ export default {
             }
             this.recordsTotal = res.data.recordsTotal;
             this.isLoading = false;
-          }else {
-              this.$message.error(res.data.errorInfo);
-            }
+          } else {
+            this.$message.error(res.data.errorInfo);
+          }
         });
     },
     changePage(page) {

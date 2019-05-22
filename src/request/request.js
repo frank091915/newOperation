@@ -140,6 +140,16 @@ const getWarningRecordDetail = (id) => {
     }
   )
 }
+// 请求控制实时状态详情
+const getControlDetail = (iP, deviceType) => {
+  return ajax.get(
+    "/api/control/detail/" + iP + "?deviceTypeEnum=" + deviceType, {
+      headers: {
+        "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken"))
+      }
+    }
+  )
+}
 
 // 请求汇聚机房详情
 const toGetconvergeRoomDetails = (id) => {
@@ -1145,5 +1155,6 @@ export {
   toGetbroadcastStatements,
   toGetbroadcastStatementsDetails,
   toGetNetworkStatements,
-  toGetNetworkStatementsDetails
+  toGetNetworkStatementsDetails,
+  getControlDetail
 }

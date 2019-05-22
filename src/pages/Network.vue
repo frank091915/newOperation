@@ -98,10 +98,22 @@
             <template v-else>{{text}}</template>
           </div>
         </template>
+        <template slot="operation" slot-scope="text, record, index">
+          <div class="editable-row-operations">
+            <a-button
+              :disabled="record.status != 1 ? true  : false "
+              @click="getControlDetail(record.SerialNumber,'交换机')"
+              type="primary"
+              size="small"
+            >详情</a-button>
+          </div>
+        </template>
       </a-table>
       <div id="pagination" v-show="!isLoading">
-        
-        <div id="total">共<span style="margin:0 5px;">{{recordsTotal}}</span>条数据</div>
+        <div id="total">
+          共
+          <span style="margin:0 5px;">{{recordsTotal}}</span>条数据
+        </div>
         <div id="paginationBox">
           <a-pagination
             @change="changePage"
@@ -181,10 +193,10 @@ const columns = [
     align: "center"
   },
   {
-    title: "备注",
-    dataIndex: "remarks",
-    width: "8%",
-    scopedSlots: { customRender: "address" },
+    title: "操作",
+    dataIndex: "operation",
+    width: "10%",
+    scopedSlots: { customRender: "operation" },
     align: "center"
   }
 ];
@@ -224,6 +236,12 @@ export default {
     };
   },
   methods: {
+    getControlDetail(ip, name) {
+      this.$router.push({
+        path: "/controlDetail",
+        query: { title: name + "异常状态详情", ip: ip, name: name }
+      });
+    },
     handleStatusChange() {
       this.statusParam = this.status === "null" ? null : this.status;
       // this.isLoading = true;
@@ -290,7 +308,7 @@ export default {
             isSearching
           );
         });
-      }else{
+      } else {
         this.GetinterchangerList(
           this.page,
           this.statusParam,
@@ -299,7 +317,6 @@ export default {
           isSearching
         );
       }
-
     },
     addOrder() {
       var i = 1 + (this.page - 1) * 12;
@@ -330,9 +347,9 @@ export default {
             this.$nextTick(() => {
               this.addOrder();
             });
-          }else {
-              this.$message.error(res.data.errorInfo);
-            }
+          } else {
+            this.$message.error(res.data.errorInfo);
+          }
         });
     },
     changePage(page) {

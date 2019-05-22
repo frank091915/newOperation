@@ -94,11 +94,23 @@
             <template v-else>{{text}}</template>
           </div>
         </template>
+        <template slot="operation" slot-scope="text, record, index">
+          <div class="editable-row-operations">
+            <a-button
+              :disabled="record.status != 1 ? true  : false "
+              @click="getControlDetail(record.SerialNumber,'门禁控制器')"
+              type="primary"
+              size="small"
+            >详情</a-button>
+          </div>
+        </template>
       </a-table>
     </div>
     <div id="pagination" v-show="!isLoading">
-      
-      <div id="total">共<span style="margin:0 5px;">{{recordsTotal}}</span>条数据</div>
+      <div id="total">
+        共
+        <span style="margin:0 5px;">{{recordsTotal}}</span>条数据
+      </div>
       <div id="paginationBox">
         <a-pagination
           @change="changePage"
@@ -184,10 +196,10 @@ const columns = [
     align: "center"
   },
   {
-    title: "备注",
-    dataIndex: "remarks",
-    width: "6%",
-    scopedSlots: { customRender: "address" },
+    title: "操作",
+    dataIndex: "operation",
+    width: "10%",
+    scopedSlots: { customRender: "operation" },
     align: "center"
   }
 ];
@@ -216,7 +228,7 @@ export default {
       nullStatus: "null",
       normalStatus: 1,
       abnormalStatus: 0,
-       unknownTwo: 2,
+      unknownTwo: 2,
       unknownThree: 3,
       statusParam: "",
       buildingIdParam: "",
@@ -227,6 +239,12 @@ export default {
     };
   },
   methods: {
+    getControlDetail(ip, name) {
+      this.$router.push({
+        path: "/controlDetail",
+        query: { title: name + "异常状态详情", ip: ip, name: name }
+      });
+    },
     handleStatusChange() {
       this.statusParam = this.status === "null" ? null : this.status;
       // this.isLoading=true;
@@ -289,7 +307,7 @@ export default {
           this.searchParam,
           isSearching
         );
-      }else{
+      } else {
         this.GetAccessList(
           this.page,
           statusParam,
@@ -298,7 +316,6 @@ export default {
           isSearching
         );
       }
-
     },
     addOrder() {
       var i = 1 + (this.page - 1) * 12;
@@ -345,9 +362,9 @@ export default {
     this.$http.toGetBuildingList().then(res => {
       if (res.data.success) {
         this.allBuildings = res.data.data;
-      }else {
-              this.$message.error(res.data.errorInfo);
-            }
+      } else {
+        this.$message.error(res.data.errorInfo);
+      }
     });
   },
   mounted() {
