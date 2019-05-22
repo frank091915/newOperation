@@ -131,7 +131,7 @@ export default {
   methods: {
     changeTimeScale(e){
           console.log(e.target.value)
-          this.timeScale=e.target.value;
+          this.timeScale=Number.parseInt(e.target.value);
           this.page=1;
           this.$nextTick(()=>{
               this.search(true)
@@ -230,11 +230,11 @@ export default {
       console.log(this.timeScale)
       switch(this.timeScale){
         case 2:
-        return '广播系统周次巡检表';
+        return '弱电间周次巡检表';
         case 3:
-        return '广播系统月次巡检表';
+        return '弱电间月次巡检表';
         case 4:
-        return '广播系统年次巡检表';
+        return '弱电间年次巡检表';
       }
     }
   },

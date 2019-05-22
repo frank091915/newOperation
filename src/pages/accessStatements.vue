@@ -90,14 +90,14 @@ const columns = [
     align:"center"
   },
   {
-    title: "弱电间检查数量",
+    title: "门禁控制器检查数量",
     dataIndex: "inspectionCount",
     width: "6%",
     scopedSlots: { customRender: "address" },
     align:"center"
   },
   {
-    title: "弱电间异常数量",
+    title: "门禁控制器异常数量",
     dataIndex: "count",
     width: "9%",
     scopedSlots: { customRender: "address" },
@@ -125,15 +125,16 @@ export default {
       isLoading: true,
       current: 1,
       data:[],
-      timeScale:2
+      timeScale:2,
+      printTitle:this.printTitle
     };
   },
   methods: {
     changeTimeScale(e){
-          console.log(e.target.value)
-          this.timeScale=e.target.value;
+          this.timeScale=Number.parseInt(e.target.value) ;
           this.page=1;
           this.$nextTick(()=>{
+              console.log(this.timeScale)
               this.search(true)
           })
       },
@@ -182,7 +183,6 @@ export default {
         this.$nextTick(()=>{
           this.GetaccessStatements(this.page,this.timeScale,isSearching)
         })
- 
     },
     addOrder() {
       var i = 1 + (this.page-1)*12;
@@ -222,11 +222,11 @@ export default {
     },
     seeDetails(item){
         console.log(item)
-        this.$router.push({ path: "/accessStatementsDetails", query: { title: this.printTitle,id:item.id,startTime:item.startTime.substring(0,10),type:item.type}});
-    }
-  },
-  computed:{
-    printTitle (){
+        let printTitle=this.Title();
+        console.log(printTitle)
+        this.$router.push({ path: "/accessStatementsDetails", query: { title: printTitle,id:item.id,startTime:item.startTime.substring(0,10),type:item.type}});
+    },
+    Title (){
       console.log(this.timeScale)
       switch(this.timeScale){
         case 2:
@@ -238,6 +238,19 @@ export default {
       }
     }
   },
+  // computed:{
+  //   printTitle (){
+  //     console.log(this.timeScale)
+  //     switch(this.timeScale){
+  //       case '2':
+  //       return '门禁控制器周次巡检表';
+  //       case '3':
+  //       return '门禁控制器月次巡检表';
+  //       case '4':
+  //       return '门禁控制器年次巡检表';
+  //     }
+  //   }
+  // },
   created() {
     // 默认请求第一页，按周统计
     this.GetaccessStatements(1,2,false)

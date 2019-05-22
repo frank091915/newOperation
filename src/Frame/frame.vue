@@ -9,9 +9,9 @@
           <img id="logo" src="../assets/sustech.png">
         </div>
         
-        <a-menu  theme="dark" :selectedKeys="[currentMenuId]" mode="inline"  :openKeys="[openedMenu]" v-for=" item in allParentMenu">
+        <a-menu  theme="dark" :selectedKeys="[currentMenuId]" mode="inline"  :openKeys="[openedMenu]" v-for=" item in allParentMenu" :key="item.path">
           <!-- 渲染一级菜单 -->
-          <a-menu-item v-if="!item.subPermissions.length"  :key="item.id" @click="toNavigate(item.path,item.title,item.id,item)">
+          <a-menu-item v-if="!item.subPermissions.length"  :key="item.path" @click="toNavigate(item.path,item.title,item.id,item)">
             <span>{{item.title}}</span>
           </a-menu-item>
           <a-sub-menu
@@ -65,7 +65,7 @@ export default {
         }
       })
       this.$nextTick(()=>{
-        console.log(this.allParentMenu)
+
           this.openedParentMenu()
       })
     });
@@ -76,7 +76,7 @@ export default {
   },
   methods:{
     toNavigate(path,title,menuId,item){
-      console.log(path)
+      // console.log(path)
       // 获取需要的路径字符串
       this.currentMenuId=menuId;
       let processedPath=path.slice(0,(path.length-3)).split("/").pop();

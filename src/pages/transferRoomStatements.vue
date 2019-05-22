@@ -90,14 +90,14 @@ const columns = [
     align:"center"
   },
   {
-    title: "弱电间检查数量",
+    title: "圈存机检查数量",
     dataIndex: "inspectionCount",
     width: "6%",
     scopedSlots: { customRender: "address" },
     align:"center"
   },
   {
-    title: "弱电间异常数量",
+    title: "圈存机异常数量",
     dataIndex: "count",
     width: "9%",
     scopedSlots: { customRender: "address" },
@@ -131,7 +131,7 @@ export default {
   methods: {
     changeTimeScale(e){
           console.log(e.target.value)
-          this.timeScale=e.target.value;
+          this.timeScale=Number.parseInt(e.target.value);
           this.page=1;
           this.$nextTick(()=>{
               this.search(true)
