@@ -104,10 +104,20 @@ export default {
       temperatureList: [],
       dataList:[],
       showCharts:true,
+      timer:null
     };
   },
   created() {
     this.getData();
+    this.timer=setInterval(()=>{
+      this.getData()
+    },5000)
+  },
+  beforeRouteLeave (to, from, next) {
+    // 导航离开该组件的对应路由时调用
+    // 可以访问组件实例 `this`
+    clearInterval(this.timer)
+    next()
   },
   methods: {
     color(type, status) {

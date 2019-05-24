@@ -1039,6 +1039,41 @@ const toGetNetworkStatementsDetails = (type, startTime) => {
   )
 }
 
+// 请求行政楼等（第一张地图）位置展示
+const toGetdisplayFirst = () => {
+  return ajax.get(
+    "/api/display/first", {
+      headers: {
+        "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken"))
+      }
+    }
+  )
+}
+
+// 请求荔枝园等（第二张地图）位置展示
+const toGetdisplaySecond = () => {
+  return ajax.get(
+    "/api/display/second", {
+      headers: {
+        "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken"))
+      }
+    }
+  )
+}
+
+
+// 请求书院等（第三张地图）位置展示
+const toGetdisplayThird = () => {
+  return ajax.get(
+    "/api/display/third", {
+      headers: {
+        "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken"))
+      }
+    }
+  )
+}
+
+
 
 // 用户推出
 const toSignOut = () => {
@@ -1156,5 +1191,11 @@ export {
   toGetbroadcastStatementsDetails,
   toGetNetworkStatements,
   toGetNetworkStatementsDetails,
+<<<<<<< HEAD
   getControlDetail
+=======
+  toGetdisplayFirst,
+  toGetdisplaySecond,
+  toGetdisplayThird
+>>>>>>> 42967a6f6caf833f538a7b1a5a139cfff709341e
 }
