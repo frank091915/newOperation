@@ -1,7 +1,7 @@
 <template>
     <div id="main">
         <div id="imgWrapper" :style="styleObject">
-            <img src="../../static/assets/displayFirst.png" alt="行政楼、教学楼、图书馆" style="width:100%;height:100%">
+            <img src="../../static/assets/displayThird.png" alt="行政楼、教学楼、图书馆" style="width:100%;height:100%">
             <div 
                  @click.stop="selectBuiding(item,$event)" 
                  v-bind:class="['mark',buildingColor(item.status)]" 
@@ -38,7 +38,7 @@
                     </div>
             </div>
             </div>
-            <div class="tips" style="position:absolute;top:350px;left:760px;">
+            <div class="tips" style="position:absolute;top:350px;left:850px;">
                 <ul style="width:200px">
                     <li class="tipWrapper"><div class="tipImg" style="background-color:#e60f2d"></div><div class="tipWords">故障+异常</div></li>
                     <li class="tipWrapper"><div class="tipImg" style="background-color:#FFFF00"></div><div class="tipWords">故障</div></li>
@@ -175,7 +175,6 @@ export default {
         },
         showRoom(rooms,floorId){
             // console.log(floorId)
-
             if(!rooms.length){
                 this.hasRoom=false;
                 return
@@ -229,7 +228,7 @@ export default {
     created(){
         document.addEventListener('click',this.clickOutside)
 
-        this.$http.toGetdisplayFirst().then((res)=>{
+        this.$http.toGetdisplayThird().then((res)=>{
             // console.log(res)
             if(res.data.success){
                 this.buildingData=res.data.data.map((item)=>{
@@ -284,7 +283,7 @@ export default {
         opacity: 0 !important;
     }
     .floorDisplay{
-        min-width: 120px;
+        min-width: 138px;
         min-height:20px;
         font-size: 12px;
         position: absolute;
@@ -300,6 +299,7 @@ export default {
         border: 1px solid black;
         /* border-right: none; */
         position: relative;
+        z-index: 100;
     }
     .floorDisplay ul li{
         /* position: relative; */

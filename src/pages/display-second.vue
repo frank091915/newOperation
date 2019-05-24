@@ -1,7 +1,7 @@
 <template>
     <div id="main">
         <div id="imgWrapper" :style="styleObject">
-            <img src="../../static/assets/displayFirst.png" alt="行政楼、教学楼、图书馆" style="width:100%;height:100%">
+            <img src="../../static/assets/displaySecond.png" alt="行政楼、教学楼、图书馆" style="width:100%;height:100%">
             <div 
                  @click.stop="selectBuiding(item,$event)" 
                  v-bind:class="['mark',buildingColor(item.status)]" 
@@ -229,7 +229,7 @@ export default {
     created(){
         document.addEventListener('click',this.clickOutside)
 
-        this.$http.toGetdisplayFirst().then((res)=>{
+        this.$http.toGetdisplaySecond().then((res)=>{
             // console.log(res)
             if(res.data.success){
                 this.buildingData=res.data.data.map((item)=>{
@@ -284,7 +284,7 @@ export default {
         opacity: 0 !important;
     }
     .floorDisplay{
-        min-width: 120px;
+        min-width: 110px;
         min-height:20px;
         font-size: 12px;
         position: absolute;

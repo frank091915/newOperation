@@ -56,6 +56,8 @@ import networkStatementsDetails from "../pages/networkStatementsDetails.vue"
 import serverRoomStatements from "../pages/serverRoomStatements.vue"
 import terminal from "../pages/terminal.vue"
 import displayFirst from "../pages/display-first.vue"
+import displaySecond from "../pages/display-second.vue"
+import displayThird from "../pages/display-third.vue"
 // 将所有组件集中管理进行配置
 
 export default [{
@@ -554,6 +556,24 @@ export default [{
   components: {
     frame: Frame,
     main: displayFirst,
+    header: Header,
+  }
+},
+{
+  path: '/display/second',
+  name: 'display/second',
+  components: {
+    frame: Frame,
+    main: displaySecond,
+    header: Header,
+  }
+},
+{
+  path: '/display/third',
+  name: 'display/third',
+  components: {
+    frame: Frame,
+    main: displayThird,
     header: Header,
   }
 }

@@ -1029,6 +1029,30 @@ const toGetdisplayFirst = () => {
   )
 }
 
+// 请求荔枝园等（第二张地图）位置展示
+const toGetdisplaySecond = () => {
+  return ajax.get(
+    "/api/display/second", {
+      headers: {
+        "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken"))
+      }
+    }
+  )
+}
+
+
+// 请求书院等（第三张地图）位置展示
+const toGetdisplayThird = () => {
+  return ajax.get(
+    "/api/display/third", {
+      headers: {
+        "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken"))
+      }
+    }
+  )
+}
+
+
 
 // 用户推出
 const toSignOut = () => {
@@ -1145,5 +1169,7 @@ export {
   toGetbroadcastStatementsDetails,
   toGetNetworkStatements,
   toGetNetworkStatementsDetails,
-  toGetdisplayFirst
+  toGetdisplayFirst,
+  toGetdisplaySecond,
+  toGetdisplayThird
 }
