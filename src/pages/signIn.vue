@@ -124,6 +124,12 @@ export default {
       this.$message.error("登录失败，请重新登录");
     }
   },
+  mounted(){
+    console.log(window.location.search)
+    if(window.location.search=='?invalidToken'){
+      alert('登录失效，请重新登录')
+    }
+  },
   computed: {
     login: () => {
       return "lalala";

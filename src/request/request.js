@@ -1,6 +1,66 @@
 import axios from "axios"
 import qs from 'qs';
 
+import {
+  Affix,
+  Anchor,
+  AutoComplete,
+  Alert,
+  Avatar,
+  BackTop,
+  Badge,
+  Breadcrumb,
+  Button,
+  Calendar,
+  Card,
+  Collapse,
+  Carousel,
+  Cascader,
+  Checkbox,
+  Col,
+  DatePicker,
+  Divider,
+  Dropdown,
+  Form,
+  Icon,
+  Input,
+  InputNumber,
+  Layout,
+  List,
+  LocaleProvider,
+  message,
+  Menu,
+  Modal,
+  notification,
+  Pagination,
+  Popconfirm,
+  Popover,
+  Progress,
+  Radio,
+  Rate,
+  Row,
+  Select,
+  Slider,
+  Spin,
+  Steps,
+  Switch,
+  Table,
+  Transfer,
+  Tree,
+  TreeSelect,
+  Tabs,
+  Tag,
+  TimePicker,
+  Timeline,
+  Tooltip,
+  // Mention,
+  Upload,
+  // version,
+  Drawer,
+  Skeleton,
+  Comment,
+  ConfigProvider,
+} from 'ant-design-vue';
 
 const ajax = axios.create({
   baseURL: "http://127.0.0.1:8181"
@@ -1093,11 +1153,12 @@ ajax.interceptors.request.use((config) => {
 
 
 ajax.interceptors.response.use((config) => {
+  console.log(config)
   if (!config.data.success) {
-    if (config.data.httpCode == 401) {
+    if (config.data.httpCode == '401') {
       window.sessionStorage.removeItem('operationToken')
-      alert("登录已失效，请重新登录");
-      window.location.href = "/"
+
+      window.location.href = "/signIn?invalidToken"
       return config
     } else {
       return config
@@ -1105,6 +1166,7 @@ ajax.interceptors.response.use((config) => {
   } else {
     return config
   }
+  return config
 })
 
 
