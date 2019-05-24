@@ -26,7 +26,7 @@
       >
         <div class="imgWrapper">
           <img
-            :src="color(item.statusDescription)"
+            :src="color(item.status)"
             @click="toShowDetails(item.Id)"
             style="cursor:pointer"
           >
@@ -86,11 +86,11 @@ export default {
     },
     color(status) {
       switch (status) {
-        case "异常":
+        case 0:
           return "../../static/assets/lowVoltageRoomYellow.png";
-        case "正常":
+        case 1:
           return "../../static/assets/lowVoltageRoomGreen.png";
-        case "故障":
+        case -1:
           return "../../static/assets/lowVoltageRoomRed.png";
       }
     },
