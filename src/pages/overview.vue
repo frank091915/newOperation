@@ -99,7 +99,13 @@ export default {
                 shadowBlur: 10,
                 shadowOffsetX: 0,
                 shadowColor: "rgba(30, 144, 255，0.5)"
-              }
+              },
+              normal:{ 
+                color: function (params){
+                      var colorList = ['#0c9615','#c23531','#d48265','rgb(178,58,238)','rgb(54,100,139)'];
+                    return colorList[params.dataIndex];
+                    }
+              },
             },
             // 设置值域的那指向线
             labelLine: {
@@ -195,8 +201,14 @@ export default {
               emphasis:{
                 shadowBlur: 10,
                 shadowOffsetX: 0,
-                shadowColor: "rgba(30, 144, 255，0.5)"
-              }
+                shadowColor: "rgba(30, 144, 255,0.5)"
+              },
+              normal:{ 
+                color: function (params){
+                    var colorList = ['#0c9615','#c23531','#d48265','rgb(178,58,238)','rgb(54,100,139)'];
+                    return colorList[params.dataIndex];
+                    }
+              },
             },
             // 设置值域的那指向线
             labelLine:{
@@ -308,7 +320,13 @@ export default {
                 shadowBlur: 10,
                 shadowOffsetX: 0,
                 shadowColor: "rgba(30, 144, 255，0.5)"
-              }
+              },
+              normal:{ 
+                color: function (params){
+                    var colorList = ['#07820c','#c23531','#d48265','#af8e10'];
+                    return colorList[params.dataIndex];
+                    }
+              },
             },
             // 设置值域的那指向线
             labelLine: {

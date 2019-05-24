@@ -1153,7 +1153,7 @@ ajax.interceptors.request.use((config) => {
 
 
 ajax.interceptors.response.use((config) => {
-  console.log(config)
+
   if (!config.data.success) {
     if (config.data.httpCode == '401') {
       window.sessionStorage.removeItem('operationToken')
@@ -1166,7 +1166,7 @@ ajax.interceptors.response.use((config) => {
   } else {
     return config
   }
-  return config
+
 })
 
 

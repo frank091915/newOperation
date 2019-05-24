@@ -40,10 +40,10 @@
             </div>
             <div class="tips" style="position:absolute;top:350px;left:760px;">
                 <ul style="width:200px">
-                    <li class="tipWrapper"><div class="tipImg" style="background-color:#e60f2d"></div><div class="tipWords">故障+异常</div></li>
-                    <li class="tipWrapper"><div class="tipImg" style="background-color:#FFFF00"></div><div class="tipWords">故障</div></li>
-                    <li class="tipWrapper"><div class="tipImg" style="background-color:#CDC9C9"></div><div class="tipWords">异常</div></li>
-                    <li class="tipWrapper"><div class="tipImg" style="background-color:#C0FF3E"></div><div class="tipWords">正常</div></li>
+                    <li class="tipWrapper"><div class="tipImg" style="background-color:#D81E06"></div><div class="tipWords"><span>故障 + 异常</span></div></li>
+                    <li class="tipWrapper"><div class="tipImg" style="background-color:rgb(255, 122, 0)"></div><div class="tipWords">故障</div></li>
+                    <li class="tipWrapper"><div class="tipImg" style="background-color:#FEDE00"></div><div class="tipWords">异常</div></li>
+                    <li class="tipWrapper"><div class="tipImg" style="background-color:rgb(103, 227, 0)"></div><div class="tipWords">正常</div></li>
                 </ul>
             </div>
         </div>
@@ -114,9 +114,9 @@ export default {
                 case -2:
                 return 'buildingRed';
                 case -1:
-                return 'buildingYellow';
-                case 0:
                 return 'buildingGrey';
+                case 0:
+                return 'buildingYellow';
                 case 1:
                 return 'buildingGreen';
                 case undefined:
@@ -136,9 +136,9 @@ export default {
                 case -2:
                 return 'buildingRed';
                 case -1:
-                return 'buildingYellow';
-                case 0:
                 return 'buildingGrey';
+                case 0:
+                return 'buildingYellow';
                 case 1:
                 return 'buildingGreen';
                 case undefined:
@@ -269,16 +269,16 @@ export default {
         margin-right: 10px;
     }
     .buildingGreen{
-        background-color:#C0FF3E
+        background-color:rgb(103, 227, 0)
     }
     .buildingGrey{
-        background-color:#CDC9C9
+        background-color:rgb(255, 122, 0)
     }
     .buildingRed{
-        background-color:#e60f2d
+        background-color:#D81E06
     }
     .buildingYellow{
-        background-color:#FFFF00
+        background-color:#FEDE00
     }
     .buildingTransperant{
         opacity: 0 !important;
