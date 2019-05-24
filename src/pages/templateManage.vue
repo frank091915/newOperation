@@ -68,13 +68,6 @@ const columns = [
     align: "center"
   },
   {
-    title: "异常类型",
-    dataIndex: "exceptionId",
-    width: "8%",
-    scopedSlots: { customRender: "exceptionId" },
-    align: "center"
-  },
-  {
     title: "异常类型描述",
     dataIndex: "exceptionDescription",
     width: "8%",

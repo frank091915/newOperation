@@ -173,7 +173,9 @@ export default {
           });
           this.recordsTotal = res.data.recordsTotal;
           this.isLoading = false;
-          this.$nextTick(() => {});
+          this.$nextTick(() => {
+            this.addOrder()
+          });
         } else {
           this.$message.error(res.data.errorInfo);
         }
@@ -184,7 +186,14 @@ export default {
       this.$nextTick(() => {
         this.getBuildingPositionList();
       });
-    }
+    },
+    addOrder() {
+      var i = 1 + (this.page - 1) * 12;
+      this.data = this.data.filter(item => {
+        item["key"] = i++;
+        return true;
+      });
+    },
   },
   created() {
     this.getBuildingPositionList();
@@ -238,7 +247,6 @@ body {
 }
 #tableWrapper {
   height: calc(100% - 100px);
-  overflow: auto;
 }
 #addButton {
   display: flex;
