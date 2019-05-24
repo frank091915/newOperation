@@ -7,7 +7,7 @@
                  v-bind:class="['mark',buildingColor(item.status)]" 
                  v-for="item in buildingData" 
                  :key="item.buildingId" 
-                 :style="{width:'30px',height:'30px',top:item.yPosition*0.65 +'px',left:item.xPosition*0.65 +'px'}"
+                 :style="{width:'30px',height:'30px',top:item.yPosition*0.55 +'px',left:item.xPosition*0.55 +'px'}"
             >
             <div >
                     <!-- <span>mark</span>  -->
@@ -81,8 +81,8 @@ export default {
     data(){
         return {
             styleObject:{
-                width:1197*0.65+'px',
-                height:1411*0.65 + 'px',
+                width:1197*0.55+'px',
+                height:1411*0.55 + 'px',
                 margin:'0 auto',
                 position:'relative',
             },
