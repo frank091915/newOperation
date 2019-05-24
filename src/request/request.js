@@ -1191,11 +1191,8 @@ export {
   toGetbroadcastStatementsDetails,
   toGetNetworkStatements,
   toGetNetworkStatementsDetails,
-<<<<<<< HEAD
-  getControlDetail
-=======
+  getControlDetail,
   toGetdisplayFirst,
   toGetdisplaySecond,
   toGetdisplayThird
->>>>>>> 42967a6f6caf833f538a7b1a5a139cfff709341e
 }
