@@ -239,6 +239,7 @@ export default {
   },
   methods: {
     getControlDetail(ip, name) {
+      console.log(ip)
       this.$router.push({
         path: "/controlDetail",
         query: { title: name + "异常状态详情", ip: ip, name: name }

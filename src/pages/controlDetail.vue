@@ -130,6 +130,9 @@ export default {
     if (this.name == "交换机") {
       this.deviceType = "NKD_NETWORK_DEVICE";
     }
+    if (this.name == "服务器") {
+      this.deviceType = "NKD_SERVER_DEVICE";
+    }
 
     this.$http.getControlDetail(this.ip, this.deviceType).then(res => {
       if (res.data.success) {

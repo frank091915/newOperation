@@ -76,6 +76,16 @@
             <template v-else>{{text}}</template>
           </div>
         </template>
+        <template slot="operation" slot-scope="text, record, index">
+            <div class="editable-row-operations">
+              <a-button
+                :disabled="record.status != 1 ? true  : false "
+                @click="getControlDetail(record.SerialNumber,'服务器')"
+                type="primary"
+                size="small"
+              >详情</a-button>
+            </div>
+          </template>
       </a-table>
       <div id="pagination" v-show="!isLoading">
         <div id="total"><span>共</span> {{recordsTotal}} <span>条数据</span> </div>
@@ -158,10 +168,10 @@ const columns = [
     align: "center"
   },
   {
-    title: "备注",
+    title: "操作",
     dataIndex: "remarks",
     width: "10%",
-    scopedSlots: { customRender: "address" },
+    scopedSlots: { customRender: "operation" },
     align: "center"
   }
 ];
@@ -236,6 +246,13 @@ export default {
       //     } else {
       //     }
       //   });
+    },
+    getControlDetail(ip, name) {
+      console.log(ip)
+      this.$router.push({
+        path: "/controlDetail",
+        query: { title: name + "异常状态详情", ip: ip, name: name }
+      });
     },
     filterOption(input, option) {
       return (
