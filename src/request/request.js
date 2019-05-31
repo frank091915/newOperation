@@ -298,7 +298,7 @@ const toGetPosMechineList = (page, status, buildingId, searchRoom) => {
 // 请求服务器列表
 const toGetServerRoomList = (page, status, buildingId, searchRoom) => {
 
-  let statusQuery = status ? `&status=${status}` : "",
+  let statusQuery = status === undefined || status === null ? "" : `&status=${status}`,
     buildingIdQuery = buildingId ? `&buildingId=${buildingId}` : "",
     searchRoomQuery = searchRoom ? `&searchRoom=${searchRoom}` : "";
   return ajax.get(
@@ -1099,6 +1099,30 @@ const toGetNetworkStatementsDetails = (type, startTime) => {
   )
 }
 
+
+// 服务器统计报表
+const toGetServerStatements = (page, type) => {
+  return ajax.get(
+    `/api/statistical/server?currentPage=${page}&type=${type}`, {
+      headers: {
+        "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken"))
+      }
+    }
+  )
+}
+
+// 交换机统计报表详情
+const toGetServerStatementsDetails = (type, startTime) => {
+  return ajax.get(
+    `/api/statistical/server/detail?type=${type}&startTime=${startTime}`, {
+      headers: {
+        "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken"))
+      }
+    }
+  )
+}
+
+
 // 请求行政楼等（第一张地图）位置展示
 const toGetdisplayFirst = () => {
   return ajax.get(
@@ -1256,5 +1280,7 @@ export {
   getControlDetail,
   toGetdisplayFirst,
   toGetdisplaySecond,
-  toGetdisplayThird
+  toGetdisplayThird,
+  toGetServerStatements,
+  toGetServerStatementsDetails
 }

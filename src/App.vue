@@ -29,8 +29,8 @@
 }
 #main {
   flex: 1;
-  position: fixed;
-  left: 260px;
+  /* position: fixed;
+  left: 260px; */
   width: calc(100% - 260px );
   height: 100%;
 }

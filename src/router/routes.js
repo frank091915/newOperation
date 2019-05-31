@@ -60,6 +60,7 @@ import controlDetail from "../pages/controlDetail.vue"
 import displayFirst from "../pages/display-first.vue"
 import displaySecond from "../pages/display-second.vue"
 import displayThird from "../pages/display-third.vue"
+import serverRoomStatementsDetails from "../pages/serverRoomStatementsDetails.vue"
 // 将所有组件集中管理进行配置
 
 export default [{
@@ -593,6 +594,15 @@ export default [{
   components: {
     frame: Frame,
     main: displayThird,
+    header: Header,
+  }
+},
+{
+  path: '/serverRoomStatementsDetails',
+  name: 'serverRoomStatementsDetails',
+  components: {
+    frame: Frame,
+    main: serverRoomStatementsDetails,
     header: Header,
   }
 }

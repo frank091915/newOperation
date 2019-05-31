@@ -57,7 +57,6 @@
         :columns="columns"
         :dataSource="data"
         :pagination="false"
-        size="small"
         bordered
         :scroll="{y:750}"
         :loading="isLoading"
@@ -78,8 +77,8 @@
           </div>
         </template>
       </a-table>
-      <div id="pagination">
-        <div id="total">共{{recordsTotal}}条数据</div>
+      <div id="pagination" v-show="!isLoading">
+        <div id="total"><span>共</span> {{recordsTotal}} <span>条数据</span> </div>
         <div id="paginationBox">
           <a-pagination
             @change="changePage"
@@ -98,7 +97,7 @@ const columns = [
   {
     title: "序号",
     dataIndex: "key",
-    width: "8%",
+    width: "5%",
     scopedSlots: { customRender: "_id" },
     align: "center"
   },
@@ -154,7 +153,7 @@ const columns = [
   {
     title: "ip地址",
     dataIndex: "SerialNumber",
-    width: "10%",
+    width: "15%",
     scopedSlots: { customRender: "SerialNumber" },
     align: "center"
   },
@@ -202,39 +201,41 @@ export default {
   },
   methods: {
     handleStatusChange() {
-      this.statusParam = this.status === "null" ? null : this.status;
-      this.isLoading = true;
-      this.$http
-        .toGetServerRoomList(1, this.statusParam, this.buildingIdParam)
-        .then(res => {
-          if (res.data.success) {
-            this.recordsTotal = res.data.recordsTotal;
-            this.isLoading = false;
-            this.data = res.data.data;
-            this.$nextTick(() => {
-              this.addOrder();
-            });
-          } else {
-          }
-        });
+      // console.log(this.status=== "null")
+      // this.status = this.status === "null" ? null : this.status;
+      // this.isLoading = true;
+      // this.$http
+      //   .toGetServerRoomList(1, this.statusParam, this.buildingIdParam)
+      //   .then(res => {
+      //     if (res.data.success) {
+      //       this.recordsTotal = res.data.recordsTotal;
+      //       this.isLoading = false;
+      //       this.data = res.data.data;
+      //       this.$nextTick(() => {
+      //         this.addOrder();
+      //       });
+      //     } else {
+      //     }
+      //   });
     },
     handleBuildingChange() {
-      this.buildingIdParam =
-        this.buildingId === "null" ? null : this.buildingId;
-      this.isLoading = true;
-      this.$http
-        .toGetServerRoomList(1, this.statusParam, this.buildingIdParam)
-        .then(res => {
-          if (res.data.success) {
-            this.isLoading = false;
-            this.recordsTotal = res.data.recordsTotal;
-            this.data = res.data.data;
-            this.$nextTick(() => {
-              this.addOrder();
-            });
-          } else {
-          }
-        });
+      // this.buildingId =
+      //   this.buildingId === "null" ? null : this.buildingId;
+      //   console.log(this.buildingId=== "null")
+      // this.isLoading = true;
+      // this.$http
+      //   .toGetServerRoomList(1, this.statusParam, this.buildingIdParam)
+      //   .then(res => {
+      //     if (res.data.success) {
+      //       this.isLoading = false;
+      //       this.recordsTotal = res.data.recordsTotal;
+      //       this.data = res.data.data;
+      //       this.$nextTick(() => {
+      //         this.addOrder();
+      //       });
+      //     } else {
+      //     }
+      //   });
     },
     filterOption(input, option) {
       return (
@@ -244,17 +245,30 @@ export default {
       );
     },
     search(isSearching) {
-      let statusParam = this.status === "全部" ? null : this.status,
+      let statusParam = this.status === "全部" ||this.status == 'null' ? null : this.status,
         searchParam = this.searchParam === "全部" ? null : this.searchParam,
-        buildingIdParam = this.buildingId === "全部" ? null : this.buildingId;
-
-      this.toGetServerRoomList(
-        this.page,
-        statusParam,
-        buildingIdParam,
-        this.searchParam,
-        isSearching
-      );
+        buildingIdParam = this.buildingId === "全部" ||  this.buildingId === "null"? null : this.buildingId;
+        console.log(statusParam,searchParam,buildingIdParam)
+      if (isSearching) {
+        this.page = 1;
+        this.$nextTick(() => {
+          this.toGetServerRoomList(
+            this.page,
+            statusParam,
+            buildingIdParam,
+            this.searchParam,
+            isSearching
+          );
+        });
+      } else {
+        this.toGetServerRoomList(
+          this.page,
+          statusParam,
+          buildingIdParam,
+          this.searchParam,
+          isSearching
+        );
+      }
     },
     addOrder() {
       var i = 1;
