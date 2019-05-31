@@ -66,7 +66,7 @@
           :slot="col"
           slot-scope="text, record, index"
         >
-          <div :key="col">
+          <div :key="col" :style="color(record.status)">
             <a-input
               v-if="record.editable"
               style="margin: -5px 0;padding:10px !important"
@@ -227,6 +227,11 @@ export default {
       //     } else {
       //     }
       //   });
+    },
+        color(type) {
+      if (type != 0) {
+        return "color : red";
+      }
     },
     handleBuildingChange() {
       // this.buildingId =
