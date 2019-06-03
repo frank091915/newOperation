@@ -13,7 +13,7 @@
                     <!-- <span>mark</span>  -->
                     <div class="clickResponse" v-show="clickinside">
                         <div class="floorDisplay" v-if="item.buildingId == selectedBuildingId">
-                            <ul v-if="appear"  >
+                            <ul v-if="appear"  style="z-index:100">
                                 <li v-for="floorItem in shownBuilding.floorInfo" :key="floorItem.floorId"  @click.stop="selectFloor(floorItem.Id,floorItem)" @click="showRoom(floorItem.roomResult ? floorItem.roomResult : [],floorItem.Id)">
                                         <a-tooltip class="tooltip" placement="right" >
                                             <template slot="title">
@@ -24,11 +24,18 @@
                                     <span :class="['statusSpan',buildingColor(floorItem.status)] "> </span>
                                     <span>{{floorItem.Description}}</span>
                                     <div class="roomStatusWrapper" v-show="floorItem.Id==shownFloorId && hasRoom" :key="floorItem.floorId">
-                                        <div  v-if="floorItem.floorId" :class="['convergeRoomStatus',roomColor(shownconvergeRoom.length ? shownconvergeRoom[0].status : undefined)]">
-                                        <div>汇聚机房</div>  
+                                         <div  v-if="floorItem.floorId && shownconvergeRoom.length" :class="['convergeRoomStatus',roomColor(shownconvergeRoom.length ? shownconvergeRoom[0].status : undefined)]">
+                                            <div>汇聚机房</div>  
                                         </div>
-                                        <div v-if="floorItem.floorId" :class="['lowVoltageRoomStatus',roomColor(shownlowVoltageRoom.length ? shownlowVoltageRoom[0].status : undefined)]">
-                                            <div>弱电间</div> 
+                                        <div v-if="floorItem.floorId && shownlowVoltageRoom[0]" :class="['lowVoltageRoomStatusOne',roomColor(shownlowVoltageRoom.length ? shownlowVoltageRoom[0].status : undefined)]">
+                                            <div style="font-size:12px;text-align:center;line-height:15px;text-overflow:ellipsis">弱电间{{shownlowVoltageRoom[0] ? 
+                                                ( shownlowVoltageRoom[0].roomName.indexOf("（") > 0 ? shownlowVoltageRoom[0].roomName.slice(shownlowVoltageRoom[0].roomName.indexOf("（")) : "") 
+                                                : ""}}</div> 
+                                        </div>
+                                        <div v-if="floorItem.floorId && shownlowVoltageRoom[1]" :class="['lowVoltageRoomStatusTwo',roomColor(shownlowVoltageRoom.length ? shownlowVoltageRoom[1].status : undefined)]">
+                                            <div style="font-size:12px;text-align:center;line-height:15px;text-overflow:ellipsis">弱电间{{shownlowVoltageRoom[1] ? 
+                                                ( shownlowVoltageRoom[1].roomName.indexOf("（") > 0 ? shownlowVoltageRoom[1].roomName.slice(shownlowVoltageRoom[1].roomName.indexOf("（")) : "") 
+                                                : ""}}</div> 
                                         </div>
                                     </div>
                                     </a-tooltip>
@@ -194,7 +201,7 @@ export default {
                 : []
                 ;
                 this.$nextTick(()=>{
-                    console.log(this.shownlowVoltageRoom,this.shownconvergeRoom)
+                    // console.log(this.shownlowVoltageRoom,this.shownconvergeRoom)
                 })
             })
         },
@@ -343,13 +350,26 @@ export default {
         justify-content: center;
         align-items: center;
     }
-    .lowVoltageRoomStatus{
+    .lowVoltageRoomStatusOne{
         width: 60px;
         height: 50px;
         border-right: none;
         border-top: none;
         position: absolute;
         left:88px;
+        top: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    .lowVoltageRoomStatusTwo{
+        width: 60px;
+        height: 50px;
+        border-left: none;
+        border-top: none;
+        position: absolute;
+        left:0;
         top: 0;
         display: flex;
         flex-direction: column;

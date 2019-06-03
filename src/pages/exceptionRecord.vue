@@ -161,7 +161,7 @@ const columns = [
   {
     title: "告警次数",
     dataIndex: "exceptionRecord.waringCount",
-    width: "5%",
+    width: "6%",
     scopedSlots: { customRender: "address" },
     align: "center"
   },

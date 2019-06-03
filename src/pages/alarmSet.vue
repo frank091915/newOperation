@@ -3,7 +3,7 @@
   <div id="alarmSetWrapper">
     <div id="tabWrapper">
       <a-tabs defaultActiveKey="1" @change="callback">
-        <a-tab-pane tab="告警配置" key="1">
+        <a-tab-pane tab="告警配置" key="1" style="height:700px">
           <div id="alarmTitle">请选择需要关注的故障等级：</div>
           <div id="alarmSetStatus">
             <div id="fisrtFault" v-for="item in alarmData" :key="item.id">

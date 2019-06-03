@@ -4,9 +4,9 @@ import JsPDF from 'jspdf'
 export default{
   install (Vue, options) {
     
-    Vue.prototype.getPdf = function () {
-      var title = "PDF";
-
+    Vue.prototype.getPdf = function (pdftitle) {
+      console.log(pdftitle)
+      var title = pdftitle;
       var c = document.createElement("canvas")
       var opts = {
       scale: 2, 
@@ -20,7 +20,7 @@ export default{
       c.getContext("2d").scale(2, 2);
       
 
-      html2Canvas(document.querySelector('#pdfDom'),opts).then(function (canvas) {
+      html2Canvas(document.querySelector('#pdfDom'),opts).then(function (canvas){
         let contentWidth = canvas.width*10;
         let contentHeight = canvas.height*10;
         let pageHeight = contentWidth / 592.28 * 841.89;

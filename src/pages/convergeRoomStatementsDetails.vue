@@ -198,7 +198,7 @@ export default {
       new Promise(function(resolve, reject){
             //做一些异步操作
             setTimeout(function(){
-                _this.getPdf();
+                _this.getPdf(_this.printTitle);
                 resolve('随便什么数据');
             }, 20);
         }).then(()=>{
