@@ -30,7 +30,7 @@ const columns = [
   {
     title: "序号",
     dataIndex: "id",
-    width: "16%",
+    width: "5%",
     scopedSlots: { customRender: "num" },
     align: "center"
   },
@@ -64,7 +64,7 @@ const columns = [
   },
   {
     title: "上级权限id",
-    dataIndex: "floorNumber",
+    dataIndex: "parentId",
     width: "16%",
     scopedSlots: { customRender: "address" },
     align: "center"
@@ -83,13 +83,13 @@ export default {
       this.$http.toModifyPermissionStatus(e.id).then(res => {
         if (res.data.success) {
           this.$message.success("设置成功");
-          this.getMenu();
+          this.getMenu(true);
         } else {
           this.$message.error(res.data.data.errorInfo);
         }
       });
     },
-    getMenu() {
+    getMenu(afterSentting) {
       this.$http.toGetMenu().then(res => {
         if (res.data.success) {
           // let parentMenu=res.data.data,
@@ -105,6 +105,11 @@ export default {
           this.menu = res.data.data;
           this.$nextTick(() => {
             this.isLoading = false;
+            console.log(this.menu)
+            if(afterSentting){
+              // this.$router.go(0)
+              // this.$router.push({ path: "/permission", query: { title: "菜单管理",menuId:32 } })
+            }
           });
         } else {
           this.$message.error(res.data.errorInfo);
