@@ -170,7 +170,7 @@ export default {
             }
         },
         selectFloor(floorId,floorItem){
-
+            console.log(floorItem)
             this.clickinside=true;
             this.shownFloorId=floorId;
             // console.log(floorItem)

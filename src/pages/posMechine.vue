@@ -152,7 +152,7 @@ const columns = [
   },
   {
     title: "型号",
-    dataIndex: "modelNumber",
+    dataIndex: "Model",
     width: "6%",
     scopedSlots: { customRender: "address" },
     align: "center"

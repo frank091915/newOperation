@@ -216,11 +216,11 @@ export default {
             }
       });
     },
-    toGetConvergeRoomAlarmSettings(type, key) {
+    toGetConvergeRoomAlarmSettings(type, key,isSetting) {
       console.log(type)
       this.type=type ? type : 'NKD_AGG_DEVICE';
       this.key= key ? key : 2;
-      this.isLoading=true;
+      if(!isSetting){this.isLoading=true;}
       this.$nextTick(()=>{
               if (this.key == 2) {
         this.$http
@@ -283,7 +283,7 @@ export default {
         case 2:
           informingMethod="switchPhone";
           break;
-                  case 3:
+        case 3:
           informingMethod="switchWx";
           break;
       }
@@ -293,7 +293,7 @@ export default {
         this.$http.toSetAlarmOn(infoObj).then((res)=>{
           if(res.data.success){
             this.$message.success("设置成功");
-            this.toGetConvergeRoomAlarmSettings(type,key);
+            this.toGetConvergeRoomAlarmSettings(type,key,true);
           }else{
             this.$message.error("设置失败，请重试");
           }
@@ -302,7 +302,7 @@ export default {
         this.$http.toSetAlarmOff(infoObj).then((res)=>{
           if(res.data.success){
             this.$message.success("设置成功");
-            this.toGetConvergeRoomAlarmSettings(type,key);
+            this.toGetConvergeRoomAlarmSettings(type,key,true);
           }else{
             this.$message.error("设置失败，请重试");
           }

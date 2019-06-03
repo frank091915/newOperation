@@ -23,8 +23,8 @@
           <div class="detailParam">{{details.deviceInfo.Description}}</div>
         </div>
         <div class="singleParamsBox">
-          <div class="detailTitle" style="margin-right:10px">设备MAC地址</div>
-          <div class="detailParam">{{details.deviceInfo.MacAddress}}</div>
+          <div class="detailTitle" style="margin-right:10px">ip地址</div>
+          <div class="detailParam">{{details.deviceInfo.AdminIp.value}}</div>
         </div>
       </div>
       <div id="statusBox">
@@ -81,7 +81,7 @@
           </div>
            <div class="errorTip" v-show='!showCharts'>暂无上报数据</div>
         </div>
-        <div class="singleCureentStatusBox">
+        <div class="singleCureentStatusBox" v-if="showAccess">
           <div class="currentStatusTitle" style="padding-left:10px;">
              <img src="../../static/assets/camera.png" style="width:13px;height:13px;">
             <span>门禁截屏</span>
@@ -104,19 +104,23 @@ export default {
       temperatureList: [],
       dataList:[],
       showCharts:true,
-      timer:null
+      timer:null,
+      showAccess:this.$route.query.roomName == "汇聚机房" ? true : false
     };
   },
   created() {
     this.getData();
-    this.timer=setInterval(()=>{
+    window.timer=setInterval(()=>{
       this.getData()
-    },5000)
+    },5000);
+    this.$nextTick(()=>{
+      console.log(this.timer)
+    })
   },
   beforeRouteLeave (to, from, next) {
     // 导航离开该组件的对应路由时调用
     // 可以访问组件实例 `this`
-    clearInterval(this.timer)
+    clearInterval(window.timer)
     next()
   },
   methods: {
@@ -151,12 +155,14 @@ export default {
           }
         });
       } else {
-        this.$http.toGetLowVoltageRoomDetails(this.detailsId).then(res => {
+        this.$http.toGetLowVoltageRoomDetails(this.$route.query.detailsId).then(res => {
+          console.log(this.detailsId)
           if (res.data.success) {
             this.details = res.data.data;
             this.dataList=res.data.data.dataList;
             this.showCharts=res.data.data.dataList.length;
             this.$nextTick(()=>{
+              console.log(this.details)
               if(this.showCharts){
                 this.drawTempChart()
                 this.drawHumilityChart()

@@ -76,6 +76,7 @@
             <template v-else>{{text}}</template>
           </div>
         </template>
+        
         <template slot="operation" slot-scope="text, record, index">
             <div class="editable-row-operations">
               <a-button
@@ -122,42 +123,42 @@ const columns = [
     title: "服务器名称",
     dataIndex: "Description",
     width: "10%",
-    scopedSlots: { customRender: "address" },
+    scopedSlots: { customRender: "SerialNumber" },
     align: "center"
   },
   {
     title: "型号",
-    dataIndex: "modelNumber",
+    dataIndex: "Model",
     width: "10%",
-    scopedSlots: { customRender: "address" },
+    scopedSlots: { customRender: "SerialNumber" },
     align: "center"
   },
   {
     title: "楼宇名称",
     dataIndex: "buildingName",
     width: "10%",
-    scopedSlots: { customRender: "address" },
+    scopedSlots: { customRender: "SerialNumber" },
     align: "center"
   },
   {
     title: "楼层",
-    dataIndex: "floorNumber",
+    dataIndex: "floorName",
     width: "10%",
-    scopedSlots: { customRender: "address" },
+    scopedSlots: { customRender: "SerialNumber" },
     align: "center"
   },
   {
     title: "房间",
-    dataIndex: "roomNumber",
+    dataIndex: "roomName",
     width: "10%",
-    scopedSlots: { customRender: "address" },
+    scopedSlots: { customRender: "SerialNumber" },
     align: "center"
   },
   {
     title: "编号",
     dataIndex: "Code",
     width: "10%",
-    scopedSlots: { customRender: "address" },
+    scopedSlots: { customRender: "SerialNumber" },
     align: "center"
   },
   {
@@ -309,10 +310,12 @@ export default {
             this.data = res.data.data;
             if (isSearching) {
               this.current = 1;
+              
             }
             this.recordsTotal = res.data.recordsTotal;
             this.$nextTick(() => {
               this.addOrder();
+              console.log(this.data)
             });
           }else {
               this.$message.error(res.data.errorInfo);

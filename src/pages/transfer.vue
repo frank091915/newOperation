@@ -154,7 +154,7 @@ const columns = [
   },
   {
     title: "型号",
-    dataIndex: "modelNumber",
+    dataIndex: "Model",
     width: "8%",
     scopedSlots: { customRender: "address" },
     align: "center"
@@ -168,14 +168,14 @@ const columns = [
   },
   {
     title: "楼层",
-    dataIndex: "floorNumber",
+    dataIndex: "floorName",
     width: "10%",
     scopedSlots: { customRender: "address" },
     align: "center"
   },
   {
     title: "房间",
-    dataIndex: "roomNumber",
+    dataIndex: "roomName",
     width: "10%",
     scopedSlots: { customRender: "address" },
     align: "center"

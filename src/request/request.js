@@ -224,6 +224,7 @@ const toGetconvergeRoomDetails = (id) => {
 
 // 请求弱电间详情
 const toGetLowVoltageRoomDetails = (id) => {
+  console.log(id)
   return ajax.get(
     "/api/data/electric/" + id, {
       headers: {

@@ -141,8 +141,11 @@ html,
 body {
   height: 100%;
 }
+#app{
+  height: 100%;
+}
 #main {
-  max-height: 100%;
+  /* height: 100% !important; */
   overflow: auto;
   font-size: 14px;
 }
@@ -169,6 +172,7 @@ body {
 }
 #convergeRoomBox {
   width: 95%;
+  height: calc(100% - 100px);
   overflow: auto;
   margin-left: 30px;
   display: flex;
@@ -176,7 +180,6 @@ body {
   justify-content: flex-start;
   flex-wrap: wrap;
   align-items: baseline;
-  height: 100%;
 }
 .statusDisplay {
   width: 90px;
