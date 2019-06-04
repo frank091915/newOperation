@@ -17,7 +17,7 @@
           </div>
         </div>
       </div>
-      <div id="pdfDom">
+      <div v-show="false">
         <h4 id="printTitle" > {{printTitle}}</h4>
         <a-table :columns="columns" :dataSource="data" :pagination="false"  bordered :loading="isLoading">
           <template
@@ -78,6 +78,57 @@
             <a-pagination @change="changePage" v-model="current" :total="recordsTotal"   :pageSize="12" />
           </div>
         </div> -->
+      </div>
+      <div  id="pdfDom" style="box-sizing:border-box;padding:0 15px;">
+        <h4 id="printTitle" > {{printTitle}}</h4>
+        <table class="table table-bordered ">
+           <thead>
+            <td style="text-align:center;vertical-align:middle;">巡检日期</td>
+            <td >电源及照明灯情况</td>
+            <td >是否有异味</td>
+            <td >室内有无杂物</td>
+            <td >卫生</td>
+            <td >门锁</td>
+            <td >市电异常个数</td>
+            <td >UPS异常个数</td>
+            <td >门禁异常个数</td>
+            <td >烟雾异常个数</td>
+            <td >温度异常个数</td>
+            <td >湿度异常个数</td>
+            <td >线路有无乱线及飞线情况存在</td>
+          </thead>
+          <tr v-for="item in data" :key="item.id">
+            <td style="text-align:center;vertical-align:middle;">{{item.startTime}}</td>
+            <td ></td>
+            <td ></td>
+            <td ></td>
+            <td ></td>
+            <td ></td>
+            <td style="text-align:center;vertical-align:middle;">{{item.powerCount}}</td>
+            <td style="text-align:center;vertical-align:middle;">{{item.upsCount}}</td>
+            <td style="text-align:center;vertical-align:middle;">{{item.doorCount}}</td>
+            <td style="text-align:center;vertical-align:middle;">{{item.smokeCount}}</td>
+            <td style="text-align:center;vertical-align:middle;">{{item.temperatureCount}}</td>
+            <td style="text-align:center;vertical-align:middle;">{{item.humidityCount}}</td>
+            <td ></td>
+          </tr>
+          <tfoot>
+            <td colspan=13>备注：</td>
+            
+          </tfoot>
+        </table>
+                <div id="tip" style="margin-top:20px;padding-left:16px">注：正常填写正常，有问题填写异常，问题及处理情况6小时内必须以书面形式报至终端组主管人员，实行表年月周查制. 每周巡检1次，间隔禁止超过7个工作日</div>
+        <div id="signatureBox" style="padding-left:16px">
+            <div id="engineerSigature" style="width:200px;">
+                <span>运维工程师签名：</span> 
+            </div>
+            <div id="leaderSigature" style="width:200px;margin-left:300px">
+                <span>负责人签名：</span> 
+            </div>
+            <div id="leaderTeacherSigature" style="width:200px;margin-left:200px">
+                <span> 主管老师签名：</span> 
+            </div>
+        </div>
       </div>
     </div>
   </div>
@@ -359,7 +410,8 @@ body {
 }
 #searchBox {
   height: 50px;
-  width: 1560px;
+  box-sizing: border-box;
+  padding-right: 50px;
   display: flex;
   flex-direction: row;
   justify-content: flex-end;

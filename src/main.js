@@ -14,6 +14,10 @@ import 'moment/locale/zh-cn';
 // 引入echarts
 import echarts from 'echarts'
 
+// 引入bootstrap
+import "./lib/bootstrap/bootstrap.min.css"
+// import "../node_modules/bootstrap/dist/css/bootstrap.css"
+
 import htmlToPdf from './lib/htmlToPdf/htmlToPdf.js'
 Vue.use(htmlToPdf)
 

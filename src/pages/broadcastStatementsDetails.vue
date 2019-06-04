@@ -363,7 +363,8 @@ body {
 }
 #searchBox {
   height: 50px;
-  width: 1560px;
+  box-sizing: border-box;
+  padding-right: 50px;
   display: flex;
   flex-direction: row;
   justify-content: flex-end;

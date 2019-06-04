@@ -328,6 +328,8 @@ export default {
           if (res.data.success) {
             this.recordsTotal = res.data.recordsTotal;
             this.data = res.data.data;
+            // console.log(res.data.data)
+            // TODO:加noIp等字段
             this.$nextTick(() => {
               this.isLoading = false;
               this.addOrder();
@@ -350,6 +352,7 @@ export default {
     // 获取所有楼宇名称
     this.$http.toGetBuildingList().then(res => {
       if (res.data.success) {
+
         this.allBuildings = res.data.data;
       } else {
         this.$message.error(res.data.message);
