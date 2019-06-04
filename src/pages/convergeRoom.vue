@@ -160,6 +160,7 @@ export default {
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
+  overflow: auto;
 }
 #convergeRoomBox {
   width: 95%;

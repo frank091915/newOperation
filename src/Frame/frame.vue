@@ -105,7 +105,6 @@ export default {
       }else{
       this.openedMenu=item.key
       }
-
     }
   }
 }

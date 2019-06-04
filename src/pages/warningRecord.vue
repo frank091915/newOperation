@@ -373,7 +373,7 @@ body {
   overflow: auto;
 }
 #deviceType {
-  width: 190px;
+  width: 200px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;

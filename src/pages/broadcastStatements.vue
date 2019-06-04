@@ -18,7 +18,7 @@
         </div> -->
       </div>
       <div id="tableWrapper">
-        <a-table :columns="columns" :dataSource="data" :pagination="false"  bordered :loading="isLoading">
+        <a-table :columns="timeScale == 2 ? columnsWeek : columns" :dataSource="data" :pagination="false"  bordered :loading="isLoading">
           <template
             v-for="col in ['name', 'age', 'address']"
             :slot="col"
@@ -67,7 +67,7 @@
   </div>
 </template>
 <script>
-const columns = [
+const columnsWeek = [
   {
     title: "序号",
     dataIndex: "key",
@@ -80,6 +80,43 @@ const columns = [
     dataIndex: "weekNum",
     width: "10%",
     scopedSlots: { customRender: "highLight" },
+    align:"center"
+  },
+  {
+    title: "日期范围",
+    dataIndex: "timeRange",
+    width: "11%",
+    scopedSlots: { customRender: "address" },
+    align:"center"
+  },
+  {
+    title: "广播系统检查数量",
+    dataIndex: "inspectionCount",
+    width: "6%",
+    scopedSlots: { customRender: "address" },
+    align:"center"
+  },
+  {
+    title: "广播系统异常数量",
+    dataIndex: "count",
+    width: "9%",
+    scopedSlots: { customRender: "address" },
+    align:"center"
+  },
+  {
+    title: "操作",
+    dataIndex: "",
+    width: "10%",
+    scopedSlots: { customRender: "operation" },
+    align:"center"
+  }
+];
+const columns = [
+  {
+    title: "序号",
+    dataIndex: "key",
+    width: "4%",
+    scopedSlots: { customRender: "_id" },
     align:"center"
   },
   {
@@ -125,7 +162,8 @@ export default {
       isLoading: true,
       current: 1,
       data:[],
-      timeScale:2
+      timeScale:2,
+      columnsWeek
     };
   },
   methods: {
@@ -239,13 +277,11 @@ export default {
     }
   },
   created() {
-      
     // 默认请求第一页，按周统计
     this.GetbroadcastStatements(1,2,false)
-    
   },
   mounted(){
-        let that = this;
+    let that = this;
     document.onkeypress = function(e) {
       var keycode = document.all ? event.keyCode : e.which;
       if (keycode == 13) {

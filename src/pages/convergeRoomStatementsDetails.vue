@@ -98,7 +98,7 @@
             <td >线路有无乱线及飞线情况存在</td>
           </thead>
           <tr v-for="item in data" :key="item.id">
-            <td style="text-align:center;vertical-align:middle;">{{item.startTime}}</td>
+            <td >{{item.startTime}}</td>
             <td ></td>
             <td ></td>
             <td ></td>

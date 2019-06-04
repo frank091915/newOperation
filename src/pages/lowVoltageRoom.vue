@@ -120,7 +120,7 @@ export default {
           res.data.data.faultCount;
         this.$nextTick(() => {});
       }else {
-              this.$message.error(res.data.message);
+              this.$message.error(res.data.errorInfo);
             }
     });
   },
@@ -145,7 +145,7 @@ body {
   height: 100%;
 }
 #main {
-  /* height: 100% !important; */
+  /* height: 100% ! important; */
   overflow: auto;
   font-size: 14px;
 }
