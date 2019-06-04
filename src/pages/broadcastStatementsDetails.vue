@@ -83,6 +83,7 @@
   </div>
 </template>
 <script>
+import "../lib/ant-d/antd.css";
 const columns = [
   {
     title: "巡检日期",
@@ -193,10 +194,11 @@ export default {
   },
   methods: {
     print(){
+      console.log("fix")
       this.isPrinting=true;
       let _this=this;
       this.$nextTick(()=>{
-        console.log(this.isPrinting)
+
       new Promise(function(resolve, reject){
             //做一些异步操作
             setTimeout(function(){
@@ -206,7 +208,7 @@ export default {
         }).then(()=>{
           _this.isPrinting=false;
           _this.$nextTick(()=>{
-            console.log(this.isPrinting)
+
           })
         });
 
