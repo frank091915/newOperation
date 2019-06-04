@@ -127,7 +127,7 @@ export default {
           this.GetExceptionManageList();
         }else {
           alert(111)
-          this.$message.error(res.data.errorInfo);
+          this.$message.error(res.data.message);
         }
       });
     },
@@ -193,7 +193,7 @@ export default {
           });
           this.recordsTotal = res.data.recordsTotal;
         }else {
-              this.$message.error(res.data.errorInfo);
+              this.$message.error(res.data.message);
             }
       });
     },

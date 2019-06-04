@@ -239,7 +239,7 @@ export default {
                 query: { title: "角色管理" }
               });
             } else {
-              this.$message.error(res.data.errorInfo);
+              this.$message.error(res.data.message);
             }
           });
         }

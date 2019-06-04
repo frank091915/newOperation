@@ -344,7 +344,7 @@ export default {
             this.recordsTotal = res.data.recordsTotal;
             this.isLoading = false;
           } else {
-            this.$message.error(res.data.errorInfo);
+            this.$message.error(res.data.message);
           }
         });
     },

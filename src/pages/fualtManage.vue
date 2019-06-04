@@ -188,7 +188,7 @@ export default {
           this.recordsTotal = res.data.recordsTotal;
           this.$nextTick(() => {});
         } else {
-          this.$message.error(res.data.errorInfo);
+          this.$message.error(res.data.message);
         }
       });
     },

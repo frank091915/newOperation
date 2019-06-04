@@ -74,7 +74,7 @@ export default {
                 query: { title: "故障管理" }
               });
             } else {
-              this.$message.error(res.data.errorInfo);
+              this.$message.error(res.data.message);
             }
           });
         }

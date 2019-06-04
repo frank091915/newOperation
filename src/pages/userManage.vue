@@ -179,7 +179,7 @@ export default {
           this.$message.success("删除成功");
           this.getUserList();
         }else {
-              this.$message.error(res.data.errorInfo);
+              this.$message.error(res.data.message);
             }
       });
     },
@@ -191,7 +191,7 @@ export default {
           }
           this.$message.success("重置成功");
         }else {
-              this.$message.error(res.data.errorInfo);
+              this.$message.error(res.data.message);
             }
       });
     },
@@ -259,7 +259,7 @@ export default {
           this.isLoading=false;
           this.$nextTick(() => {});
         }else {
-              this.$message.error(res.data.errorInfo);
+              this.$message.error(res.data.message);
             }
       });
     },

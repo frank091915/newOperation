@@ -1,5 +1,6 @@
 import axios from "axios"
 import qs from 'qs';
+import router from '../router'
 
 import {
   Affix,
@@ -1178,12 +1179,12 @@ ajax.interceptors.request.use((config) => {
 
 
 ajax.interceptors.response.use((config) => {
-
+  console.log(config)
   if (!config.data.success) {
     if (config.data.httpCode == '401') {
       window.sessionStorage.removeItem('operationToken')
-
-      window.location.href = "/signIn?invalidToken"
+      router.push({path:"/signIn"})
+      // window.location.href = "/signIn?invalidToken"
       return config
     } else {
       return config

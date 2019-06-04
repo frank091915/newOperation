@@ -86,7 +86,7 @@ export default {
                 query: { title: "异常管理" }
               });
             } else {
-              this.$message.error(res.data.errorInfo);
+              this.$message.error(res.data.message);
             }
           });
         }
@@ -109,7 +109,7 @@ export default {
 
               })
           }else {
-              this.$message.error(res.data.errorInfo);
+              this.$message.error(res.data.message);
             }
       })
   }

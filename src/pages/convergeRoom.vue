@@ -81,7 +81,7 @@ export default {
           this.isLoading = false;
         } else {
           this.isLoading = false;
-          this.$message.error(res.data.errorInfo);
+          this.$message.error(res.data.message);
         }
       });
     },
@@ -123,7 +123,7 @@ export default {
         
         });
       } else {
-              this.$message.error(res.data.errorInfo);
+              this.$message.error(res.data.message);
             }
     });
   },

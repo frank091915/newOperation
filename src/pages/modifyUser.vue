@@ -179,7 +179,7 @@ export default {
                 query: { title: "用户管理" }
               });
             } else {
-              this.$message.error(res.data.errorInfo);
+              this.$message.error(res.data.message);
             }
           });
         }
@@ -214,7 +214,7 @@ export default {
           this.value = this.userInformation.status ? 1 : 0;
         });
       } else {
-        this.$message.error(res.data.errorInfo);
+        this.$message.error(res.data.message);
       }
     });
     this.$http.toGetAllRoleManageList(1).then(res => {

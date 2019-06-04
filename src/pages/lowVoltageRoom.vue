@@ -80,7 +80,7 @@ export default {
           this.isLoading = false;
         } else {
           this.isLoading = false;
-          this.$message.error(res.data.errorInfo);
+          this.$message.error(res.data.message);
         }
       });
     },
@@ -120,7 +120,7 @@ export default {
           res.data.data.faultCount;
         this.$nextTick(() => {});
       }else {
-              this.$message.error(res.data.errorInfo);
+              this.$message.error(res.data.message);
             }
     });
   },

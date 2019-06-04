@@ -318,7 +318,7 @@ export default {
               console.log(this.data)
             });
           }else {
-              this.$message.error(res.data.errorInfo);
+              this.$message.error(res.data.message);
             }
         });
     },

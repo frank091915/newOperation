@@ -348,7 +348,7 @@ export default {
               this.addOrder();
             });
           } else {
-            this.$message.error(res.data.errorInfo);
+            this.$message.error(res.data.message);
           }
         });
     },

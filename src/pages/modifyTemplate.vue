@@ -149,7 +149,7 @@ export default {
                 query: { title: "告警消息模板" }
               });
             } else {
-              this.$message.error(res.data.errorInfo);
+              this.$message.error(res.data.message);
             }
           });
         }
@@ -179,7 +179,7 @@ export default {
           }
         });
       } else {
-        this.$message.error(res.data.errorInfo);
+        this.$message.error(res.data.message);
       }
     });
   }

@@ -151,7 +151,7 @@ export default {
               }
             })
           } else {
-            this.$message.error(res.data.errorInfo);
+            this.$message.error(res.data.message);
           }
         });
       } else {
@@ -171,7 +171,7 @@ export default {
               }
             })
           } else {
-            this.$message.error(res.data.errorInfo);
+            this.$message.error(res.data.message);
           }
         });
       }

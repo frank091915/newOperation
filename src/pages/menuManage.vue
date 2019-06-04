@@ -85,7 +85,7 @@ export default {
           this.$message.success("设置成功");
           this.getMenu(true);
         } else {
-          this.$message.error(res.data.data.errorInfo);
+          this.$message.error(res.data.data.message);
         }
       });
     },
@@ -112,7 +112,7 @@ export default {
             }
           });
         } else {
-          this.$message.error(res.data.errorInfo);
+          this.$message.error(res.data.message);
         }
       });
     }

@@ -279,7 +279,7 @@ export default {
                 query: { title: "告警策略管理",defualfKey:this.defualfKey }
               });
             } else {
-              this.$message.error(res.data.errorInfo);
+              this.$message.error(res.data.message);
             }
           });
         }
@@ -293,7 +293,7 @@ export default {
             console.log(this.warningStrategy)
           });
         }else {
-              this.$message.error(res.data.errorInfo);
+              this.$message.error(res.data.message);
             }
       });
     },
@@ -309,7 +309,7 @@ export default {
                 this.addOrder(1);
               });
             } else {
-              this.$message.error("获取数据失败，请重试");
+              this.$message.error(res.data.message);
             }
           });
       } else {
@@ -323,7 +323,7 @@ export default {
                 this.addOrder(2);
               });
             } else {
-              this.$message.error("获取数据失败，请重试");
+              this.$message.error(res.data.message);
             }
           });
       }

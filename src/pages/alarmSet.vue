@@ -212,7 +212,7 @@ export default {
             this.addOrder()
           })
         }else {
-              this.$message.error(res.data.errorInfo);
+              this.$message.error(res.data.message);
             }
       });
     },
@@ -236,7 +236,7 @@ export default {
                   console.log(this.convergeData)
               })
             } else {
-              this.$message.success("获取数据失败，请重试");
+              this.$message.error(res.data.message);
             }
           });
       } else {
@@ -253,7 +253,7 @@ export default {
                   console.log(this.electronicData)
               })
             } else {
-              this.$message.error("获取数据失败，请重试");
+              this.$message.error(res.data.message);
             }
           });
       }

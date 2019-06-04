@@ -162,12 +162,11 @@ export default {
             }
             return true;
           });
-
           this.$nextTick(() => {
             this.isLoading = false;
           });
         } else {
-          this.$message.error(res.data.errorInfo);
+          this.$message.error(res.data.message);
         }
       });
   }

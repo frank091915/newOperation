@@ -116,7 +116,7 @@ export default {
                   query: { title: "楼栋坐标信息管理" }
                 });
               } else {
-                this.$message.error(res.data.errorInfo);
+                this.$message.error(res.data.message);
               }
             });
         }
@@ -133,7 +133,7 @@ export default {
           console.log(this.buildingPositionInfo);
         });
       } else {
-        this.$message.error(res.data.errorInfo);
+        this.$message.error(res.data.message);
       }
     });
   }

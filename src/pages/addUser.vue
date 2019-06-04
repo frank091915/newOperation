@@ -177,7 +177,7 @@ export default {
                 query: { title: "用户管理" }
               });
             } else {
-              this.$message.error(res.data.errorInfo);
+              this.$message.error(res.data.message);
             }
           });
         }

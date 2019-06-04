@@ -379,7 +379,7 @@ export default {
               this.addStatusDescription();
             });
           }else {
-              this.$message.error(res.data.errorInfo);
+              this.$message.error(res.data.message);
             }
         });
     },

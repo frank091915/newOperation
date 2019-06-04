@@ -261,7 +261,7 @@ export default {
                 query: { title: "用户管理" }
               });
             } else {
-              this.$message.error(res.data.errorInfo);
+              this.$message.error(res.data.message);
             }
           });
         }
@@ -283,7 +283,7 @@ export default {
     },
     callback(key) {
       this.changeDefualtKey(key)
-      console.log(this.defualtKeyFromVuex)
+      // console.log(this.defualtKeyFromVuex)
       this.defualfKey=key;
       this.roomType = key == 1 ? "NKD_AGG_DEVICE" : "NKD_WEAK_ELECTRIC_ADVICE";
       this.$nextTick(() => {
@@ -328,7 +328,7 @@ export default {
                 this.addOrder(1);
               });
             } else {
-              this.$message.error("获取数据失败，请重试");
+              this.$message.error(res.data.message);
             }
           });
       } else {
@@ -343,7 +343,7 @@ export default {
                 this.addOrder(2);
               });
             } else {
-              this.$message.error("获取数据失败，请重试");
+              this.$message.error(res.data.message);
             }
           });
       }

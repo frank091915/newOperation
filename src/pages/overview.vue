@@ -362,7 +362,7 @@ export default {
           this.drawControlNetRoomLine();
         });
       }else {
-              this.$message.error(res.data.errorInfo);
+              this.$message.error(res.data.message);
             }
     });
   }

@@ -126,9 +126,9 @@ export default {
   },
   mounted(){
     console.log(window.location.search)
-    if(window.location.search=='?invalidToken'){
-      alert('登录失效，请重新登录')
-    }
+    // if(window.location.search=='?invalidToken'){
+    //   alert('登录失效，请重新登录')
+    // }
   },
   computed: {
     login: () => {

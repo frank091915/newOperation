@@ -276,7 +276,7 @@ export default {
                 query: { title: "用户管理" }
               });
             } else {
-              this.$message.error(res.data.errorInfo);
+              this.$message.error(res.data.message);
             }
           });
         }
@@ -288,7 +288,7 @@ export default {
           this.warningStrategy = res.data.data.warningStrategy;
           this.$nextTick(() => {});
         } else {
-          this.$message.error("获取数据失败，请重试");
+          this.$message.error(res.data.message);
         }
       });
     },
@@ -304,7 +304,7 @@ export default {
                 this.addOrder(1);
               });
             } else {
-              this.$message.error("获取数据失败，请重试");
+              this.$message.error(res.data.message);
             }
           });
       } else {
@@ -318,7 +318,7 @@ export default {
                 this.addOrder(2);
               });
             } else {
-              this.$message.error("获取数据失败，请重试");
+              this.$message.error(res.data.message);
             }
           });
       }

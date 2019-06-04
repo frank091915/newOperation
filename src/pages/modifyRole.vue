@@ -239,7 +239,7 @@ export default {
                 query: { title: "角色管理" }
               });
             } else {
-              this.$message.error(res.data.errorInfo);
+              this.$message.error(res.data.message);
             }
           });
         }
@@ -363,7 +363,7 @@ export default {
         this.remark = res.data.data.remark;
         this.permissionsIdArray = res.data.data.permissionIds;
       } else {
-        this.$message.error(res.data.errorInfo);
+        this.$message.error(res.data.message);
       }
     });
     // 获取侧边栏菜单数据
