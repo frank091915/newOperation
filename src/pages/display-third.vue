@@ -15,7 +15,7 @@
                         <div class="floorDisplay" v-if="item.buildingId == selectedBuildingId">
                             <ul v-if="appear"  style="z-index:100">
                                 <li v-for="floorItem in shownBuilding.floorInfo" :key="floorItem.floorId"  @click.stop="selectFloor(floorItem.Id,floorItem)" @click="showRoom(floorItem.roomResult ? floorItem.roomResult : [],floorItem.Id)">
-                                        <a-tooltip class="tooltip" placement="right" >
+                                        <a-tooltip class="tooltipWrapper" placement="right" >
                                             <template slot="title">
                                             <span v-if="!floorItem.roomResult">此楼层暂无设备</span> 
                                             </template>

@@ -19,7 +19,7 @@
                                     @click="showRoom(floorItem.roomResult ? floorItem.roomResult : [],floorItem.Id)"
                                     style="z-index:100"
                                     >
-                                        <a-tooltip class="tooltip" placement="right" >
+                                        <a-tooltip class="tooltipWrapper" placement="right" >
                                             <template slot="title">
                                             <span v-if="!floorItem.roomResult">此楼层暂无设备</span> 
                                             </template>

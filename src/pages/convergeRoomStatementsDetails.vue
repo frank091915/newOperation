@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div id="pageWrapper" @keydown.enter="search(true)">
+    <div id="pageWrapper" @keydown.enter="search(true)" style="position:relative">
       <div id="searchBox">
         <!-- <div>
         <a-radio-group defaultValue="2" buttonStyle="solid" @change='changeTimeScale'>
@@ -17,7 +17,7 @@
           </div>
         </div>
       </div>
-      <div v-show="false">
+      <div style="z-index:100">
         <h4 id="printTitle" > {{printTitle}}</h4>
         <a-table :columns="columns" :dataSource="data" :pagination="false"  bordered :loading="isLoading">
           <template
@@ -79,9 +79,10 @@
           </div>
         </div> -->
       </div>
-      <div  id="pdfDom" style="box-sizing:border-box;padding:0 15px;">
+      <div  id="pdfDom" style="box-sizing:border-box;padding:0 15px;font-size: 12px; 
+                position:absolute;top:-10000px;left:-10000px">
         <h4 id="printTitle" > {{printTitle}}</h4>
-        <table class="table table-bordered ">
+        <table class="table table-bordered " id="printedTable" cellspacing="0" cellpadding="1" border="1px">
            <thead>
             <td style="text-align:center;vertical-align:middle;">巡检日期</td>
             <td >电源及照明灯情况</td>
@@ -404,6 +405,8 @@ body {
 #pageWrapper {
   height: calc(100% - 50px);
   width: 100%;
+  box-sizing: border-box;
+  padding: 0 15px;
 }
 #frame {
   height: 100%;
@@ -481,4 +484,11 @@ body {
   font-size:16px;
   font-variant: normal;
 }
+#printedTable tr td:first-child{
+  width:92px !important;
+}
+#printedTable tr td{
+ border-collapse: collapse;
+}
+
 </style>

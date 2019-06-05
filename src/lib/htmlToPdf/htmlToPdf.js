@@ -5,6 +5,7 @@ export default{
   install (Vue, options) {
     
     Vue.prototype.getPdf = function (pdftitle) {
+      
       console.log(pdftitle)
       var title = pdftitle;
       var c = document.createElement("canvas")
@@ -12,7 +13,7 @@ export default{
       scale: 2, 
       canvas: c, 
       logging: true, 
-      width: document.querySelector('#pdfDom').offsetWidth +15, 
+      width: document.querySelector('#pdfDom').offsetWidth +20, 
       height: document.querySelector('#pdfDom').offsetHeight 
       };
       c.width = document.querySelector('#pdfDom').offsetWidth * 2
@@ -26,8 +27,8 @@ export default{
         let pageHeight = contentWidth / 592.28 * 841.89;
         let leftHeight = contentHeight;
         let position = 0;
-        let imgWidth = 840;
-        let imgHeight = 840 / contentWidth * contentHeight;
+        let imgWidth = 841.89;
+        let imgHeight = 841.89 / contentWidth * contentHeight;
         let pageData = canvas.toDataURL('image/jpeg', 1.0);
         let PDF = new JsPDF('l', 'pt', 'a4');
         console.log(pageData)
