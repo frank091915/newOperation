@@ -59,6 +59,7 @@
 <script>
 import Vue from 'vue'
 
+
 Vue.directive('clickoutside',{
   bind: function(el, binding) {
         function documentHandler(e) {

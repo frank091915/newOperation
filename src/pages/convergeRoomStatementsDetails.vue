@@ -17,7 +17,7 @@
           </div>
         </div>
       </div>
-      <div style="z-index:100">
+      <div style="z-index:100" id="lalala">
         <h4 id="printTitle" > {{printTitle}}</h4>
         <a-table :columns="columns" :dataSource="data" :pagination="false"  bordered :loading="isLoading">
           <template
@@ -135,6 +135,8 @@
   </div>
 </template>
 <script>
+import printJS from 'print-js'
+import "../lib/ant-d/antd.css"
 const columns = [
   {
     title: "巡检日期",
@@ -243,29 +245,30 @@ export default {
   },
   methods: {
     print(){
-      this.isPrinting=true;
-      let _this=this;
-      this.$nextTick(()=>{
-        console.log(this.isPrinting)
-      new Promise(function(resolve, reject){
-            //做一些异步操作
-            setTimeout(function(){
-                _this.getPdf(_this.printTitle);
-                resolve('随便什么数据');
-            }, 20);
-        }).then(()=>{
-          _this.isPrinting=false;
-          _this.$nextTick(()=>{
-            console.log(this.isPrinting)
-          })
-        });
+      printJS({printable:'lalala', type:'html',css:"../lib/ant-d/antd.css"})
+      // this.isPrinting=true;
+      // let _this=this;
+      // this.$nextTick(()=>{
+      //   console.log(this.isPrinting)
+      // new Promise(function(resolve, reject){
+      //       //做一些异步操作
+      //       setTimeout(function(){
+      //           _this.getPdf(_this.printTitle);
+      //           resolve('随便什么数据');
+      //       }, 20);
+      //   }).then(()=>{
+      //     _this.isPrinting=false;
+      //     _this.$nextTick(()=>{
+      //       console.log(this.isPrinting)
+      //     })
+      //   });
 
 
         
-        // setTimeout(function(){
-        //   this.isPrinting=false;
-        // },1000)
-      })
+      //   // setTimeout(function(){
+      //   //   this.isPrinting=false;
+      //   // },1000)
+      // })
     },
     changeTimeScale(e){
           console.log(e.target.value)

@@ -1,6 +1,24 @@
 <template>
   <div id="pageWrapper">
-    <a-table
+    <a-table :columns="columns" :dataSource="menu"  :pagination="false"  :scroll="{y:790}">
+      <template slot="weChatcheckBox" slot-scope="text, record">
+        <a-switch :checked="record.status" @change="onChangePermissionStatus(record)"/>
+      </template>
+    </a-table>
+    <!-- <a-table :columns="columns" :dataSource="menu"  :pagination="false"  :scroll="{y:790}">
+
+        <a-table
+          slot="expandedRowRender"
+          slot-scope="text,record"
+          :columns="innerColumns"
+          :dataSource="innerData"
+          :pagination="false"
+          v-if="record.children"
+        >
+        </a-table>
+      </a-table> -->
+
+    <!-- <a-table
       :columns="columns"
       :dataSource="menu"
       :pagination="false"
@@ -22,11 +40,12 @@
       <template slot="weChatcheckBox" slot-scope="text, record">
         <a-switch :checked="record.status" @change="onChangePermissionStatus(record)"/>
       </template>
-    </a-table>
+    </a-table> -->
   </div>
 </template>
 <script>
-const columns = [
+
+const innerColumns = [
   {
     title: "序号",
     dataIndex: "id",
@@ -70,12 +89,62 @@ const columns = [
     align: "center"
   }
 ];
+
+const innerData = [];
+// for (let i = 0; i < 1; ++i) {
+//   innerData.push({
+//     key: i,
+//     date: '2014-12-24 23:12:00',
+//     name: 'This is production name',
+//     upgradeNum: 'Upgraded: 56',
+//   });
+// }
+
+const columns = [
+  {
+    title: "序号",
+    dataIndex: "id",
+    width: "20%",
+    scopedSlots: { customRender: "num" },
+    align: "center"
+  },
+  {
+    title: "权限名称",
+    dataIndex: "title",
+    width: "20%",
+    scopedSlots: { customRender: "age" },
+    align: "center"
+  },
+  {
+    title: "权限路径",
+    dataIndex: "path",
+    width: "20%",
+    scopedSlots: { customRender: "address" },
+    align: "center"
+  },
+  {
+    title: "权限等级",
+    dataIndex: "level",
+    width: "20%",
+    scopedSlots: { customRender: "address" },
+    align: "center"
+  },
+  {
+    title: "权限状态",
+    dataIndex: "status",
+    width: "20%",
+    scopedSlots: { customRender: "weChatcheckBox" },
+    align: "center"
+  }
+];
 export default {
   data() {
     return {
       columns,
       menu: [],
-      isLoading: true
+      isLoading: true,
+      innerColumns,
+      innerData,
     };
   },
   methods: {
@@ -91,7 +160,23 @@ export default {
     },
     getMenu(afterSentting) {
       this.$http.toGetMenu().then(res => {
+        console.log(res.data.data)
         if (res.data.success) {
+          let parentMenu=res.data.data.filter((item)=>{
+            if(!item.parentId){
+              return true
+            }else{
+              return false
+            } 
+          });
+          parentMenu=parentMenu.map((item)=>{
+            if(item.subPermissions.length){
+              item.children=item.subPermissions;
+            }
+            return item
+          })
+          console.log(parentMenu)
+
           // let parentMenu=res.data.data,
           //     childrenMenu=res.data.data.filter((item)=>{
           //         if(item.subPermissions.length){
@@ -102,10 +187,9 @@ export default {
           //     return pre.concat([...next.subPermissions])
           // },[])
           // parentMenu=parentMenu.concat(childrenMenu);
-          this.menu = res.data.data;
+          this.menu = parentMenu;
           this.$nextTick(() => {
             this.isLoading = false;
-            console.log(this.menu)
             if(afterSentting){
               // this.$router.go(0)
               // this.$router.push({ path: "/permission", query: { title: "菜单管理",menuId:32 } })
