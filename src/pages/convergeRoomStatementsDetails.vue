@@ -317,14 +317,6 @@ export default {
         // },1000)
       });
     },
-    changeTimeScale(e) {
-      console.log(e.target.value);
-      this.timeScale = e.target.value;
-      this.page = 1;
-      this.$nextTick(() => {
-        this.search(true);
-      });
-    },
     handleStatusChange() {
       this.statusParam = this.status === "null" ? null : this.status;
       // this.$http
