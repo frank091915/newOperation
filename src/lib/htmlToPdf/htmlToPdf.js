@@ -1,29 +1,32 @@
 // 导出页面为PDF格式
 import html2Canvas from 'html2canvas'
 import JsPDF from 'jspdf'
-export default{
-  install (Vue, options) {
-    
+export default {
+  install(Vue, options) {
+
     Vue.prototype.getPdf = function (pdftitle) {
-      
+
       console.log(pdftitle)
       var title = pdftitle;
       var c = document.createElement("canvas")
+      var pdfDom = document.querySelector('#pdfDom')
+      pdfDom.style.position = ""
+      console.log(pdfDom)
       var opts = {
-      scale: 2, 
-      canvas: c, 
-      logging: true, 
-      width: document.querySelector('#pdfDom').offsetWidth +20, 
-      height: document.querySelector('#pdfDom').offsetHeight 
+        scale: 2,
+        canvas: c,
+        logging: true,
+        width: pdfDom.offsetWidth + 20,
+        height: pdfDom.offsetHeight
       };
-      c.width = document.querySelector('#pdfDom').offsetWidth * 2
-      c.height = document.querySelector('#pdfDom').offsetHeight * 2
+      c.width = pdfDom.offsetWidth * 2
+      c.height = pdfDom.offsetHeight * 2
       c.getContext("2d").scale(2, 2);
-      
 
-      html2Canvas(document.querySelector('#pdfDom'),opts).then(function (canvas){
-        let contentWidth = canvas.width*10;
-        let contentHeight = canvas.height*10;
+
+      html2Canvas(pdfDom, opts).then(function (canvas) {
+        let contentWidth = canvas.width * 10;
+        let contentHeight = canvas.height * 10;
         let pageHeight = contentWidth / 592.28 * 841.89;
         let leftHeight = contentHeight;
         let position = 0;
@@ -45,7 +48,9 @@ export default{
           }
         }
         PDF.save(title + '.pdf')
+        pdfDom.style.position = "absolute"
       }
+
       )
     }
   }
