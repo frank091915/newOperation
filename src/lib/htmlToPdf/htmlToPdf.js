@@ -8,10 +8,9 @@ export default {
 
       console.log(pdftitle)
       var title = pdftitle;
+      // 创建节点
       var c = document.createElement("canvas")
       var pdfDom = document.querySelector('#pdfDom')
-      pdfDom.style.position = ""
-      console.log(pdfDom)
       var opts = {
         scale: 2,
         canvas: c,
@@ -19,14 +18,14 @@ export default {
         width: pdfDom.offsetWidth + 20,
         height: pdfDom.offsetHeight
       };
-      c.width = pdfDom.offsetWidth * 2
-      c.height = pdfDom.offsetHeight * 2
-      c.getContext("2d").scale(2, 2);
+      c.width = pdfDom.offsetWidth
+      c.height = pdfDom.offsetHeight
+      c.getContext("2d");
 
 
       html2Canvas(pdfDom, opts).then(function (canvas) {
-        let contentWidth = canvas.width * 10;
-        let contentHeight = canvas.height * 10;
+        let contentWidth = canvas.width;
+        let contentHeight = canvas.height;
         let pageHeight = contentWidth / 592.28 * 841.89;
         let leftHeight = contentHeight;
         let position = 0;
@@ -48,9 +47,7 @@ export default {
           }
         }
         PDF.save(title + '.pdf')
-        pdfDom.style.position = "absolute"
       }
-
       )
     }
   }
