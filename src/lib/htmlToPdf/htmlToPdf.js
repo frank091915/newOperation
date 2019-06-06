@@ -10,9 +10,12 @@ export default {
       var title = pdftitle;
       // 创建节点
       var c = document.createElement("canvas")
-      var pdfDom = document.querySelector('#pdfDom')
+      var pdfDom1 = document.querySelector('#pdfDom')
+      var pdfDom = document.createElement("div")
+      pdfDom = pdfDom1
+      console.log(pdfDom)
       var opts = {
-        scale: 2,
+        scale: 5,
         canvas: c,
         logging: true,
         width: pdfDom.offsetWidth + 20,
