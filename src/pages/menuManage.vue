@@ -149,24 +149,15 @@ export default {
   },
   methods: {
     onChangePermissionStatus(e) {
-            console.log(e)
-      if(e.subPermissions.length){
-        let changePermmisionsIds=e.subPermissions.map((item)=>{
-            return item.id
-        });
-        changePermmisionsIds=changePermmisionsIds.concat([e.id])
-        console.log(changePermmisionsIds)
-        this.$http.toModifySeveralPermissionStatus(changePermmisionsIds).then(res => {
-        if (res.data.success) {
-          this.$message.success("设置成功");
-          this.getMenu(true);
-        } else {
-          this.$message.error(res.data.data.message);
-        }
-      });
-      }else{
-        if(e.subPermissions.length==0){
-          this.$http.toModifyPermissionStatus(e.id).then(res => {
+
+      if(e.subPermissions!=undefined){
+        if(e.subPermissions.length){
+            let changePermmisionsIds=e.subPermissions.map((item)=>{
+              if(e.status==item.status){return item.id}
+            });
+            changePermmisionsIds=changePermmisionsIds.concat([e.id])
+            console.log(changePermmisionsIds)
+            this.$http.toModifySeveralPermissionStatus(changePermmisionsIds).then(res => {
             if (res.data.success) {
               this.$message.success("设置成功");
               this.getMenu(true);
@@ -175,21 +166,54 @@ export default {
             }
           });
         }else{
-           this.$http.toModifyPermissionStatus(e.id).then(res => {
-            if (res.data.success) {
-              this.$message.success("设置成功");
-              this.getMenu(true);
-            } else {
-              this.$message.error(res.data.data.message);
-            }
-          });
+            this.$http.toModifyPermissionStatus(e.id).then(res => {
+              if (res.data.success) {
+                this.$message.success("设置成功");
+                this.getMenu(true);
+              } else {
+                this.$message.error(res.data.data.message);
+              }
+            });
         }
-
+      }else{
+          // console.log(e.parentId)
+          let theParentMenu=this.menu.filter((item)=>{
+            return item.id == e.parentId
+          })[0];
+          let theBrotherMenus=theParentMenu.subPermissions.filter((item)=>{
+              return item.id != e.id
+           });
+          // console.log(theParentMenu,theBrotherMenus)
+          // 判断是否改变该子菜单的父级菜单状态，（根据该菜单改变后的状态是否都与其他子菜单状态一样）
+          let ifChangeParentMenuStatus=theBrotherMenus.every((item)=>{
+            return item.status!=e.status
+          })
+          // console.log(ifChangeParentMenuStatus)
+          if(ifChangeParentMenuStatus && theParentMenu.status==e.status){
+            let menusToBeChanged=[theParentMenu.id,e.id];
+              this.$http.toModifySeveralPermissionStatus(menusToBeChanged).then(res => {
+                if (res.data.success) {
+                  this.$message.success("设置成功");
+                  this.getMenu(true);
+                } else {
+                  this.$message.error(res.data.data.message);
+                }
+              });
+          }else{
+              this.$http.toModifyPermissionStatus(e.id).then(res => {
+                if (res.data.success) {
+                  this.$message.success("设置成功");
+                  this.getMenu(true);
+                } else {
+                  this.$message.error(res.data.data.message);
+                }
+              });
+          }
       }
     },
     getMenu(afterSentting) {
       this.$http.toGetMenu().then(res => {
-        console.log(res.data.data)
+        // console.log(res.data.data)
         if (res.data.success) {
           let parentMenu=res.data.data.filter((item)=>{
             if(!item.parentId){
@@ -204,7 +228,7 @@ export default {
             }
             return item
           })
-          console.log(parentMenu)
+          // console.log(parentMenu)
 
           // let parentMenu=res.data.data,
           //     childrenMenu=res.data.data.filter((item)=>{
