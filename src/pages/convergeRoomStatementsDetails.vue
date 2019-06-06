@@ -8,24 +8,33 @@
             <a-radio-button value="3">按月份</a-radio-button>
             <a-radio-button value="4">按年份</a-radio-button>
         </a-radio-group>
-        </div> -->
+        </div>-->
         <div id="searchByNames" style="float:right">
           <!-- <div id="searchByNamesLabel">名称：</div> -->
           <div id="searchByNamesInput">
             <!-- <a-input v-model="searchParam" @keydown.enter="search(true)" placeholder="请输入POS机房间名称"  size="small"/> -->
-            <a-button  @click="print" type="primary" size="small" style="margin-left:10px">导出</a-button>
+            <a-button @click="print" type="primary" size="small" style="margin-left:10px">导出</a-button>
           </div>
         </div>
       </div>
       <div style="z-index:100" id="lalala">
-        <h4 id="printTitle" > {{printTitle}}</h4>
-        <a-table :columns="columns" :dataSource="data" :pagination="false"  bordered :loading="isLoading">
+        <h4
+          id="printTitle"
+          style=" height: 56px;line-height: 56px;text-align: center;font-size: 16px;font-variant: normal;"
+        >{{printTitle}}</h4>
+        <a-table
+          :columns="columns"
+          :dataSource="data"
+          :pagination="false"
+          bordered
+          :loading="isLoading"
+        >
           <template
             v-for="col in ['name', 'age', 'address']"
             :slot="col"
             slot-scope="text, record, index"
           >
-            <div :key="col" >
+            <div :key="col">
               <a-input
                 v-if="record.editable"
                 style="margin: -5px 0;padding:10px !important"
@@ -40,7 +49,7 @@
             slot="highLight"
             slot-scope="text, record,highLight"
           >
-            <div :key="col" >
+            <div :key="col">
               <a-input
                 v-if="record.editable"
                 :value="text"
@@ -49,26 +58,33 @@
               <template v-else>{{text}}</template>
             </div>
           </template>
-                  <template slot="operation" slot-scope="text, record">
-          <div class="editable-row-operations">
-            <a-button @click="seeDetails(record)" type="primary" size="small">详情</a-button>
-          </div>
-        </template>
-        <template slot="footer" slot-scope="currentPageData" style="background:white !important">
-            <span>备注：</span><span>{{remarks}}</span>
-        </template>
+          <template slot="operation" slot-scope="text, record">
+            <div class="editable-row-operations">
+              <a-button @click="seeDetails(record)" type="primary" size="small">详情</a-button>
+            </div>
+          </template>
+          <template slot="footer" slot-scope="currentPageData" style="background:white !important">
+            <span>备注：</span>
+            <span>{{remarks}}</span>
+          </template>
         </a-table>
-        <div id="tip" style="margin-top:20px;padding-left:16px">注：正常填写正常，有问题填写异常，问题及处理情况6小时内必须以书面形式报至终端组主管人员，实行表年月周查制. 每周巡检1次，间隔禁止超过7个工作日</div>
-        <div id="signatureBox" style="padding-left:16px">
-            <div id="engineerSigature" style="width:200px;">
-                <span>运维工程师签名：</span> 
-            </div>
-            <div id="leaderSigature" style="width:200px;margin-left:300px">
-                <span>负责人签名：</span> 
-            </div>
-            <div id="leaderTeacherSigature" style="width:200px;margin-left:200px">
-                <span> 主管老师签名：</span> 
-            </div>
+        <div
+          id="tip"
+          style="margin-top:20px;padding-left:16px"
+        >注：正常填写正常，有问题填写异常，问题及处理情况6小时内必须以书面形式报至终端组主管人员，实行表年月周查制. 每周巡检1次，间隔禁止超过7个工作日</div>
+        <div
+          id="signatureBox"
+          style="display: flex;flex-direction: row;justify-content: flex-start;align-items: center;margin-top: 20px;padding-left:16px"
+        >
+          <div id="engineerSigature" style="width:200px;">
+            <span>运维工程师签名：</span>
+          </div>
+          <div id="leaderSigature" style="width:200px;margin-left:300px">
+            <span>负责人签名：</span>
+          </div>
+          <div id="leaderTeacherSigature" style="width:200px;margin-left:200px">
+            <span>主管老师签名：</span>
+          </div>
         </div>
         <!-- <div id="pagination" v-show="!isLoading"> 
           <div id="total">
@@ -77,66 +93,93 @@
           <div id="paginationBox">
             <a-pagination @change="changePage" v-model="current" :total="recordsTotal"   :pageSize="12" />
           </div>
-        </div> -->
+        </div>-->
       </div>
-      <div  id="pdfDom" style="box-sizing:border-box;padding:0 15px;font-size: 12px; 
-                position:absolute;top:-10000px;left:-10000px">
-        <h4 id="printTitle" > {{printTitle}}</h4>
-        <table class="table table-bordered " id="printedTable" cellspacing="0" cellpadding="1" border="1px">
-           <thead>
+      <div
+        id="pdfDom"
+        style="box-sizing:border-box;padding:0 15px;font-size: 12px; position:absolute;top:-100000px;  height: calc(100% - 100px);overflow: auto;box-sizing: border-box;padding: 0 15px;padding-top: 10px;"
+      >
+        <h4
+          id="printTitle"
+          style=" height: 56px;line-height: 56px;text-align: center;font-size: 16px;font-variant: normal;"
+        >{{printTitle}}</h4>
+        <table
+          class="table table-bordered"
+          id="printedTable"
+          cellspacing="0"
+          cellpadding="1"
+          border="1px"
+        >
+          <thead>
             <td style="text-align:center;vertical-align:middle;">巡检日期</td>
-            <td >电源及照明灯情况</td>
-            <td >是否有异味</td>
-            <td >室内有无杂物</td>
-            <td >卫生</td>
-            <td >门锁</td>
-            <td >市电异常个数</td>
-            <td >UPS异常个数</td>
-            <td >门禁异常个数</td>
-            <td >烟雾异常个数</td>
-            <td >温度异常个数</td>
-            <td >湿度异常个数</td>
-            <td >线路有无乱线及飞线情况存在</td>
+            <td>电源及照明灯情况</td>
+            <td>是否有异味</td>
+            <td>室内有无杂物</td>
+            <td>卫生</td>
+            <td>门锁</td>
+            <td>市电异常个数</td>
+            <td>UPS异常个数</td>
+            <td>门禁异常个数</td>
+            <td>烟雾异常个数</td>
+            <td>温度异常个数</td>
+            <td>湿度异常个数</td>
+            <td>线路有无乱线及飞线情况存在</td>
           </thead>
           <tr v-for="item in data" :key="item.id">
-            <td >{{item.startTime}}</td>
-            <td ></td>
-            <td ></td>
-            <td ></td>
-            <td ></td>
-            <td ></td>
-            <td style="text-align:center;vertical-align:middle;">{{item.powerCount}}</td>
-            <td style="text-align:center;vertical-align:middle;">{{item.upsCount}}</td>
-            <td style="text-align:center;vertical-align:middle;">{{item.doorCount}}</td>
-            <td style="text-align:center;vertical-align:middle;">{{item.smokeCount}}</td>
-            <td style="text-align:center;vertical-align:middle;">{{item.temperatureCount}}</td>
-            <td style="text-align:center;vertical-align:middle;">{{item.humidityCount}}</td>
-            <td ></td>
+            <td style="width: 92px !important;">{{item.startTime}}</td>
+            <td style=" border-collapse: collapse;"></td>
+            <td style=" border-collapse: collapse;"></td>
+            <td style=" border-collapse: collapse;"></td>
+            <td style=" border-collapse: collapse;"></td>
+            <td style=" border-collapse: collapse;"></td>
+            <td
+              style="border-collapse: collapse;text-align:center;vertical-align:middle;"
+            >{{item.powerCount}}</td>
+            <td
+              style="border-collapse: collapse;text-align:center;vertical-align:middle;"
+            >{{item.upsCount}}</td>
+            <td
+              style="border-collapse: collapse;text-align:center;vertical-align:middle;"
+            >{{item.doorCount}}</td>
+            <td
+              style="border-collapse: collapse;text-align:center;vertical-align:middle;"
+            >{{item.smokeCount}}</td>
+            <td
+              style="border-collapse: collapse;text-align:center;vertical-align:middle;"
+            >{{item.temperatureCount}}</td>
+            <td
+              style="border-collapse: collapse;text-align:center;vertical-align:middle;"
+            >{{item.humidityCount}}</td>
+            <td></td>
           </tr>
           <tfoot>
-            <td colspan=13>备注：</td>
-            
+            <td colspan="13">备注：</td>
           </tfoot>
         </table>
-                <div id="tip" style="margin-top:20px;padding-left:16px">注：正常填写正常，有问题填写异常，问题及处理情况6小时内必须以书面形式报至终端组主管人员，实行表年月周查制. 每周巡检1次，间隔禁止超过7个工作日</div>
-        <div id="signatureBox" style="padding-left:16px">
-            <div id="engineerSigature" style="width:200px;">
-                <span>运维工程师签名：</span> 
-            </div>
-            <div id="leaderSigature" style="width:200px;margin-left:300px">
-                <span>负责人签名：</span> 
-            </div>
-            <div id="leaderTeacherSigature" style="width:200px;margin-left:200px">
-                <span> 主管老师签名：</span> 
-            </div>
+        <div
+          id="tip"
+          style="margin-top:20px;padding-left:16px"
+        >注：正常填写正常，有问题填写异常，问题及处理情况6小时内必须以书面形式报至终端组主管人员，实行表年月周查制. 每周巡检1次，间隔禁止超过7个工作日</div>
+        <div
+          id="signatureBox"
+          style="display: flex;flex-direction: row;justify-content: flex-start;align-items: center;margin-top: 20px;padding-left:16px"
+        >
+          <div id="engineerSigature" style="width:200px;">
+            <span>运维工程师签名：</span>
+          </div>
+          <div id="leaderSigature" style="width:200px;margin-left:300px">
+            <span>负责人签名：</span>
+          </div>
+          <div id="leaderTeacherSigature" style="width:200px;margin-left:200px">
+            <span>主管老师签名：</span>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </template>
 <script>
-import printJS from 'print-js'
-
+import printJS from "print-js";
 
 const columns = [
   {
@@ -144,86 +187,91 @@ const columns = [
     dataIndex: "startTime",
     width: "8%",
     scopedSlots: { customRender: "_id" },
-    align:"center"
+    align: "center"
   },
   {
     title: "电源及照明灯情况",
     dataIndex: " 1",
     width: "10%",
     scopedSlots: { customRender: "highLight" },
-    align:"center"
+    align: "center"
   },
   {
     title: "是否有异味",
     dataIndex: " 2",
     width: "7%",
     scopedSlots: { customRender: "address" },
-    align:"center"
+    align: "center"
   },
   {
     title: "室内有无杂物",
     dataIndex: " 3",
     width: "8%",
     scopedSlots: { customRender: "address" },
-    align:"center"
+    align: "center"
   },
   {
     title: "卫生",
     dataIndex: " 4",
     width: "4%",
     scopedSlots: { customRender: "address" },
-    align:"center"
-  },{
+    align: "center"
+  },
+  {
     title: "门锁",
     dataIndex: " ",
     width: "4%",
     scopedSlots: { customRender: "address" },
-    align:"center"
+    align: "center"
   },
-    {
+  {
     title: "市电异常个数",
     dataIndex: "powerCount",
     width: "7%",
     scopedSlots: { customRender: "address" },
-    align:"center"
+    align: "center"
   },
-    {
+  {
     title: "UPS异常个数",
     dataIndex: "upsCount",
     width: "7%",
     scopedSlots: { customRender: "address" },
-    align:"center"
-  },{
+    align: "center"
+  },
+  {
     title: "门禁异常个数",
     dataIndex: "doorCount",
     width: "7%",
     scopedSlots: { customRender: "address" },
-    align:"center"
-  },{
+    align: "center"
+  },
+  {
     title: "烟雾异常个数",
     dataIndex: "smokeCount",
     width: "7%",
     scopedSlots: { customRender: "address" },
-    align:"center"
-  },{
+    align: "center"
+  },
+  {
     title: "温度异常个数",
     dataIndex: "temperatureCount",
     width: "7%",
     scopedSlots: { customRender: "address" },
-    align:"center"
-  },{
+    align: "center"
+  },
+  {
     title: "湿度异常个数",
     dataIndex: "humidityCount",
     width: "7%",
     scopedSlots: { customRender: "address" },
-    align:"center"
+    align: "center"
   },
   {
     title: "线路有无乱线及飞线情况存在",
     dataIndex: " 5",
     width: "10%",
     scopedSlots: { customRender: "address" },
-    align:"center"
+    align: "center"
   }
 ];
 
@@ -237,48 +285,38 @@ export default {
       searchParam: "",
       isLoading: true,
       current: 1,
-      data:[],
-      timeScale:2,
-      remarks:"",
-      printTitle:this.$route.query.title,
-      isPrinting:false
+      data: [],
+      timeScale: 2,
+      remarks: "",
+      printTitle: this.$route.query.title,
+      isPrinting: false
     };
   },
   methods: {
-    print(){
+    print() {
       // printJS("lalala",'html',)
-      this.isPrinting=true;
-      let _this=this;
-      this.$nextTick(()=>{
-        console.log(this.isPrinting)
-      new Promise(function(resolve, reject){
-            //做一些异步操作
-            setTimeout(function(){
-                _this.getPdf(_this.printTitle);
-                resolve('随便什么数据');
-            }, 20);
-        }).then(()=>{
-          _this.isPrinting=false;
-          _this.$nextTick(()=>{
-            console.log(this.isPrinting)
-          })
+      this.isPrinting = true;
+      let _this = this;
+      this.$nextTick(() => {
+        console.log(this.isPrinting);
+        new Promise(function(resolve, reject) {
+          //做一些异步操作
+          setTimeout(function() {
+            _this.getPdf(_this.printTitle);
+            resolve("随便什么数据");
+          }, 20);
+        }).then(() => {
+          _this.isPrinting = false;
+          _this.$nextTick(() => {
+            console.log(this.isPrinting);
+          });
         });
 
-
-        
         // setTimeout(function(){
         //   this.isPrinting=false;
         // },1000)
-      })
+      });
     },
-    changeTimeScale(e){
-          console.log(e.target.value)
-          this.timeScale=e.target.value;
-          this.page=1;
-          this.$nextTick(()=>{
-              this.search(true)
-          })
-      },
     handleStatusChange() {
       this.statusParam = this.status === "null" ? null : this.status;
       // this.$http
@@ -293,9 +331,9 @@ export default {
       //     }
       //   });
     },
-    color(type){
-      if(type!=0){
-        return 'color : red'
+    color(type) {
+      if (type != 0) {
+        return "color : red";
       }
     },
     handleBuildingChange() {
@@ -324,10 +362,10 @@ export default {
     //     this.$nextTick(()=>{
     //       this.GetlowVoltageRoomStatements(this.page,this.timeScale,isSearching)
     //     })
- 
+
     // },
     addOrder() {
-      var i = 1 + (this.page-1)*12;
+      var i = 1 + (this.page - 1) * 12;
       this.data = this.data.filter(item => {
         item["key"] = i++;
         return true;
@@ -352,48 +390,52 @@ export default {
     //       }
     //     }
     //   });
-    // },f  
-    GetconvergeRoomStatementsDetails(){
-        this.isLoading=true;
-        this.$http.toGetconvergeRoomStatementsDetails(this.$route.query.type,this.$route.query.startTime).then((res)=>{
-            console.log(res)
-            if(res.data.success){
-                this.data=res.data.data.map((item)=>{
-                    item.startTime=item.startTime.substring(0,10);
-                    return item
-                });
-                this.$nextTick(() => {
-                this.isLoading = false;
-                // this.addOrder()
-          });
-            }else{
-              this.$message.error(res.data.message);
-            }
-        })
+    // },f
+    GetconvergeRoomStatementsDetails() {
+      this.isLoading = true;
+      this.$http
+        .toGetconvergeRoomStatementsDetails(
+          this.$route.query.type,
+          this.$route.query.startTime
+        )
+        .then(res => {
+          console.log(res);
+          if (res.data.success) {
+            this.data = res.data.data.map(item => {
+              item.startTime = item.startTime.substring(0, 10);
+              return item;
+            });
+            this.$nextTick(() => {
+              this.isLoading = false;
+              // this.addOrder()
+            });
+          } else {
+            this.$message.error(res.data.message);
+          }
+        });
     },
-    changePage(page){
-      this.page=page;
-      this.$nextTick(()=>{
-        this.search(false)
-      })
+    changePage(page) {
+      this.page = page;
+      this.$nextTick(() => {
+        this.search(false);
+      });
     },
-    seeDetails(item){
-        console.log(item)
+    seeDetails(item) {
+      console.log(item);
     }
   },
   created() {
     // 默认请求第一页，按周统计
     // this.GetlowVoltageRoomStatements(1,2,false)
-    this.GetconvergeRoomStatementsDetails()
-    
+    this.GetconvergeRoomStatementsDetails();
   },
-  mounted(){
-        let that = this;
+  mounted() {
+    let that = this;
     document.onkeypress = function(e) {
       var keycode = document.all ? event.keyCode : e.which;
       if (keycode == 13) {
-        that.search(true);// 登录方法名
-         return false;
+        that.search(true); // 登录方法名
+        return false;
       }
     };
   }
@@ -446,53 +488,25 @@ body {
   background-color: aqua;
   padding: 10px !important;
 }
-#pdfDom {
-  height: calc(100% - 100px);
-  overflow: auto;
-  box-sizing: border-box;
-  padding:0 15px;
-  padding-top: 10px;
-}
 .spin-content {
   border: 1px solid #91d5ff;
   background-color: #e6f7ff;
   padding: 30px;
   height: 200px;
 }
-#pagination{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    margin-top: 15px;
+#pagination {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 15px;
 }
-#total{
+#total {
   font-size: 15px;
 }
-#buildingSearch{
+#buildingSearch {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
 }
-#signatureBox{
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    align-items: center;
-    margin-top: 20px;
-}
-#printTitle{
-  height:56px;
-  line-height:56px;
-  text-align:center;
-  font-size:16px;
-  font-variant: normal;
-}
-#printedTable tr td:first-child{
-  width:92px !important;
-}
-#printedTable tr td{
- border-collapse: collapse;
-}
-
 </style>
