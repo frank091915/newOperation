@@ -130,12 +130,24 @@ const toGetAllExceptionList = (type) => {
 
 // 改变菜单权限状态
 const toModifyPermissionStatus = (permissionId) => {
-
   return ajax.put(
     `/api/permission/status/${permissionId}`, {}, {
       headers: {
         "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken")),
         "Content-Type": "application/x-www-form-urlencoded"
+      }
+    }
+  )
+}
+
+// 批量改变菜单状态
+const toModifySeveralPermissionStatus = (permissionIds) => {
+  console.log(permissionIds.join(','))
+  return ajax.put(
+    `/api/permission/status?permissionIds=${permissionIds.join(',')}`, qs.stringify(permissionIds), {
+      headers: {
+        "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken")),
+        "Content-Type": "application/json"
       }
     }
   )
@@ -1284,5 +1296,6 @@ export {
   toGetdisplaySecond,
   toGetdisplayThird,
   toGetServerStatements,
-  toGetServerStatementsDetails
+  toGetServerStatementsDetails,
+  toModifySeveralPermissionStatus
 }

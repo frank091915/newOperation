@@ -1,7 +1,7 @@
 <template>
   <div id="pageWrapper">
     <a-table :columns="columns" :dataSource="menu"  :pagination="false"  :scroll="{y:790}">
-      <template slot="weChatcheckBox" slot-scope="text, record">
+      <template slot="ChangePermissionStatus" slot-scope="text, record">
         <a-switch :checked="record.status" @change="onChangePermissionStatus(record)"/>
       </template>
     </a-table>
@@ -133,7 +133,7 @@ const columns = [
     title: "权限状态",
     dataIndex: "status",
     width: "20%",
-    scopedSlots: { customRender: "weChatcheckBox" },
+    scopedSlots: { customRender: "ChangePermissionStatus" },
     align: "center"
   }
 ];
@@ -149,7 +149,14 @@ export default {
   },
   methods: {
     onChangePermissionStatus(e) {
-      this.$http.toModifyPermissionStatus(e.id).then(res => {
+            console.log(e)
+      if(e.subPermissions.length){
+        let changePermmisionsIds=e.subPermissions.map((item)=>{
+            return item.id
+        });
+        changePermmisionsIds=changePermmisionsIds.concat([e.id])
+        console.log(changePermmisionsIds)
+        this.$http.toModifySeveralPermissionStatus(changePermmisionsIds).then(res => {
         if (res.data.success) {
           this.$message.success("设置成功");
           this.getMenu(true);
@@ -157,6 +164,28 @@ export default {
           this.$message.error(res.data.data.message);
         }
       });
+      }else{
+        if(e.subPermissions.length==0){
+          this.$http.toModifyPermissionStatus(e.id).then(res => {
+            if (res.data.success) {
+              this.$message.success("设置成功");
+              this.getMenu(true);
+            } else {
+              this.$message.error(res.data.data.message);
+            }
+          });
+        }else{
+           this.$http.toModifyPermissionStatus(e.id).then(res => {
+            if (res.data.success) {
+              this.$message.success("设置成功");
+              this.getMenu(true);
+            } else {
+              this.$message.error(res.data.data.message);
+            }
+          });
+        }
+
+      }
     },
     getMenu(afterSentting) {
       this.$http.toGetMenu().then(res => {
