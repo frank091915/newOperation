@@ -1171,9 +1171,18 @@ const toGetdisplayThird = () => {
   )
 }
 
+// 汇聚机房表格导出
+const toDownloadConvergeRoomStatementsPdf = (type,startTiem) => {
+  return ajax.get(
+    `/api/export/access/detail?type=${type}&startTime=${startTiem}`, {
+      headers: {
+        "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken"))
+      }
+    }
+  )
+}
 
-
-// 用户推出
+// 用户退出
 const toSignOut = () => {
   return ajax.get(
     `/login?logout`, {
@@ -1297,5 +1306,6 @@ export {
   toGetdisplayThird,
   toGetServerStatements,
   toGetServerStatementsDetails,
-  toModifySeveralPermissionStatus
+  toModifySeveralPermissionStatus,
+  toDownloadConvergeRoomStatementsPdf
 }

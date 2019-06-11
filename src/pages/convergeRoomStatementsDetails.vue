@@ -294,28 +294,13 @@ export default {
   },
   methods: {
     print() {
-      // printJS("lalala",'html',)
-      this.isPrinting = true;
-      let _this = this;
-      this.$nextTick(() => {
-        console.log(this.isPrinting);
-        new Promise(function(resolve, reject) {
-          //做一些异步操作
-          setTimeout(function() {
-            _this.getPdf(_this.printTitle);
-            resolve("随便什么数据");
-          }, 20);
-        }).then(() => {
-          _this.isPrinting = false;
-          _this.$nextTick(() => {
-            console.log(this.isPrinting);
-          });
-        });
-
-        // setTimeout(function(){
-        //   this.isPrinting=false;
-        // },1000)
-      });
+      this.$http.toDownloadConvergeRoomStatementsPdf(this.$route.query.type,this.$route.query.startTime);
+      window.open(`http://127.0.0.1:8181/api/export/access/detail?type=${this.$route.query.type}&startTime=${this.$route.query.startTime}&accessToken=${JSON.parse(window.sessionStorage.getItem("operationToken"))}`,"blank")
+    //     let routeUrl = this.$router.resolve({
+    //       path: "/downLoadPdf",
+    //       query: {type:this.$route.query.type,startTime:this.$route.query.startTime}
+    //  });
+    //  window.open(routeUrl .href, '_blank');
     },
     handleStatusChange() {
       this.statusParam = this.status === "null" ? null : this.status;
