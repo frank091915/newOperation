@@ -63,9 +63,11 @@ import {
   ConfigProvider,
 } from 'ant-design-vue';
 
-const ajax = axios.create({
+let baseURL={
   baseURL: "http://127.0.0.1:8181"
-})
+};
+window.sessionStorage.setItem("url",JSON.stringify(baseURL))
+const ajax = axios.create(baseURL)
 
 // 用户登录请求
 const toSignIn = (userInfo) => {

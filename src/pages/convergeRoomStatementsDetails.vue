@@ -179,7 +179,6 @@
   </div>
 </template>
 <script>
-import printJS from "print-js";
 
 const columns = [
   {
@@ -295,7 +294,8 @@ export default {
   methods: {
     print() {
       this.$http.toDownloadConvergeRoomStatementsPdf(this.$route.query.type,this.$route.query.startTime);
-      window.open(`http://127.0.0.1:8181/api/export/access/detail?type=${this.$route.query.type}&startTime=${this.$route.query.startTime}&accessToken=${JSON.parse(window.sessionStorage.getItem("operationToken"))}`,"blank")
+
+      window.open(`${JSON.parse(window.sessionStorage.getItem("url")).baseURL}/api/export/access/detail?type=${this.$route.query.type}&startTime=${this.$route.query.startTime}&accessToken=${JSON.parse(window.sessionStorage.getItem("operationToken"))}`,"blank")
     //     let routeUrl = this.$router.resolve({
     //       path: "/downLoadPdf",
     //       query: {type:this.$route.query.type,startTime:this.$route.query.startTime}
@@ -413,6 +413,7 @@ export default {
     // 默认请求第一页，按周统计
     // this.GetlowVoltageRoomStatements(1,2,false)
     this.GetconvergeRoomStatementsDetails();
+
   },
   mounted() {
     let that = this;
