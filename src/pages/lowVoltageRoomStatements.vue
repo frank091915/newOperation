@@ -90,14 +90,14 @@ const columnsWeek = [
     align:"center"
   },
   {
-    title: "广播系统检查数量",
+    title: "弱电间检查数量",
     dataIndex: "inspectionCount",
     width: "6%",
     scopedSlots: { customRender: "address" },
     align:"center"
   },
   {
-    title: "广播系统异常数量",
+    title: "弱电间异常数量",
     dataIndex: "count",
     width: "9%",
     scopedSlots: { customRender: "address" },
@@ -127,14 +127,14 @@ const columns = [
     align:"center"
   },
   {
-    title: "广播系统检查数量",
+    title: "弱电间检查数量",
     dataIndex: "inspectionCount",
     width: "6%",
     scopedSlots: { customRender: "address" },
     align:"center"
   },
   {
-    title: "广播系统异常数量",
+    title: "弱电间异常数量",
     dataIndex: "count",
     width: "9%",
     scopedSlots: { customRender: "address" },
