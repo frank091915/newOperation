@@ -293,9 +293,8 @@ export default {
   },
   methods: {
     print() {
-      this.$http.toDownloadConvergeRoomStatementsPdf(this.$route.query.type,this.$route.query.startTime);
 
-      window.open(`${JSON.parse(window.sessionStorage.getItem("url")).baseURL}/api/export/access/detail?type=${this.$route.query.type}&startTime=${this.$route.query.startTime}&accessToken=${JSON.parse(window.sessionStorage.getItem("operationToken"))}`,"blank")
+      window.open(`${JSON.parse(window.sessionStorage.getItem("url")).baseURL}/api/export/machine-room/detail?type=${this.$route.query.type}&startTime=${this.$route.query.startTime}&accessToken=${JSON.parse(window.sessionStorage.getItem("operationToken"))}`,"blank")
     //     let routeUrl = this.$router.resolve({
     //       path: "/downLoadPdf",
     //       query: {type:this.$route.query.type,startTime:this.$route.query.startTime}
@@ -384,7 +383,7 @@ export default {
           this.$route.query.startTime
         )
         .then(res => {
-          console.log(res);
+          // console.log(res);
           if (res.data.success) {
             this.data = res.data.data.map(item => {
               item.startTime = item.startTime.substring(0, 10);
@@ -406,14 +405,14 @@ export default {
       });
     },
     seeDetails(item) {
-      console.log(item);
+      // console.log(item);
     }
   },
   created() {
     // 默认请求第一页，按周统计
     // this.GetlowVoltageRoomStatements(1,2,false)
     this.GetconvergeRoomStatementsDetails();
-    console.log(JSON.parse(window.sessionStorage.getItem("url")).baseURL)
+    // console.log(JSON.parse(window.sessionStorage.getItem("url")).baseURL)
   },
   mounted() {
     let that = this;

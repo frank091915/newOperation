@@ -194,33 +194,10 @@ export default {
   },
   methods: {
     print(){
-      console.log("fix")
-      this.isPrinting=true;
-      let _this=this;
-      this.$nextTick(()=>{
-
-      new Promise(function(resolve, reject){
-            //做一些异步操作
-            setTimeout(function(){
-                _this.getPdf(_this.printTitle);
-                resolve('随便什么数据');
-            }, 20);
-        }).then(()=>{
-          _this.isPrinting=false;
-          _this.$nextTick(()=>{
-
-          })
-        });
-
-
-        
-        // setTimeout(function(){
-        //   this.isPrinting=false;
-        // },1000)
-      })
+window.open(`${JSON.parse(window.sessionStorage.getItem("url")).baseURL}/api/export/broadcast/detail?type=${this.$route.query.type}&startTime=${this.$route.query.startTime}&accessToken=${JSON.parse(window.sessionStorage.getItem("operationToken"))}`,"blank")
     },
     changeTimeScale(e){
-          console.log(e.target.value)
+          // console.log(e.target.value)
           this.timeScale=e.target.value;
           this.page=1;
           this.$nextTick(()=>{
@@ -304,7 +281,7 @@ export default {
     GetbroadcastStatementsDetails(){
         this.isLoading=true;
         this.$http.toGetbroadcastStatementsDetails(this.$route.query.type,this.$route.query.startTime).then((res)=>{
-            console.log(res)
+            // console.log(res)
             if(res.data.success){
                 this.data=res.data.data.map((item)=>{
                     item.startTime=item.startTime.substring(0,10);
@@ -326,7 +303,7 @@ export default {
       })
     },
     seeDetails(item){
-        console.log(item)
+        // console.log(item)
     }
   },
   created() {
