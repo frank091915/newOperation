@@ -413,7 +413,7 @@ export default {
     // 默认请求第一页，按周统计
     // this.GetlowVoltageRoomStatements(1,2,false)
     this.GetconvergeRoomStatementsDetails();
-
+    console.log(JSON.parse(window.sessionStorage.getItem("url")).baseURL)
   },
   mounted() {
     let that = this;
