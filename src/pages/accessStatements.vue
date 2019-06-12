@@ -164,7 +164,8 @@ export default {
       data:[],
       timeScale:2,
       printTitle:this.printTitle,
-      columnsWeek
+      columnsWeek,
+      startTime:''
     };
   },
   methods: {
@@ -260,19 +261,26 @@ export default {
     },
     seeDetails(item){
         console.log(item)
+        this.startTime=item.startTime
         let printTitle=this.Title();
         console.log(printTitle)
-        this.$router.push({ path: "/accessStatementsDetails", query: { title: printTitle,id:item.id,startTime:item.startTime.substring(0,10),type:item.type}});
+        this.$nextTick(()=>{
+          this.$router.push({ path: "/accessStatementsDetails", query: { title: printTitle,id:item.id,startTime:item.startTime.substring(0,10),type:item.type}});
+        })
+
     },
     Title (){
-      console.log(this.timeScale)
+      console.log(this.timeScale,this.startTime)
+      let month=this.startTime.slice(0,4)+"年"+  parseInt(this.startTime.slice(5,7)) + "月",
+          year=this.startTime.slice(0,4)+"年";
+      console.log(month,year)
       switch(this.timeScale){
         case 2:
         return '门禁控制器周次巡检表';
         case 3:
-        return '门禁控制器月次巡检表';
+        return '门禁控制器'+ month+'月次巡检表';
         case 4:
-        return '门禁控制器年次巡检表';
+        return '门禁控制器'+ year+'年次巡检表';
       }
     }
   },

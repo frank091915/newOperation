@@ -25,6 +25,7 @@
             :key="subItem.id"
             @click="toNavigate(subItem.path,subItem.title,subItem.id,subItem)"
             class="childrenMenu"
+            style="height:25px;line-height:25px"
             >{{subItem.title}}</a-menu-item>
           </a-sub-menu>
         </a-menu>
@@ -180,4 +181,5 @@ body{height:100%}
     padding-right:5px !important;
     width: 260px !important;
   }
+
 </style>
