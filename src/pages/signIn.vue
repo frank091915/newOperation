@@ -100,7 +100,7 @@ export default {
           });
           // this.showConfirm();
         } else {
-          this.error();
+          this.error(res.data.message);
         }
       });
     },
@@ -117,11 +117,11 @@ export default {
         onCancel() {}
       });
     },
-    error() {
+    error(message) {
       this.$message.config({
         duration: 1
       });
-      this.$message.error("登录失败，请重新登录");
+      this.$message.error(message);
     }
   },
   mounted(){
