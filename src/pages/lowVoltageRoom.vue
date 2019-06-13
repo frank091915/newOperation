@@ -9,7 +9,7 @@
           <div class="normalCountBox">合计：{{total}}</div>
         </div>
         <a-input-search
-          placeholder="搜索汇聚机房名称"
+          placeholder="搜索弱电间名称"
           style="width: 200px"
           @search="onSearch"
           @keydown.enter="onSearch"
