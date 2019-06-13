@@ -208,6 +208,7 @@ body {
   align-items: center;
   color: #333333;
   font-family: "Arial Negreta", "Arial Normal", "Arial";
+  font-size: 14px;
   font-weight: 700;
 }
 .spin-content {

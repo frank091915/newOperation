@@ -21,7 +21,7 @@
           </a-select>
         </div>
       </div>
-      <div id="statusSearch">
+      <div id="buildingSearch">
         <div class="label">楼宇名称：</div>
         <div id="buildingSearchInput">
           <a-select
@@ -30,7 +30,7 @@
             showSearch
             placeholder="Select a person"
             optionFilterProp="children"
-            style="width: 120px;height:25px"
+            style="width: 150px;height:25px;"
             @change="handleBuildingChange"
             :filterOption="filterOption"
             v-model="buildingId"
@@ -46,7 +46,7 @@
       </div>
       <div id="floorSearch">
         <div class="label">楼层：</div>
-        <div id="buildingSearchInput">
+        <div id="floorSearchInput">
           <a-select
             size="small"
             defaultValue="检测中心"
@@ -70,7 +70,7 @@
 
       <div id="roomSearch">
         <div class="label">房间：</div>
-        <div id="buildingSearchInput">
+        <div id="roomSearchInput">
           <a-select
             size="small"
             defaultValue="检测中心"
@@ -428,7 +428,7 @@ body {
 }
 #searchBox {
   height: 50px;
-  width: 900px;
+  width: 970px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -439,6 +439,7 @@ body {
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  width: 170px;
 }
 #searchByNames {
   display: flex;
@@ -463,6 +464,7 @@ body {
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  margin-left: 15px;
 }
 #searchByNames {
   display: flex;
@@ -476,7 +478,7 @@ body {
 }
 #tableWrapper {
   height: calc(100% - 100px);
-  overflow: auto;
+
 }
 #pagination {
   display: flex;
@@ -492,5 +494,7 @@ body {
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  width: 230px;
+  margin: 0 15px;
 }
 </style>

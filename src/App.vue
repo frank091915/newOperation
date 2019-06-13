@@ -34,7 +34,7 @@
   width: calc(100% - 260px );
   /* height: 100%; */
   margin-left: 260px;
-
+  margin-top: 50px;
 }
 
 </style>

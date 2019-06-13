@@ -5,7 +5,7 @@
         <a-tab-pane tab="汇聚机房告警策略" key='1' forceRender>
           <div id="tableWrapper">
             <a-table
-              :columns="columns"
+              :columns="convergeColumns"
               :dataSource="convergeData"
               bordered
               :pagination="false"
@@ -56,7 +56,7 @@
           <div id="lowVolttageTableWrapper">
             <div id="tableWrapper">
               <a-table
-                :columns="columns"
+                :columns="lowVolttageColumns"
                 :dataSource="electronicData"
                 bordered
                 :pagination="false"
@@ -110,7 +110,7 @@
 </template>
 <script>
 import {mapState,mapMutations} from "vuex"
-const columns = [
+const convergeColumns = [
   {
     title: "序号",
     dataIndex: "key",
@@ -120,6 +120,71 @@ const columns = [
   },
   {
     title: "汇聚机房编号",
+    dataIndex: "deviceInfo.Code",
+    width: "8%",
+    scopedSlots: { customRender: "name" },
+    align: "center"
+  },
+  {
+    title: "描述",
+    dataIndex: "deviceInfo.Description",
+    width: "15%",
+    scopedSlots: { customRender: "address" },
+    align: "center"
+  },
+  {
+    title: "楼宇名称",
+    dataIndex: "deviceInfo.buildingName",
+    width: "10%",
+    scopedSlots: { customRender: "remark" },
+    align: "center"
+  },
+  {
+    title: "楼层",
+    dataIndex: "deviceInfo.floorName",
+    width: "10%",
+    scopedSlots: { customRender: "name" },
+    align: "center"
+  },
+  {
+    title: "房间",
+    dataIndex: "deviceInfo.roomName",
+    width: "15%",
+    scopedSlots: { customRender: "name" },
+    align: "center"
+  },
+  {
+    title: "设备MAC地址",
+    dataIndex: "deviceInfo.MacAddress",
+    width: "10%",
+    scopedSlots: { customRender: "name" },
+    align: "center"
+  },
+  {
+    title: "校园地图坐标点",
+    dataIndex: "deviceInfo.location",
+    width: "9%",
+    scopedSlots: { customRender: "name" },
+    align: "center"
+  },
+  {
+    title: "操作",
+    dataIndex: "operation",
+    width: "8%",
+    scopedSlots: { customRender: "operation" },
+    align: "center"
+  }
+];
+const lowVolttageColumns = [
+  {
+    title: "序号",
+    dataIndex: "key",
+    width: "5%",
+    scopedSlots: { customRender: "key" },
+    align: "center"
+  },
+  {
+    title: "弱电间编号",
     dataIndex: "deviceInfo.Code",
     width: "8%",
     scopedSlots: { customRender: "name" },
@@ -204,7 +269,8 @@ export default {
       currentFualtId: this.$route.query.fualtId,
       convergeData: [],
       electronicData: [],
-      columns,
+      convergeColumns,
+      lowVolttageColumns,
       allDataArray: [],
       recordsTotal: 0,
       roomType: this.$route.query.roomType ? this.$route.query.roomType :  "NKD_AGG_DEVICE",

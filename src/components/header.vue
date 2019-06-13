@@ -60,15 +60,17 @@ export default {
   justify-content: space-between;
   align-items: center;
   border-bottom: 1px solid #bdbdbd;
-  /* position: fixed;
+  position: fixed;
   top: 0;
-  width: 100%; */
+  width: calc(100% - 260px) ;
   z-index: 99;
+  background-color: white;
 }
 #headerInfo{
     margin-left: 50px;
     font-weight: 600;
     font-size: 18px;
+
 }
 #dropDown{
     width: 110px;

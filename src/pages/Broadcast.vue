@@ -51,7 +51,7 @@
         <div id="searchByNamesInput">
           <a-input
             v-model="searchParam"
-            placeholder="请输入广播房间名称"
+            placeholder="请输入广播系统名称"
             size="small"
             @keydown.enter="search(true)"
           />
