@@ -8,7 +8,7 @@
         <div class="logo" >
           <img id="logo" src="../assets/sustech.png">
         </div>
-        
+        <div id="menuWrapper">
         <a-menu  theme="dark" :selectedKeys="[currentMenuId]" mode="inline"  :openKeys="[openedMenu]" v-for=" item in allParentMenu" :key="item.path">
           <!-- 渲染一级菜单 -->
           <a-menu-item v-if="!item.subPermissions.length"  :key="item.path" @click="toNavigate(item.path,item.title,item.id,item)">
@@ -29,6 +29,7 @@
             >{{subItem.title}}</a-menu-item>
           </a-sub-menu>
         </a-menu>
+        </div>
       </a-layout-sider>
     </a-layout>
   </div>
@@ -114,7 +115,7 @@ export default {
 html{height:100%}
 body{height:100%}
 #frame{
-  max-height:100%;
+  height:100%;
   position: fixed;
   z-index: 99;
 }
@@ -183,5 +184,8 @@ body{height:100%}
     padding-right:5px !important;
     width: 260px !important;
   }
-
+  #menuWrapper{
+    height: calc(100% - 60px);
+    overflow: auto;
+  }
 </style>
