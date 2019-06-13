@@ -260,17 +260,17 @@ export default {
       })
     },
     seeDetails(item){
-        console.log(item)
+        // console.log(item)
         this.startTime=item.startTime
         let printTitle=this.Title();
-        console.log(printTitle)
+        // console.log(printTitle)
         this.$nextTick(()=>{
           this.$router.push({ path: "/accessStatementsDetails", query: { title: printTitle,id:item.id,startTime:item.startTime.substring(0,10),type:item.type}});
         })
 
     },
     Title (){
-      console.log(this.timeScale,this.startTime)
+
       let month=this.startTime.slice(0,4)+"年"+  parseInt(this.startTime.slice(5,7)) + "月",
           year=this.startTime.slice(0,4)+"年";
       console.log(month,year)

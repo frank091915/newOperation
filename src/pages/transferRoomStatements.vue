@@ -163,7 +163,8 @@ export default {
       current: 1,
       data:[],
       timeScale:2,
-      columnsWeek
+      columnsWeek,
+      startTime:''
     };
   },
   methods: {
@@ -260,7 +261,26 @@ export default {
     },
     seeDetails(item){
         console.log(item)
-        this.$router.push({ path: "/transferRoomStatementsDetails", query: { title: this.printTitle,id:item.id,startTime:item.startTime.substring(0,10),type:item.type}});
+        this.startTime=item.startTime
+        let printTitle=this.Title();
+        this.$nextTick(()=>{
+            this.$router.push({ path: "/transferRoomStatementsDetails", query: { title: printTitle,id:item.id,startTime:item.startTime.substring(0,10),type:item.type}});
+        })
+
+    },
+    Title (){
+
+      let month=this.startTime.slice(0,4)+"年"+  parseInt(this.startTime.slice(5,7)) + "月",
+          year=this.startTime.slice(0,4)+"年";
+      console.log(month,year)
+      switch(this.timeScale){
+        case 2:
+        return '圈存机房间周次巡检表';
+        case 3:
+        return '圈存机房间'+ month+'月次巡检表';
+        case 4:
+        return '圈存机房间'+ year+'年次巡检表';
+      }
     }
   },
   computed:{
