@@ -251,7 +251,7 @@ body {
 }
 #tableWrapper {
   height: calc(100% - 100px);
-  overflow: auto;
+
 }
 #addButton {
   display: flex;

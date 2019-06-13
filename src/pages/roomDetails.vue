@@ -480,11 +480,11 @@ body {
 }
 #tempChart{
   height: 300px;
-  width: 800px;
+  width: 100%;
 }
 #humilityChart{
     height: 300px;
-  width: 800px;
+  width: 100%;
 }
 .errorTip{
   color: #bfbfbf;

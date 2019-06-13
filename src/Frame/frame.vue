@@ -115,6 +115,8 @@ html{height:100%}
 body{height:100%}
 #frame{
   max-height:100%;
+  position: fixed;
+  z-index: 99;
 }
 #components-layout-demo-side .logo {
   height: 32px;

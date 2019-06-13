@@ -58,7 +58,6 @@
         :dataSource="data"
         :pagination="false"
         bordered
-        :scroll="{y:750}"
         :loading="isLoading"
       >
         <template
@@ -387,7 +386,7 @@ body {
 }
 #tableWrapper {
   height: calc(100% - 100px);
-  overflow: auto;
+
 }
 #pagination {
   display: flex;

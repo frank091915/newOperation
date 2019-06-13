@@ -398,8 +398,8 @@ export default {
   height: calc(100% - 69px);
   margin-left: 20px;
   margin-top: 20px;
-  border: 1px solid;
-  border-color: rgba(153, 153, 153, 1);
+  /* border: 1px solid;
+  border-color: rgba(153, 153, 153, 1); */
 }
 #alarmSetStatus {
   margin-top: 5px;

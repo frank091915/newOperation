@@ -6,7 +6,6 @@
         <router-view name="header"></router-view>
         <router-view name="main"></router-view>
     </div>
-
   </div>
 </template>
 
@@ -26,6 +25,7 @@
   flex-direction: row;
   justify-content: space-between;
   max-height: 100%;
+  box-sizing: border-box;
 }
 #main {
   flex: 1;
@@ -33,10 +33,8 @@
   left: 260px; */
   width: calc(100% - 260px );
   /* height: 100%; */
+  margin-left: 260px;
+
 }
-/* #mainWrapper{
-  height: 100%;
-  width: 100%;
-  display: block;
-} */
+
 </style>
