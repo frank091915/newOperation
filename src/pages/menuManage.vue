@@ -1,6 +1,6 @@
 <template>
   <div id="pageWrapper">
-    <a-table :columns="columns" :dataSource="menu"  :pagination="false"  :scroll="{y:790}">
+    <a-table :columns="columns" :dataSource="menu"  :pagination="false"  bordered>
       <template slot="ChangePermissionStatus" slot-scope="text, record">
         <a-switch :checked="record.status" @change="onChangePermissionStatus(record)"/>
       </template>

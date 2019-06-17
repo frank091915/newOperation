@@ -145,8 +145,8 @@ body {
   height: 100%;
 }
 #main {
-  /* height: 100% ! important; */
-  overflow: auto;
+  height: 100% ;
+  /* overflow: auto; */
   font-size: 14px;
 }
 #statusBar {
@@ -168,12 +168,12 @@ body {
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  overflow: auto;
+  /* overflow: auto; */
 }
 #convergeRoomBox {
   width: 95%;
   height: calc(100% - 100px);
-  overflow: auto;
+  /* overflow: auto; */
   margin-left: 30px;
   display: flex;
   flex-direction: row;
