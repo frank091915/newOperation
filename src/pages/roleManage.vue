@@ -56,14 +56,12 @@ const columns = [
   {
     title: "序号",
     dataIndex: "key",
-    width: "5%",
     scopedSlots: { customRender: "key" },
     align: "center"
   },
   {
     title: "角色名称",
     dataIndex: "name",
-    width: "10%",
     scopedSlots: { customRender: "name" },
     align: "center",
     align: "center"
@@ -71,21 +69,18 @@ const columns = [
   {
     title: "状态",
     dataIndex: "status",
-    width: "15%",
     scopedSlots: { customRender: "address" },
     align: "center"
   },
   {
     title: "备注",
     dataIndex: "remark",
-    width: "10%",
     scopedSlots: { customRender: "remark" },
     align: "center"
   },
   {
     title: "操作",
     dataIndex: "operation",
-    width: "10%",
     scopedSlots: { customRender: "operation" },
     align: "center"
   }

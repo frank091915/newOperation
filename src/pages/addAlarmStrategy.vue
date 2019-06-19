@@ -270,7 +270,8 @@ export default {
 
           this.$http.toModifyAlarmStrategy(alarmStrategy).then(res => {
             if (res.data.success) {
-              this.$message.success("添加用户成功");
+              this.$message.success("添加告警策略");
+              console.log("lalala")
               this.$router.push({
                 path: "/user",
                 query: { title: "用户管理" }
@@ -333,7 +334,6 @@ export default {
   height: calc(100% - 69px);
   margin-left: 20px;
   margin-top: 20px;
-  border: 1px solid;
   border-color: rgba(153, 153, 153, 1);
 }
 #alarmSetStatus {

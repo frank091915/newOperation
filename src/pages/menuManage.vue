@@ -49,42 +49,36 @@ const innerColumns = [
   {
     title: "序号",
     dataIndex: "id",
-    width: "5%",
     scopedSlots: { customRender: "num" },
     align: "center"
   },
   {
     title: "权限名称",
     dataIndex: "title",
-    width: "16%",
     scopedSlots: { customRender: "age" },
     align: "center"
   },
   {
     title: "权限路径",
     dataIndex: "path",
-    width: "16%",
     scopedSlots: { customRender: "address" },
     align: "center"
   },
   {
     title: "权限等级",
     dataIndex: "level",
-    width: "16%",
     scopedSlots: { customRender: "address" },
     align: "center"
   },
   {
     title: "权限状态",
     dataIndex: "status",
-    width: "16%",
     scopedSlots: { customRender: "weChatcheckBox" },
     align: "center"
   },
   {
     title: "上级权限id",
     dataIndex: "parentId",
-    width: "16%",
     scopedSlots: { customRender: "address" },
     align: "center"
   }

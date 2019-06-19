@@ -71,7 +71,7 @@
           <template
             v-for="col in ['name', 'age', 'address']"
             :slot="col"
-            slot-scope="text, record, index"
+            slot-scope="text, record"
           >
             <div :key="col">
               <a-input
@@ -86,7 +86,7 @@
           <template
             v-for="col in ['name','age', 'address','highLight']"
             slot="highLight"
-            slot-scope="text, record,highLight"
+            slot-scope="text, record"
           >
             <div :key="col" :style="color(record.status)">
               <a-input
@@ -98,7 +98,7 @@
               <template v-else>{{text}}</template>
             </div>
           </template>
-          <template slot="operation" slot-scope="text, record, index">
+          <template slot="operation" slot-scope="text, record">
             <div class="editable-row-operations">
               <a-button
                 :disabled="record.status != 1 ? true  : false "
@@ -132,72 +132,71 @@ const columns = [
   {
     title: "序号",
     dataIndex: "key",
-    width: "4%",
     scopedSlots: { customRender: "_id" },
-    align: "center"
+    align: "center",
+    key:"key"
   },
   {
     title: "状态",
     dataIndex: "statusDescription",
-    width: "18%",
     scopedSlots: { customRender: "highLight" },
-    align: "center"
+    align: "center",
+    key:"statusDescription"
   },
   {
     title: "pos机名称",
     dataIndex: "Description",
-    width: "11%",
     scopedSlots: { customRender: "address" },
-    align: "center"
+    align: "center",
+    key:"Description"
   },
   {
     title: "型号",
     dataIndex: "Model",
-    width: "6%",
     scopedSlots: { customRender: "address" },
-    align: "center"
+    align: "center",
+    key:"Model"
   },
   {
     title: "楼宇名称",
     dataIndex: "buildingName",
-    width: "9%",
     scopedSlots: { customRender: "address" },
-    align: "center"
+    align: "center",
+    key:"buildingName"
   },
   {
     title: "楼层",
     dataIndex: "floorName",
-    width: "10%",
     scopedSlots: { customRender: "address" },
-    align: "center"
+    align: "center",
+    key:"floorName"
   },
   {
     title: "房间",
     dataIndex: "roomName",
-    width: "18%",
     scopedSlots: { customRender: "address" },
-    align: "center"
+    align: "center",
+    key:"roomName"
   },
   {
     title: "编号",
     dataIndex: "Code",
-    width: "8%",
     scopedSlots: { customRender: "address" },
-    align: "center"
+    align: "center",
+    key:"Code"
   },
   {
     title: "ip地址",
     dataIndex: "SerialNumber",
-    width: "9%",
     scopedSlots: { customRender: "SerialNumber" },
-    align: "center"
+    align: "center",
+    key:"SerialNumber"
   },
   {
     title: "操作",
     dataIndex: "operation",
-    width: "10%",
     scopedSlots: { customRender: "operation" },
-    align: "center"
+    align: "operation"
   }
 ];
 

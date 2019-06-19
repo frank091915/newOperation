@@ -102,7 +102,7 @@ export default {
               },
               normal:{ 
                 color: function (params){
-                      var colorList = ['#0c9615','#c23531','#d48265','rgb(178,58,238)','rgb(54,100,139)'];
+                      var colorList = ['#4181FF','#FDB902',' #FB5B5C'];
                     return colorList[params.dataIndex];
                     }
               },
@@ -205,7 +205,7 @@ export default {
               },
               normal:{ 
                 color: function (params){
-                    var colorList = ['#0c9615','#c23531','#d48265','rgb(178,58,238)','rgb(54,100,139)'];
+                    var colorList = ['#4181FF','#FDB902',' #FB5B5C'];
                     return colorList[params.dataIndex];
                     }
               },
@@ -323,7 +323,7 @@ export default {
               },
               normal:{ 
                 color: function (params){
-                    var colorList = ['#07820c','#c23531','#d48265','#af8e10'];
+                    var colorList = ['#4181FF','#FDB902','#FB5B5C','#A561A6'];
                     return colorList[params.dataIndex];
                     }
               },

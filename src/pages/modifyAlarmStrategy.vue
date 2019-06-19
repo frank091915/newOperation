@@ -276,7 +276,7 @@ export default {
               this.$message.success("修改告警策略成功");
               this.$router.push({
                 path: "warning/strategy",
-                query: { title: "告警策略管理",defualfKey:this.defualfKey }
+                query: { title: "告警策略管理",defualfKey:this.defualfKey}
               });
             } else {
               this.$message.error(res.data.message);

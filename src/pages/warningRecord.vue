@@ -104,70 +104,60 @@ const columns = [
   {
     title: "警告标号",
     dataIndex: "key",
-    width: "6%",
     scopedSlots: { customRender: "_id" },
     align: "center"
   },
   {
     title: "楼宇名称",
     dataIndex: "deviceInfo.buildingName",
-    width: "10%",
     scopedSlots: { customRender: "address" },
     align: "center"
   },
   {
     title: "楼层",
     dataIndex: "deviceInfo.floorName",
-    width: "10%",
     scopedSlots: { customRender: "address" },
     align: "center"
   },
   {
     title: "房间",
     dataIndex: "deviceInfo.roomName",
-    width: "14%",
     scopedSlots: { customRender: "address" },
     align: "center"
   },
   {
     title: "设备MAC",
     dataIndex: "deviceInfo.MacAddress",
-    width: "10%",
     scopedSlots: { customRender: "address" },
     align: "center"
   },
   {
     title: "告警通知方式",
     dataIndex: "warningRecord.way",
-    width: "8%",
     scopedSlots: { customRender: "address" },
     align: "center"
   },
   {
     title: "告警值",
     dataIndex: "warningRecord.value",
-    width: "8%",
     scopedSlots: { customRender: "SerialNumber" },
     align: "center"
   },
   {
     title: "告警时间",
     dataIndex: "warningRecord.time",
-    width: "15%",
     scopedSlots: { customRender: "SerialNumber" },
     align: "center"
   },
   {
     title: "备注",
     dataIndex: "warningRecord.exceptionRemark",
-    width: "10%",
     scopedSlots: { customRender: "address" },
     align: "center"
   },
   {
     title: "操作",
     dataIndex: "operation",
-    width: "10%",
     scopedSlots: { customRender: "operation" },
     align: "center"
   }

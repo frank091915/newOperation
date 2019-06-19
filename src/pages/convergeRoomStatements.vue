@@ -71,42 +71,36 @@ const columnsWeek = [
   {
     title: "序号",
     dataIndex: "key",
-    width: "4%",
     scopedSlots: { customRender: "_id" },
     align:"center"
   },
   {
     title: "巡查周次",
     dataIndex: "weekNum",
-    width: "10%",
     scopedSlots: { customRender: "highLight" },
     align:"center"
   },
   {
     title: "日期范围",
     dataIndex: "timeRange",
-    width: "11%",
     scopedSlots: { customRender: "address" },
     align:"center"
   },
   {
     title: "汇聚机房检查数量",
     dataIndex: "inspectionCount",
-    width: "6%",
     scopedSlots: { customRender: "address" },
     align:"center"
   },
   {
     title: "汇聚机房异常数量",
     dataIndex: "count",
-    width: "9%",
     scopedSlots: { customRender: "address" },
     align:"center"
   },
   {
     title: "操作",
     dataIndex: "",
-    width: "10%",
     scopedSlots: { customRender: "operation" },
     align:"center"
   }
@@ -115,35 +109,30 @@ const columns = [
   {
     title: "序号",
     dataIndex: "key",
-    width: "4%",
     scopedSlots: { customRender: "_id" },
     align:"center"
   },
   {
     title: "日期范围",
     dataIndex: "timeRange",
-    width: "11%",
     scopedSlots: { customRender: "address" },
     align:"center"
   },
   {
     title: "汇聚机房检查数量",
     dataIndex: "inspectionCount",
-    width: "6%",
     scopedSlots: { customRender: "address" },
     align:"center"
   },
   {
     title: "汇聚机房异常数量",
     dataIndex: "count",
-    width: "9%",
     scopedSlots: { customRender: "address" },
     align:"center"
   },
   {
     title: "操作",
     dataIndex: "",
-    width: "10%",
     scopedSlots: { customRender: "operation" },
     align:"center"
   }

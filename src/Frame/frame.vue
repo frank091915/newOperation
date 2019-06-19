@@ -98,7 +98,8 @@ export default {
           }
         })
       });
-      this.openedMenu=Number.parseInt(openedParentMenu[0].id) 
+
+      this.openedMenu=Number.parseInt(openedParentMenu.length > 0 ?  openedParentMenu[0].id : "") 
     },
     handleSelect(item){
       if(this.openedMenu==item.key){

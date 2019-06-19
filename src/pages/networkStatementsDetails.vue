@@ -87,86 +87,73 @@ const columns = [
   {
     title: "巡检日期",
     dataIndex: "startTime",
-    width: "8%",
     scopedSlots: { customRender: "_id" },
     align:"center"
   },
   {
     title: "电源及照明灯情况",
     dataIndex: " 1",
-    width: "10%",
     scopedSlots: { customRender: "highLight" },
     align:"center"
   },
   {
     title: "是否有异味",
     dataIndex: " 2",
-    width: "7%",
     scopedSlots: { customRender: "address" },
     align:"center"
   },
   {
     title: "室内有无杂物",
     dataIndex: " 3",
-    width: "8%",
     scopedSlots: { customRender: "address" },
     align:"center"
   },
   {
     title: "卫生",
     dataIndex: " 4",
-    width: "4%",
     scopedSlots: { customRender: "address" },
     align:"center"
   },{
     title: "门锁",
     dataIndex: " ",
-    width: "4%",
     scopedSlots: { customRender: "address" },
     align:"center"
   },
     {
     title: "异常个数",
     dataIndex: "count",
-    width: "7%",
     scopedSlots: { customRender: "address" },
     align:"center"
   },
 //     {
 //     title: "UPS异常个数",
 //     dataIndex: "upsCount",
-//     width: "7%",
 //     scopedSlots: { customRender: "address" },
 //     align:"center"
 //   },{
 //     title: "门禁异常个数",
 //     dataIndex: "doorCount",
-//     width: "7%",
 //     scopedSlots: { customRender: "address" },
 //     align:"center"
 //   },{
 //     title: "烟雾异常个数",
 //     dataIndex: "smokeCount",
-//     width: "7%",
 //     scopedSlots: { customRender: "address" },
 //     align:"center"
 //   },{
 //     title: "温度异常个数",
 //     dataIndex: "temperatureCount",
-//     width: "7%",
 //     scopedSlots: { customRender: "address" },
 //     align:"center"
 //   },{
 //     title: "湿度异常个数",
 //     dataIndex: "humidityCount",
-//     width: "7%",
 //     scopedSlots: { customRender: "address" },
 //     align:"center"
 //   },
   {
     title: "线路有无乱线及飞线情况存在",
     dataIndex: " 5",
-    width: "10%",
     scopedSlots: { customRender: "address" },
     align:"center"
   }

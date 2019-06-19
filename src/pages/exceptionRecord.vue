@@ -140,77 +140,66 @@ const columns = [
   {
     title: "异常标号",
     dataIndex: "key",
-    width: "6%",
     scopedSlots: { customRender: "address" },
     align: "center"
   },
   {
     title: "异常名称",
     dataIndex: "exceptionRecord.exceptionName",
-    width: "8%",
     scopedSlots: { customRender: "address" },
     align: "center"
   },
   {
     title: "告警状态",
     dataIndex: "exceptionRecord.warningStatusDescription",
-    width: "6%",
     scopedSlots: { customRender: "address" },
     align: "center"
   },
   {
     title: "告警次数",
     dataIndex: "exceptionRecord.waringCount",
-    width: "6%",
     scopedSlots: { customRender: "address" },
     align: "center"
   },
   {
     title: "起始时间",
     dataIndex: "exceptionRecord.startTime",
-    width: "12%",
     scopedSlots: { customRender: "address" },
     align: "center"
   },
   {
     title: "结束时间",
     dataIndex: "exceptionRecord.endTime",
-    width: "12%",
     scopedSlots: { customRender: "address" },
     align: "center"
   },
   {
     title: "记录状态",
     dataIndex: "exceptionRecord.recordingStatusDescription",
-    width: "6%",
     scopedSlots: { customRender: "address" },
     align: "center"
   },
   {
     title: "楼宇名称",
     dataIndex: "deviceInfo.buildingName",
-    width: "8%",
     scopedSlots: { customRender: "address" },
     align: "center"
   },
   {
     title: "楼层",
     dataIndex: "deviceInfo.floorName",
-    width: "8%",
     scopedSlots: { customRender: "address" },
     align: "center"
   },
   {
     title: "房间",
     dataIndex: "deviceInfo.roomName",
-    width: "12%",
     scopedSlots: { customRender: "address" },
     align: "center"
   },
   {
     title: "设备MAC",
     dataIndex: "deviceInfo.MacAddress",
-    width: "8%",
     scopedSlots: { customRender: "address" },
     align: "center"
   }

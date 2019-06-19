@@ -52,6 +52,9 @@
           </div>
         </a-tab-pane>
       </a-tabs>
+      <div class="return">
+        <a-button type="primary" @click="toReturn" style="float:right">返回</a-button>
+      </div>
     </div>
   </div>
 </template>
@@ -114,6 +117,9 @@ export default {
           return true;
         });
       }
+    },
+    toReturn(){
+        this.$router.go(-1)
     },
     callback(key) {
       this.FualtException(key);
@@ -211,5 +217,9 @@ export default {
 }
 .ant-table {
   line-height: 1 !important;
+}
+.return{
+  margin-top: 10px;
+
 }
 </style>

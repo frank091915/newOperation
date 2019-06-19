@@ -134,70 +134,60 @@ const columns = [
   {
     title: "序号",
     dataIndex: "key",
-    width: "4%",
     scopedSlots: { customRender: "_id" },
     align: "center"
   },
   {
     title: "状态",
     dataIndex: "statusDescription",
-    width: "16%",
     scopedSlots: { customRender: "highLight" },
     align: "center"
   },
   {
     title: "圈存机名称",
     dataIndex: "Description",
-    width: "18%",
     scopedSlots: { customRender: "address" },
     align: "center"
   },
   {
     title: "型号",
     dataIndex: "Model",
-    width: "8%",
     scopedSlots: { customRender: "address" },
     align: "center"
   },
   {
     title: "楼宇名称",
     dataIndex: "buildingName",
-    width: "10%",
     scopedSlots: { customRender: "address" },
     align: "center"
   },
   {
     title: "楼层",
     dataIndex: "floorName",
-    width: "10%",
     scopedSlots: { customRender: "address" },
     align: "center"
   },
   {
     title: "房间",
     dataIndex: "roomName",
-    width: "10%",
     scopedSlots: { customRender: "address" },
     align: "center"
   },
   {
     title: "编号",
     dataIndex: "Code",
-    width: "8%",
     scopedSlots: { customRender: "address" },
     align: "center"
   },
   {
     title: "ip地址",
     dataIndex: "SerialNumber",
-    width: "10%",
     scopedSlots: { customRender: "SerialNumber" },
     align: "center"
   },
   {
     title: "操作",
     dataIndex: "operation",
-    width: "10%",
     scopedSlots: { customRender: "operation" },
     align: "center"
   }

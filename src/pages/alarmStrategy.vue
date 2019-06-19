@@ -273,7 +273,7 @@ export default {
       lowVolttageColumns,
       allDataArray: [],
       recordsTotal: 0,
-      roomType: this.$route.query.roomType ? this.$route.query.roomType :  "NKD_AGG_DEVICE",
+      roomType: this.$route.query.defualfKey ? (this.$route.query.defualfKey ==1 ? "NKD_AGG_DEVICE" : "NKD_WEAK_ELECTRIC_ADVICE")  :  "NKD_AGG_DEVICE",
       isLoading: true,
       current: 1,
       page: 1,
@@ -303,33 +303,6 @@ export default {
           this.getRoleList();
         } else {
           this.$message.success("删除失败，请重试");
-        }
-      });
-    },
-    toReturn() {
-      console.log("return");
-      this.$router.go("-1");
-    },
-    toSave() {
-      this.form.validateFields((err, values) => {
-        if (!err) {
-          let userInfo = { ...values };
-          userInfo.status = this.value ? true : false;
-          // 添加权限菜单
-
-          console.log(userInfo);
-          this.$http.toAddUser(userInfo).then(res => {
-            console.log(res);
-            if (res.data.success) {
-              this.$message.success("添加用户成功");
-              this.$router.push({
-                path: "/user",
-                query: { title: "用户管理" }
-              });
-            } else {
-              this.$message.error(res.data.message);
-            }
-          });
         }
       });
     },
@@ -443,8 +416,9 @@ export default {
   },
   created() {
     window.sessionStorage.setItem('alarmStrageSelectedKey',JSON.stringify({key:1}))
-    console.log(this.defualtKeyFromVuex)
-    this.getAlarmStrategy(this.defualfKey, this.roomType, 1);
+    let defualfKey=this.$route.query.defualfKey ?  this.$route.query.defualfKey : 1;
+    console.log(defualfKey)
+    this.getAlarmStrategy(defualfKey, this.roomType, 1);
   },
   computed:{
     ...mapState(['defualtKeyFromVuex'])
