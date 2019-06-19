@@ -6,6 +6,9 @@
         <router-view name="header"></router-view>
         <router-view name="main"></router-view>
     </div>
+    <div id="components-back-top-demo-custom">
+      <a-back-top :visibilityHeight="50" />
+    </div>
   </div>
 </template>
 
@@ -36,5 +39,9 @@
   margin-left: 260px;
   margin-top: 50px;
 }
+#components-back-top-demo-custom .ant-back-top {
+    bottom: 20px;
+    right: 10px;
+  }
 
 </style>
