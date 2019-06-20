@@ -50,7 +50,7 @@
             共<span style="margin:0 5px;">{{recordsTotal}}</span>条数据
           </div>
           <div id="paginationBox">
-            <a-pagination @change="changePage" v-model="page" :total="recordsTotal"   :pageSize="12" />
+            <a-pagination @change="changePage" v-model="page" :total="recordsTotal"   :pageSize="12" :hideOnSinglePage="true" />
           </div>
       </div>
     </div>
@@ -126,7 +126,6 @@ export default {
           this.$message.success("删除成功");
           this.GetExceptionManageList();
         }else {
-          alert(111)
           this.$message.error(res.data.message);
         }
       });

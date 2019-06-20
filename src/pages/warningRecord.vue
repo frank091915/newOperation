@@ -93,6 +93,7 @@
             v-model="current"
             :total="recordsTotal"
             :pageSize="12"
+            :hideOnSinglePage="true"
           />
         </div>
       </div>

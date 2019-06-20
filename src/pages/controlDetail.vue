@@ -7,7 +7,6 @@
           :dataSource="dataInfo"
           :pagination="false"
           bordered
-          :scroll="{y:790}"
           :loading="isLoading"
         >
           <template v-for="col in ['name', 'age', 'address']" :slot="col" slot-scope="text, record">
@@ -162,6 +161,8 @@ export default {
 #pageWrapper {
   height: calc(100% - 50px);
   width: 100%;
+  box-sizing: border-box;
+  padding: 0 15px;
 }
 .ant-table-row td {
   background-color: aqua;

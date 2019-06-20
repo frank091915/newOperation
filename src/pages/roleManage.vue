@@ -6,7 +6,7 @@
       </div>
     </div>
     <div id="tableWrapper">
-      <a-table :columns="columns" :dataSource="data" bordered :pagination="false">
+      <a-table :columns="columns" :dataSource="data" bordered :pagination="false" :loading="isLoading">
         <template
           v-for="col in ['name', 'age', 'address']"
           :slot="col"
@@ -45,7 +45,7 @@
             共<span style="margin:0 5px;">{{recordsTotal}}</span>条数据
           </div>
           <div id="paginationBox">
-            <a-pagination @change="changePage" v-model="page" :total="recordsTotal"   :pageSize="12" />
+            <a-pagination @change="changePage" v-model="page" :total="recordsTotal"   :pageSize="12" :hideOnSinglePage="true" />
           </div>
         </div>
     </div>

@@ -77,7 +77,7 @@ export default {
   },
   methods:{
     toNavigate(path,title,menuId,item){
-      console.log(path)
+      // console.log(path)
       // 获取需要的路径字符串
       this.currentMenuId=menuId;
       let processedPath=path.slice(0,(path.length-3)).split("/").pop();

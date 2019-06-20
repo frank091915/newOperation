@@ -83,7 +83,6 @@
                 </span>
                 <span>{{item.title}}</span>
               </a-menu-item>
-
               <a-sub-menu v-for="item in parentMenuArray" :key="item.id" @titleClick='handleSelect'>
                 <span slot="title">
                   <span>
@@ -97,7 +96,6 @@
                     {{item.title}}
                   </span>
                 </span>
-
                 <a-menu-item v-for="subItem in item.subPermissions" :key="subItem.id">
                   <span>
                     <input

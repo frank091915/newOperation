@@ -123,6 +123,7 @@
             :total="recordsTotal"
             :pageSize="12"
             v-show="!isLoading"
+            :hideOnSinglePage="true"
           />
         </div>
       </div>

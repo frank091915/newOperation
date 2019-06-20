@@ -64,7 +64,7 @@
       </div>
       <div id="currentStatusBox">
         <div class="singleCureentStatusBox">
-          <div class="currentStatusTitle" style="padding-left:10px;">
+          <div class="currentStatusTitle" style="padding-left:5px;">
               <img src="../../static/assets/temperature.png" style="width:13px;height:13px;">
               <span> 实时温度</span>
           </div>
@@ -73,7 +73,7 @@
            <div class="errorTip" v-show='!showCharts'> 暂无上报数据</div>
         </div>
         <div class="singleCureentStatusBox">
-          <div class="currentStatusTitle" style="padding-left:10px;">
+          <div class="currentStatusTitle" style="padding-left:5px;">
             <img src="../../static/assets/umbrella.png" style="width:13px;height:13px;">
             <span>实时湿度</span>
           </div>
@@ -82,7 +82,7 @@
            <div class="errorTip" v-show='!showCharts'>暂无上报数据</div>
         </div>
         <div class="singleCureentStatusBox" v-if="showAccess">
-          <div class="currentStatusTitle" style="padding-left:10px;">
+          <div class="currentStatusTitle" style="padding-left:5px;">
              <img src="../../static/assets/camera.png" style="width:13px;height:13px;">
             <span>门禁截屏</span>
           </div>
@@ -365,6 +365,9 @@ export default {
 html,
 body {
   height: 100%;
+}
+body {
+  background-color: #e6e6e6 ! important;
 }
 .singleParamsBox {
   width: 32%;

@@ -1,46 +1,10 @@
 <template>
   <div id="pageWrapper">
-    <a-table :columns="columns" :dataSource="menu"  :pagination="false"  bordered>
+    <a-table :columns="columns" :dataSource="menu"  :pagination="false"  bordered :loading="isLoading">
       <template slot="ChangePermissionStatus" slot-scope="text, record">
         <a-switch :checked="record.status" @change="onChangePermissionStatus(record)"/>
       </template>
     </a-table>
-    <!-- <a-table :columns="columns" :dataSource="menu"  :pagination="false"  :scroll="{y:790}">
-
-        <a-table
-          slot="expandedRowRender"
-          slot-scope="text,record"
-          :columns="innerColumns"
-          :dataSource="innerData"
-          :pagination="false"
-          v-if="record.children"
-        >
-        </a-table>
-      </a-table> -->
-
-    <!-- <a-table
-      :columns="columns"
-      :dataSource="menu"
-      :pagination="false"
-      bordered
-      :scroll="{y:790}"
-      :loading="isLoading"
-    >
-      <template v-for="col in ['name', 'age', 'address']" :slot="col" slot-scope="text, record">
-        <div :key="col">
-          <a-input
-            v-if="record.editable"
-            style="margin: -5px 0;"
-            :value="text"
-            @change="e => handleChange(e.target.value, record.key)"
-          />
-          <template v-else>{{text}}</template>
-        </div>
-      </template>
-      <template slot="weChatcheckBox" slot-scope="text, record">
-        <a-switch :checked="record.status" @change="onChangePermissionStatus(record)"/>
-      </template>
-    </a-table> -->
   </div>
 </template>
 <script>
@@ -50,37 +14,43 @@ const innerColumns = [
     title: "序号",
     dataIndex: "id",
     scopedSlots: { customRender: "num" },
-    align: "center"
+    align: "center",
+    width:"5%"
   },
   {
     title: "权限名称",
     dataIndex: "title",
     scopedSlots: { customRender: "age" },
-    align: "center"
+    align: "center",
+    width:"18%"
   },
   {
     title: "权限路径",
     dataIndex: "path",
     scopedSlots: { customRender: "address" },
-    align: "center"
+    align: "center",
+    width:"18%"
   },
   {
     title: "权限等级",
     dataIndex: "level",
     scopedSlots: { customRender: "address" },
-    align: "center"
+    align: "center",
+    width:"18%"
   },
   {
     title: "权限状态",
     dataIndex: "status",
     scopedSlots: { customRender: "weChatcheckBox" },
-    align: "center"
+    align: "center",
+    width:"18%"
   },
   {
     title: "上级权限id",
     dataIndex: "parentId",
     scopedSlots: { customRender: "address" },
-    align: "center"
+    align: "center",
+    width:"18%"
   }
 ];
 
@@ -98,35 +68,35 @@ const columns = [
   {
     title: "序号",
     dataIndex: "id",
-    width: "20%",
+    width: "4%",
     scopedSlots: { customRender: "num" },
     align: "center"
   },
   {
     title: "权限名称",
     dataIndex: "title",
-    width: "20%",
+    width: "18%",
     scopedSlots: { customRender: "age" },
     align: "center"
   },
   {
     title: "权限路径",
     dataIndex: "path",
-    width: "20%",
+    width: "18%",
     scopedSlots: { customRender: "address" },
     align: "center"
   },
   {
     title: "权限等级",
     dataIndex: "level",
-    width: "20%",
+    width: "18%",
     scopedSlots: { customRender: "address" },
     align: "center"
   },
   {
     title: "权限状态",
     dataIndex: "status",
-    width: "20%",
+    width: "18%",
     scopedSlots: { customRender: "ChangePermissionStatus" },
     align: "center"
   }

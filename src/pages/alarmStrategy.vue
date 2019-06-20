@@ -47,6 +47,7 @@
                   :total="recordsTotal"
                   :pageSize="12"
                   v-show="!isLoading"
+                  :hideOnSinglePage="true"
                 />
               </div>
             </div>
@@ -98,6 +99,7 @@
                     :total="recordsTotal"
                     :pageSize="12"
                     v-show="!isLoading"
+                    :hideOnSinglePage="true"
                   />
                 </div>
               </div>
@@ -417,7 +419,7 @@ export default {
   created() {
     window.sessionStorage.setItem('alarmStrageSelectedKey',JSON.stringify({key:1}))
     let defualfKey=this.$route.query.defualfKey ?  this.$route.query.defualfKey : 1;
-    console.log(defualfKey)
+    // console.log(defualfKey)
     this.getAlarmStrategy(defualfKey, this.roomType, 1);
   },
   computed:{
@@ -426,8 +428,8 @@ export default {
   beforeRouteLeave (to, from, next) {
     // 导航离开该组件的对应路由时调用
     // 可以访问组件实例 `this`
-    console.log('leave')
-    this.changeDefualtKey('1')
+
+    // this.changeDefualtKey('1')
     next()
   }
 };

@@ -42,6 +42,7 @@
 #components-back-top-demo-custom .ant-back-top {
     bottom: 20px;
     right: 10px;
+    /* background-color: #1088e9; */
   }
 
 </style>
