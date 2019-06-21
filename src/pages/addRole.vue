@@ -83,11 +83,19 @@
 
               <a-menu-item v-for="item in aloneMenuArray" :key="item.id">
                 <span>
-                  <input
+                  <!-- <input
                     type="checkbox"
                     :checked="item.ifPermitted"
                     @click="changeAloneMenu(item.id,0)"
-                  >
+                  > -->
+                  <!-- <a-switch size="small" :checked="item.ifPermitted"
+                    @click="changeAloneMenu(item.id,0)"/> -->
+
+                    <a-checkbox :checked="item.ifPermitted"
+                        @click="changeAloneMenu(item.id,0)"
+                        style="margin-right:10px"
+                        >
+                    </a-checkbox>
                 </span>
 
                 <span>{{item.title}}</span>
@@ -97,11 +105,19 @@
                 <span slot="title">
                   <span>
                     <span>
-                      <input
+                      <!-- <input
                         :checked="item.ifPermitted"
                         type="checkbox"
                         @click="changeParentMenu(item.id,1)"
-                      >
+                      > -->
+                      <!-- <a-switch size="small" :checked="item.ifPermitted"
+                        @click="changeAloneMenu(item.id,1)"/> -->
+
+                        <a-checkbox :checked="item.ifPermitted"
+                            @click="changeParentMenu(item.id,1)"
+                            style="margin-right:10px"
+                            >
+                        </a-checkbox>
                     </span>
                     {{item.title}}
                   </span>
@@ -109,12 +125,22 @@
 
                 <a-menu-item v-for="subItem in item.subPermissions" :key="subItem.id">
                   <span>
-                    <input
+                    <!-- <input
                       type="checkbox"
                       :checked="subItem.ifPermitted"
                       @click="changeChildStatus(subItem.id,2)"
                       style="margin-left:20px;"
-                    >
+                    >                       -->
+
+                    <!-- <a-switch size="small" :checked="subItem.ifPermitted"
+                        @click="changeAloneMenu(item.id,2)"
+                        style="margin-left:20px;"
+                        /> -->
+                      <a-checkbox :checked="subItem.ifPermitted"
+                            @click="changeChildStatus(subItem.id,2)"
+                            style="margin-left:20px;margin-right:10px"
+                            >
+                      </a-checkbox>
                   </span>
                   {{subItem.title}}
                 </a-menu-item>
@@ -208,6 +234,18 @@ export default {
       let childrenMenuArray = this.parentMenuArray.reduce((pre, nex) => {
         return pre.concat([...nex.subPermissions]);
       }, []);
+
+      tempChildrenMenuIdArray =childrenMenuArray.filter((item)=>{
+        if(item.ifPermitted){
+          return true
+        }else{
+          return false
+        }
+      }).map((item)=>{
+        return item.id
+      });
+      
+
       // 得到所有子菜单权限
       tempParentMenuIdArray = this.parentMenuArray
         .filter(item => {
@@ -226,7 +264,9 @@ export default {
       let ultimatePermissionIdsArray = tempaloneMenuIdArray.concat(
         tempParentMenuIdArray.concat(tempChildrenMenuIdArray)
       );
+      // console.log("验证前",tempChildrenMenuIdArray,"所有菜单",ultimatePermissionIdsArray)
       this.form.validateFields((err, values) => {
+      // console.log("验证后",tempChildrenMenuIdArray,"所有菜单",ultimatePermissionIdsArray)
         if (!err) {
           let userInfo = { ...values };
           userInfo.status = this.value ? true : false;

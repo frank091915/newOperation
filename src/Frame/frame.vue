@@ -77,6 +77,10 @@ export default {
   },
   methods:{
     toNavigate(path,title,menuId,item){
+      if(item.subPermissions){
+        this.openedMenu=menuId
+      }
+
       // console.log(path)
       // 获取需要的路径字符串
       this.currentMenuId=menuId;
@@ -102,6 +106,7 @@ export default {
       this.openedMenu=Number.parseInt(openedParentMenu.length > 0 ?  openedParentMenu[0].id : "") 
     },
     handleSelect(item){
+      console.log(item.key)
       if(this.openedMenu==item.key){
         this.openedMenu=''
       }else{

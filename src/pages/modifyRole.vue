@@ -75,11 +75,16 @@
 
               <a-menu-item v-for="item in aloneMenuArray" :key="item.id">
                 <span>
-                  <input
+                  <!-- <input
                     type="checkbox"
                     :checked="item.ifPermitted"
                     @click="changeAloneMenu(item.id,0)"
-                  >
+                  > -->
+                  <a-checkbox :checked="item.ifPermitted"
+                        @click="changeAloneMenu(item.id,0)"
+                        style="margin-right:10px"
+                        >
+                  </a-checkbox>
                 </span>
                 <span>{{item.title}}</span>
               </a-menu-item>
@@ -87,23 +92,33 @@
                 <span slot="title">
                   <span>
                     <span>
-                      <input
+                      <!-- <input
                         :checked="item.ifPermitted"
                         type="checkbox"
                         @click="changeParentMenu(item.id,1)"
-                      >
+                      > -->
+                      <a-checkbox :checked="item.ifPermitted"
+                        @click="changeParentMenu(item.id,1)"
+                        style="margin-right:10px"
+                        >
+                      </a-checkbox>
                     </span>
                     {{item.title}}
                   </span>
                 </span>
                 <a-menu-item v-for="subItem in item.subPermissions" :key="subItem.id">
                   <span>
-                    <input
+                    <!-- <input
                       type="checkbox"
                       :checked="subItem.ifPermitted"
                       @click="changeChildStatus(subItem.id,2)"
                       style="margin-left:20px;"
-                    >
+                    > -->
+                    <a-checkbox :checked="subItem.ifPermitted"
+                        @click="changeChildStatus(subItem.id,2)"
+                        style="margin-left:20px;margin-right:10px"
+                        >
+                    </a-checkbox>
                   </span>
                   {{subItem.title}}
                 </a-menu-item>
@@ -170,7 +185,66 @@ export default {
 
     },
     toSave() {
-      // 计算出用户权限菜单数组
+
+
+      // console.log(this.parentMenuArray)
+      // // 计算出用户权限菜单数组
+      // let tempIdArray = [],
+      //   tempParentMenuIdArray = [],
+      //   tempChildrenMenuIdArray = [],
+      //   tempaloneMenuIdArray = [];
+      // // 得到无子菜单的权限id
+      // tempaloneMenuIdArray = this.aloneMenuArray
+      //   .filter(item => {
+      //     if (item.ifPermitted) {
+      //       return true;
+      //     } else {
+      //       return false;
+      //     }
+      //   })
+      //   .map(item => {
+      //     return item.id;
+      //   });
+      // // 得到有子菜单的权限id
+      // tempParentMenuIdArray = this.parentMenuArray
+      //   .filter(item => {
+      //       if(item.subPermissions.some((subItem)=>{
+      //         return subItem.ifPermitted=true;
+      //       })){
+      //         return true;
+      //       }else{
+      //         return false;
+      //       }
+      //   })
+      //   .map(item => {
+      //     return item.id;
+      //   });
+      // // 得到所有子菜单
+
+      // let childrenMenuArray = this.parentMenuArray.reduce((pre, nex) => {
+      //   return pre.concat([...nex.subPermissions]);
+      // }, []);
+      // // 得到所有子菜单权限
+      // console.log(childrenMenuArray)
+      // tempChildrenMenuIdArray = childrenMenuArray
+      //   .filter(item => {
+      //     if (item.ifPermitted) {
+      //       return true;
+      //     } else {
+      //       return false;
+      //     }
+      //   })
+      //   .map(item => {
+      //     return item.id;
+      //   });
+      // console.log(tempChildrenMenuIdArray)
+      // // 得到所有权限菜单
+      // let ultimatePermissionIdsArray = tempaloneMenuIdArray.concat(
+      //   tempParentMenuIdArray.concat(tempChildrenMenuIdArray)
+      // );
+      // console.log("校验前",tempChildrenMenuIdArray)
+
+    // 计算出用户权限菜单数组
       let tempIdArray = [],
         tempParentMenuIdArray = [],
         tempChildrenMenuIdArray = [],
@@ -190,6 +264,34 @@ export default {
       // 得到有子菜单的权限id
       tempParentMenuIdArray = this.parentMenuArray
         .filter(item => {
+          if (item.ifPermitted) {
+            return true;
+          } else {
+            return false;
+          }
+        })
+        .map(item => {
+          return item.id;
+        });
+      // 得到所有子菜单
+      let childrenMenuArray = this.parentMenuArray.reduce((pre, nex) => {
+        return pre.concat([...nex.subPermissions]);
+      }, []);
+
+      tempChildrenMenuIdArray =childrenMenuArray.filter((item)=>{
+        if(item.ifPermitted){
+          return true
+        }else{
+          return false
+        }
+      }).map((item)=>{
+        return item.id
+      });
+      
+
+      // 得到所有子菜单权限
+      tempParentMenuIdArray = this.parentMenuArray
+        .filter(item => {
             if(item.subPermissions.some((subItem)=>{
               return subItem.ifPermitted=true;
             })){
@@ -201,28 +303,14 @@ export default {
         .map(item => {
           return item.id;
         });
-      // 得到所有子菜单
-      let childrenMenuArray = this.parentMenuArray.reduce((pre, nex) => {
-        return pre.concat([...nex.subPermissions]);
-      }, []);
-      // 得到所有子菜单权限
-      tempChildrenMenuIdArray = childrenMenuArray
-        .filter(item => {
-          if (item.ifPermitted) {
-            return true;
-          } else {
-            return false;
-          }
-        })
-        .map(item => {
-          return item.id;
-        });
       // 得到所有权限菜单
       let ultimatePermissionIdsArray = tempaloneMenuIdArray.concat(
         tempParentMenuIdArray.concat(tempChildrenMenuIdArray)
       );
 
+
       this.form.validateFields((err, values) => {
+              console.log("校后",tempChildrenMenuIdArray)
         if (!err) {
           let userInfo = { ...values };
           userInfo.status = this.value ? true : false;
@@ -341,8 +429,11 @@ export default {
         return parentItem;
       });
       this.$nextTick(() => {
+
         this.ultimateArray = this.aloneMenuArray.concat(this.parentMenuArray);
-        this.$nextTick(() => {});
+        this.$nextTick(() => {
+          console.log(this.ultimateArray)
+        });
       });
     }
   },

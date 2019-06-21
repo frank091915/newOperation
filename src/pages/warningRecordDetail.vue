@@ -46,7 +46,6 @@
         :dataSource="notifyInfo"
         :pagination="false"
         bordered
-        :scroll="{y:790}"
         :loading="isLoading"
       >
         <template v-for="col in ['name', 'age', 'address']" :slot="col" slot-scope="text, record">

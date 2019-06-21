@@ -3,10 +3,10 @@
     <div id="headerInfo">{{title}}</div>
     <div id="dropDown">
       <a-dropdown>
-        <a class="ant-dropdown-link" href="#">
+        <span class="ant-dropdown-link" href="#" style="color: #1890ff;">
           {{username}}
           <a-icon type="down"/>
-        </a>
+        </span>
         <a-menu slot="overlay">
           <a-menu-item>
             <a href="javascript:;" @click="signOut">退出登陆</a>
