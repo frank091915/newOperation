@@ -869,7 +869,7 @@ const toRoleInfo = (userId) => {
 // 获取所有没有模板的异常记录
 const toGetNoTemplateException = (type) => {
   return ajax.get(
-    `/api/template/exception?type=` + type, {
+    `/api/exception/all?type=` + type, {
       headers: {
         "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken"))
       }

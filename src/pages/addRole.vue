@@ -72,10 +72,10 @@
       </a-form>
     </div>
 
-    <div id="permissionsMenu">
+    <div id="permissionsMenu" >
       <div id="permissionsMenuTitle">菜单权限管理</div>
 
-      <div id="menuSelection">
+      <div id="menuSelection" v-if="!isLoading">
         <a-layout id="components-layout-demo-side" style="min-height: 100vh" class="frame">
           <a-layout-sider width="290px" v-model="collapsed">
             <a-menu theme="light" :defaultSelectedKeys="['1']" mode="inline" :openKeys="[openedMenu]">
@@ -186,6 +186,7 @@ export default {
       //   权限菜单id
       permissionsIdArray: [],
       openedMenu:0,
+      isLoading:true
     };
   },
   methods: {
@@ -284,6 +285,7 @@ export default {
           });
         }
       });
+
     },
     handleChange(e) {
       this.checkNick = e.target.checked;
@@ -465,7 +467,9 @@ export default {
             this.ultimateArray = this.aloneMenuArray.concat(
               this.parentMenuArray
             );
-            this.$nextTick(() => {});
+            this.$nextTick(() => {
+              this.isLoading=false
+            });
           });
         });
       });

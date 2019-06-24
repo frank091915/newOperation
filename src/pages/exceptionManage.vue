@@ -126,7 +126,7 @@ export default {
           this.$message.success("删除成功");
           this.GetExceptionManageList();
         }else {
-          this.$message.error(res.data.message);
+          this.$message.error(res.data.errorInfo);
         }
       });
     },

@@ -5,6 +5,9 @@ import App from './App'
 import router from './router'
 import 'ant-design-vue/dist/antd.css'
 
+import ElementUI from 'element-ui'
+import 'element-ui/lib/theme-chalk/index.css'
+
 // 汉化
 import Frame from "./Frame/frame.vue";
 import zh_CN from 'ant-design-vue/lib/locale-provider/zh_CN';
@@ -155,6 +158,12 @@ Vue.use(Upload);
 Vue.use(Skeleton);
 Vue.use(Comment);
 Vue.use(ConfigProvider);
+
+// 引入element-ui
+Vue.use(ElementUI)
+
+// import {Checkbox} from 'element-ui';
+// Vue.use(Checkbox)
 
 Vue.config.productionTip = false
 

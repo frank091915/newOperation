@@ -65,9 +65,9 @@
         </a-form-item>
       </a-form>
     </div>
-    <div id="permissionsMenu" v-cloak>
-      <div id="permissionsMenuTitle" v-cloak>权限菜单</div>
-      <div id="menuSelection" v-cloak>
+    <div id="permissionsMenu" >
+      <div id="permissionsMenuTitle" >权限菜单</div>
+      <div id="menuSelection" v-if="!isLoading">
         <a-layout id="components-layout-demo-side" style="min-height: 100vh" class="frame">
           <a-layout-sider width="290px" v-model="collapsed">
             <a-menu theme="light" :defaultSelectedKeys="['1']" mode="inline" :openKeys="[openedMenu]">
@@ -169,6 +169,7 @@ export default {
       //   权限菜单id
       permissionsIdArray: [],
       openedMenu:0,
+      isLoading:true
     };
   },
   methods: {
@@ -310,7 +311,7 @@ export default {
 
 
       this.form.validateFields((err, values) => {
-              console.log("校后",tempChildrenMenuIdArray)
+              // console.log("校后",tempChildrenMenuIdArray)
         if (!err) {
           let userInfo = { ...values };
           userInfo.status = this.value ? true : false;
@@ -545,7 +546,9 @@ export default {
             this.ultimateArray = this.aloneMenuArray.concat(
               this.parentMenuArray
             );
-            this.$nextTick(() => {});
+            this.$nextTick(() => {
+              this.isLoading=false
+            });
           });
         });
       });

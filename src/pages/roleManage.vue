@@ -3,6 +3,7 @@
     <div id="addBox">
       <div id="addButton">
         <a-button @click="addRole" type="primary" size="small">新增</a-button>
+         
       </div>
     </div>
     <div id="tableWrapper">
