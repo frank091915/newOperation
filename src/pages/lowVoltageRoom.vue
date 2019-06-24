@@ -35,7 +35,7 @@
         <p @click="toShowDetails(item.Id)" style="cursor:pointer">{{item.roomName}}</p>
       </div>
     </div>
-    <div v-if="isLoading">
+    <div v-show="isLoading" style="width:100%">
       <a-spin tip="搜索中...">
         <div class="spin-content"></div>
       </a-spin>
@@ -56,7 +56,7 @@ export default {
       title: "",
       searchParam: "",
       noData: false,
-      isLoading: false,
+      isLoading: true,
       total: 0
     };
   },
@@ -118,7 +118,12 @@ export default {
           res.data.data.normalCount +
           res.data.data.exceptionCount +
           res.data.data.faultCount;
-        this.$nextTick(() => {});
+        this.$nextTick(() => {
+          this.isLoading=false;
+          if(this.total==0){
+            this.noData=true;
+          }
+        });
       }else {
               this.$message.error(res.data.errorInfo);
             }
@@ -142,7 +147,7 @@ body {
   height: 100%;
 }
 #app{
-  height: 100%;
+
 }
 #main {
   height: 100% ;
@@ -172,7 +177,6 @@ body {
 }
 #convergeRoomBox {
   width: 95%;
-  height: calc(100% - 100px);
   /* overflow: auto; */
   margin-left: 30px;
   display: flex;

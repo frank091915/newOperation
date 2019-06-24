@@ -377,6 +377,14 @@ export default {
   width: 200px;
   height: 200px;
 }
+#app{
+  background-color: white;
+  background-image: url("");
+}
+#main{
+  margin-left:260px;
+  margin-top:50px;
+}
 #chartWrapper {
   display: flex;
   flex-direction: row;

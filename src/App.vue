@@ -29,6 +29,7 @@
   justify-content: space-between;
   max-height: 100%;
   box-sizing: border-box;
+  height: 100%;
 }
 #main {
   flex: 1;

@@ -5,7 +5,7 @@
         width="250px"
         v-model="collapsed"
       >
-        <div class="logo" >
+        <div class="logo"  style="background-color:#4181ff">
           <img id="logo" src="../assets/sustech.png">
         </div>
         <div id="menuWrapper">
