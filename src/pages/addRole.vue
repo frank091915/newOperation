@@ -76,20 +76,25 @@
       <div id="permissionsMenuTitle">菜单权限管理</div>
 
       <div id="menuSelection" v-if="!isLoading">
-        <a-layout id="components-layout-demo-side" style="min-height: 100vh" class="frame">
+
+        <el-tree
+          :data="treeDataArray"
+          show-checkbox
+          node-key="id"
+          ref="tree"
+          :default-checked-keys="supremeMenuIds"
+          highlight-current
+          :props="defaultProps">
+        </el-tree>
+        
+        <!-- <a-layout id="components-layout-demo-side" style="min-height: 100vh" class="frame">
           <a-layout-sider width="290px" v-model="collapsed">
             <a-menu theme="light" :defaultSelectedKeys="['1']" mode="inline" :openKeys="[openedMenu]">
-              <!-- 渲染一级菜单 -->
+
 
               <a-menu-item v-for="item in aloneMenuArray" :key="item.id">
                 <span>
-                  <!-- <input
-                    type="checkbox"
-                    :checked="item.ifPermitted"
-                    @click="changeAloneMenu(item.id,0)"
-                  > -->
-                  <!-- <a-switch size="small" :checked="item.ifPermitted"
-                    @click="changeAloneMenu(item.id,0)"/> -->
+
 
                     <a-checkbox :checked="item.ifPermitted"
                         @click="changeAloneMenu(item.id,0)"
@@ -105,13 +110,7 @@
                 <span slot="title">
                   <span>
                     <span>
-                      <!-- <input
-                        :checked="item.ifPermitted"
-                        type="checkbox"
-                        @click="changeParentMenu(item.id,1)"
-                      > -->
-                      <!-- <a-switch size="small" :checked="item.ifPermitted"
-                        @click="changeAloneMenu(item.id,1)"/> -->
+
 
                         <a-checkbox :checked="item.ifPermitted"
                             @click="changeParentMenu(item.id,1)"
@@ -125,17 +124,7 @@
 
                 <a-menu-item v-for="subItem in item.subPermissions" :key="subItem.id">
                   <span>
-                    <!-- <input
-                      type="checkbox"
-                      :checked="subItem.ifPermitted"
-                      @click="changeChildStatus(subItem.id,2)"
-                      style="margin-left:20px;"
-                    >                       -->
 
-                    <!-- <a-switch size="small" :checked="subItem.ifPermitted"
-                        @click="changeAloneMenu(item.id,2)"
-                        style="margin-left:20px;"
-                        /> -->
                       <a-checkbox :checked="subItem.ifPermitted"
                             @click="changeChildStatus(subItem.id,2)"
                             style="margin-left:20px;margin-right:10px"
@@ -147,7 +136,8 @@
               </a-sub-menu>
             </a-menu>
           </a-layout-sider>
-        </a-layout>
+        </a-layout> -->
+
       </div>
     </div>
   </div>
@@ -186,7 +176,13 @@ export default {
       //   权限菜单id
       permissionsIdArray: [],
       openedMenu:0,
-      isLoading:true
+      noParentMenuArray:[],
+      isLoading:true,
+      supremeMenuIds:[],
+      defaultProps: {
+          children: 'children',
+          label: 'label'
+        }
     };
   },
   methods: {
@@ -194,7 +190,7 @@ export default {
       this.$router.go("-1");
     },
     handleSelect(item){
-      console.log(item)
+
       if(this.openedMenu==item.key){
         this.openedMenu=''
       }else{
@@ -202,6 +198,10 @@ export default {
       }
     },
     toSave() {
+
+        let permissionsToBeSent=this.$refs.tree.getCheckedKeys().concat(this.$refs.tree.getHalfCheckedKeys());
+        // console.log(permissionsToBeSent);
+
       // 计算出用户权限菜单数组
       let tempIdArray = [],
         tempParentMenuIdArray = [],
@@ -265,13 +265,13 @@ export default {
       let ultimatePermissionIdsArray = tempaloneMenuIdArray.concat(
         tempParentMenuIdArray.concat(tempChildrenMenuIdArray)
       );
-      // console.log("验证前",tempChildrenMenuIdArray,"所有菜单",ultimatePermissionIdsArray)
+
       this.form.validateFields((err, values) => {
-      // console.log("验证后",tempChildrenMenuIdArray,"所有菜单",ultimatePermissionIdsArray)
+
         if (!err) {
           let userInfo = { ...values };
           userInfo.status = this.value ? true : false;
-          userInfo.permissions = ultimatePermissionIdsArray;
+          userInfo.permissions = permissionsToBeSent;
           this.$http.toAddRole(userInfo).then(res => {
             if (res.data.success) {
               this.$message.success("添加角色成功");
@@ -410,10 +410,111 @@ export default {
     });
     // 获取菜单权限
     this.$http.toGetParentMenu().then(res => {
+
       this.permissions = res.data.data;
       // this.permissionsIdArray = res.data.data.permissionIds;
       //   选出用户当前权限菜单
       this.$nextTick(() => {
+
+
+      // 获取所有有二级菜单的父级菜单id
+      let parentIdArray=res.data.data.filter((item)=>{
+        if(item.subPermissions.length>0){
+          return true
+        }else{
+          return false
+        }
+      })
+      parentIdArray=parentIdArray.map((item)=>{
+        return item.id
+      })
+
+      let supremeMenuIds=res.data.data.map((item)=>{
+        return item.id
+      })
+      this.supremeMenuIds=supremeMenuIds;
+      // console.log(supremeMenuIds)
+
+      this.noParentMenuArray=this.permissionsIdArray.filter((item)=>{
+        if(parentIdArray.indexOf(item)>=0){
+          return false
+        }else{
+          return true
+        }
+      })
+
+      this.permissions=this.permissions.map((item)=>{
+        // 给没有子菜单的父级菜单添加状态
+        if(item.subPermissions!= undefined){
+          if(item.subPermissions.length==0){
+            item.ifPermitted=item.status
+          }else{
+            // 给有子菜单的父级菜单添加状态
+                if(item.subPermissions.every((subItem)=>{
+                    return subItem.ifPermitted == true
+                  })){
+                    item.ifPermitted=true
+                  }else{
+                    item.ifPermitted=false
+                   }
+              }
+        }
+        item.key=item.id ;
+        item.children=item.subPermissions.length? item.subPermissions : [];
+        return item
+      })
+
+      this.$nextTick(()=>{
+
+
+        this.treeDataArray=this.permissions.map((item)=>{
+          let treeItem={};
+              treeItem.id=item.id;
+              treeItem.label=item.title;
+              treeItem.children=item.children
+              return treeItem
+        })
+        
+        // 给子菜单添加状态
+        this.permissions=this.permissions.map((item)=>{
+          if(item.subPermissions.length>0){
+            item.subPermissions.map((subItem)=>{
+              subItem.key=subItem.id;
+              return subItem
+            })
+            return item
+          }else{
+            return item
+          }
+        })
+
+        this.$nextTick(()=>{
+          // console.log(this.treeDataArray,this.permissions)
+
+          this.treeDataArray=this.treeDataArray.map((item)=>{
+            if(item.children.length>0){
+              item.children= item.children.map((subItem)=>{
+                let newchildrenItem={};
+                newchildrenItem.id=subItem.id;
+                newchildrenItem.label=subItem.title;
+                return newchildrenItem
+              })
+              return item
+            }else{
+              return item
+            }
+          })
+
+          this.$nextTick(()=>{
+            // console.log(this.treeDataArray)
+          })
+
+        })
+      })
+
+        
+
+
         // 选出用户一级菜单
         this.aloneMenuArray = this.permissions.filter(item => {
           if (item.subPermissions.length === 0) {
