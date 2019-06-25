@@ -76,7 +76,10 @@ export default {
       this.type = e.target.value;
     },
     toReturn() {
-      this.$router.go("-1");
+                    this.$router.push({
+                path: "/exception",
+                query: { title: "异常管理",menuIconId:9 }
+              });
     },
 
     toSave() {
@@ -88,7 +91,7 @@ export default {
               this.$message.success("添加异常成功");
               this.$router.push({
                 path: "/exception",
-                query: { title: "异常管理" }
+                query: { title: "异常管理",menuIconId:9 }
               });
             } else {
               this.$message.error(res.data.message);

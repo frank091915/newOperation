@@ -102,7 +102,8 @@ export default {
           title: "汇聚机房详情",
           detailsId: id,
           roomType: 1,
-          roomName: "汇聚机房"
+          roomName: "汇聚机房",
+          menuIconId:3
         }
       });
     }

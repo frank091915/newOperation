@@ -161,7 +161,10 @@ export default {
   },
   methods: {
     toReturn() {
-      this.$router.go("-1");
+       this.$router.push({
+                path: "/user",
+                query: { title: "用户管理",menuIconId:9 }
+              });
     },
     toSave() {
       this.form.validateFields((err, values) => {
@@ -174,7 +177,7 @@ export default {
               this.$message.success("添加用户成功");
               this.$router.push({
                 path: "/user",
-                query: { title: "用户管理" }
+                query: { title: "用户管理",menuIconId:9 }
               });
             } else {
               this.$message.error(res.data.message);

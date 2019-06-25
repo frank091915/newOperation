@@ -206,7 +206,7 @@ export default {
     getWarningRecordDetail(record) {
       this.$router.push({
         path: "/warningRecordDetail",
-        query: { title: "告警记录", record: record }
+        query: { title: "告警记录", record: record,menuIconId:8 }
       });
     },
     handleStatusChange() {},

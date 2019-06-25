@@ -47,7 +47,7 @@
       <div id="searchByNames">
         <div id="searchByNamesLabel">名称：</div>
         <div id="searchByNamesInput">
-          <a-input v-model="searchParam" placeholder="请输入服务器名称" size="small"/>
+          <a-input v-model="searchParam" placeholder="请输入服务器房间名称" size="small" style="width: 160px" />
           <a-button @click="search(true)" type="primary" size="small">搜索</a-button>
         </div>
       </div>

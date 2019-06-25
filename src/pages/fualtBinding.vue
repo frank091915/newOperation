@@ -53,7 +53,7 @@
         </a-tab-pane>
       </a-tabs>
       <div class="return">
-        <a-button type="primary" @click="toReturn" style="float:right">返回</a-button>
+        <!-- <a-button type="primary" @click="toReturn" style="float:right">返回</a-button> -->
       </div>
     </div>
   </div>

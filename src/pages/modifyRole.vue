@@ -98,7 +98,6 @@
                 <span slot="title">
                   <span>
                     <span>
-
                       <a-checkbox :checked="item.ifPermitted"
                         @click="changeParentMenu(item.id,1)"
                         style="margin-right:10px"
@@ -203,7 +202,10 @@ export default {
   },
   methods: {
     toReturn() {
-      this.$router.go("-1");
+        this.$router.push({
+                path: "/role",
+                query: { title: "角色管理",menuIconId:9 }
+              });
     },
     handleSelect(item){
       // console.log(item)
@@ -367,7 +369,7 @@ export default {
               this.$message.success("角色修改成功");
               this.$router.push({
                 path: "/role",
-                query: { title: "角色管理" }
+                query: { title: "角色管理",menuIconId:9 }
               });
             } else {
               this.$message.error(res.data.message);

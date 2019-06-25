@@ -19,7 +19,7 @@
             <a-select-option :value="normalStatus">正常</a-select-option>
             <a-select-option :value="abnormalStatus">异常</a-select-option>
             <a-select-option :value="unknownTwo">异常（cmdb中数据未存储ip）</a-select-option>
-            <a-select-option :value="unknownThree">异常（该ip未在zabbix中存储）</a-select-option>
+            <a-select-option :value="unknownThree">异常（未在zabbix中检测到该设备）</a-select-option>
           </a-select>
         </div>
       </div>
@@ -51,9 +51,10 @@
         <div id="searchByNamesInput">
           <a-input
             v-model="searchParam"
-            placeholder="请输入广播系统名称"
+            placeholder="请输入广播系统房间名称"
             size="small"
             @keydown.enter="search(true)"
+            style="width: 180px"
           />
           <a-button @click="search(true)" type="primary" size="small" style="margin-left:15px">搜索</a-button>
         </div>

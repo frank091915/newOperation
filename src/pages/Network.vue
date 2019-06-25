@@ -19,7 +19,7 @@
             <a-select-option :value="normalStatus">正常</a-select-option>
             <a-select-option :value="abnormalStatus">异常</a-select-option>
             <a-select-option :value="unknownTwo">异常（cmdb中数据未存储ip）</a-select-option>
-            <a-select-option :value="unknownThree">异常（该ip未在zabbix中存储）</a-select-option>
+            <a-select-option :value="unknownThree">异常（未在zabbix中检测到该设备）</a-select-option>
           </a-select>
         </div>
       </div>
@@ -143,7 +143,7 @@ const columns = [
     align: "center"
   },
   {
-    title: "广播名称",
+    title: "交换机名称",
     dataIndex: "Description",
     scopedSlots: { customRender: "address" },
     align: "center"

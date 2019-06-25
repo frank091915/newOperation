@@ -1,24 +1,33 @@
 <template>
-  <div id="app">
-    <router-view name="frame"></router-view>
-    <div id="main">
-        <router-view name="signIn"></router-view>
-        <router-view name="header"></router-view>
-        <router-view name="main"></router-view>
+  <div id="superWrapper">
+    <div id="app">
+      <router-view name="signIn">
+      </router-view>
+      <router-view name="frame"></router-view>
+      <div id="main">
+          <router-view name="header"></router-view>
+          <router-view name="main"></router-view>
+      </div>
+      <div id="components-back-top-demo-custom">
+        <a-back-top :visibilityHeight="50" />
+      </div>
     </div>
-    <div id="components-back-top-demo-custom">
-      <a-back-top :visibilityHeight="50" />
-    </div>
+      <div style="background-color:#001529;height:60px;width:100%;box-sizing:border-box;padding-left:260px;color:rgba(255, 255, 255, 0.65)" > 版本号</div>
   </div>
 </template>
 
 <script>
 
 
-
 </script>
 
 <style>
+html,body{
+  height: 100%;
+}
+#superWrapper{
+  height: 100%;
+}
 #app {
   font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -27,9 +36,8 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  max-height: 100%;
   box-sizing: border-box;
-  height: 100%;
+  min-height: 100%;
 }
 #main {
   flex: 1;

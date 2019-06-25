@@ -101,7 +101,8 @@ export default {
           title: "弱电间详情",
           detailsId: id,
           roomType: 2,
-          roomName: "弱电间"
+          roomName: "弱电间",
+          menuIconId:4
         }
       });
     }

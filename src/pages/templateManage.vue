@@ -137,13 +137,13 @@ export default {
     addTemplate() {
       this.$router.push({
         path: "/addTemplate",
-        query: { title: "告警消息模板" }
+        query: { title: "告警消息模板",menuIconId:8 }
       });
     },
     modifyTemplate(e) {
       this.$router.push({
         path: "/modifyTemplate",
-        query: { title: "告警消息模板", id: e.id }
+        query: { title: "告警消息模板", id: e.id,menuIconId:8}
       });
     },
     confirmDelete(user) {

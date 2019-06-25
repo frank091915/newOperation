@@ -111,7 +111,7 @@ export default {
     modifyBuildingPosition(record) {
       this.$router.push({
         path: "/modifyBuildingPosition",
-        query: { title: "楼栋坐标信息管理", id: record.id }
+        query: { title: "楼栋坐标信息管理", id: record.id,menuIconId:9 }
       });
     },
     handleChange(value, key, column) {

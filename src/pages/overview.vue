@@ -1,14 +1,25 @@
 <template>
-  <div id="pageWrapper" >
-    <div id="chartWrapper" v-show="!isLoading">
-      <div id="convergeRoomChart" :style="{width: '320px', height: '320px'}"></div>
-      <div id="lowVoltageRoomChart" :style="{width: '320px', height: '320px'}"></div>
-      <div id="controlNetChart" :style="{width: '320px', height: '320px'}"></div>
-    </div>
-    <div v-show="isLoading" >
-      <a-spin tip="数据正在加载中...">
-        <div class="spin-content"></div>
-      </a-spin>
+  <div id="overviewSuperWrappe">
+    <div id="pageWrapper" >
+          <div v-show="isLoading" >
+        <a-spin tip="数据正在加载中...">
+          <div class="spin-content"></div>
+        </a-spin>
+      </div>
+      <div style="height:300px;" v-show="!isLoading">
+        <div style="height:20px;margin-bottm:10px;margin-top:20px;">当前网络控制网络状态汇总</div>
+          <div id="controlNetChartWrapper" >
+            <div class="controlNetChartBox"> 正常</div>
+            <div class="controlNetChartBox"> 异常（没有ip）</div>
+            <div class="controlNetChartBox"> 异常</div>
+            <div class="controlNetChartBox"> 正常（没有数据）</div>
+          </div>
+      </div>
+      <div id="chartWrapper" v-show="!isLoading">
+        <div id="convergeRoomChart" :style="{width: '320px', height: '320px'}"></div>
+        <div id="lowVoltageRoomChart" :style="{width: '320px', height: '320px'}"></div>
+        <div id="controlNetChart" :style="{width: '320px', height: '320px'}"></div>
+      </div>
     </div>
   </div>
 </template>
@@ -370,8 +381,17 @@ export default {
 </script>
 
 <style>
+html,body{
+  height: 100%;
+}
+#overviewSuperWrappe{
+  height: 100%;
+  background-color: #F1F5F6;
+}
 #pageWrapper {
   width: 100%;
+  box-sizing: border-box;
+  padding: 0 20px;
 }
 #convergeRoomChart {
   width: 200px;
@@ -385,16 +405,36 @@ export default {
   margin-left:260px;
   margin-top:50px;
 }
+#controlNetChartWrapper{
+  height: 260px;
+  margin-bottom: 20px;
+  background-color: #FFFFFF;
+  margin-top: 20px;
+  display:flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+  box-sizing: border-box;
+  padding: 20px 20px;
+  border-radius: 10px;
+}
 #chartWrapper {
   display: flex;
   flex-direction: row;
   justify-content: space-around;
   align-items: center;
-  margin-top: 300px;
+  margin-top: 20px;
+   background-color: #FFFFFF;
 }
 .spin-content {
   border: 1px solid #91d5ff;
   background-color: #e6f7ff;
   padding: 30px;
+}
+.controlNetChartBox{
+  width: 24%;
+  background-color: #4181FF;
+  height: 100%;
+  border-radius: 10px;
 }
 </style>

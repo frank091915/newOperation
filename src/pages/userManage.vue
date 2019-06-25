@@ -156,7 +156,7 @@ export default {
   },
   methods: {
     addUser() {
-      this.$router.push({ path: "/addUser", query: { title: "用户管理" } });
+      this.$router.push({ path: "/addUser", query: { title: "用户管理",menuIconId:9 } });
     },
     search(){
         this.getUserList()
@@ -164,13 +164,13 @@ export default {
     modifyUser(e) {
       this.$router.push({
         path: "/modifyUser",
-        query: { title: "用户管理", id: e.id }
+        query: { title: "用户管理", id: e.id,menuIconId:9 }
       });
     },
     alarmSet(e) {
       this.$router.push({
         path: "/alarmSet",
-        query: { title: "用户管理", id: e.id }
+        query: { title: "用户管理", id: e.id,menuIconId:9 }
       });
     },
     confirmDelete(user) {

@@ -95,7 +95,10 @@ export default {
   },
   methods: {
     toReturn() {
-      this.$router.go("-1");
+       this.$router.push({
+                  path: "/position",
+                  query: { title: "楼栋坐标信息管理" ,menuIconId:9}
+                });
     },
     select(value) {
       console.log(value);
@@ -113,7 +116,7 @@ export default {
                 this.$message.success("修改坐标成功");
                 this.$router.push({
                   path: "/position",
-                  query: { title: "楼栋坐标信息管理" }
+                  query: { title: "楼栋坐标信息管理" ,menuIconId:9}
                 });
               } else {
                 this.$message.error(res.data.message);

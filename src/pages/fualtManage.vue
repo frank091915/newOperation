@@ -101,17 +101,17 @@ export default {
     modifyFualt(record) {
       this.$router.push({
         path: "/ModifyFualt",
-        query: { title: "故障管理", fualtId: record.id }
+        query: { title: "故障管理", fualtId: record.id,menuIconId:9  }
       });
     },
     bindFualt(userInfo) {
       this.$router.push({
         path: "/fualtBinding",
-        query: { title: "异常绑定", fualtId: userInfo.id }
+        query: { title: "异常绑定", fualtId: userInfo.id,menuIconId:9  }
       });
     },
     addRole() {
-      this.$router.push({ path: "/addFualt", query: { title: "故障管理" } });
+      this.$router.push({ path: "/addFualt", query: { title: "故障管理",menuIconId:9  } });
     },
     confirmDelete(fualt) {
       this.$http.toDeleteFualt(fualt.id).then(res => {

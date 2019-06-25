@@ -11,19 +11,19 @@
         <div id="menuWrapper">
         <a-menu  theme="dark" :selectedKeys="[currentMenuId]" mode="inline"  :openKeys="[openedMenu]" v-for=" item in allParentMenu" :key="item.path">
           <!-- 渲染一级菜单 -->
-          <a-menu-item v-if="!item.subPermissions.length"  :key="item.path" @click="toNavigate(item.path,item.title,item.id,item)">
-            <span>{{item.title}}</span>
+          <a-menu-item v-if="!item.subPermissions.length"  :key="item.path" @click="toNavigate(item.path,item.title,item.id,item,item.id)">
+            <span class="menuIcon" :style="menuIconStyle(item.id)"></span> <span class="menuTitle">{{item.title}}</span>
           </a-menu-item>
           <a-sub-menu
             v-else
             :key="item.id"  
             @titleClick='handleSelect' 
           >
-            <span slot="title" ><span>{{item.title}}</span></span>
+            <span slot="title" ><span class="menuIcon" :style="menuIconStyle(item.id)"></span><span class="menuTitle">{{item.title}}</span></span>
             <a-menu-item 
             v-for="subItem in item.subPermissions"
             :key="subItem.id"
-            @click="toNavigate(subItem.path,subItem.title,subItem.id,subItem)"
+            @click="toNavigate(subItem.path,subItem.title,subItem.id,subItem,subItem.parentId)"
             class="childrenMenu"
             style="height:25px;line-height:25px"
             >{{subItem.title}}</a-menu-item>
@@ -76,10 +76,11 @@ export default {
     ...mapState(["accessToken"])
   },
   methods:{
-    toNavigate(path,title,menuId,item){
+    toNavigate(path,title,menuId,item,menuIconId){
       if(item.subPermissions){
         this.openedMenu=menuId
       }
+      menuIconId=parseInt(menuIconId);
 
       // console.log(path)
       // 获取需要的路径字符串
@@ -88,7 +89,7 @@ export default {
       let ultimatePath=path.split('/')
       ultimatePath=ultimatePath.slice(2,(ultimatePath.length-1))
       ultimatePath=ultimatePath.join("/")
-      this.$router.push({path:"/"+ ultimatePath,query:{title,menuId}})
+      this.$router.push({path:"/"+ ultimatePath,query:{title,menuId,menuIconId}})
     },
     // 获取需要展开的父级菜单
     openedParentMenu(){
@@ -106,11 +107,37 @@ export default {
       this.openedMenu=Number.parseInt(openedParentMenu.length > 0 ?  openedParentMenu[0].id : "") 
     },
     handleSelect(item){
-      console.log(item.key)
+      // console.log(item.key)
       if(this.openedMenu==item.key){
         this.openedMenu=''
       }else{
       this.openedMenu=item.key
+      }
+    },
+    menuIconStyle(id){
+      return{
+        'background-image':`url('../../../../static/assets/${this.menuIconPath(id)}')`
+      }
+      
+    },
+    menuIconPath(id){
+      switch(id){
+        case 1 : 
+        return 'leftbar_status summary.png';
+        case 2 : 
+        return 'leftbar_location display.png';
+        case 3 : 
+        return 'leftbar_ollect.png';
+        case 4 : 
+        return 'leftbar_weak current.png';
+        case 5 : 
+        return 'leftbar_controinet.png';
+        case 6 : 
+        return 'leftbar_report.png';
+        case 8 : 
+        return 'leftbar_alarm maintenance.png';
+        case 9 : 
+        return 'leftbar_system settings.png';
       }
     }
   }
@@ -174,7 +201,7 @@ body{height:100%}
 
 .ant-menu-item{
   box-sizing: border-box;
-  padding-left: 46px !important;
+  padding-left: 20px !important;
 }
 .ant-menu-submenu-title{
   display: flex;
@@ -182,7 +209,7 @@ body{height:100%}
   justify-content:space-between;
   align-items: center;
   box-sizing: border-box;
-  padding-left: 46px !important;
+  padding-left: 20px !important;
   }
   .childrenMenu{
     box-sizing: border-box;
@@ -193,5 +220,18 @@ body{height:100%}
   #menuWrapper{
     height: calc(100% - 60px);
     overflow: auto;
+  }
+  .menuIcon{
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    margin-top:11px;
+    float: left;
+    margin-right: 10px;
+    background-size: 100% 100%;
+  }
+  .menuTitle{
+    display: inline-block;
+    float: left;
   }
 </style>

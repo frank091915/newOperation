@@ -130,7 +130,10 @@ export default {
   },
   methods: {
     toReturn() {
-      this.$router.go("-1");
+      this.$router.push({
+                path: "/template",
+                query: { title: "告警消息模板",menuIconId:8 }
+              });
     },
     select(value) {
       console.log(value);
@@ -146,7 +149,7 @@ export default {
               this.$message.success("添加模板成功");
               this.$router.push({
                 path: "/template",
-                query: { title: "告警消息模板" }
+                query: { title: "告警消息模板",menuIconId:8 }
               });
             } else {
               this.$message.error(res.data.message);

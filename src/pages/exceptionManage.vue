@@ -113,11 +113,11 @@ export default {
     modifyException(record) {
       this.$router.push({
         path: "/modifyException",
-        query: { title: "异常管理", exceptionId: record.id }
+        query: { title: "异常管理", exceptionId: record.id,menuIconId:9 }
       });
     },
     addException() {
-      this.$router.push({ path: "addException", query: { title: "异常管理" } });
+      this.$router.push({ path: "addException", query: { title: "异常管理",menuIconId:9 } });
     },
     confirmDelete(fualt) {
       this.$http.toDeleteExceptionInfo(fualt.id).then(res => {

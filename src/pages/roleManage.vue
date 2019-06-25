@@ -105,11 +105,11 @@ export default {
     modifyRole(userInfo) {
       this.$router.push({
         path: "/modifyRole",
-        query: { title: "角色管理", id: userInfo.id }
+        query: { title: "角色管理", id: userInfo.id,menuIconId:9 }
       });
     },
     addRole() {
-      this.$router.push({ path: "/addRole", query: { title: "角色管理" } });
+      this.$router.push({ path: "/addRole", query: { title: "角色管理",menuIconId:9 } });
     },
     confirmDelete(user) {
       this.$http.toDeleteRole(user.id).then(res => {

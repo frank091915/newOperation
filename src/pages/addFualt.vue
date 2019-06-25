@@ -61,7 +61,10 @@ export default {
   },
   methods: {
     toReturn() {
-      this.$router.go("-1");
+      this.$router.push({
+                path: "/fault",
+                query: { title: "故障管理",menuIconId:9  }
+              });
     },
     toSave() {
       this.form.validateFields((err, values) => {
@@ -71,7 +74,7 @@ export default {
               this.$message.success("添加故障成功");
               this.$router.push({
                 path: "/fault",
-                query: { title: "故障管理" }
+                query: { title: "故障管理",menuIconId:9  }
               });
             } else {
               this.$message.error(res.data.message);

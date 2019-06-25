@@ -187,7 +187,10 @@ export default {
   },
   methods: {
     toReturn() {
-      this.$router.go("-1");
+                    this.$router.push({
+                path: "/role",
+                query: { title: "角色管理",menuIconId:9 }
+              });
     },
     handleSelect(item){
 
@@ -277,7 +280,7 @@ export default {
               this.$message.success("添加角色成功");
               this.$router.push({
                 path: "/role",
-                query: { title: "角色管理" }
+                query: { title: "角色管理",menuIconId:9 }
               });
             } else {
               this.$message.error(res.data.message);

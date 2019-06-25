@@ -254,7 +254,7 @@ export default {
         let printTitle=this.Title();
         // console.log(printTitle)
         this.$nextTick(()=>{
-          this.$router.push({ path: "/accessStatementsDetails", query: { title: printTitle,id:item.id,startTime:item.startTime.substring(0,10),type:item.type}});
+          this.$router.push({ path: "/accessStatementsDetails", query: { title: printTitle,id:item.id,startTime:item.startTime.substring(0,10),type:item.type,menuIconId:6}});
         })
 
     },

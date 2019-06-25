@@ -207,8 +207,8 @@ export default {
   height: calc(100% - 50px);
   box-sizing: border-box;
 }
-/* #warningRecordDetailsWrapper{
+#warningRecordDetailsWrapper{
   box-sizing: border-box;
   padding: 0 10px;
-} */
+}
 </style>

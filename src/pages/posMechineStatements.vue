@@ -254,7 +254,7 @@ export default {
         this.startTime=item.startTime
         let printTitle=this.Title();
         this.$nextTick(()=>{
-            this.$router.push({ path: "/posMechineRoomStatementsDetails", query: { title: printTitle,id:item.id,startTime:item.startTime.substring(0,10),type:item.type}});
+            this.$router.push({ path: "/posMechineRoomStatementsDetails", query: { title: printTitle,id:item.id,startTime:item.startTime.substring(0,10),type:item.type,menuIconId:6}});
         })
 
     },

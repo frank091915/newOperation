@@ -1,6 +1,6 @@
 <template>
-  <div id="signInWrapper" :style="{'position':'fixed','left':positionLeft()}">
-    <div id="signInForm">
+  <div id="signInWrapper" :style="{'position':'fixed'}">
+    <div id="signInForm" :style="{'position':'fixed','left':positionLeft()}">
         
         <div id="signInFormWraper">
           <div id="signInTitle">监控系统</div>
@@ -149,11 +149,13 @@ export default {
 </script>
 <style >
 #app{
-  background-image: url("../../static/assets/login.png");
-  background-size: 100% 100%;
+
 }
-#main{
-  margin: 0;
+#signInWrapper{
+  background-image: url("../../static/assets/login.png");
+  height: 100%;
+  width: 100%;
+  background-size: 100% 100%;
 }
 #signInForm {
   display: flex;

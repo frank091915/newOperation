@@ -67,8 +67,10 @@ export default {
 
     },
     toReturn() {
-
-      this.$router.go("-1");
+              this.$router.push({
+                path: "/exception",
+                query: { title: "异常管理",menuIconId:9 }
+              });
     },
     toSave() {
       this.form.validateFields((err, values) => {
@@ -83,7 +85,7 @@ export default {
               this.$message.success("修改异常管理成功");
               this.$router.push({
                 path: "/exception",
-                query: { title: "异常管理" }
+                query: { title: "异常管理",menuIconId:9  }
               });
             } else {
               this.$message.error(res.data.message);
