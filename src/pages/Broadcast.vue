@@ -9,7 +9,7 @@
             showSearch
             placeholder="Select a person"
             optionFilterProp="children"
-            style="width: 230px"
+            style="width: 260px"
             @change="handleStatusChange"
             :filterOption="filterOption"
             v-model="status"
@@ -47,11 +47,11 @@
         </div>
       </div>
       <div id="searchByNames">
-        <div id="searchByNamesLabel">名称：</div>
+        <div id="searchByNamesLabel">设备名称：</div>
         <div id="searchByNamesInput">
           <a-input
             v-model="searchParam"
-            placeholder="请输入广播系统房间名称"
+            placeholder="请输入广播系统名称"
             size="small"
             @keydown.enter="search(true)"
             style="width: 180px"
@@ -311,10 +311,10 @@ export default {
         return true;
       });
     },
-    GetBroadcastList(page, status, buildingId, searchRoom, isSearching) {
+    GetBroadcastList(page, status, buildingId, searchDevice, isSearching) {
       this.isLoading = true;
       this.$http
-        .toGetBroadcastList(page, status, buildingId, searchRoom)
+        .toGetBroadcastList(page, status, buildingId, searchDevice)
         .then(res => {
           if (res.data.success) {
             this.data = res.data.data;
@@ -377,7 +377,7 @@ body {
 }
 #searchBox {
   height: 50px;
-  width: 880px;
+  width: 950px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;

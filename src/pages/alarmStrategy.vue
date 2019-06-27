@@ -30,7 +30,7 @@
               <template slot="operation" slot-scope="text, record, index">
                 <div class="editable-row-operations">
                   <a-button
-                    @click="modifyAlarmStrategy(record.warningStrategy.cmdbId,'1')"
+                    @click="modifyAlarmStrategy(record.warningStrategy.cmdbId,'1',record.deviceInfo.Code)"
                     type="primary"
                     size="small"
                   >编辑</a-button>
@@ -82,7 +82,7 @@
                 <template slot="operation" slot-scope="text, record, index">
                   <div class="editable-row-operations">
                     <a-button
-                      @click="modifyAlarmStrategy(record.warningStrategy.cmdbId,'2')"
+                      @click="modifyAlarmStrategy(record.warningStrategy.cmdbId,'2',record.deviceInfo.Code)"
                       type="primary"
                       size="small"
                     >编辑</a-button>
@@ -284,12 +284,13 @@ export default {
     };
   },
   methods: {
-    modifyAlarmStrategy(cmdbId,selectedKey) {
+    modifyAlarmStrategy(cmdbId,selectedKey,strategyCode) {
+      console.log(strategyCode)
       this.changeDefualtKey(selectedKey)
       let roomName=selectedKey == '1' ? "汇聚机房"  : " 弱电间";
       this.$router.push({
         path: "/modifyAlarmStrategy",
-        query: { title: "告警策略管理", cmdbId, type: this.roomType,defualfKey:this.defualfKey, roomName}
+        query: { title: "告警策略管理", cmdbId, type: this.roomType,defualfKey:this.defualfKey, roomName,strategyCode}
       });
     },
     addAlarmStrategy() {

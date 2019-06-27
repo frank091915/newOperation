@@ -12,7 +12,6 @@
         <a-back-top :visibilityHeight="50" />
       </div>
     </div>
-      <div style="background-color:#001529;height:60px;width:100%;box-sizing:border-box;padding-left:260px;color:rgba(255, 255, 255, 0.65)" > 版本号</div>
   </div>
 </template>
 
@@ -46,7 +45,7 @@ html,body{
   width: calc(100% - 260px );
   /* height: 100%; */
   margin-left: 260px;
-  margin-top: 50px;
+  margin-top: 61px;
 }
 #components-back-top-demo-custom .ant-back-top {
     bottom: 20px;

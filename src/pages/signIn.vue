@@ -86,7 +86,7 @@ export default {
     positionLeft(){
      
       let leftParam=1080*document.documentElement.clientWidth/1920;
-       console.log(document.documentElement.clientHeight)
+
       return  leftParam +"px"
     },
     handleChange(e) {
@@ -134,7 +134,7 @@ export default {
     }
   },
   mounted(){
-    console.log(window.location.search)
+
     // if(window.location.search=='?invalidToken'){
     //   alert('登录失效，请重新登录')
     // }

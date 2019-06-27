@@ -44,11 +44,22 @@
           </a-select>
         </div>
       </div>
+
+        <div id="searchDeviceName" style="display:flex;flex-direction:row;justify-content:space-bettwen;align-items:center;width:220px;">
+          <div id="searchByNamesLabel" style="width:150px;">设备名称：</div>
+          <a-input
+              v-model="deviceName"
+              @keydown.enter="search(true)"
+              placeholder="请输入服务器名称"
+              size="small"
+          />
+        </div>
+
       <div id="searchByNames">
-        <div id="searchByNamesLabel">名称：</div>
+        <div id="searchByNamesLabel">房间名称：</div>
         <div id="searchByNamesInput">
           <a-input v-model="searchParam" placeholder="请输入服务器房间名称" size="small" style="width: 160px" />
-          <a-button @click="search(true)" type="primary" size="small">搜索</a-button>
+          <a-button @click="search(true)" type="primary" size="small" style="margin-left:15px">搜索</a-button>
         </div>
       </div>
     </div>
@@ -197,7 +208,8 @@ export default {
       page: 1,
       searchParam: "",
       isLoading: true,
-      current: 1
+      current: 1,
+      deviceName:''
     };
   },
   methods: {
@@ -270,7 +282,8 @@ export default {
             statusParam,
             buildingIdParam,
             this.searchParam,
-            isSearching
+            isSearching,
+            this.deviceName
           );
         });
       } else {
@@ -279,21 +292,22 @@ export default {
           statusParam,
           buildingIdParam,
           this.searchParam,
-          isSearching
+          isSearching,
+          this.deviceName
         );
       }
     },
     addOrder() {
-      var i = 1;
+           var i = 1 + (this.page - 1) * 12;
       this.data = this.data.filter(item => {
         item["key"] = i++;
         return true;
       });
     },
-    toGetServerRoomList(page, status, buildingId, searchRoom, isSearching) {
+    toGetServerRoomList(page, status, buildingId, searchRoom, isSearching,deviceName) {
       this.isLoading = true;
       this.$http
-        .toGetServerRoomList(page, status, buildingId, searchRoom)
+        .toGetServerRoomList(page, status, buildingId, searchRoom,deviceName)
         .then(res => {
           if (res.data.success) {
             this.isLoading = false;
@@ -347,7 +361,7 @@ body {
 }
 #searchBox {
   height: 50px;
-  width: 880px;
+  width: 1100px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;

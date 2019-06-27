@@ -80,6 +80,19 @@ const toSignIn = (userInfo) => {
   )
 }
 
+
+// 请求最新版本信息
+const toGetLatestVersion = () => {
+  return ajax.get(
+    "/api/version/latest", {
+      headers: {
+        "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken"))
+      }
+    }
+  )
+}
+
+
 // 请求权限菜单
 const toGetAsideMenu = () => {
   return ajax.get(
@@ -144,7 +157,7 @@ const toModifyPermissionStatus = (permissionId) => {
 
 // 批量改变菜单状态
 const toModifySeveralPermissionStatus = (permissionIds) => {
-  console.log(permissionIds.join(','))
+  // console.log(permissionIds.join(','))
   return ajax.put(
     `/api/permission/status?permissionIds=${permissionIds.join(',')}`, qs.stringify(permissionIds), {
       headers: {
@@ -239,7 +252,7 @@ const toGetconvergeRoomDetails = (id) => {
 
 // 请求弱电间详情
 const toGetLowVoltageRoomDetails = (id) => {
-  console.log(id)
+  // console.log(id)
   return ajax.get(
     "/api/data/electric/" + id, {
       headers: {
@@ -297,13 +310,14 @@ const toGetExceptionManageList = (page) => {
 }
 
 // 请求pos机列表
-const toGetPosMechineList = (page, status, buildingId, searchRoom) => {
+const toGetPosMechineList = (page, status, buildingId, searchRoom,searchName) => {
 
   let statusQuery = status === undefined || status === null ? "" : `&status=${status}`,
     buildingIdQuery = buildingId ? `&buildingId=${buildingId}` : "",
+    deviceQuery = searchName ? `&searchName=${searchName}` : "",
     searchRoomQuery = searchRoom ? `&searchRoom=${searchRoom}` : "";
   return ajax.get(
-    `/api/control/pos?currentPage=` + page + statusQuery + buildingIdQuery + searchRoomQuery, {
+    `/api/control/pos?currentPage=` + page + statusQuery + buildingIdQuery + searchRoomQuery + deviceQuery, {
       headers: {
         "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken"))
       }
@@ -312,13 +326,14 @@ const toGetPosMechineList = (page, status, buildingId, searchRoom) => {
 }
 
 // 请求服务器列表
-const toGetServerRoomList = (page, status, buildingId, searchRoom) => {
+const toGetServerRoomList = (page, status, buildingId, searchRoom,searchName) => {
 
   let statusQuery = status === undefined || status === null ? "" : `&status=${status}`,
     buildingIdQuery = buildingId ? `&buildingId=${buildingId}` : "",
+    deviceQuery = searchName ? `&searchName=${searchName}` : "",
     searchRoomQuery = searchRoom ? `&searchRoom=${searchRoom}` : "";
   return ajax.get(
-    `/api/control/server?currentPage=` + page + statusQuery + buildingIdQuery + searchRoomQuery, {
+    `/api/control/server?currentPage=` + page + statusQuery + buildingIdQuery + searchRoomQuery + deviceQuery, {
       headers: {
         "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken"))
       }
@@ -354,14 +369,14 @@ const toChangeFualtException = (fualtException) => {
 
 
 // 请求圈存机列表
-const toGetTransferList = (page, status, buildingId, searchRoom) => {
+const toGetTransferList = (page, status, buildingId, searchName) => {
 
   let statusQuery = status === undefined || status === null ? "" : `&status=${status}`,
     buildingIdQuery = buildingId ? `&buildingId=${buildingId}` : "",
-    searchRoomQuery = searchRoom ? `&searchRoom=${searchRoom}` : "";
-  console.log(status, statusQuery, status === undefined, status === null)
+    searchNameQuery = searchName ? `&searchName=${searchName}` : "";
+  // console.log(status, statusQuery, status === undefined, status === null)
   return ajax.get(
-    `/api/control/transfer?currentPage=` + page + statusQuery + buildingIdQuery + searchRoomQuery, {
+    `/api/control/transfer?currentPage=` + page + statusQuery + buildingIdQuery + searchNameQuery, {
       headers: {
         "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken"))
       }
@@ -370,13 +385,14 @@ const toGetTransferList = (page, status, buildingId, searchRoom) => {
 }
 
 // 请求门禁列表
-const toGetAccessList = (page, status, buildingId, searchRoom) => {
+const toGetAccessList = (page, status, buildingId, searchRoom,searchName) => {
   let statusQuery = status === undefined || status == null ? " " : `&status=${status}`,
     buildingIdQuery = buildingId ? `&buildingId=${buildingId}` : "",
+    deviceQuery = searchName ? `&searchName=${searchName}` : "",
     searchRoomQuery = searchRoom ? `&searchRoom=${searchRoom}` : "";
 
   return ajax.get(
-    `/api/control/access?currentPage=` + page + statusQuery + buildingIdQuery + searchRoomQuery, {
+    `/api/control/access?currentPage=` + page + statusQuery + buildingIdQuery + searchRoomQuery + deviceQuery, {
       headers: {
         "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken"))
       }
@@ -385,12 +401,12 @@ const toGetAccessList = (page, status, buildingId, searchRoom) => {
 }
 
 // 请求广播列表
-const toGetBroadcastList = (page = 1, status, buildingId, searchRoom) => {
+const toGetBroadcastList = (page = 1, status, buildingId, searchName) => {
   let statusQuery = status === undefined || status === null ? "" : `&status=${status}`,
     buildingIdQuery = buildingId ? `&buildingId=${buildingId}` : "",
-    searchRoomQuery = searchRoom ? `&searchRoom=${searchRoom}` : "";
+    searchNameQuery = searchName ? `&searchName=${searchName}` : "";
   return ajax.get(
-    `/api/control/broadcast?currentPage=` + page + statusQuery + buildingIdQuery + searchRoomQuery, {
+    `/api/control/broadcast?currentPage=` + page + statusQuery + buildingIdQuery + searchNameQuery, {
       headers: {
         "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken"))
       }
@@ -399,13 +415,14 @@ const toGetBroadcastList = (page = 1, status, buildingId, searchRoom) => {
 }
 
 // 请求交换机列表
-const toGetinterchangerList = (page = 1, status, buildingId, searchRoom) => {
+const toGetinterchangerList = (page = 1, status, buildingId, searchRoom,searchName) => {
   let statusQuery = status === undefined || status == null ? "" : `&status=${status}`,
     buildingIdQuery = buildingId ? `&buildingId=${buildingId}` : "",
+    deviceQuery = searchName ? `&searchName=${searchName}` : "",
     searchRoomQuery = searchRoom ? `&searchRoom=${searchRoom}` : "";
 
   return ajax.get(
-    `/api/control/network?currentPage=` + page + statusQuery + buildingIdQuery + searchRoomQuery, {
+    `/api/control/network?currentPage=` + page + statusQuery + buildingIdQuery + searchRoomQuery + deviceQuery, {
       headers: {
         "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken"))
       }
@@ -1309,5 +1326,6 @@ export {
   toGetServerStatements,
   toGetServerStatementsDetails,
   toModifySeveralPermissionStatus,
-  toDownloadConvergeRoomStatementsPdf
+  toDownloadConvergeRoomStatementsPdf,
+  toGetLatestVersion
 }

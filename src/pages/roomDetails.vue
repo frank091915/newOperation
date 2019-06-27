@@ -3,31 +3,35 @@
     <div id="roomDetailsWrapper">
       <div id="paramsBox">
         <div class="singleParamsBox">
-          <div class="detailTitle" style="margin-right:10px">楼宇名称</div>
+          <div class="detailTitle" >楼宇名称</div>
           <div class="detailParam">{{details.deviceInfo.buildingName}}</div>
         </div>
         <div class="singleParamsBox">
-          <div class="detailTitle" style="margin-right:10px">楼层</div>
+          <div class="detailTitle" >楼层</div>
           <div class="detailParam">{{details.deviceInfo.floorName}}</div>
         </div>
         <div class="singleParamsBox">
-          <div class="detailTitle" style="margin-right:10px">房间</div>
+          <div class="detailTitle" >房间</div>
           <div class="detailParam">{{details.deviceInfo.roomName}}</div>
         </div>
         <div class="singleParamsBox">
-          <div class="detailTitle" style="margin-right:10px">{{roomName}}编号</div>
+          <div class="detailTitle" >{{roomName}}编号</div>
           <div class="detailParam">{{details.deviceInfo.Code}}</div>
         </div>
         <div class="singleParamsBox">
-          <div class="detailTitle" style="margin-right:10px">描述</div>
+          <div class="detailTitle" >描述</div>
           <div class="detailParam">{{details.deviceInfo.Description}}</div>
         </div>
         <div class="singleParamsBox">
-          <div class="detailTitle" style="margin-right:10px">ip地址</div>
+          <div class="detailTitle" >ip地址</div>
           <div class="detailParam">{{details.deviceInfo.AdminIp.value}}</div>
         </div>
+        <div class="singleParamsBox" v-if="latestDate">
+          <div class="detailTitle" >最后上报时间</div>
+          <div class="detailParam">{{details.latestDate.timestamp}}</div>
+        </div>
       </div>
-      <div id="statusBox">
+      <div id="statusBox" :style="{'width':HasUps ? '100%' : '1200px'}">
         <div class="singleStatusBox">
           <div class="iconBox">
             <img :src="color('smoke',details.dataList[0] ? details.dataList[0].smoke : undefined)">
@@ -47,7 +51,7 @@
             <div
               class="textDescription"
             >{{details.dataList[0] ? (details.dataList[0].power ? " 正常 " : " 异常" ) : " 无数据上报"}}</div>
-            <div class="status">ups状态</div>
+            <div class="status">电力状态</div>
           </div>
         </div>
         <div class="singleStatusBox">
@@ -59,6 +63,17 @@
               class="textDescription"
             >{{details.dataList[0] ? ( details.dataList[0].door ? " 正常 " : " 异常" ) : " 无数据上报"}}</div>
             <div class="status">门禁状态</div>
+          </div>
+        </div>
+        <div class="singleStatusBox" v-if="HasUps">
+          <div class="iconBox">
+            <img :src="color('electric',details.dataList[0] ? details.dataList[0].ups : undefined)" id="lock">
+          </div>
+          <div class="statusDescription">
+            <div
+              class="textDescription"
+            >{{details.dataList[0] ? ( details.dataList[0].ups ? " 正常 " : "异常" ) : " 无数据上报"}}</div>
+            <div class="status">ups状态</div>
           </div>
         </div>
       </div>
@@ -105,7 +120,10 @@ export default {
       dataList:[],
       showCharts:true,
       timer:null,
-      showAccess:this.$route.query.roomName == "汇聚机房" ? true : false
+      showAccess:this.$route.query.roomName == "汇聚机房" ? true : false,
+      HasUps:false,
+      latestDate:false
+
     };
   },
   created() {
@@ -141,6 +159,15 @@ export default {
             this.details = res.data.data;
             this.dataList=res.data.data.dataList;
             this.showCharts=res.data.data.dataList.length;
+
+            // 判断是否为无数据
+            this.latestDate = res.data.data.dataList.length ? false : true;
+
+            // 判断该房间是否有ups
+            if(res.data.data.deviceInfo.HasUps){
+              this.HasUps=true
+            }
+
             this.$nextTick(()=>{
               console.log(this.details)
               if(this.showCharts){
@@ -161,6 +188,14 @@ export default {
             this.details = res.data.data;
             this.dataList=res.data.data.dataList;
             this.showCharts=res.data.data.dataList.length;
+
+            // 判断是否为无数据
+            this.latestDate = res.data.data.dataList.length ? false : true;
+
+            // 判断该房间是否有ups
+            if(res.data.data.deviceInfo.HasUps){
+              this.HasUps=true
+            }
             this.$nextTick(()=>{
               console.log(this.details)
               if(this.showCharts){
@@ -370,7 +405,7 @@ body {
   background-color: #e6e6e6 ! important;
 }
 .singleParamsBox {
-  width: 32%;
+  width: 24%;
   margin-top: 15px;
   background-color: white;
 }
@@ -383,10 +418,9 @@ body {
 #paramsBox {
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
+  justify-content: flex-start;
   align-items: center;
   flex-wrap: wrap;
-  width: 1200px;
   margin-bottom: 20px;
   background-color: white;
 }
@@ -401,7 +435,6 @@ body {
 }
 #statusBox {
   background-color: white;
-  width: 1200px;
   height: 110px;
   display: flex;
   flex-direction: row;
@@ -495,5 +528,8 @@ body {
   margin:0 auto;
   font-size: 20px;
   margin-top:80px;
+}
+.detailTitle{
+  margin-right:10px;
 }
 </style>

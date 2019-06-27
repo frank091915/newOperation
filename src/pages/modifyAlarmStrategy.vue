@@ -1,7 +1,7 @@
 <template>
   <div id="alarmSetWrapper">
     <div id="pageTitle">
-      {{roomName}}告警策略
+      {{roomName}} <span>{{  strategyCode  }}  </span> 告警策略
       <div id="convergeTableWrapper">
         <div id="formOneWrapper">
           <a-form :form="form">
@@ -77,6 +77,21 @@
                   
           'powerDuration',
           {rules: [{message:'请输入电力时长告警'}],initialValue:warningStrategy.powerDuration ? (warningStrategy.powerDuration+'') : ''}
+        ]"
+                style="margin-left:5px;width:280px;"
+              />
+            </a-form-item>
+            <a-form-item
+              :label-col="theFormItemLayout.labelCol"
+              :wrapper-col="formItemLayout.wrapperCol"
+              label="ups时长告警（s）"
+            >
+              <a-input
+                size="small"
+                v-decorator="[
+                  
+          'upsDuration',
+          {rules: [{message:'请输入ups时长告警'}],initialValue:warningStrategy.upsDuration ? (warningStrategy.upsDuration+'') : ''}
         ]"
                 style="margin-left:5px;width:280px;"
               />
@@ -252,7 +267,8 @@ export default {
       cmdbId: this.$route.query.cmdbId,
       warningStrategy: {},
       defualfKey:this.$route.query.defualfKey,
-      roomName:this.$route.query.roomName
+      roomName:this.$route.query.roomName,
+      strategyCode:this.$route.query.strategyCode
     };
   },
   methods: {

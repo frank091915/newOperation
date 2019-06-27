@@ -1,6 +1,6 @@
 <template>
-  <div id="frame">
-    <a-layout id="components-layout-demo-side" style="min-height: 100vh" class="frame">
+  <div id="frame" style="height: 100vh;background-color: rgb(0, 21, 41);">
+    <a-layout id="components-layout-demo-side"  class="frame">
       <a-layout-sider
         width="250px"
         v-model="collapsed"
@@ -32,6 +32,7 @@
         </div>
       </a-layout-sider>
     </a-layout>
+    <div style="background-color:#001529;height:30px;width:240px;box-sizing:border-box;color:rgba(255, 255, 255, 0.65);padding-left:10px;text-align:center" >{{versionDescription +"  " + number}}</div>
   </div>
 </template>
 <script>
@@ -45,6 +46,8 @@ export default {
       currentMenuId:Number.parseInt(this.$route.query.menuId),
       allParentMenu:[],
       openedMenu:0, 
+      number:'',
+      versionDescription:''
     }
   },
   created(){
@@ -70,6 +73,15 @@ export default {
           this.openedParentMenu()
       })
     });
+
+    // 请求版本信息
+    this.$http.toGetLatestVersion().then((res)=>{
+      console.log(res)
+      if(res.data.success){
+        this.number=res.data.data.number;
+        this.versionDescription=res.data.data.test ? "测试" : '';
+      }
+    })
 
   },
   computed:{
@@ -151,6 +163,10 @@ body{height:100%}
   height:100%;
   position: fixed;
   z-index: 99;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
 }
 #components-layout-demo-side .logo {
   height: 32px;
@@ -165,7 +181,7 @@ body{height:100%}
   min-width: 260px !important;
 }
 #components-layout-demo-side .logo{
-  margin-bottom: 18px !important;
+  /* margin-bottom: 18px !important; */
 }
 #logo{
   width: 162px;
@@ -233,5 +249,11 @@ body{height:100%}
   .menuTitle{
     display: inline-block;
     float: left;
+  }
+  .ant-menu .ant-menu-inline .ant-menu-sub{
+    z-index: 100 !important;
+  }
+  .childrenMenu .ant-menu-item{
+    z-index: 100 !important;
   }
 </style>

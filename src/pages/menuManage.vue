@@ -18,35 +18,35 @@ const innerColumns = [
     width:"5%"
   },
   {
-    title: "权限名称",
+    title: "菜单名称",
     dataIndex: "title",
     scopedSlots: { customRender: "age" },
     align: "center",
     width:"18%"
   },
   {
-    title: "权限路径",
+    title: "菜单路径",
     dataIndex: "path",
     scopedSlots: { customRender: "address" },
     align: "center",
     width:"18%"
   },
   {
-    title: "权限等级",
+    title: "菜单等级",
     dataIndex: "level",
     scopedSlots: { customRender: "address" },
     align: "center",
     width:"18%"
   },
   {
-    title: "权限状态",
+    title: "菜单状态",
     dataIndex: "status",
     scopedSlots: { customRender: "weChatcheckBox" },
     align: "center",
     width:"18%"
   },
   {
-    title: "上级权限id",
+    title: "上级菜单id",
     dataIndex: "parentId",
     scopedSlots: { customRender: "address" },
     align: "center",
@@ -73,28 +73,28 @@ const columns = [
     align: "center"
   },
   {
-    title: "权限名称",
+    title: "菜单名称",
     dataIndex: "title",
     width: "18%",
     scopedSlots: { customRender: "age" },
     align: "center"
   },
   {
-    title: "权限路径",
+    title: "菜单路径",
     dataIndex: "path",
     width: "18%",
     scopedSlots: { customRender: "address" },
     align: "center"
   },
   {
-    title: "权限等级",
+    title: "菜单等级",
     dataIndex: "level",
     width: "18%",
     scopedSlots: { customRender: "address" },
     align: "center"
   },
   {
-    title: "权限状态",
+    title: "菜单状态",
     dataIndex: "status",
     width: "18%",
     scopedSlots: { customRender: "ChangePermissionStatus" },

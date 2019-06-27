@@ -60,7 +60,7 @@
         </a-tab-pane>
         <a-tab-pane tab="弱电间" key="3">
           <div id="lowVolttageTableWrapper">
-            <a-table :columns="columns" :dataSource="electronicData" :pagination="false" bordered :scroll="{y:790}" :loading="isLoading">
+            <a-table :columns="electronicColumns" :dataSource="electronicData" :pagination="false" bordered :scroll="{y:790}" :loading="isLoading">
               <template
                 v-for="col in ['name', 'age', 'address']"
                 :slot="col"
@@ -161,6 +161,58 @@ const columns = [
         align:"center"
   }
 ];
+const electronicColumns = [
+  {
+    title: "序号",
+    dataIndex: "key",
+    width: "5%",
+    scopedSlots: { customRender: "num" },
+    align:"center"
+  },
+  {
+    title: "弱电间编号",
+    dataIndex: "Code",
+    width: "10%",
+    scopedSlots: { customRender: "age" },
+        align:"center"
+  },
+  {
+    title: "描述",
+    dataIndex: "Description",
+    width: "10%",
+    scopedSlots: { customRender: "address" },
+        align:"center"
+  },
+  {
+    title: "设备MAC地址",
+    dataIndex: "MacAddress",
+    width: "10%",
+    scopedSlots: { customRender: "address" },
+        align:"center"
+  },
+  {
+    title: "微信警告",
+    dataIndex: "switchWx",
+    width: "10%",
+    scopedSlots: { customRender: "weChatcheckBox" },
+        align:"center"
+  },
+  {
+    title: "短信警告",
+    dataIndex: "floorNumber",
+    width: "10%",
+    scopedSlots: { customRender: "messagecheckBox" },
+        align:"center"
+  },
+  {
+    title: "邮件警告",
+    dataIndex: "roomNumber",
+    width: "10%",
+    scopedSlots: { customRender: "emailcheckBox" },
+        align:"center"
+  }
+];
+
 
 export default {
   data() {
@@ -177,7 +229,8 @@ export default {
       isLoading:true,
       page:1,
       recordsTotal:0,
-      type:'NKD_AGG_DEVICE'
+      type:'NKD_AGG_DEVICE',
+      electronicColumns
     };
   },
   methods: {

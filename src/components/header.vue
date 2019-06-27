@@ -82,7 +82,7 @@ export default {
 </script>
 <style >
 #header {
-  height: 50px;
+  height: 61px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -95,7 +95,7 @@ export default {
   background-color: white;
 }
 #headerInfo{
-    margin-left: 50px;
+    margin-left: 60px;
     font-weight: 600;
     font-size: 18px;
 }

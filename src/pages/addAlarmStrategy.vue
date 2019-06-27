@@ -1,200 +1,247 @@
 <template>
   <div id="alarmSetWrapper">
     <div id="tabWrapper">
-      汇聚机房告警策略
-      <div id="convergeRoomtitle"></div>
-
-      <div id="convergeTableWrapper">
-        <div id="formOneWrapper">
-          <a-form :form="form">
-            <a-form-item
-              :label-col="theFormItemLayout.labelCol"
-              :wrapper-col="formItemLayout.wrapperCol"
-              label="温度时长告警（s）"
+      <a-tabs :activeKey=defualfKey @change="callback">
+        <a-tab-pane tab="汇聚机房告警策略" key='1' forceRender>
+          <div id="tableWrapper">
+            <a-table
+              :columns="convergeColumns"
+              :dataSource="convergeData"
+              bordered
+              :pagination="false"
+              :loading="isLoading"
             >
-              <a-input
-                size="small"
-                v-decorator="[
-                  
-          'temperatureDuration',
-          {rules: [{message:'请输入温度时长告警'}]}
-        ]"
-                style="margin-left:5px;width:280px;"
-              />
-            </a-form-item>
-            <a-form-item
-              :label-col="theFormItemLayout.labelCol"
-              :wrapper-col="formItemLayout.wrapperCol"
-              label="湿度时长告警（s）"
-            >
-              <a-input
-                size="small"
-                v-decorator="[
-                  
-          'humidityDuration',
-          {rules: [{message:'请输入湿度时长告警'}]}
-        ]"
-                style="margin-left:5px;width:280px;"
-              />
-            </a-form-item>
-            <a-form-item
-              :label-col="theFormItemLayout.labelCol"
-              :wrapper-col="formItemLayout.wrapperCol"
-              label="烟雾时长告警（s）"
-            >
-              <a-input
-                size="small"
-                v-decorator="[
-                  
-          'smokeDuration',
-          {rules: [{message:'请输入烟雾时长告警'}]}
-         
-        ]"
-                style="margin-left:5px;width:280px;"
-              />
-            </a-form-item>
-            <a-form-item
-              :label-col="theFormItemLayout.labelCol"
-              :wrapper-col="formItemLayout.wrapperCol"
-              label="门禁时长告警（s）"
-            >
-              <a-input
-                size="small"
-                v-decorator="[
-                  
-          'doorDuration',
-          {rules: [{message:'请输入门禁时长告警'}]}
-        ]"
-                style="margin-left:5px;width:280px;"
-              />
-            </a-form-item>
-            <a-form-item
-              :label-col="theFormItemLayout.labelCol"
-              :wrapper-col="formItemLayout.wrapperCol"
-              label="电力时长告警（s）"
-            >
-              <a-input
-                size="small"
-                v-decorator="[
-                  
-          'smokeDuration',
-          {rules: [{message:'请输入电力时长告警'}]}
-        ]"
-                style="margin-left:5px;width:280px;"
-              />
-            </a-form-item>
-            <a-form-item
-              :label-col="theFormItemLayout.labelCol"
-              :wrapper-col="formItemLayout.wrapperCol"
-              label="告警通知间隔（s）"
-            >
-              <a-input
-                size="small"
-                v-decorator="[
-                  
-          'warningInterval',
-          {rules: [{message:'请输入告警通知间隔'}]}
-        ]"
-                style="margin-left:5px;width:280px;"
-              />
-            </a-form-item>
-            <a-form-item
-              :label-col="theFormItemLayout.labelCol"
-              :wrapper-col="formItemLayout.wrapperCol"
-              label="最大警告次数"
-            >
-              <a-input
-                size="small"
-                v-decorator="[
-                  
-          'maxWarningCount',
-          {rules: [{message:'请输入最大警告次数'}]}
-        ]"
-                style="margin-left:5px;width:280px;"
-              />
-            </a-form-item>
-            <a-form-item
-              :label-col="theFormItemLayout.labelCol"
-              :wrapper-col="formTailLayout.wrapperCol"
-            ></a-form-item>
-          </a-form>
-        </div>
-        <a-form :form="form">
-          <a-form-item
-            :label-col="formItemLayout.labelCol"
-            :wrapper-col="formItemLayout.wrapperCol"
-            label="最低温度"
-          >
-            <a-input
-              size="small"
-              v-decorator="[
-                  
-          'minTemperature',
-          {rules: [{message:'请输入最低温度'}]}
-        ]"
-              style="margin-left:5px;width:280px;"
-            />
-          </a-form-item>
-          <a-form-item
-            :label-col="formItemLayout.labelCol"
-            :wrapper-col="formItemLayout.wrapperCol"
-            label="最低湿度"
-          >
-            <a-input
-              size="small"
-              v-decorator="[
-                  
-          'minHumidity',
-          {rules: [{message:'请输入最低湿度'}]}
-        ]"
-              style="margin-left:5px;width:280px;"
-            />
-          </a-form-item>
-        </a-form>
-
-        <a-form :form="form">
-          <a-form-item
-            :label-col="formItemLayout.labelCol"
-            :wrapper-col="formItemLayout.wrapperCol"
-            label="最高温度"
-          >
-            <a-input
-              size="small"
-              v-decorator="[
-                  
-          'maxTemperature',
-          {rules: [{message:'请输入最高温度'}]}
-        ]"
-              style="margin-left:5px;width:280px;"
-            />
-          </a-form-item>
-          <a-form-item
-            :label-col="formItemLayout.labelCol"
-            :wrapper-col="formItemLayout.wrapperCol"
-            label="最高湿度"
-          >
-            <a-input
-              size="small"
-              v-decorator="[
-                 
-          'maxHumidity',
-          {rules: [{message:'请输入最高湿度'}]}
-        ]"
-              style="margin-left:5px;width:280px;"
-            />
-          </a-form-item>
-        </a-form>
-      </div>
-      <div id="convergeRoomOperationBox">
-        <div id="opetarionBox">
-          <a-button @click="toReturn" id="returnButton">返回</a-button>
-          <a-button type="primary" @click="toSave">保存</a-button>
-        </div>
-      </div>
+              <template
+                v-for="col in ['name', 'age', 'address']"
+                :slot="col"
+                slot-scope="text, record,index"
+              >
+                <div :key="col">
+                  <a-input
+                    v-if="record.editable"
+                    style="margin: -5px 0"
+                    :value="text"
+                    :pagination="false"
+                    @change="e => handleChange(e.target.value, record.key, col)"
+                  />
+                  <template v-else>{{text}}</template>
+                </div>
+              </template>
+              <template slot="operation" slot-scope="text, record, index">
+                <div class="editable-row-operations">
+                  <a-button
+                    @click="modifyAlarmStrategy(record.warningStrategy.cmdbId,'1',record.deviceInfo.Code)"
+                    type="primary"
+                    size="small"
+                  >编辑</a-button>
+                </div>
+              </template>
+            </a-table>
+            <div id="pagination" v-show="!isLoading">
+              
+              <div id="total">共<span style="margin:0 5px;">{{recordsTotal}}</span>条数据</div>
+              <div id="paginationBox">
+                <a-pagination
+                  @change="changePageOnConvergeRoom"
+                  v-model="current"
+                  :total="recordsTotal"
+                  :pageSize="12"
+                  v-show="!isLoading"
+                  :hideOnSinglePage="true"
+                />
+              </div>
+            </div>
+          </div>
+        </a-tab-pane>
+        <a-tab-pane tab="弱电间告警策略" key='2'>
+          <div id="lowVolttageTableWrapper">
+            <div id="tableWrapper">
+              <a-table
+                :columns="lowVolttageColumns"
+                :dataSource="electronicData"
+                bordered
+                :pagination="false"
+                :loading="isLoading"
+              >
+                <template
+                  v-for="col in ['name', 'age', 'address']"
+                  :slot="col"
+                  slot-scope="text, record,index"
+                >
+                  <div :key="col">
+                    <a-input
+                      v-if="record.editable"
+                      style="margin: -5px 0"
+                      :value="text"
+                      :pagination="false"
+                      @change="e => handleChange(e.target.value, record.key, col)"
+                    />
+                    <template v-else>{{text}}</template>
+                  </div>
+                </template>
+                <template slot="operation" slot-scope="text, record, index">
+                  <div class="editable-row-operations">
+                    <a-button
+                      @click="modifyAlarmStrategy(record.warningStrategy.cmdbId,'2',record.deviceInfo.Code)"
+                      type="primary"
+                      size="small"
+                    >编辑</a-button>
+                  </div>
+                </template>
+              </a-table>
+              <div id="pagination" v-show="!isLoading">
+                
+                <div id="total">共<span style="margin:0 5px;">{{recordsTotal}}</span>条数据</div>
+                <div id="paginationBox">
+                  <a-pagination
+                    @change="changePageOnLovaltageRoom"
+                    v-model="current"
+                    :total="recordsTotal"
+                    :pageSize="12"
+                    v-show="!isLoading"
+                    :hideOnSinglePage="true"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </a-tab-pane>
+      </a-tabs>
     </div>
   </div>
 </template>
 <script>
+import {mapState,mapMutations} from "vuex"
+const convergeColumns = [
+  {
+    title: "序号",
+    dataIndex: "key",
+    width: "5%",
+    scopedSlots: { customRender: "key" },
+    align: "center"
+  },
+  {
+    title: "汇聚机房编号",
+    dataIndex: "deviceInfo.Code",
+    width: "8%",
+    scopedSlots: { customRender: "name" },
+    align: "center"
+  },
+  {
+    title: "描述",
+    dataIndex: "deviceInfo.Description",
+    width: "15%",
+    scopedSlots: { customRender: "address" },
+    align: "center"
+  },
+  {
+    title: "楼宇名称",
+    dataIndex: "deviceInfo.buildingName",
+    width: "10%",
+    scopedSlots: { customRender: "remark" },
+    align: "center"
+  },
+  {
+    title: "楼层",
+    dataIndex: "deviceInfo.floorName",
+    width: "10%",
+    scopedSlots: { customRender: "name" },
+    align: "center"
+  },
+  {
+    title: "房间",
+    dataIndex: "deviceInfo.roomName",
+    width: "15%",
+    scopedSlots: { customRender: "name" },
+    align: "center"
+  },
+  {
+    title: "设备MAC地址",
+    dataIndex: "deviceInfo.MacAddress",
+    width: "10%",
+    scopedSlots: { customRender: "name" },
+    align: "center"
+  },
+  {
+    title: "校园地图坐标点",
+    dataIndex: "deviceInfo.location",
+    width: "9%",
+    scopedSlots: { customRender: "name" },
+    align: "center"
+  },
+  {
+    title: "操作",
+    dataIndex: "operation",
+    width: "8%",
+    scopedSlots: { customRender: "operation" },
+    align: "center"
+  }
+];
+const lowVolttageColumns = [
+  {
+    title: "序号",
+    dataIndex: "key",
+    width: "5%",
+    scopedSlots: { customRender: "key" },
+    align: "center"
+  },
+  {
+    title: "弱电间编号",
+    dataIndex: "deviceInfo.Code",
+    width: "8%",
+    scopedSlots: { customRender: "name" },
+    align: "center"
+  },
+  {
+    title: "描述",
+    dataIndex: "deviceInfo.Description",
+    width: "15%",
+    scopedSlots: { customRender: "address" },
+    align: "center"
+  },
+  {
+    title: "楼宇名称",
+    dataIndex: "deviceInfo.buildingName",
+    width: "10%",
+    scopedSlots: { customRender: "remark" },
+    align: "center"
+  },
+  {
+    title: "楼层",
+    dataIndex: "deviceInfo.floorName",
+    width: "10%",
+    scopedSlots: { customRender: "name" },
+    align: "center"
+  },
+  {
+    title: "房间",
+    dataIndex: "deviceInfo.roomName",
+    width: "15%",
+    scopedSlots: { customRender: "name" },
+    align: "center"
+  },
+  {
+    title: "设备MAC地址",
+    dataIndex: "deviceInfo.MacAddress",
+    width: "10%",
+    scopedSlots: { customRender: "name" },
+    align: "center"
+  },
+  {
+    title: "校园地图坐标点",
+    dataIndex: "deviceInfo.location",
+    width: "9%",
+    scopedSlots: { customRender: "name" },
+    align: "center"
+  },
+  {
+    title: "操作",
+    dataIndex: "operation",
+    width: "8%",
+    scopedSlots: { customRender: "operation" },
+    align: "center"
+  }
+];
 const formItemLayout = {
   labelCol: { span: 4 },
   wrapperCol: { span: 8 }
@@ -207,34 +254,9 @@ const formTailLayout = {
   labelCol: { span: 4 },
   wrapperCol: { span: 12, offset: 2 }
 };
-const columns = [
-  {
-    title: "序号",
-    dataIndex: "key",
-    width: "10%",
-    scopedSlots: { customRender: "num" }
-  },
-  {
-    title: "异常编号",
-    dataIndex: "code",
-    width: "10%",
-    scopedSlots: { customRender: "age" }
-  },
-  {
-    title: "描述",
-    dataIndex: "remark",
-    width: "15%",
-    scopedSlots: { customRender: "address" }
-  },
-  {
-    title: "是否绑定",
-    dataIndex: "mark",
-    width: "10%",
-    scopedSlots: { customRender: "weChatcheckBox" }
-  }
-];
 
 export default {
+  
   data() {
     return {
       checkNick: false,
@@ -249,51 +271,93 @@ export default {
       currentFualtId: this.$route.query.fualtId,
       convergeData: [],
       electronicData: [],
-      columns,
+      convergeColumns,
+      lowVolttageColumns,
       allDataArray: [],
-      cmdbId: this.$route.query.cmdbId,
-      warningStrategy: {}
+      recordsTotal: 0,
+      roomType: this.$route.query.defualfKey ? (this.$route.query.defualfKey ==1 ? "NKD_AGG_DEVICE" : "NKD_WEAK_ELECTRIC_ADVICE")  :  "NKD_AGG_DEVICE",
+      isLoading: true,
+      current: 1,
+      page: 1,
+      type: 1,
+      defualfKey:this.$route.query.defualfKey ? this.$route.query.defualfKey : '1',
     };
   },
   methods: {
-    toReturn() {
-      this.$router.go("-1");
+    modifyAlarmStrategy(cmdbId,selectedKey,strategyCode) {
+      console.log(strategyCode)
+      this.changeDefualtKey(selectedKey)
+      let roomName=selectedKey == '1' ? "汇聚机房"  : " 弱电间";
+      this.$router.push({
+        path: "/modifyAlarmStrategy",
+        query: { title: "告警策略管理", cmdbId, type: this.roomType,defualfKey:this.defualfKey, roomName,strategyCode}
+      });
     },
-    toSave() {
-      this.form.validateFields((err, values) => {
-        if (!err) {
-          let alarmStrategy = {};
-          alarmStrategy.warningStrategy = values;
-          alarmStrategy.cmdbId = this.cmdbId;
-          alarmStrategy.type = this.$route.query.type;
-          // 添加权限菜单
-
-          this.$http.toModifyAlarmStrategy(alarmStrategy).then(res => {
-            if (res.data.success) {
-              this.$message.success("添加告警策略");
-              console.log("lalala")
-              this.$router.push({
-                path: "/user",
-                query: { title: "用户管理" }
-              });
-            } else {
-              this.$message.error(res.data.message);
-            }
-          });
+    addAlarmStrategy() {
+      this.$router.push({
+        path: "/addAlarmStrategy",
+        query: { title: "告警策略管理", type: this.roomType }
+      });
+    },
+    confirmDelete(user) {
+      this.$http.toDeleteRole(user.id).then(res => {
+        if (res.data.success) {
+          this.$message.success("删除成功");
+          this.getRoleList();
+        } else {
+          this.$message.success("删除失败，请重试");
         }
       });
     },
-    GetAlarmStrategyInfo(cmdbId, roomType) {
-      this.$http.toGetAlarmStrategyInfo(cmdbId, roomType).then(res => {
+    addOrder(type) {
+      let i = 1 + (this.page - 1) * 12;
+      if (type == 1) {
+        this.convergeData = this.convergeData.filter(item => {
+          item["key"] = i++;
+          return true;
+        });
+      } else {
+        this.electronicData = this.electronicData.filter(item => {
+          item["key"] = i++;
+          return true;
+        });
+      }
+    },
+    callback(key) {
+      this.changeDefualtKey(key)
+      // console.log(this.defualtKeyFromVuex)
+      this.defualfKey=key;
+      this.roomType = key == 1 ? "NKD_AGG_DEVICE" : "NKD_WEAK_ELECTRIC_ADVICE";
+      this.$nextTick(() => {
+        this.current = 1;
+        this.page = 1;
+        this.$nextTick(() => {
+          this.getAlarmStrategy(key, this.roomType, this.page);
+        });
+      });
+    },
+    getAlarmStrategy(roomType, roomName, page) {
+      this.isLoading = true;
+      this.$http.toGetAlarmStrategy(roomName, page).then(res => {
         if (res.data.success) {
-          this.warningStrategy = res.data.data.warningStrategy;
-          this.$nextTick(() => {});
-        } else {
-          this.$message.error(res.data.message);
-        }
+          if (roomType == 1) {
+            this.convergeData = res.data.data;
+            this.$nextTick(() => {});
+          } else {
+            this.electronicData = res.data.data;
+          }
+          this.$nextTick(() => {
+            this.recordsTotal = res.data.recordsTotal;
+            this.isLoading = false;
+            this.addOrder(roomType);
+          });
+        }else {
+              this.$message.error(res.data.errorInfo);
+            }
       });
     },
     toGetConvergeRoomAlarmSettings(type, key) {
+      this.isLoading = true;
       if (key == 1) {
         this.$http
           .toGetConvergeRoomAlarmSettings(this.currentFualtId, type)
@@ -302,6 +366,7 @@ export default {
               this.convergeData = res.data.data;
               this.allDataArray = this.electronicData.concat(this.convergeData);
               this.$nextTick(() => {
+                this.isLoading = false;
                 this.addOrder(1);
               });
             } else {
@@ -316,6 +381,7 @@ export default {
               this.electronicData = res.data.data;
               this.allDataArray = this.electronicData.concat(this.convergeData);
               this.$nextTick(() => {
+                this.isLoading = false;
                 this.addOrder(2);
               });
             } else {
@@ -323,9 +389,50 @@ export default {
             }
           });
       }
-    }
+    },
+    onChangeFualtBinding(exceptionId, roomType) {
+      this.$http
+        .toChangeFualtException({ faultId: this.currentFualtId, exceptionId })
+        .then(res => {
+          if (res.data.success) {
+            this.$message.success("设置成功");
+            this.FualtException(roomType);
+          } else {
+            this.$message.error("设置失败，请重试");
+          }
+        });
+    },
+    changePageOnConvergeRoom(page) {
+      this.page = page;
+      this.$nextTick(() => {
+        this.getAlarmStrategy(1, this.roomType, this.page);
+        this.type = 1;
+      });
+    },
+    changePageOnLovaltageRoom(page) {
+      this.page = page;
+      this.$nextTick(() => {
+        this.getAlarmStrategy(2, this.roomType, this.page);
+      });
+    },
+    ...mapMutations(['changeDefualtKey']),
   },
-  created() {}
+  created() {
+    window.sessionStorage.setItem('alarmStrageSelectedKey',JSON.stringify({key:1}))
+    let defualfKey=this.$route.query.defualfKey ?  this.$route.query.defualfKey : 1;
+    // console.log(defualfKey)
+    this.getAlarmStrategy(defualfKey, this.roomType, 1);
+  },
+  computed:{
+    ...mapState(['defualtKeyFromVuex'])
+  },
+  beforeRouteLeave (to, from, next) {
+    // 导航离开该组件的对应路由时调用
+    // 可以访问组件实例 `this`
+
+    // this.changeDefualtKey('1')
+    next()
+  }
 };
 </script>
 <style scoped>
@@ -334,7 +441,8 @@ export default {
   height: calc(100% - 69px);
   margin-left: 20px;
   margin-top: 20px;
-  border-color: rgba(153, 153, 153, 1);
+  /* border: 1px solid;
+  border-color: rgba(153, 153, 153, 1); */
 }
 #alarmSetStatus {
   margin-top: 5px;
@@ -361,5 +469,20 @@ export default {
 }
 #returnButton {
   margin-right: 100px;
+}
+#alarmSetWrapper {
+  max-height: calc(100% - 70px);
+  box-sizing: border-box;
+  padding-right: 10px;
+}
+#addBox {
+  height: 20px;
+  margin-bottom: 5px;
+}
+#pagination {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 15px;
 }
 </style>

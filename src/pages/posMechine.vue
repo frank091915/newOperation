@@ -10,7 +10,7 @@
               showSearch
               placeholder="Select a person"
               optionFilterProp="children"
-              style="width: 230px"
+              style="width: 260px"
               @change="handleStatusChange"
               :filterOption="filterOption"
               v-model="status"
@@ -47,8 +47,17 @@
             </a-select>
           </div>
         </div>
+        <div id="searchDeviceName" style="display:flex;flex-direction:row;justify-content:space-bettwen;align-items:center;width:220px;">
+          <div id="searchByNamesLabel" style="width:150px;">设备名称：</div>
+          <a-input
+              v-model="deviceName"
+              @keydown.enter="search(true)"
+              placeholder="请输入POS机名称"
+              size="small"
+          />
+        </div>
         <div id="searchByNames">
-          <div id="searchByNamesLabel">名称：</div>
+          <div id="searchByNamesLabel">房间名称：</div>
           <div id="searchByNamesInput">
             <a-input
               v-model="searchParam"
@@ -56,7 +65,7 @@
               placeholder="请输入POS机房间名称"
               size="small"
             />
-            <a-button @click="search(true)" type="primary" size="small" style="margin-left:10px">搜索</a-button>
+            <a-button @click="search(true)" type="primary" size="small" style="margin-left:15px">搜索</a-button>
           </div>
         </div>
       </div>
@@ -232,7 +241,8 @@ export default {
       page: 1,
       searchParam: "",
       isLoading: true,
-      current: 1
+      current: 1,
+      deviceName:''
     };
   },
   methods: {
@@ -300,7 +310,8 @@ export default {
             statusParam,
             buildingIdParam,
             this.searchParam,
-            isSearching
+            isSearching,
+            this.deviceName
           );
         });
       } else {
@@ -309,7 +320,8 @@ export default {
           statusParam,
           buildingIdParam,
           this.searchParam,
-          isSearching
+          isSearching,
+          this.deviceName
         );
       }
     },
@@ -320,10 +332,10 @@ export default {
         return true;
       });
     },
-    GetPosMechineList(page, status, buildingId, searchRoom, isSearching) {
+    GetPosMechineList(page, status, buildingId, searchRoom, isSearching,deviceName) {
       this.isLoading = true;
       this.$http
-        .toGetPosMechineList(page, status, buildingId, searchRoom)
+        .toGetPosMechineList(page, status, buildingId, searchRoom,deviceName)
         .then(res => {
           if (res.data.success) {
             this.recordsTotal = res.data.recordsTotal;
@@ -388,11 +400,12 @@ body {
 }
 #searchBox {
   height: 50px;
-  width: 880px;
+  width: 1180px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap;
 }
 #statusSearch {
   display: flex;
