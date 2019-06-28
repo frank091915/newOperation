@@ -177,7 +177,7 @@ export default {
         if (res.data.success) {
           this.data = res.data.data.filter(res => {
             res["key"] = i++;
-            res.status = res.status ? "正常" : "异常";
+            res.status = res.status ? "正常" : "关闭";
             return true;
           });
           this.recordsTotal = res.data.recordsTotal;
