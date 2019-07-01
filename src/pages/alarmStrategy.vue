@@ -3,6 +3,82 @@
     <div id="tabWrapper">
       <a-tabs :activeKey=defualfKey @change="callback">
         <a-tab-pane tab="汇聚机房告警策略" key='1' forceRender>
+          <div class="convergeRoomSearchWrapper">
+              <div class="buildingSearch">
+                <div class="label">楼宇名称：</div>
+                <div id="buildingSearchInput">
+                  <a-select
+                    size="small"
+                    defaultValue="检测中心"
+                    showSearch
+                    placeholder="Select a person"
+                    optionFilterProp="children"
+                    style="width: 150px;height:25px;"
+                    @change="handleBuildingChange"
+                    :filterOption="filterOption"
+                    v-model="buildingId"
+                  >
+                    <a-select-option :value="nullStatus" :key="8874">全部</a-select-option>
+                    <a-select-option
+                      v-for="item in allBuildings"
+                      :value="item.Id"
+                      :key="item.Id"
+                    >{{item.Address}}</a-select-option>
+                  </a-select>
+                </div>
+              </div>
+              <div class="floorSearch">
+                <div class="label">楼层：</div>
+                <div id="floorSearchInput">
+                  <a-select
+                    size="small"
+                    defaultValue="检测中心"
+                    showSearch
+                    placeholder="Select a person"
+                    optionFilterProp="children"
+                    style="width: 165px;height:25px"
+                    @change="handleFloorChange"
+                    :filterOption="filterOption"
+                    v-model="floor"
+                  >
+                    <a-select-option :value="nullStatus" :key="8874">全部</a-select-option>
+                    <a-select-option
+                      v-for="item in allFloors"
+                      :value="item.Id"
+                      :key="item.Id"
+                    >{{item.Description}}</a-select-option>
+                  </a-select>
+                </div>
+              </div>
+              <div class="roomSearch">
+                <div class="label">房间：</div>
+                <div id="roomSearchInput">
+                  <a-select
+                    size="small"
+                    defaultValue="检测中心"
+                    showSearch
+                    placeholder="Select a person"
+                    optionFilterProp="children"
+                    style="width:230px;height:25px"
+                    @change="handleRoomChange"
+                    :filterOption="filterOption"
+                    v-model="room"
+                  >
+                    <a-select-option :value="nullStatus" :key="8874">全部</a-select-option>
+                    <a-select-option
+                      v-for="item in allRooms"
+                      :value="item.Id"
+                      :key="item.Id"
+                    >{{item.Description}}</a-select-option>
+                  </a-select>
+                </div>
+              </div>
+              <div class="searchByNames">
+                <div class="searchByNamesInput">
+                  <a-button @click="search(true)" type="primary" size="small">搜索</a-button>
+                </div>
+              </div>
+          </div>
           <div id="tableWrapper">
             <a-table
               :columns="convergeColumns"
@@ -54,6 +130,82 @@
           </div>
         </a-tab-pane>
         <a-tab-pane tab="弱电间告警策略" key='2'>
+                    <div class="convergeRoomSearchWrapper">
+              <div class="buildingSearch">
+                <div class="label">楼宇名称：</div>
+                <div id="buildingSearchInput">
+                  <a-select
+                    size="small"
+                    defaultValue="检测中心"
+                    showSearch
+                    placeholder="Select a person"
+                    optionFilterProp="children"
+                    style="width: 150px;height:25px;"
+                    @change="handleBuildingChange"
+                    :filterOption="filterOption"
+                    v-model="buildingId"
+                  >
+                    <a-select-option :value="nullStatus" :key="8874">全部</a-select-option>
+                    <a-select-option
+                      v-for="item in allBuildings"
+                      :value="item.Id"
+                      :key="item.Id"
+                    >{{item.Address}}</a-select-option>
+                  </a-select>
+                </div>
+              </div>
+              <div class="floorSearch">
+                <div class="label">楼层：</div>
+                <div id="floorSearchInput">
+                  <a-select
+                    size="small"
+                    defaultValue="检测中心"
+                    showSearch
+                    placeholder="Select a person"
+                    optionFilterProp="children"
+                    style="width: 165px;height:25px"
+                    @change="handleFloorChange"
+                    :filterOption="filterOption"
+                    v-model="floor"
+                  >
+                    <a-select-option :value="nullStatus" :key="8874">全部</a-select-option>
+                    <a-select-option
+                      v-for="item in allFloors"
+                      :value="item.Id"
+                      :key="item.Id"
+                    >{{item.Description}}</a-select-option>
+                  </a-select>
+                </div>
+              </div>
+              <div class="roomSearch">
+                <div class="label">房间：</div>
+                <div id="roomSearchInput">
+                  <a-select
+                    size="small"
+                    defaultValue="检测中心"
+                    showSearch
+                    placeholder="Select a person"
+                    optionFilterProp="children"
+                    style="width:230px;height:25px"
+                    @change="handleRoomChange"
+                    :filterOption="filterOption"
+                    v-model="room"
+                  >
+                    <a-select-option :value="nullStatus" :key="8874">全部</a-select-option>
+                    <a-select-option
+                      v-for="item in allRooms"
+                      :value="item.Id"
+                      :key="item.Id"
+                    >{{item.Description}}</a-select-option>
+                  </a-select>
+                </div>
+              </div>
+              <div class="searchByNames">
+                <div class="searchByNamesInput">
+                  <a-button @click="search(true)" type="primary" size="small">搜索</a-button>
+                </div>
+              </div>
+          </div>
           <div id="lowVolttageTableWrapper">
             <div id="tableWrapper">
               <a-table
@@ -281,6 +433,13 @@ export default {
       page: 1,
       type: 1,
       defualfKey:this.$route.query.defualfKey ? this.$route.query.defualfKey : '1',
+      buildingId: "全部",
+      nullStatus: "null",
+      allBuildings: [],
+      allFloors: [],
+      allRooms: [],
+      floor: "全部",
+      room: "全部",
     };
   },
   methods: {
@@ -292,6 +451,38 @@ export default {
         path: "/modifyAlarmStrategy",
         query: { title: "告警策略管理", cmdbId, type: this.roomType,defualfKey:this.defualfKey, roomName,strategyCode}
       });
+    },
+    handleBuildingChange(e) {
+      this.floor = "全部";
+      this.room = "全部";
+      this.allFloors = [];
+      this.allRooms = [];
+      if (this.buildingId != "null") {
+        this.$http.toGetAllFloors(e).then(res => {
+          if (res.data.success) {
+            this.allFloors = res.data.data;
+            this.$nextTick(() => {});
+          }
+        });
+      }
+    },handleFloorChange(e) {
+      this.room = "全部";
+      this.allRooms = [];
+      if (this.floor != "null") {
+        this.$http.toGetAllRooms(e).then(res => {
+          if (res.data.success) {
+            this.allRooms = res.data.data;
+          }
+        });
+      }
+    },
+    handleRoomChange() {},
+    filterOption(input, option) {
+      return (
+        option.componentOptions.children[0].text
+          .toLowerCase()
+          .indexOf(input.toLowerCase()) >= 0
+      );
     },
     addAlarmStrategy() {
       this.$router.push({
@@ -324,6 +515,11 @@ export default {
       }
     },
     callback(key) {
+      this.buildingId= "全部";
+      this.floor = "全部";
+      this.room = "全部";
+      this.allFloors = [];
+      this.allRooms = [];
       this.changeDefualtKey(key)
       // console.log(this.defualtKeyFromVuex)
       this.defualfKey=key;
@@ -336,9 +532,21 @@ export default {
         });
       });
     },
-    getAlarmStrategy(roomType, roomName, page) {
+    search(){
+      this.page=1;
+      this.current=1;
+      this.$nextTick(()=>{
+          console.log(this.defualfKey,this.page,this.buildingId,this.floor,this.room);
+          let buildingParam=this.buildingId == "全部" || this.buildingId == "null" ? null : this.buildingId,
+              floorParam=this.floor == "全部" || this.floor == "null" ? null : this.floor,
+              roomParam=this.room == "全部" || this.room == "null" ? null : this.room;
+              console.log(buildingParam ,floorParam ,roomParam)
+              this.getAlarmStrategy(this.defualfKey,this.roomType,this.page,buildingParam,floorParam,roomParam);
+      })
+    },
+    getAlarmStrategy(roomType, roomName, page,buildingParam,floorParam,roomParam) {
       this.isLoading = true;
-      this.$http.toGetAlarmStrategy(roomName, page).then(res => {
+      this.$http.toGetAlarmStrategy(roomName, page,buildingParam,floorParam,roomParam).then(res => {
         if (res.data.success) {
           if (roomType == 1) {
             this.convergeData = res.data.data;
@@ -403,16 +611,22 @@ export default {
         });
     },
     changePageOnConvergeRoom(page) {
+      let buildingParam=this.buildingId == "全部" || this.buildingId == "null" ? null : this.buildingId,
+          floorParam=this.floor == "全部" || this.floor == "null" ? null : this.floor,
+          roomParam=this.room == "全部" || this.room == "null" ? null : this.room;
       this.page = page;
       this.$nextTick(() => {
-        this.getAlarmStrategy(1, this.roomType, this.page);
+        this.getAlarmStrategy(1, this.roomType, this.page,buildingParam,floorParam,roomParam);
         this.type = 1;
       });
     },
     changePageOnLovaltageRoom(page) {
+      let buildingParam=this.buildingId == "全部" || this.buildingId == "null" ? null : this.buildingId,
+          floorParam=this.floor == "全部" || this.floor == "null" ? null : this.floor,
+          roomParam=this.room == "全部" || this.room == "null" ? null : this.room;
       this.page = page;
       this.$nextTick(() => {
-        this.getAlarmStrategy(2, this.roomType, this.page);
+        this.getAlarmStrategy(2, this.roomType, this.page,buildingParam,floorParam,roomParam);
       });
     },
     ...mapMutations(['changeDefualtKey']),
@@ -422,6 +636,13 @@ export default {
     let defualfKey=this.$route.query.defualfKey ?  this.$route.query.defualfKey : 1;
     // console.log(defualfKey)
     this.getAlarmStrategy(defualfKey, this.roomType, 1);
+
+    // 获取楼栋信息
+    this.$http.toGetBuildingList().then(res => {
+      if (res.data.success) {
+        this.allBuildings = res.data.data;
+      }
+    });
   },
   computed:{
     ...mapState(['defualtKeyFromVuex'])
@@ -484,5 +705,40 @@ export default {
   flex-direction: row;
   justify-content: space-between;
   margin-top: 15px;
+}
+.convergeRoomSearchWrapper{
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+.buildingSearch {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 230px;
+  margin: 0 15px;
+}
+.floorSearch {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+.roomSearch {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-left: 15px;
+}
+.searchByNamesInput {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-left: 15px;
 }
 </style>

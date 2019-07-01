@@ -446,9 +446,10 @@ const toGetRoleManageList = (currentPage) => {
 }
 
 // 请求楼栋坐标信息列表
-const toGetBuildingPositionList = (currentPage) => {
+const toGetBuildingPositionList = (currentPage,searchNname) => {
+  let searchNnameQuery = searchNname ?  `&searchNname=${searchNname}`: "";
   return ajax.get(
-    `/api/position?currentPage=${currentPage}`, {
+    `/api/position?currentPage=${currentPage}` + searchNnameQuery, {
       headers: {
         "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken"))
       }
@@ -950,9 +951,13 @@ const toGetBuildingPositionById = (positionId) => {
 }
 
 // 告警策略信息
-const toGetAlarmStrategy = (type, page) => {
+const toGetAlarmStrategy = (type, page,buildingParam,floorParam,roomParam) => {
+  console.log(buildingParam,floorParam,roomParam);
+  buildingParam=buildingParam ? '&buildingId=' + buildingParam : '';
+      floorParam=floorParam ? '&floorId=' + floorParam : '';
+      roomParam=roomParam ? '&roomId=' + roomParam : '';
   return ajax.get(
-    `/api/warning/strategy/device?type=${type}&currentPage=${page}`, {
+    `/api/warning/strategy/device?type=${type}&currentPage=${page}`+buildingParam + floorParam+ roomParam, {
       headers: {
         "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken"))
       }

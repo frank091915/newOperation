@@ -1,7 +1,19 @@
 <template>
   <div id="pageWrapper">
     <div id="addBox">
-      <div id="addButton"></div>
+
+        <div id="buildingSearch">
+          <div class="label">楼宇名称：</div>
+          <div id="buildingSearchInput">
+            <a-input
+              v-model="searchParam"
+              @keydown.enter="search()"
+              placeholder="请输入楼栋名称"
+              size="small"
+            />
+          </div>
+        </div>
+        <a-button @click="search(true)" type="primary" size="small" style="margin-left:15px">搜索</a-button>
     </div>
     <div id="tableWrapper">
       <a-table :columns="columns" :dataSource="data" bordered :pagination="false" :loading="isLoading">
@@ -104,15 +116,45 @@ export default {
       columns,
       recordsTotal: 0,
       page: 1,
-      isLoading: true
+      isLoading: true,
+      buildingId: "全部",
+      buildingIdParam: this.buildingId === "全部" ? null : this.buildingId,
+      nullStatus: "null",
+      allBuildings:[],
+      searchParam:''
     };
   },
   methods: {
     modifyBuildingPosition(record) {
       this.$router.push({
         path: "/modifyBuildingPosition",
-        query: { title: "楼栋坐标信息管理", id: record.id,menuIconId:9 }
+        query: { title: "楼栋坐标信息管理", id: record.id }
       });
+    },
+    handleBuildingChange() {
+      this.buildingIdParam =
+        this.buildingId === "null" ? null : this.buildingId;
+        this.$nextTick(()=>{
+          console.log(this.buildingIdParam)
+        })
+      // this.$http
+      //   .toGetPosMechineList(1, this.statusParam, this.buildingIdParam)
+      //   .then(res => {
+      //     if (res.data.success) {
+      //       this.data = res.data.data;
+      //       this.$nextTick(() => {
+      //         this.addOrder();
+      //       });
+      //     } else {
+      //     }
+      //   });
+    },
+    filterOption(input, option) {
+      return (
+        option.componentOptions.children[0].text
+          .toLowerCase()
+          .indexOf(input.toLowerCase()) >= 0
+      );
     },
     handleChange(value, key, column) {
       const newData = [...this.data];
@@ -161,8 +203,12 @@ export default {
           .indexOf(input.toLowerCase()) >= 0
       );
     },
-    getBuildingPositionList() {
-      this.$http.toGetBuildingPositionList(this.page).then(res => {
+    search(){
+        this.page=1;
+        this.getBuildingPositionList(this.searchParam);
+    },
+    getBuildingPositionList(searchParam) {
+      this.$http.toGetBuildingPositionList(this.page,searchParam).then(res => {
         this.isLoading = true;
         var i = 1;
         if (res.data.success) {
@@ -197,6 +243,14 @@ export default {
   },
   created() {
     this.getBuildingPositionList();
+        this.$http.toGetBuildingList().then(res => {
+      if (res.data.success) {
+
+        this.allBuildings = res.data.data;
+      } else {
+        this.$message.error(res.data.message);
+      }
+    });
   }
 };
 </script>
@@ -263,5 +317,19 @@ body {
 }
 #total {
   font-size: 15px;
+}
+#buildingSearch {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 238px;
+  margin:10px 0 ;
+}
+#addBox{
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
 }
 </style>
