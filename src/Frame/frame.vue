@@ -12,7 +12,7 @@
         <a-menu  theme="dark" :selectedKeys="[currentMenuId]" mode="inline"  :openKeys="[openedMenu]" v-for=" item in allParentMenu" :key="item.path">
           <!-- 渲染一级菜单 -->
           <a-menu-item v-if="!item.subPermissions.length"  :key="item.path" @click="toNavigate(item.path,item.title,item.id,item,item.id)">
-            <span class="menuIcon" :style="menuIconStyle(item.id)"></span> <span class="menuTitle">{{item.title}}</span>
+            <span class="menuIcon" :style="menuIconStyle(item.id)"></span> <span  :class=" {'menu-item-active': selectedMenuId == item.id}">{{item.title}}</span>
           </a-menu-item>
           <a-sub-menu
             v-else
@@ -47,11 +47,11 @@ export default {
       allParentMenu:[],
       openedMenu:0, 
       number:'',
-      versionDescription:''
+      versionDescription:'',
+      selectedMenuId:1
     }
   },
   created(){
-
     // 获取侧边栏菜单数据
     this.$http.toGetAsideMenu().then((res)=>{
       this.allParentMenu=res.data.data;
@@ -76,7 +76,7 @@ export default {
 
     // 请求版本信息
     this.$http.toGetLatestVersion().then((res)=>{
-      console.log(res)
+      // console.log(res)
       if(res.data.success){
         this.number=res.data.data.number;
         this.versionDescription=res.data.data.test ? "测试" : '';
@@ -97,6 +97,9 @@ export default {
       // console.log(path)
       // 获取需要的路径字符串
       this.currentMenuId=menuId;
+
+      // 记录选中的父级菜单
+      this.selectedMenuId=menuIconId;
       let processedPath=path.slice(0,(path.length-3)).split("/").pop();
       let ultimatePath=path.split('/')
       ultimatePath=ultimatePath.slice(2,(ultimatePath.length-1))
@@ -127,12 +130,20 @@ export default {
       }
     },
     menuIconStyle(id){
-      return{
-        'background-image':`url('../../../../static/assets/${this.menuIconPath(id)}')`
+
+      if(this.selectedMenuId==id){
+        return{
+          'background-image':`url('../../../../static/assets/${this.menuIconPathSelected(id)}')`
+        }
+      }else{
+        return{
+          'background-image':`url('../../../../static/assets/${this.menuIconPathUnselected(id)}')`
+        }
       }
+
       
     },
-    menuIconPath(id){
+    menuIconPathSelected(id){
       switch(id){
         case 1 : 
         return 'leftbar_status summary.png';
@@ -150,6 +161,26 @@ export default {
         return 'leftbar_alarm maintenance.png';
         case 9 : 
         return 'leftbar_system settings.png';
+      }
+    },
+    menuIconPathUnselected(id){
+      switch(id){
+        case 1 : 
+        return 'leftbar_status summary_white.png';
+        case 2 : 
+        return 'leftbar_location display_white.png';
+        case 3 : 
+        return 'leftbar_ollect_white.png';
+        case 4 : 
+        return 'leftbar_weak current_white.png';
+        case 5 : 
+        return 'leftbar_controinet_white.png';
+        case 6 : 
+        return 'leftbar_report_white.png';
+        case 8 : 
+        return 'leftbar_alarm maintenance_white.png';
+        case 9 : 
+        return 'leftbar_system settings_white.png';
       }
     }
   }
@@ -255,5 +286,8 @@ body{height:100%}
   }
   .childrenMenu .ant-menu-item{
     z-index: 100 !important;
+  }
+  .menu-item-active{
+    color: #fff;
   }
 </style>

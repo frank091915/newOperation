@@ -7,7 +7,7 @@
       </div>
     <div id="pageWrapper" >
 
-      <div style="height:300px" id="overallStatusbox" v-show="!isLoading" >
+      <div style="height:30vh" id="overallStatusbox" v-show="!isLoading" >
         <div id="overallStatusTitle" style="height:20px;margin-bottm:10px;">当前网络控制网络状态汇总</div>
         <hr id="overallStatusboxStripe" />
           <div id="controlNetChartWrapper" >
@@ -16,15 +16,38 @@
                   <p class="narmalTitleChinese">正常</p>
                   <p class="narmalTitleEnglish">NORMAL</p>
               </div>
-
-              <div class="progressBox" id="narmalControlNetpie">
+              <div class="progressBox" id="narmalControlNetpie" :style="{'margin-top': '2px','width': autoProgressBoxWidth,'height': autoProgressBoxWidth}">
                   
               </div>
-              
             </div>
-            <div class="controlNetChartBox"> 异常（没有ip）</div>
-            <div class="controlNetChartBox"> 异常</div>
-            <div class="controlNetChartBox"> 正常（没有数据）</div>
+            <div class="controlNetChartBox"> 
+                <div class="narmalTitle">
+                    <p class="narmalTitleChinese">异常</p>
+                    <p class="narmalTitleEnglish">(CMDB中没有ip信息)</p>
+                </div>
+                <div class="progressBox" id="narmalControlNetpieWithoutIp" :style="{'margin-top': '2px','width': autoProgressBoxWidth,'height': autoProgressBoxWidth}">
+                    
+                </div>
+            </div>
+            <div class="controlNetChartBox">
+                <div class="narmalTitle">
+                    <p class="narmalTitleChinese">异常</p>
+                    <p class="narmalTitleEnglish">ABNORMAL</p>
+                </div>
+                <div class="progressBox" id="abnormalControlNetpie" :style="{'margin-top': '2px','width': autoProgressBoxWidth,'height': autoProgressBoxWidth}">
+                    
+                </div>
+            </div>
+            <div class="controlNetChartBox"> 
+                <div class="narmalTitle">
+                    <p class="narmalTitleChinese">异常</p>
+                    <div>(没有数据)</div>
+                    <div>ABNORMAL</div>
+                </div>
+                <div class="progressBox" id="abnormalControlNetpieWithoutData" :style="{'margin-top': '2px','width': autoProgressBoxWidth,'height': autoProgressBoxWidth}">
+                    
+                </div>
+            </div>
           </div>
       </div>
       <div id="chartWrapper" v-show="!isLoading">
@@ -45,7 +68,9 @@ export default {
       MachineRoomStatistics: {},
       WeakElectricStatistics: {},
       one: 99,
-      isLoading: true
+      isLoading: true,
+      statusWrapperWidth:200,
+      autoProgressBoxWidth:'200px'
     };
   },
   mounted() {},
@@ -55,6 +80,7 @@ export default {
       let narmalControlNetpie = this.$echarts.init(
         document.getElementById("narmalControlNetpie")
       );
+      narmalControlNetpie.resize()
       // 绘制图表
       narmalControlNetpie.setOption({
         tooltip: {
@@ -70,12 +96,13 @@ export default {
             name: "生源地",
             type: "pie",
             // radius: '50%',  // 设置饼状图大小，100%时，最大直径=整个图形的min(宽，高)
-            radius: ["60%","60%"],// 设置环形饼状图， 第一个百分数设置内圈大小，第二个百分数设置外圈大小
+            radius: ["45%","60%"],// 设置环形饼状图， 第一个百分数设置内圈大小，第二个百分数设置外圈大小
             center : ['50%', '50%'], // 设置饼状图位置，第一个百分数调水平位置，第二个百分数调垂直位置
             data: [
               { value: 75, name: "正常" },
-              { value: 25, name: "故障" },
+              { value: 50, name: "故障"},
             ],
+            roseType: 'radius',
             // itemStyle 设置饼状图扇形区域样式
             itemStyle: {
               // emphasis：英文意思是 强调;着重;（轮廓、图形等的）鲜明;突出，重读
@@ -107,10 +134,268 @@ export default {
                 // {c}指series.data的value  {d}%指这一部分占总数的百分比
                 formatter: " "
               }
+            },
+            emphasis:{
+              itemStyle:{
+
+              }
             }
           }
-        ]
-      });
+        ],
+        title: {
+          text:'998',
+          left:'center',
+          top:'center',
+          textStyle:{
+            color:'#fff',
+            fontSize:20,
+            align:'center',
+
+          }
+        },
+        });
+    },
+    drawAbnormalControlNetpieWithoutIp() {
+      // 基于准备好的dom，初始化echarts实例
+      let narmalControlNetpie = this.$echarts.init(
+        document.getElementById("narmalControlNetpieWithoutIp")
+      );
+      narmalControlNetpie.resize()
+      // 绘制图表
+      narmalControlNetpie.setOption({
+        tooltip: {
+          trigger: "axis",
+          axisPointer: {
+            // 坐标轴指示器，坐标轴触发有效
+            type: "shadow" // 默认为直线，可选为：'line' | 'shadow'
+          }
+        },
+
+        series: [
+          {
+            name: "生源地",
+            type: "pie",
+            // radius: '50%',  // 设置饼状图大小，100%时，最大直径=整个图形的min(宽，高)
+            radius: ["45%","60%"],// 设置环形饼状图， 第一个百分数设置内圈大小，第二个百分数设置外圈大小
+            center : ['50%', '50%'], // 设置饼状图位置，第一个百分数调水平位置，第二个百分数调垂直位置
+            data: [
+              { value: 75, name: "正常" },
+              { value: 50, name: "故障"},
+            ],
+            roseType: 'radius',
+            // itemStyle 设置饼状图扇形区域样式
+            itemStyle: {
+              // emphasis：英文意思是 强调;着重;（轮廓、图形等的）鲜明;突出，重读
+              // emphasis：设置鼠标放到哪一块扇形上面的时候，扇形样式、阴影
+              // emphasis: {
+              //   shadowBlur: 10,
+              //   shadowOffsetX: 0,
+              //   shadowColor: "rgba(30, 144, 255，0.5)"
+              // },
+              normal:{ 
+                color: function (params){
+                      var colorList = ['#FB5B5C','#FFEFEF'];
+                    return colorList[params.dataIndex];
+                    }
+              },
+            },
+            // 设置值域的那指向线
+            labelLine: {
+              normal: {
+                show: false // show设置线是否显示，默认为true，可选值：true ¦ false
+              }
+            },
+            // 设置值域的标签
+            label: {
+              normal: {
+                position: "outer", // 设置标签位置，默认在饼状图外 可选值：'outer' ¦ 'inner（饼状图上）'
+                // formatter: '{a} {b} : {c}个 ({d}%)'   设置标签显示内容 ，默认显示{b}
+                // {a}指series.name  {b}指series.data的name
+                // {c}指series.data的value  {d}%指这一部分占总数的百分比
+                formatter: " "
+              }
+            },
+            emphasis:{
+              itemStyle:{
+
+              }
+            }
+          }
+        ],
+        title: {
+          text:'998',
+          left:'center',
+          top:'center',
+          textStyle:{
+            color:'#000',
+            fontSize:20,
+            align:'center',
+
+          }
+        },
+        });
+    },
+    // abnormalControlNetpie
+    drawAbnormalControlNetpie() {
+      // 基于准备好的dom，初始化echarts实例
+      let narmalControlNetpie = this.$echarts.init(
+        document.getElementById("abnormalControlNetpie")
+      );
+      narmalControlNetpie.resize()
+      // 绘制图表
+      narmalControlNetpie.setOption({
+        tooltip: {
+          trigger: "axis",
+          axisPointer: {
+            // 坐标轴指示器，坐标轴触发有效
+            type: "shadow" // 默认为直线，可选为：'line' | 'shadow'
+          }
+        },
+
+        series: [
+          {
+            name: "生源地",
+            type: "pie",
+            // radius: '50%',  // 设置饼状图大小，100%时，最大直径=整个图形的min(宽，高)
+            radius: ["45%","60%"],// 设置环形饼状图， 第一个百分数设置内圈大小，第二个百分数设置外圈大小
+            center : ['50%', '50%'], // 设置饼状图位置，第一个百分数调水平位置，第二个百分数调垂直位置
+            data: [
+              { value: 75, name: "正常" },
+              { value: 50, name: "故障"},
+            ],
+            roseType: 'radius',
+            // itemStyle 设置饼状图扇形区域样式
+            itemStyle: {
+              // emphasis：英文意思是 强调;着重;（轮廓、图形等的）鲜明;突出，重读
+              // emphasis：设置鼠标放到哪一块扇形上面的时候，扇形样式、阴影
+              // emphasis: {
+              //   shadowBlur: 10,
+              //   shadowOffsetX: 0,
+              //   shadowColor: "rgba(30, 144, 255，0.5)"
+              // },
+              normal:{ 
+                color: function (params){
+                      var colorList = ['#FDB902','#FFF7E2'];
+                    return colorList[params.dataIndex];
+                    }
+              },
+            },
+            // 设置值域的那指向线
+            labelLine: {
+              normal: {
+                show: false // show设置线是否显示，默认为true，可选值：true ¦ false
+              }
+            },
+            // 设置值域的标签
+            label: {
+              normal: {
+                position: "outer", // 设置标签位置，默认在饼状图外 可选值：'outer' ¦ 'inner（饼状图上）'
+                // formatter: '{a} {b} : {c}个 ({d}%)'   设置标签显示内容 ，默认显示{b}
+                // {a}指series.name  {b}指series.data的name
+                // {c}指series.data的value  {d}%指这一部分占总数的百分比
+                formatter: " "
+              }
+            },
+            emphasis:{
+              itemStyle:{
+
+              }
+            }
+          }
+        ],
+        title: {
+          text:'998',
+          left:'center',
+          top:'center',
+          textStyle:{
+            color:'#000',
+            fontSize:20,
+            align:'center',
+
+          }
+        },
+        });
+    },
+    // abnormalControlNetpieWithoutData
+    drawAbnormalControlNetpieWithoutData() {
+      // 基于准备好的dom，初始化echarts实例
+      let narmalControlNetpie = this.$echarts.init(
+        document.getElementById("abnormalControlNetpieWithoutData")
+      );
+      narmalControlNetpie.resize()
+      // 绘制图表
+      narmalControlNetpie.setOption({
+        tooltip: {
+          trigger: "axis",
+          axisPointer: {
+            // 坐标轴指示器，坐标轴触发有效
+            type: "shadow" // 默认为直线，可选为：'line' | 'shadow'
+          }
+        },
+
+        series: [
+          {
+            name: "生源地",
+            type: "pie",
+            // radius: '50%',  // 设置饼状图大小，100%时，最大直径=整个图形的min(宽，高)
+            radius: ["45%","60%"],// 设置环形饼状图， 第一个百分数设置内圈大小，第二个百分数设置外圈大小
+            center : ['50%', '50%'], // 设置饼状图位置，第一个百分数调水平位置，第二个百分数调垂直位置
+            data: [
+              { value: 75, name: "正常" },
+              { value: 50, name: "故障"},
+            ],
+            roseType: 'radius',
+            // itemStyle 设置饼状图扇形区域样式
+            itemStyle: {
+              // emphasis：英文意思是 强调;着重;（轮廓、图形等的）鲜明;突出，重读
+              // emphasis：设置鼠标放到哪一块扇形上面的时候，扇形样式、阴影
+              // emphasis: {
+              //   shadowBlur: 10,
+              //   shadowOffsetX: 0,
+              //   shadowColor: "rgba(30, 144, 255，0.5)"
+              // },
+              normal:{ 
+                color: function (params){
+                      var colorList = ['#A561A6','#F6F0F7'];
+                    return colorList[params.dataIndex];
+                    }
+              },
+            },
+            // 设置值域的那指向线
+            labelLine: {
+              normal: {
+                show: false // show设置线是否显示，默认为true，可选值：true ¦ false
+              }
+            },
+            // 设置值域的标签
+            label: {
+              normal: {
+                position: "outer", // 设置标签位置，默认在饼状图外 可选值：'outer' ¦ 'inner（饼状图上）'
+                // formatter: '{a} {b} : {c}个 ({d}%)'   设置标签显示内容 ，默认显示{b}
+                // {a}指series.name  {b}指series.data的name
+                // {c}指series.data的value  {d}%指这一部分占总数的百分比
+                formatter: " "
+              }
+            },
+            emphasis:{
+              itemStyle:{
+
+              }
+            }
+          }
+        ],
+        title: {
+          text:'998',
+          left:'center',
+          top:'center',
+          textStyle:{
+            color:'#000',
+            fontSize:20,
+            align:'center',
+
+          }
+        },
+        });
     },
     drawMachineRoomLine() {
       // 基于准备好的dom，初始化echarts实例
@@ -434,7 +719,24 @@ export default {
       });
     }
   },
+  mounted(){
+
+      this.statusWrapperWidth=document.getElementById('overviewSuperWrappe').offsetWidth*0.24-34;
+      this.$nextTick(()=>{
+        this.autoProgressBoxWidth=200*this.statusWrapperWidth/350 + 'px';
+        console.log(200*this.statusWrapperWidth/364 + 'px');
+        this.$nextTick(()=>{
+            this.drawnarmalControlNetpie();
+            this.drawAbnormalControlNetpieWithoutIp();
+            this.drawAbnormalControlNetpie();
+            this.drawAbnormalControlNetpieWithoutData()
+        })
+      })
+
+      
+  },
   created() {
+    
     this.$http.toGetSummary().then(res => {
       if (res.data.success) {
         this.WeakElectricStatistics = res.data.data.WeakElectricStatistics;
@@ -445,7 +747,6 @@ export default {
           this.drawMachineRoomLine();
           this.drawLowVoltageRoomLine();
           this.drawControlNetRoomLine();
-          this.drawnarmalControlNetpie()
         });
       }else {
               this.$message.error(res.data.message);
@@ -484,7 +785,7 @@ html,body{
   margin-top:61px;
 }
 #controlNetChartWrapper{
-  height: 260px;
+  height: 23vh;
   margin-bottom: 20px;
   background-color: #FFFFFF;
   display:flex;
@@ -527,7 +828,7 @@ html,body{
   background-color: #fff;
   box-sizing: border-box;
   padding-top: 20px;
-  margin-bottom:40px;
+  margin-bottom:20px;
 }
 #overallStatusTitle{
   font-size: 18px;
@@ -552,7 +853,7 @@ html,body{
   margin-top: 38px;
   font-size: 20px;
   height: 20px;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
   font-weight: 500;
 }
 .narmalTitleEnglish{
@@ -561,12 +862,8 @@ html,body{
 .narmalTitle{
   height: 150px;;
 }
-.progressBox{
-    margin-top: 34px;
-    width: 120px;
-    height: 120px;
-}
-#narmalBlueTitle{
 
+#narmalBlueTitle{
+  color: #fff;
 }
 </style>

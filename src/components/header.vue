@@ -56,7 +56,6 @@ export default {
       
     },
     menuIconPath(menuIconId){
-      console.log(menuIconId)
       let menuPath="";
       switch(menuIconId){
         case 1 : 
