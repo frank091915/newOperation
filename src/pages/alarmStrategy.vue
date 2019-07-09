@@ -83,7 +83,9 @@
             <a-table
               :columns="convergeColumns"
               :dataSource="convergeData"
-              bordered
+              :rowClassName="(record, index)=>{
+                if(index%2 != 0) return 'table-evenRow'
+              } "
               :pagination="false"
               :loading="isLoading"
             >
@@ -211,7 +213,9 @@
               <a-table
                 :columns="lowVolttageColumns"
                 :dataSource="electronicData"
-                bordered
+                :rowClassName="(record, index)=>{
+                  if(index%2 != 0) return 'table-evenRow'
+                } "
                 :pagination="false"
                 :loading="isLoading"
               >

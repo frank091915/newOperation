@@ -134,9 +134,9 @@ export default {
     }
   },
   mounted(){
-
-    // if(window.location.search=='?invalidToken'){
-    //   alert('登录失效，请重新登录')
+    // console.log(this.$route.query.redirect)
+    // if(this.$route.query.redirect){
+    //  this.$message.error("请登录");
     // }
   },
   computed: {

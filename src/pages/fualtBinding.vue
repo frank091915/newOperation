@@ -5,7 +5,14 @@
       <a-tabs defaultActiveKey="1" @change="callback">
         <a-tab-pane tab="汇聚机房" key="1" forceRender>
           <div id="convergeTableWrapper">
-            <a-table :columns="columns" :dataSource="convergeData" :pagination="false" bordered>
+            <a-table 
+            :columns="columns" 
+            :dataSource="convergeData" 
+            :pagination="false" 
+            :rowClassName="(record, index)=>{
+              if(index%2 != 0) return 'table-evenRow'
+            } "
+            >
               <template
                 v-for="col in ['name', 'age', 'address']"
                 :slot="col"
@@ -29,7 +36,14 @@
         </a-tab-pane>
         <a-tab-pane tab="弱电间" key="2">
           <div id="lowVolttageTableWrapper">
-            <a-table :columns="columns" :dataSource="electronicData" :pagination="false" bordered>
+            <a-table 
+            :columns="columns" 
+            :dataSource="electronicData" 
+            :pagination="false" 
+            :rowClassName="(record, index)=>{
+              if(index%2 != 0) return 'table-evenRow'
+            } "
+            >
               <template
                 v-for="col in ['name', 'age', 'address']"
                 :slot="col"

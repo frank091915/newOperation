@@ -3,37 +3,62 @@
     <div id="statusBar">
       <div id="convergeRoomHeaderWraper">
         <div id="statusBox">
-          <div class="faultyCountBox">故障：{{fauly}}</div>
-          <div class="abnormalCountBox">异常：{{abnormal}}</div>
-          <div class="normalCountBox">正常：{{normal}}</div>
-          <div class="normalCountBox">合计：{{total}}</div>
+          <div class="singleStatusBox">
+            <p class="statusTitle">
+              <span class="statusTitlefirstSpan">故障：</span>{{fauly}}
+              
+            </p>
+            </div>
+          <div class="singleStatusBox">
+            <p class="statusTitle">
+              <span class="statusTitlefirstSpan">异常：</span>{{abnormal}}
+            </p>
+          </div>
+          <div class="singleStatusBox">
+            <p class="statusTitle">
+              <span class="statusTitlefirstSpan">正常：</span>{{normal}}
+            </p>
+            </div>
+          <div class="singleStatusBox">
+            <p class="statusTitle">
+              <span class="statusTitlefirstSpan">合计：</span>{{total}}
+            </p>
+            </div>
         </div>
-        <a-input-search
-          placeholder="搜索汇聚机房名称"
-          style="width: 200px"
-          @keydown.enter="onSearch"
-          @search="onSearch"
-          v-model="searchParam"
-        />
       </div>
     </div>
-    <div id="convergeRoomBox" v-if="!isLoading">
-      <div
-        v-for="item in roomList "
-        :key="item.Id"
-        :type="item.statusDescription"
-        class="statusDisplay"
-      >
-      <div class="imgWrapper">
-        <img
-          :src="color(item.status)"
-          @click="toShowDetails(item.Id)"
-          style="cursor:pointer;height:40px !important"
-        >
+      <div id="searcSuperhWrapper">
+
+        <div id="searchWrapper">
+            <a-input-search
+              placeholder="搜索汇聚机房名称"
+              style="width: 200px"
+              @keydown.enter="onSearch"
+              @search="onSearch"
+              v-model="searchParam"
+            />
+            <a-button @click="onSearch" type="primary"  style="margin-left:15px">搜索</a-button>
+        </div>
       </div>
 
-        <p @click="toShowDetails(item.Id)" style="cursor:pointer">{{item.roomName}}</p>
-      </div>
+    <div id="convergeRoomBox" v-if="!isLoading">
+          <div id="convergeRoomBoxWrapper">
+            <div
+              v-for="item in roomList "
+              :key="item.Id"
+              :type="item.statusDescription"
+              class="statusDisplay"
+            >
+            <div class="imgWrapper">
+              <img
+                :src="color(item.status)"
+                @click="toShowDetails(item.Id)"
+                style="cursor:pointer"
+              >
+            </div>
+              <p @click="toShowDetails(item.Id)" style="cursor:pointer">{{item.roomName}}</p>
+            </div>
+          </div>
     </div>
     <div v-show="isLoading" style="width:100%;">
       <a-spin tip="数据正在加载中...">
@@ -88,11 +113,11 @@ export default {
     color(status) {
       switch (status) {
         case 0 :
-          return "../../static/assets/computerRoomYellow.png";
+          return "../../static/assets/icon_convergeroom_a.png";
         case 1:
-          return "../../static/assets/computerRoomGreen.png";
+          return "../../static/assets/icon_convergeroom_f.png";
         case -1:
-          return "../../static/assets/computerRoomRed.png";
+          return "../../static/assets/icon_convergeroom_n.png";
       }
     },
     toShowDetails(id) {
@@ -142,10 +167,11 @@ export default {
 </script>
 <style scoped >
 #statusBar {
-  height: 50px;
-  border-bottom: 1px solid #bdbdbd;
-  margin-left: 30px;
+  height: 216px;
+  /* margin-left: 30px; */
   width: 95%;
+  box-sizing: border-box;
+  padding: 20px 0;
 }
 #convergeRoomHeaderWraper {
   display: flex;
@@ -156,46 +182,63 @@ export default {
 }
 #convergeRoomWraper {
   font-size: 14px;
-
+  min-height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  /* overflow: auto; */
+  background-color: #F1F5F6;
 }
 #convergeRoomBox {
   width: 95%;
-  margin-left: 30px;
+  min-height: calc(100vh - 369px);
+  /* margin-left: 30px; */
+}
+#convergeRoomBoxWrapper{
+  min-height: calc(100vh - 369px) !important;
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
   flex-wrap: wrap;
   align-items: flex-start;
+  background-color: #FDFDFD;
 }
 .statusDisplay {
-  width: 90px;
-  height: 120px;
+  width: 18%;
+  height: 160px;
+  margin: 0 1%;
   margin-top: 30px;
-  margin-right: 102px;
+  margin-bottom: 46px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  position: relative;
+  background-color:#FFFFFF;
+  box-shadow: 3px 3px 12px #EDEDED;
 }
 .statusDisplay img {
   width: 40px;
   height: 40px;
 }
 .statusDisplay p{
-  height: calc(100% - 55px)
+  height: calc(100% - 55px);
+  line-height: 160px;
+  font-size: 15px;
 }
 .imgWrapper{
- width: 40px;
-  height: 40px;
-  margin-bottom: 15px;
+  width: 80px;
+  height: 80px;
+  border-radius:40px !important;
+  display: block;
+  position: absolute;
+  top: -40px;
+  left: calc(50% - 40px);
+  background-color: #FFFFFF;
+  box-shadow: 2px 2px 10px #E8EFFF;
 }
 #statusBox {
-  width: 500px;
+  width: 100%;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -211,5 +254,38 @@ export default {
 }
 #noData {
   color: rgba(0, 0, 0, 0.45);
+}
+.singleStatusBox{
+  width: 24%;
+  background-color: #FFFFFF;
+  height: 175px;
+  border-radius: 12px;
+}
+.statusTitle{
+  height: 45px;
+  line-height: 45px;
+  font-size: 15px;
+  border-bottom: 1px solid #EBEBEB;
+  box-sizing: border-box;
+  padding-left: 20px;
+}
+.statusTitlefirstSpan{
+  margin-right: 22px;
+}
+#searcSuperhWrapper{
+  width: 95%;
+  height: 92px;
+  background-color: white;
+  box-sizing: border-box;
+  padding-top: 15px;
+}
+#searchWrapper{
+  float:right;
+  margin-right: 15px;
+}
+.imgWrapper img{
+  position: absolute;
+  top: 20px;
+  left: 20px;
 }
 </style>

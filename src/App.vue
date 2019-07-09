@@ -53,4 +53,11 @@ html,body{
     /* background-color: #1088e9; */
   }
 
+/* ant-d表格样式 */
+.table-evenRow {
+  background-color: #F5F8FF;
+}
+.ant-table-tbody > tr > td{
+  border:none;
+}
 </style>

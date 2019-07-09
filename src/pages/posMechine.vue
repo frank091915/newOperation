@@ -74,8 +74,10 @@
           :columns="columns"
           :dataSource="data"
           :pagination="false"
-          bordered
           :loading="isLoading"
+          :rowClassName="(record, index)=>{
+            if(index%2 != 0) return 'table-evenRow'
+          } "
         >
           <template
             v-for="col in ['name', 'age', 'address']"
@@ -268,7 +270,9 @@ export default {
     },
     color(type) {
       if (type != 0) {
-        return "color : red";
+        return "color : #FC6061";
+      }else{
+        return "color : #4C88FF";
       }
     },
     handleBuildingChange() {

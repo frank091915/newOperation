@@ -179,6 +179,17 @@ const toGetConvergeRoomAlarmSettings = (userId, type, currentPage) => {
   )
 }
 
+// 获取汇聚机房间近15天统计
+const toGetRecentConvergeRoomStatus = () => {
+  return ajax.get(
+    `/api/summary/recent?deviceTypeEnum=NKD_AGG_DEVICE`, {
+      headers: {
+        "accessToken": JSON.parse(window.sessionStorage.getItem("operationToken"))
+      }
+    }
+  )
+}
+
 
 
 // 请求用户id
@@ -1332,5 +1343,6 @@ export {
   toGetServerStatementsDetails,
   toModifySeveralPermissionStatus,
   toDownloadConvergeRoomStatementsPdf,
-  toGetLatestVersion
+  toGetLatestVersion,
+  toGetRecentConvergeRoomStatus
 }

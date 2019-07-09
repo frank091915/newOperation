@@ -1,6 +1,13 @@
 <template>
   <div id="pageWrapper">
-    <a-table :columns="columns" :dataSource="menu"  :pagination="false"  bordered :loading="isLoading">
+    <a-table 
+    :columns="columns" 
+    :dataSource="menu"  
+    :pagination="false"  
+    :rowClassName="(record, index)=>{
+        if(index%2 != 0) return 'table-evenRow'
+    } "
+    :loading="isLoading">
       <template slot="ChangePermissionStatus" slot-scope="text, record">
         <a-switch :checked="record.status" @change="onChangePermissionStatus(record)"/>
       </template>

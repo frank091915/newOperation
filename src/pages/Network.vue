@@ -75,7 +75,9 @@
         :columns="columns"
         :dataSource="data"
         :pagination="false"
-        bordered
+        :rowClassName="(record, index)=>{
+            if(index%2 != 0) return 'table-evenRow'
+          } "
         :loading="isLoading"
       >
         <template

@@ -9,7 +9,9 @@
       <a-table
         :columns="columns"
         :dataSource="data"
-        bordered
+        :rowClassName="(record, index)=>{
+            if(index%2 != 0) return 'table-evenRow'
+        } "
         :loading="isLoading"
         :pagination="false"
       >

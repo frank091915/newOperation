@@ -76,7 +76,9 @@
         :dataSource="data"
         :pagination="false"
         :loading="isLoading"
-        bordered
+        :rowClassName="(record, index)=>{
+            if(index%2 != 0) return 'table-evenRow'
+          } "
       >
         <template v-for="col in ['name', 'age', 'address']" :slot="col" slot-scope="text, record">
           <div :key="col">

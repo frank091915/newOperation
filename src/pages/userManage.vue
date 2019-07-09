@@ -12,7 +12,14 @@
       </div>
     </div>
     <div id="tableWrapper">
-      <a-table :columns="columns" :dataSource="data" bordered :pagination="false" :loading="isLoading">
+      <a-table 
+      :columns="columns" 
+      :dataSource="data" 
+      :rowClassName="(record, index)=>{
+            if(index%2 != 0) return 'table-evenRow'
+          } "
+      :pagination="false" 
+      :loading="isLoading">
         <template
           v-for="col in ['name', 'age', 'address']"
           :slot="col"

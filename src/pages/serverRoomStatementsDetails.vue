@@ -19,7 +19,14 @@
       </div>
       <div id="pdfDom">
         <h4 id="printTitle" > {{printTitle}}</h4>
-        <a-table :columns="columns" :dataSource="data" :pagination="false"  bordered :loading="isLoading">
+        <a-table 
+        :columns="columns" 
+        :dataSource="data" 
+        :pagination="false"  
+        :rowClassName="(record, index)=>{
+            if(index%2 != 0) return 'table-evenRow'
+        } "
+        :loading="isLoading">
           <template
             v-for="col in ['name', 'age', 'address']"
             :slot="col"
