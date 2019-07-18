@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="pageWrapper">
     <div id="pageTitle">编辑坐标信息</div>
     <div id="addRoleWrapper">
       <a-form :form="form">
@@ -143,6 +143,14 @@ export default {
 };
 </script>
 <style scoped>
+#pageWrapper{
+    height: calc(100vh - 91px);
+  width:calc(100vw - 300px);
+  background-color: #fff;
+  box-sizing: border-box;
+  margin: 10px 20px 20px 20px;
+  border-radius: 8px;
+}
 #pageTitle {
   padding-left: 69px;
   height: 50px;

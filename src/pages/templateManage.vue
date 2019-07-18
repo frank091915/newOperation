@@ -106,14 +106,27 @@ const columns = [
     dataIndex: "creatTime",
     width: "8%",
     scopedSlots: { customRender: "creatTime" },
-    align: "center"
+    align: "center",
+    customRender: (value, row, index) => {
+      if(!row.creatTime){
+        row.creatTime="——"
+      }
+      console.log(row)
+      return value
+    }
   },
   {
     title: "更新时间",
     dataIndex: "updateTime",
     width: "8%",
     scopedSlots: { customRender: "updateTime" },
-    align: "center"
+    align: "center",
+    customRender: (value, row, index) => {
+      if(!row.updateTime){
+        row.updateTime="——"
+      }
+      return value
+    }
   },
   {
     title: "操作",
@@ -241,7 +254,17 @@ export default {
           });
           this.recordsTotal = res.data.recordsTotal;
           this.isLoading = false;
-          this.$nextTick(() => {});
+          this.$nextTick(() => {
+            this.data=this.data.map((item)=>{
+              if(!item.updateTime){
+                item.updateTime="——"
+              }
+              if(!item.creatTime){
+                item.creatTime="——"
+              }
+              return item;
+            })
+          });
         } else {
           this.$message.error(res.data.message);
         }
@@ -267,9 +290,12 @@ body {
   height: 100%;
 }
 #pageWrapper {
-  height: calc(100% - 50px);
-  width: 95%;
-  margin-left: 20px;
+  height: calc(100vh - 91px);
+  width:calc(100vw - 300px);
+  background-color: #fff;
+  box-sizing: border-box;
+  margin: 10px 20px 20px 20px;
+  border-radius: 8px;
 }
 #frame {
   height: 100%;

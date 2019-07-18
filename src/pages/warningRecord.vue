@@ -138,13 +138,25 @@ const columns = [
     title: "告警通知方式",
     dataIndex: "warningRecord.way",
     scopedSlots: { customRender: "address" },
-    align: "center"
+    align: "center",
+    customRender: (value, row, index) => {
+      if(!row.warningRecord.way){
+        row.warningRecord.way="——"
+      }
+      return value
+    }
   },
   {
     title: "告警值",
     dataIndex: "warningRecord.value",
     scopedSlots: { customRender: "SerialNumber" },
-    align: "center"
+    align: "center",
+    customRender: (value, row, index) => {
+      if(!row.warningRecord.value){
+        row.warningRecord.value="——"
+      }
+      return value
+    }
   },
   {
     title: "告警时间",
@@ -312,9 +324,12 @@ body {
   height: 100%;
 }
 #pageWrapper {
-  height: calc(100% - 50px);
-  width: 95%;
-  margin-left: 20px;
+  height: calc(100vh - 91px);
+  width:calc(100vw - 300px);
+  background-color: #fff;
+  box-sizing: border-box;
+  margin: 10px 20px 20px 20px;
+  border-radius: 8px;
 }
 #frame {
   height: 100%;

@@ -113,11 +113,11 @@ export default {
     color(status) {
       switch (status) {
         case 0 :
-          return "../../static/assets/icon_convergeroom_a.png";
+          return "../../static/assets/icon_convergeroom_n.png";
         case 1:
           return "../../static/assets/icon_convergeroom_f.png";
         case -1:
-          return "../../static/assets/icon_convergeroom_n.png";
+          return "../../static/assets/icon_convergeroom_a.png";
       }
     },
     toShowDetails(id) {

@@ -148,25 +148,49 @@ const columns = [
     title: "型号",
     dataIndex: "Model",
     scopedSlots: { customRender: "address" },
-    align: "center"
+    align: "center",
+    customRender: (value, row, index) => {
+      if(!row.Model){
+        row.Model="——"
+      }
+      return value
+    }
   },
   {
     title: "楼宇名称",
     dataIndex: "buildingName",
     scopedSlots: { customRender: "address" },
-    align: "center"
+    align: "center",
+    customRender: (value, row, index) => {
+      if(!row.buildingName){
+        row.buildingName="——"
+      }
+      return value
+    }
   },
   {
     title: "楼层",
     dataIndex: "floorName",
     scopedSlots: { customRender: "address" },
-    align: "center"
+    align: "center",
+    customRender: (value, row, index) => {
+      if(!row.floorName){
+        row.floorName="——"
+      }
+      return value
+    }
   },
   {
     title: "房间",
     dataIndex: "roomName",
     scopedSlots: { customRender: "address" },
-    align: "center"
+    align: "center",
+    customRender: (value, row, index) => {
+      if(!row.roomName){
+        row.roomName="——"
+      }
+      return value
+    }
   },
   {
     title: "编号",
@@ -370,9 +394,12 @@ body {
   height: 100%;
 }
 #pageWrapper {
-  height: calc(100% - 50px);
-  width: 95%;
-  margin-left: 20px;
+  height: calc(100vh - 91px);
+  width:calc(100vw - 300px);
+  background-color: #fff;
+  box-sizing: border-box;
+  margin: 10px 20px 20px 20px;
+  border-radius: 8px;
 }
 #frame {
   height: 100%;
@@ -411,7 +438,7 @@ body {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  margin-top: 15px;
+  margin-top: 3.7vh;
 }
 #total {
   font-size: 15px;

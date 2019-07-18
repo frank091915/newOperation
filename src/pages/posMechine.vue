@@ -167,7 +167,13 @@ const columns = [
     dataIndex: "Model",
     scopedSlots: { customRender: "address" },
     align: "center",
-    key:"Model"
+    key:"Model",
+    customRender: (value, row, index) => {
+      if(!row.Model){
+        row.Model="——"
+      }
+      return value
+    }
   },
   {
     title: "楼宇名称",
@@ -202,7 +208,13 @@ const columns = [
     dataIndex: "SerialNumber",
     scopedSlots: { customRender: "SerialNumber" },
     align: "center",
-    key:"SerialNumber"
+    key:"SerialNumber",
+    customRender: (value, row, index) => {
+      if(!row.SerialNumber){
+        row.SerialNumber="——"
+      }
+      return value
+    }
   },
   {
     title: "操作",
@@ -395,9 +407,12 @@ body {
   height: 100%;
 }
 #pageWrapper {
-  height: calc(100% - 50px);
-  width: 95%;
-  margin-left: 20px;
+  height: calc(100vh - 91px);
+  width:calc(100vw - 300px);
+  background-color: #fff;
+  box-sizing: border-box;
+  margin: 10px 20px 20px 20px;
+  border-radius: 8px;
 }
 #frame {
   height: 100%;
@@ -434,8 +449,7 @@ body {
   padding: 10px !important;
 }
 #tableWrapper {
-  height: calc(100% - 100px);
-  overflow: auto;
+  height: calc(100vh - 173px);
 }
 .spin-content {
   border: 1px solid #91d5ff;
@@ -447,7 +461,7 @@ body {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  margin-top: 15px;
+  margin-top: 3.7vh;
 }
 #total {
   font-size: 15px;

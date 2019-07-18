@@ -191,33 +191,63 @@ const columns = [
   },
   {
     title: "电源及照明灯情况",
-    dataIndex: " 1",
+    dataIndex: "electry",
     scopedSlots: { customRender: "highLight" },
-    align: "center"
+    align: "center",
+    customRender: (value, row, index) => {
+      if(!row.electry){
+        row.electry="——"
+      }
+      return value
+    }
   },
   {
     title: "是否有异味",
-    dataIndex: " 2",
+    dataIndex: "smell",
     scopedSlots: { customRender: "address" },
-    align: "center"
+    align: "center",
+    customRender: (value, row, index) => {
+      if(!row.smell){
+        row.smell="——"
+      }
+      return value
+    }
   },
   {
     title: "室内有无杂物",
-    dataIndex: " 3",
+    dataIndex: "mess",
     scopedSlots: { customRender: "address" },
-    align: "center"
+    align: "center",
+    customRender: (value, row, index) => {
+      if(!row.mess){
+        row.mess="——"
+      }
+      return value
+    }
   },
   {
     title: "卫生",
-    dataIndex: " 4",
+    dataIndex: "health",
     scopedSlots: { customRender: "address" },
-    align: "center"
+    align: "center",
+    customRender: (value, row, index) => {
+      if(!row.health){
+        row.health="——"
+      }
+      return value
+    }
   },
   {
     title: "门锁",
-    dataIndex: " ",
+    dataIndex: "lock",
     scopedSlots: { customRender: "address" },
-    align: "center"
+    align: "center",
+    customRender: (value, row, index) => {
+      if(!row.lock){
+        row.lock="——"
+      }
+      return value
+    }
   },
   {
     title: "市电异常个数",
@@ -257,9 +287,15 @@ const columns = [
   },
   {
     title: "线路有无乱线及飞线情况存在",
-    dataIndex: " 5",
+    dataIndex: "circuit",
     scopedSlots: { customRender: "address" },
-    align: "center"
+    align: "center",
+    customRender: (value, row, index) => {
+      if(!row.circuit){
+        row.circuit="——"
+      }
+      return value
+    }
   }
 ];
 
@@ -423,10 +459,12 @@ body {
   height: 100%;
 }
 #pageWrapper {
-  height: calc(100% - 50px);
-  width: 100%;
+  height: calc(100vh - 91px);
+  width:calc(100vw - 300px);
+  background-color: #fff;
   box-sizing: border-box;
-  padding: 0 15px;
+  margin: 10px 20px 20px 20px;
+  border-radius: 8px;
 }
 #frame {
   height: 100%;

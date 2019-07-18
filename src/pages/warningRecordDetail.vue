@@ -1,4 +1,5 @@
 <template>
+<div id="superWrapper">
   <div id="warningRecordDetailsWrapper">
     <div id="pageTitle">告警记录通知详情</div>
     <div id="supremeDetailsWrapper">
@@ -62,6 +63,7 @@
       </a-table>
     </div>
   </div>
+</div>
 </template>
 
 <script>
@@ -172,6 +174,14 @@ export default {
 };
 </script>
 <style scoped>
+#superWrapper{
+    height: calc(100vh - 91px);
+  width:calc(100vw - 300px);
+  background-color: #fff;
+  box-sizing: border-box;
+  margin: 10px 20px 20px 20px;
+  border-radius: 8px;
+}
 #pageTitle {
   padding-left: 69px;
   height: 50px;

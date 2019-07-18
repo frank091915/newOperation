@@ -174,7 +174,13 @@ const columns = [
     title: "结束时间",
     dataIndex: "exceptionRecord.endTime",
     scopedSlots: { customRender: "address" },
-    align: "center"
+    align: "center",
+    customRender: (value, row, index) => {
+      if(!row.exceptionRecord.endTime){
+        row.exceptionRecord.endTime="——"
+      }
+      return value
+    }
   },
   {
     title: "记录状态",
@@ -411,9 +417,12 @@ body {
   height: 100%;
 }
 #pageWrapper {
-  height: calc(100% - 50px);
-  width: 95%;
-  margin-left: 20px;
+  height: calc(100vh - 91px);
+  width:calc(100vw - 300px);
+  background-color: #fff;
+  box-sizing: border-box;
+  margin: 10px 20px 20px 20px;
+  border-radius: 8px;
 }
 #frame {
   height: 100%;
@@ -469,14 +478,13 @@ body {
   padding: 10px !important;
 }
 #tableWrapper {
-  height: calc(100% - 100px);
-
+  height: calc(100vh - 173px);
 }
 #pagination {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  margin-top: 15px;
+  margin-top: 6vh;
 }
 #total {
   font-size: 15px;

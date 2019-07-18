@@ -218,12 +218,12 @@ export default {
 </script>
 <style >
 #alarmSetWrapper {
-  width: 95%;
-  height: calc(100% - 69px);
-  margin-left: 20px;
-  margin-top: 20px;
-  /* border: 1px solid;
-  border-color: rgba(153, 153, 153, 1); */
+  height: calc(100vh - 91px);
+  width:calc(100vw - 300px);
+  background-color: #fff;
+  box-sizing: border-box;
+  margin: 10px 20px 20px 20px;
+  border-radius: 8px;
 }
 #alarmSetStatus {
   margin-top: 5px;

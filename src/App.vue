@@ -46,6 +46,7 @@ html,body{
   /* height: 100%; */
   margin-left: 260px;
   margin-top: 61px;
+  background-color: #F1F5F6;
 }
 #components-back-top-demo-custom .ant-back-top {
     bottom: 20px;
@@ -60,4 +61,10 @@ html,body{
 .ant-table-tbody > tr > td{
   border:none;
 }
+.ant-table-thead > tr > th{
+  font-weight: 600 !important;
+}
+/* .ant-table-thead{
+  background-color: red !important;
+} */
 </style>

@@ -3,32 +3,32 @@
     <div id="roomDetailsWrapper">
       <div id="paramsBox">
         <div class="singleParamsBox">
-          <div class="detailTitle" >楼宇名称</div>
-          <div class="detailParam">{{details.deviceInfo.buildingName}}</div>
+          <div class="detailTitle" >楼宇名称 :</div>
+          <div class="detailParam">{{ details.deviceInfo.buildingName}}</div>
         </div>
         <div class="singleParamsBox">
-          <div class="detailTitle" >楼层</div>
+          <div class="detailTitle" >楼层 :</div>
           <div class="detailParam">{{details.deviceInfo.floorName}}</div>
         </div>
         <div class="singleParamsBox">
-          <div class="detailTitle" >房间</div>
+          <div class="detailTitle" >房间 :</div>
           <div class="detailParam">{{details.deviceInfo.roomName}}</div>
         </div>
         <div class="singleParamsBox">
-          <div class="detailTitle" >{{roomName}}编号</div>
+          <div class="detailTitle" >{{roomName}}编号 :</div>
           <div class="detailParam">{{details.deviceInfo.Code}}</div>
         </div>
         <div class="singleParamsBox">
-          <div class="detailTitle" >描述</div>
+          <div class="detailTitle" >描述 :</div>
           <div class="detailParam">{{details.deviceInfo.Description}}</div>
         </div>
         <div class="singleParamsBox">
-          <div class="detailTitle" >ip地址</div>
+          <div class="detailTitle" >ip地址 :</div>
           <div class="detailParam">{{details.deviceInfo.AdminIp.value}}</div>
         </div>
         <div class="singleParamsBox" v-if="latestDate">
-          <div class="detailTitle" >最后上报时间</div>
-          <div class="detailParam">{{details.latestDate.timestamp}}</div>
+          <div class="detailTitle" >最后上报时间 :</div>
+          <div class="detailParam">{{details.latestDate? details.latestDate.timestamp : ''}}</div>
         </div>
       </div>
       <div id="statusBox" :style="{'width':HasUps ? '100%' : '1200px'}">
@@ -45,7 +45,7 @@
         </div>
         <div class="singleStatusBox">
           <div class="iconBox">
-            <img :src="color('electric',details.dataList[0] ? details.dataList[0].power : undefined)" id="ups">
+            <img :src="color('ups',details.dataList[0] ? details.dataList[0].power : undefined)" id="ups">
           </div>
           <div class="statusDescription">
             <div
@@ -56,7 +56,7 @@
         </div>
         <div class="singleStatusBox">
           <div class="iconBox">
-            <img :src="color('lock',details.dataList[0] ? details.dataList[0].door : undefined)" id="lock">
+            <img :src="color('entrance',details.dataList[0] ? details.dataList[0].door : undefined)" id="lock">
           </div>
           <div class="statusDescription">
             <div
@@ -67,7 +67,7 @@
         </div>
         <div class="singleStatusBox" v-if="HasUps">
           <div class="iconBox">
-            <img :src="color('electric',details.dataList[0] ? details.dataList[0].ups : undefined)" id="lock">
+            <img :src="color('ups',details.dataList[0] ? details.dataList[0].ups : undefined)" id="lock">
           </div>
           <div class="statusDescription">
             <div
@@ -132,7 +132,7 @@ export default {
       this.getData()
     },5000);
     this.$nextTick(()=>{
-      console.log(this.timer)
+
     })
   },
   beforeRouteLeave (to, from, next) {
@@ -145,11 +145,11 @@ export default {
     color(type, status) {
       switch (status) {
         case undefined:
-          return `../../static/assets/${type}Red.png`;
+          return `../../static/assets/${type}_a.png`;
         case true:
-          return `../../static/assets/${type}Green.png`;
+          return `../../static/assets/${type}_n.png`;
         case false:
-          return `../../static/assets/${type}Red.png`;
+          return `../../static/assets/${type}_a.png`;
       }
     },
     getData() {
@@ -161,7 +161,7 @@ export default {
             this.showCharts=res.data.data.dataList.length;
 
             // 判断是否为无数据
-            this.latestDate = res.data.data.dataList.length ? false : true;
+            this.latestDate = res.data.data.dataList.length == undefined ? false : true;
 
             // 判断该房间是否有ups
             if(res.data.data.deviceInfo.HasUps){
@@ -169,7 +169,7 @@ export default {
             }
 
             this.$nextTick(()=>{
-              console.log(this.details)
+              console.log(this.details,this.latestDate)
               if(this.showCharts){
                 this.drawTempChart()
                 this.drawHumilityChart()
@@ -183,14 +183,13 @@ export default {
         });
       } else {
         this.$http.toGetLowVoltageRoomDetails(this.$route.query.detailsId).then(res => {
-          console.log(this.detailsId)
           if (res.data.success) {
             this.details = res.data.data;
             this.dataList=res.data.data.dataList;
             this.showCharts=res.data.data.dataList.length;
 
             // 判断是否为无数据
-            this.latestDate = res.data.data.dataList.length ? false : true;
+            this.latestDate = res.data.data.dataList.length == undefined ? false : true;
 
             // 判断该房间是否有ups
             if(res.data.data.deviceInfo.HasUps){
@@ -406,8 +405,9 @@ body {
 }
 .singleParamsBox {
   width: 24%;
-  margin-top: 15px;
   background-color: white;
+  margin-bottom: 15px;
+  
 }
 #main {
   height: 100%;
@@ -423,15 +423,19 @@ body {
   flex-wrap: wrap;
   margin-bottom: 20px;
   background-color: white;
+  box-sizing: border-box;
+  padding: 30px;
+  height: 110px;
+  border-radius: 5px;
 }
 .detailTitle {
-  color: #999999;
-  width: 95px;
-  text-align: right;
+  color: #333333;
   float: left;
+  font-weight: 600;
 }
 .detailParam {
   float: left;
+  color: #AFAFAF;
 }
 #statusBox {
   background-color: white;
@@ -440,6 +444,7 @@ body {
   flex-direction: row;
   justify-content: space-between;
   color: #bfbfbf;
+  border-radius: 5px;
 }
 .singleStatusBox {
   width: 33%;
@@ -496,12 +501,12 @@ body {
   height: 80px;
 }
 #ups {
-  width: 55px;
-  height: 55px;
+  width: 80px;
+  height: 80px;
 }
 #lock {
-  width: 55px;
-  height: 55px;
+  width: 80px;
+  height: 80px;
 }
 #roomDetailsWrapper {
   width: 98%;
@@ -510,7 +515,7 @@ body {
 }
 #supremeDetailsWrapper {
   background-color: #e6e6e6;
-  height: calc(100% - 50px);
+  min-height: calc(100vh - 61px);
   box-sizing: border-box;
   padding-top: 20px;
 }

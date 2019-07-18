@@ -197,7 +197,13 @@ const columns = [
     title: "ip地址",
     dataIndex: "SerialNumber",
     scopedSlots: { customRender: "SerialNumber" },
-    align: "center"
+    align: "center",
+    customRender: (value, row, index) => {
+      if(!row.SerialNumber){
+        row.SerialNumber="——"
+      }
+      return value
+    }
   },
   {
     title: "操作",
@@ -394,9 +400,12 @@ body {
   height: 100%;
 }
 #pageWrapper {
-  width: 95%;
-  margin-left: 20px;
-  box-sizing: border-box；;
+  height: calc(100vh - 91px);
+  width:calc(100vw - 300px);
+  background-color: #fff;
+  box-sizing: border-box;
+  margin: 10px 20px 20px 20px;
+  border-radius: 8px;
 }
 #frame {
   height: 100%;
@@ -436,7 +445,7 @@ body {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  margin-top: 15px;
+  margin-top: 3.7vh;
 }
 #total {
   font-size: 15px;

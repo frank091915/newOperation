@@ -156,25 +156,49 @@ const columns = [
     title: "型号",
     dataIndex: "Model",
     scopedSlots: { customRender: "address" },
-    align: "center"
+    align: "center",
+    customRender: (value, row, index) => {
+      if(!row.Model){
+        row.Model="——"
+      }
+      return value
+    }
   },
   {
     title: "楼宇名称",
     dataIndex: "buildingName",
     scopedSlots: { customRender: "address" },
-    align: "center"
+    align: "center",
+    customRender: (value, row, index) => {
+      if(!row.buildingName){
+        row.buildingName="——"
+      }
+      return value
+    }
   },
   {
     title: "楼层",
     dataIndex: "floorName",
     scopedSlots: { customRender: "address" },
-    align: "center"
+    align: "center",
+    customRender: (value, row, index) => {
+      if(!row.floorName){
+        row.floorName="——"
+      }
+      return value
+    }
   },
   {
     title: "房间",
     dataIndex: "roomName",
     scopedSlots: { customRender: "address" },
-    align: "center"
+    align: "center",
+    customRender: (value, row, index) => {
+      if(!row.roomName){
+        row.roomName="——"
+      }
+      return value
+    }
   },
   {
     title: "编号",
@@ -377,8 +401,12 @@ body {
   height: 100%;
 }
 #pageWrapper {
-  width: 95%;
-  margin-left: 20px;
+  height: calc(100vh - 91px);
+  width:calc(100vw - 300px);
+  background-color: #fff;
+  box-sizing: border-box;
+  margin: 10px 20px 20px 20px;
+  border-radius: 8px;
 }
 #frame {
   height: 100%;
@@ -414,8 +442,7 @@ body {
   padding: 10px !important;
 }
 #tableWrapper {
-  height: calc(100% - 100px);
-  overflow: auto;
+  height: calc(100vh - 221px);
 }
 .spin-content {
   border: 1px solid #91d5ff;

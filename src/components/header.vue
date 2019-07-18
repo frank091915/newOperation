@@ -86,7 +86,6 @@ export default {
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid #bdbdbd;
   position: fixed;
   top: 0;
   width: calc(100% - 260px) ;

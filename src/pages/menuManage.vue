@@ -120,7 +120,6 @@ export default {
   },
   methods: {
     onChangePermissionStatus(e) {
-
       if(e.subPermissions!=undefined){
         if(e.subPermissions.length){
             let changePermmisionsIds=e.subPermissions.map((item)=>{
@@ -196,6 +195,7 @@ export default {
           parentMenu=parentMenu.map((item)=>{
             if(item.subPermissions.length){
               item.children=item.subPermissions;
+              item.path="——"
             }
             return item
           })
@@ -232,8 +232,11 @@ export default {
 </script>
 <style >
 #pageWrapper {
-  height: calc(100% - 50px);
-  width: 95%;
-  margin-left: 20px;
+  height: calc(100vh - 91px);
+  width:calc(100vw - 300px);
+  background-color: #fff;
+  box-sizing: border-box;
+  margin: 10px 20px 20px 20px;
+  border-radius: 8px;
 }
 </style>

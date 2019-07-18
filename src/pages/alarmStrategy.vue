@@ -388,7 +388,13 @@ const lowVolttageColumns = [
     dataIndex: "deviceInfo.location",
     width: "9%",
     scopedSlots: { customRender: "name" },
-    align: "center"
+    align: "center",
+    customRender: (value, row, index) => {
+      if(!row.deviceInfo.location){
+        row.deviceInfo.location="——"
+      }
+      return value
+    }
   },
   {
     title: "操作",
@@ -554,11 +560,24 @@ export default {
         if (res.data.success) {
           if (roomType == 1) {
             this.convergeData = res.data.data;
-            this.$nextTick(() => {});
+            this.$nextTick(() => {
+              this.convergeData=this.convergeData.map((item)=>{
+                if(!item.deviceInfo.location){
+                  item.deviceInfo.location="——"
+                }
+                return item
+              })
+            });
           } else {
             this.electronicData = res.data.data;
           }
           this.$nextTick(() => {
+            this.electronicData=this.electronicData.map((item)=>{
+                if(!item.deviceInfo.location){
+                  item.deviceInfo.location="——"
+                }
+                return item
+              })
             this.recordsTotal = res.data.recordsTotal;
             this.isLoading = false;
             this.addOrder(roomType);
@@ -662,12 +681,12 @@ export default {
 </script>
 <style scoped>
 #alarmSetWrapper {
-  width: 95%;
-  height: calc(100% - 69px);
-  margin-left: 20px;
-  margin-top: 20px;
-  /* border: 1px solid;
-  border-color: rgba(153, 153, 153, 1); */
+  min-height: calc(100vh - 61px);
+  width:calc(100vw - 300px);
+  background-color: #fff;
+  box-sizing: border-box;
+  margin: 10px 20px 20px 20px;
+  border-radius: 8px;
 }
 #alarmSetStatus {
   margin-top: 5px;
@@ -708,7 +727,7 @@ export default {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  margin-top: 15px;
+  margin-top: 2vh;
 }
 .convergeRoomSearchWrapper{
   display: flex;
