@@ -67,4 +67,7 @@ html,body{
 /* .ant-table-thead{
   background-color: red !important;
 } */
+.ant-table-thead > tr > th{
+  background-color: #ECF2FF !important;
+}
 </style>
