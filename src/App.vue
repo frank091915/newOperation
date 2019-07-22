@@ -70,4 +70,7 @@ html,body{
 .ant-table-thead > tr > th{
   background-color: #ECF2FF !important;
 }
+.ant-pagination-item .ant-pagination-item-active{
+  border: none !important;
+}
 </style>

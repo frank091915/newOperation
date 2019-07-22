@@ -124,15 +124,45 @@
         </template>
       </a-table>
       <div id="pagination" v-show="!isLoading">
-        <div id="total">共<span style="margin:0 5px;">{{recordsTotal}}</span>条数据</div>
         <div id="paginationBox">
-          <a-pagination
-            @change="changePage"
-            v-model="current"
-            :total="recordsTotal"
-            :pageSize="12"
-            :hideOnSinglePage="true"
-          />
+            <div
+              style="height: 25px;font-size:14px;line-height:25px;color: rgba(0, 0, 0, 0.65);margin-right:20px;"
+            >
+              <span>共</span>
+              <span style="margin:0 5px">{{recordsTotal}}</span>
+              <span>条记录</span>
+            </div>
+            <div v-show="recordsTotal >0"  style="margin-right:20px;color: rgba(0, 0, 0, 0.65);">
+              <span>{{current}}/{{Math.ceil(recordsTotal/12)}}页</span>
+            </div>
+            <span
+              v-show="recordsTotal >0"
+              @click="firstPage"
+              :style="{'cursor':current >1 ? 'pointer' : 'not-allowed','margin-right':'15px'}"
+              class="pageChanger"
+            >首页</span>
+            <a-pagination
+              @change="changePage"
+              v-model="current"
+              :total="recordsTotal"
+              :pageSize="12"
+              size="small"
+            />
+            <span
+              v-show="recordsTotal >0"
+              @click="nextPage"
+              :style="{'cursor':current+1 <= Math.ceil(recordsTotal/12) ? 'pointer' : 'not-allowed','margin-left':'15px'}"
+              class="pageChanger"
+            >下一页</span>
+            <div
+              v-show="recordsTotal >0"
+              @keydown.enter="turnPage"
+              style="width:108px;height:25px;font-size:14px;margin-left:20px;line-height:25px"
+            >
+              <span style="margin-right:5px">跳至</span>
+              <a-input v-model="turningPage" size="small" style="width:44px;height:20px;" />
+              <span style="margin-left:5px">页</span>
+            </div>
         </div>
       </div>
     </div>
@@ -247,10 +277,43 @@ export default {
       allRooms: [],
       floor: "全部",
       room: "全部",
-      current: 1
+      current: 1,
+      turningPage: ""
     };
   },
   methods: {
+            nextPage() {
+      console.log(this.current + 1, Math.ceil(this.recordsTotal / 12));
+      if (this.current < Math.ceil(this.recordsTotal / 12)) {
+        this.page = this.current + 1;
+        this.current = this.current + 1;
+        this.$nextTick(() => {
+          this.search(false);
+        });
+      }
+    },
+    turnPage() {
+      console.log(this.turningPage);
+      if (
+        this.turningPage > 0 &&
+        this.turningPage <= Math.ceil(this.recordsTotal / 12)
+      ) {
+        this.current = parseInt(this.turningPage);
+        this.page = parseInt(this.turningPage);
+        this.$nextTick(() => {
+          this.search(false);
+        });
+      }
+    },
+    firstPage() {
+      if (this.current > 1) {
+        this.page = 1;
+        this.current = 1;
+        this.$nextTick(() => {
+          this.search(false);
+        });
+      }
+    },
     handleStatusChange() {
       this.statusParam = this.status === "null" ? null : this.status;
       switch (this.status) {
@@ -369,6 +432,7 @@ export default {
             this.data = res.data.data;
             this.isLoading = false;
             this.recordsTotal = res.data.recordsTotal;
+            this.turningPage='';
             if (isSearching) {
               this.current = 1;
             }
@@ -398,14 +462,14 @@ export default {
     this.getExceptionList(1);
   },
   mounted() {
-    let that = this;
-    document.onkeypress = function(e) {
-      var keycode = document.all ? event.keyCode : e.which;
-      if (keycode == 13) {
-        that.search(true); // 登录方法名
-        return false;
-      }
-    };
+    // let that = this;
+    // document.onkeypress = function(e) {
+    //   var keycode = document.all ? event.keyCode : e.which;
+    //   if (keycode == 13) {
+    //     that.search(true); // 登录方法名
+    //     return false;
+    //   }
+    // };
   }
 };
 </script>
@@ -483,8 +547,14 @@ body {
 #pagination {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: center;
   margin-top: 6vh;
+}
+#paginationBox {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
 }
 #total {
   font-size: 15px;

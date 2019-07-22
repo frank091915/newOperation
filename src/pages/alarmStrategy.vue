@@ -116,17 +116,45 @@
               </template>
             </a-table>
             <div id="pagination" v-show="!isLoading">
-              
-              <div id="total">共<span style="margin:0 5px;">{{recordsTotal}}</span>条数据</div>
               <div id="paginationBox">
-                <a-pagination
-                  @change="changePageOnConvergeRoom"
-                  v-model="current"
-                  :total="recordsTotal"
-                  :pageSize="12"
-                  v-show="!isLoading"
-                  :hideOnSinglePage="true"
-                />
+            <div
+              style="height: 25px;font-size:14px;line-height:25px;color: rgba(0, 0, 0, 0.65);margin-right:20px;"
+            >
+              <span>共</span>
+              <span style="margin:0 5px">{{recordsTotal}}</span>
+              <span>条记录</span>
+            </div>
+            <div v-show="recordsTotal >0"  style="margin-right:20px;color: rgba(0, 0, 0, 0.65);">
+              <span>{{current}}/{{Math.ceil(recordsTotal/12)}}页</span>
+            </div>
+            <span
+              v-show="recordsTotal >0"
+              @click="firstPage(1)"
+              :style="{'cursor':current >1 ? 'pointer' : 'not-allowed','margin-right':'15px'}"
+              class="pageChanger"
+            >首页</span>
+            <a-pagination
+              @change="changePageOnConvergeRoom"
+              v-model="current"
+              :total="recordsTotal"
+              :pageSize="12"
+              size="small"
+            />
+            <span
+              v-show="recordsTotal >0"
+              @click="nextPage(1)"
+              :style="{'cursor':current+1 <= Math.ceil(recordsTotal/12) ? 'pointer' : 'not-allowed','margin-left':'15px'}"
+              class="pageChanger"
+            >下一页</span>
+            <div
+              v-show="recordsTotal >0"
+              @keydown.enter="turnPage(1)"
+              style="width:108px;height:25px;font-size:14px;margin-left:20px;line-height:25px"
+            >
+              <span style="margin-right:5px">跳至</span>
+              <a-input v-model="turningPage" size="small" style="width:44px;height:20px;" />
+              <span style="margin-left:5px">页</span>
+            </div>
               </div>
             </div>
           </div>
@@ -246,17 +274,45 @@
                 </template>
               </a-table>
               <div id="pagination" v-show="!isLoading">
-                
-                <div id="total">共<span style="margin:0 5px;">{{recordsTotal}}</span>条数据</div>
                 <div id="paginationBox">
-                  <a-pagination
-                    @change="changePageOnLovaltageRoom"
-                    v-model="current"
-                    :total="recordsTotal"
-                    :pageSize="12"
-                    v-show="!isLoading"
-                    :hideOnSinglePage="true"
-                  />
+                              <div
+              style="height: 25px;font-size:14px;line-height:25px;color: rgba(0, 0, 0, 0.65);margin-right:20px;"
+            >
+              <span>共</span>
+              <span style="margin:0 5px">{{recordsTotal}}</span>
+              <span>条记录</span>
+            </div>
+            <div v-show="recordsTotal >0"  style="margin-right:20px;color: rgba(0, 0, 0, 0.65);">
+              <span>{{current}}/{{Math.ceil(recordsTotal/12)}}页</span>
+            </div>
+            <span
+              v-show="recordsTotal >0"
+              @click="firstPage(2)"
+              :style="{'cursor':current >1 ? 'pointer' : 'not-allowed','margin-right':'15px'}"
+              class="pageChanger"
+            >首页</span>
+            <a-pagination
+              @change="changePageOnLovaltageRoom"
+              v-model="current"
+              :total="recordsTotal"
+              :pageSize="12"
+              size="small"
+            />
+            <span
+              v-show="recordsTotal >0"
+              @click="nextPage(2)"
+              :style="{'cursor':current+1 <= Math.ceil(recordsTotal/12) ? 'pointer' : 'not-allowed','margin-left':'15px'}"
+              class="pageChanger"
+            >下一页</span>
+            <div
+              v-show="recordsTotal >0"
+              @keydown.enter="turnPage(2)"
+              style="width:108px;height:25px;font-size:14px;margin-left:20px;line-height:25px"
+            >
+              <span style="margin-right:5px">跳至</span>
+              <a-input v-model="turningPage" size="small" style="width:44px;height:20px;" />
+              <span style="margin-left:5px">页</span>
+            </div>
                 </div>
               </div>
             </div>
@@ -450,9 +506,42 @@ export default {
       allRooms: [],
       floor: "全部",
       room: "全部",
+      turningPage:''
     };
   },
   methods: {
+    nextPage(type) {
+      console.log(this.current + 1, Math.ceil(this.recordsTotal / 12));
+      if (this.current < Math.ceil(this.recordsTotal / 12)) {
+        this.page = this.current + 1;
+        this.current = this.current + 1;
+        this.$nextTick(() => {
+          this.search(false);
+        });
+      }
+    },
+    turnPage(type) {
+      console.log(this.turningPage);
+      if (
+        this.turningPage > 0 &&
+        this.turningPage <= Math.ceil(this.recordsTotal / 12)
+      ) {
+        this.current = parseInt(this.turningPage);
+        this.page = parseInt(this.turningPage);
+        this.$nextTick(() => {
+          this.search(false);
+        });
+      }
+    },
+    firstPage(type) {
+      if (this.current > 1) {
+        this.page = 1;
+        this.current = 1;
+        this.$nextTick(() => {
+          this.search(false);
+        });
+      }
+    },
     modifyAlarmStrategy(cmdbId,selectedKey,strategyCode) {
       console.log(strategyCode)
       this.changeDefualtKey(selectedKey)
@@ -542,9 +631,11 @@ export default {
         });
       });
     },
-    search(){
-      this.page=1;
-      this.current=1;
+    search(isSearching){
+      if(isSearching){
+        this.page=1;
+        this.current=1;
+      }
       this.$nextTick(()=>{
           console.log(this.defualfKey,this.page,this.buildingId,this.floor,this.room);
           let buildingParam=this.buildingId == "全部" || this.buildingId == "null" ? null : this.buildingId,
@@ -560,6 +651,7 @@ export default {
         if (res.data.success) {
           if (roomType == 1) {
             this.convergeData = res.data.data;
+            this.turningPage='';
             this.$nextTick(() => {
               this.convergeData=this.convergeData.map((item)=>{
                 if(!item.deviceInfo.location){
@@ -570,6 +662,7 @@ export default {
             });
           } else {
             this.electronicData = res.data.data;
+             this.turningPage='';
           }
           this.$nextTick(() => {
             this.electronicData=this.electronicData.map((item)=>{
@@ -598,6 +691,7 @@ export default {
               this.allDataArray = this.electronicData.concat(this.convergeData);
               this.$nextTick(() => {
                 this.isLoading = false;
+                this.turningPage="";
                 this.addOrder(1);
               });
             } else {
@@ -613,6 +707,7 @@ export default {
               this.allDataArray = this.electronicData.concat(this.convergeData);
               this.$nextTick(() => {
                 this.isLoading = false;
+                this.turningPage="";
                 this.addOrder(2);
               });
             } else {
@@ -726,8 +821,14 @@ export default {
 #pagination {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: center;
   margin-top: 2vh;
+}
+#paginationBox{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
 }
 .convergeRoomSearchWrapper{
   display: flex;

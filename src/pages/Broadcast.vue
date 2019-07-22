@@ -281,7 +281,7 @@ export default {
     };
   },
   methods: {
-            nextPage() {
+    nextPage() {
       console.log(this.current + 1, Math.ceil(this.recordsTotal / 12));
       if (this.current < Math.ceil(this.recordsTotal / 12)) {
         this.page = this.current + 1;
