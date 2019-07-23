@@ -1,6 +1,5 @@
 <template>
   <div id="pageWrapper">
-    <div id="pageTitle">编辑模板</div>
     <div id="addRoleSuperWrapper" >
       <div id="addRoleWrapper">
         <a-form :form="form">
@@ -165,8 +164,8 @@
 
 <script>
 const formItemLayout = {
-  labelCol: { span: 4 },
-  wrapperCol: { span: 16 }
+  labelCol: { span: 5 },
+  wrapperCol: { span: 19 }
 };
 const formTailLayout = {
   labelCol: { span: 4 },
@@ -354,6 +353,7 @@ export default {
   display: flex;
   flex-direction: row;
   justify-content: space-around;
-
+  box-sizing: border-box;
+  padding-top: 150px;
 }
 </style>

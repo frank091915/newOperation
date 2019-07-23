@@ -70,7 +70,16 @@ html,body{
 .ant-table-thead > tr > th{
   background-color: #ECF2FF !important;
 }
-.ant-pagination-item .ant-pagination-item-active{
-  border: none !important;
+.ant-pagination-item-active{
+  border: 1px solid white !important;
+}
+.ant-table-footer{
+  background-color: #ECF2FF !important;
+}
+.ant-form-item-label{
+  display: flex !important;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
 }
 </style>

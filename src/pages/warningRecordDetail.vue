@@ -185,7 +185,6 @@ export default {
 #pageTitle {
   padding-left: 69px;
   height: 50px;
-  border-bottom: 1px solid #bdbdbd;
   line-height: 50px;
   font-weight: 600;
 }

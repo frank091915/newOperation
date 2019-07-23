@@ -1,99 +1,109 @@
 <template>
 <div id="pageWrapper">
-      <div id="pageTitle">新增模板</div>
   <div id="addRoleWrapper">
-
     <a-form :form="form">
-      <a-form-item
-        :label-col="formItemLayout.labelCol"
-        :wrapper-col="formItemLayout.wrapperCol"
-        label="模板名称"
-      >
-        <a-input
-          v-decorator="[
-          'name',
-          {rules: [{ required: true,message:'请输入模板名称'}]}
-        ]"
-        />
-      </a-form-item>
-      <a-form-item
-        :label-col="formItemLayout.labelCol"
-        :wrapper-col="formItemLayout.wrapperCol"
-        label="模板类型"
-      >
-        <a-select
-          showSearch
-          placeholder="模板类型"
-          optionFilterProp="children"
-          @change="handleTemplateChange"
-          v-decorator="[
-          'type',
-          {rules: [{ required: true,message:'请选择模板类型'}]}
-        ]"
-        >
-          <a-select-option :value="1" :key="1">汇聚机房</a-select-option>
-          <a-select-option :value="2" :key="2">弱电间</a-select-option>
-        </a-select>
-      </a-form-item>
+      <div class="firstInputRow"> 
+          <a-form-item
+            :label-col="formItemLayout.labelCol"
+            :wrapper-col="formItemLayout.wrapperCol"
+            label="模板名称"
+            :colon="false"
+            style="width:32%"
+          >
+            <a-input
+              style="height:40px"
+              v-decorator="[
+              'name',
+              {rules: [{ required: true,message:'请输入模板名称'}]}
+            ]"
+            />
+          </a-form-item>
+          <a-form-item
+            :label-col="formItemLayout.labelCol"
+            :wrapper-col="formItemLayout.wrapperCol"
+            label="模板类型"
+            :colon="false"
+            style="width:32%"
+          >
+            <a-select
+              showSearch
+              optionFilterProp="children"
+              @change="handleTemplateChange"
+              size="large"
+              v-decorator="[
+              'type',
+              {rules: [{ required: true,message:'请选择模板类型'}]}
+            ]"
+            >
+              <a-select-option :value="1" :key="1">汇聚机房</a-select-option>
+              <a-select-option :value="2" :key="2">弱电间</a-select-option>
+            </a-select>
+          </a-form-item>
+      </div>
+      
+      <div class="secondInputRow"> 
+          <a-form-item
+            :label-col="formItemLayout.labelCol"
+            :wrapper-col="formItemLayout.wrapperCol"
+            label="异常类型"
+            :colon="false"
+            style="width:32%"
+          >
+            <a-select
+              size="large"
+              showSearch
+              optionFilterProp="children"
+              v-decorator="[
+              'exceptionId',
+              {rules: [{ required: true,message:'请选择异常类型'}]}
+            ]"
+            >
+              <a-select-option
+                v-for=" item in allExceptions"
+                :value="item.id"
+                :key="item.id"
+              >{{item.remark}}</a-select-option>
+            </a-select>
+          </a-form-item>
 
-      <a-form-item
-        :label-col="formItemLayout.labelCol"
-        :wrapper-col="formItemLayout.wrapperCol"
-        label="异常类型"
-      >
-        <a-select
-          showSearch
-          placeholder="异常类型"
-          optionFilterProp="children"
-          v-decorator="[
-          'exceptionId',
-          {rules: [{ required: true,message:'请选择异常类型'}]}
-        ]"
-        >
-          <a-select-option
-            v-for=" item in allExceptions"
-            :value="item.id"
-            :key="item.id"
-          >{{item.remark}}</a-select-option>
-        </a-select>
-      </a-form-item>
-
-      <a-form-item
-        :label-col="formItemLayout.labelCol"
-        :wrapper-col="formItemLayout.wrapperCol"
-        label="通知方式"
-      >
-        <a-select
-          showSearch
-          placeholder="通知方式"
-          optionFilterProp="children"
-          v-decorator="[
-          'way',
-          {rules: [{ required: true,message:'请选择通知方式'}]}
-        ]"
-        >
-          <a-select-option :value="0" :key="0">通用</a-select-option>
-          <a-select-option :value="1" :key="1">邮件</a-select-option>
-          <a-select-option :value="2" :key="2">短信</a-select-option>
-          <a-select-option :value="3" :key="3">微信</a-select-option>
-        </a-select>
-      </a-form-item>
-      <a-form-item
-        :label-col="formItemLayout.labelCol"
-        :wrapper-col="formItemLayout.wrapperCol"
-        label="通知内容"
-      >
-        <a-input style="height:120px" type="textarea" v-decorator="[
-          'content'
-        ]"/>
-      </a-form-item>
-
-      <a-form-item :label-col="formTailLayout.labelCol" :wrapper-col="formTailLayout.wrapperCol">
-        <div id="opetarionBox">
-          <a-button @click="toReturn" id="returnButton">返回</a-button>
-          <a-button type="primary" @click="toSave">保存</a-button>
+          <a-form-item
+            :label-col="formItemLayout.labelCol"
+            :wrapper-col="formItemLayout.wrapperCol"
+            label="通知方式"
+            :colon="false"
+            style="width:32%"
+          >
+            <a-select
+              size="large"
+              showSearch
+              optionFilterProp="children"
+              v-decorator="[
+              'way',
+              {rules: [{ required: true,message:'请选择通知方式'}]}
+            ]"
+            >
+              <a-select-option :value="0" :key="0">通用</a-select-option>
+              <a-select-option :value="1" :key="1">邮件</a-select-option>
+              <a-select-option :value="2" :key="2">短信</a-select-option>
+              <a-select-option :value="3" :key="3">微信</a-select-option>
+            </a-select>
+          </a-form-item>
         </div>
-      </a-form-item>
+
+        <div class="textareaWrapper">
+          <span class="textareaWrapperSpan">
+            通知内容
+          </span>
+            <!-- <a-input style="height:120px" type="textarea" v-decorator="[
+              'content'
+            ]"/> -->
+            <a-textarea style="height:220px;flex:1" v-model="informtion" />
+        </div>
+
+        <div id="opetarionBox">
+          <a-button @click="toReturn" id="returnButton" style="width:190px;height:56px;border-radius:10px;border:none;box-shadow:3px 3px 10px #F2F2F2;font-size:18px">取消</a-button>
+          <a-button type="primary" style="width:190px;height:56px;border-radius:10px;border:none;box-shadow:3px 3px 10px #DDE8FF;background-color:#4181FF;font-size:18px" @click="toSave">保存</a-button> 
+        </div>
     </a-form>
   </div>
   </div>
@@ -101,8 +111,8 @@
 
 <script>
 const formItemLayout = {
-  labelCol: { span: 4 },
-  wrapperCol: { span: 8 }
+  labelCol: { span: 5 },
+  wrapperCol: { span: 19}
 };
 const formTailLayout = {
   labelCol: { span: 4 },
@@ -116,7 +126,8 @@ export default {
       formTailLayout,
       form: this.$form.createForm(this),
       value: 1,
-      allExceptions: []
+      allExceptions: [],
+      informtion:''
     };
   },
   methods: {
@@ -129,7 +140,8 @@ export default {
     toSave() {
       this.form.validateFields((err, values) => {
         if (!err) {
-          console.log(values);
+          values.content=this.informtion;
+          console.log(values,this.informtion);
           this.$http.toAddTemplate(values).then(res => {
             if (res.data.success) {
               this.$message.success("添加模板成功");
@@ -164,12 +176,13 @@ export default {
 </script>
 <style scoped>
 #pageWrapper{
-    height: calc(100vh - 91px);
+  height: calc(100vh - 91px);
   width:calc(100vw - 300px);
   background-color: #fff;
   box-sizing: border-box;
   margin: 10px 20px 20px 20px;
   border-radius: 8px;
+  overflow: auto;
 }
 #pageTitle {
   padding-left: 69px;
@@ -206,7 +219,7 @@ export default {
 }
 #addRoleWrapper {
   margin-top: 20px;
-  width: 880px;
+  width: 98%;
   margin: 0 auto;
 }
 .ant-form-item {
@@ -215,11 +228,10 @@ export default {
 #opetarionBox {
   display: flex;
   flex-direction: row;
-  justify-content: flex-start;
+  justify-content: center;
   align-items: center;
-  width: 358px;
   box-sizing: border-box;
-  padding-left: 70px;
+  margin-top: 200px;
 }
 #permissionsMenu {
   margin-top: 20px;
@@ -229,5 +241,33 @@ export default {
 }
 #returnButton {
   margin-right: 50px;
+}
+.firstInputRow{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 28px;
+}
+.secondInputRow{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+
+}
+.textareaWrapper{
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+.textareaWrapperSpan{
+  display: inline-block;
+  width:calc(100% * 0.32 / 24 * 5);
+  box-sizing: border-box;
+  padding-left: 8px;
+  color: rgba(0, 0, 0, 0.85);
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div id="pageWrapper" @keydown.enter="search(true)">
+    <div id="pageWrapper" >
       <div id="searchBox">
         <!-- <div>
         <a-radio-group defaultValue="2" buttonStyle="solid" @change='changeTimeScale'>
@@ -350,14 +350,14 @@ window.open(`${JSON.parse(window.sessionStorage.getItem("url")).baseURL}/api/exp
     
   },
   mounted(){
-        let that = this;
-    document.onkeypress = function(e) {
-      var keycode = document.all ? event.keyCode : e.which;
-      if (keycode == 13) {
-        that.search(true);// 登录方法名
-         return false;
-      }
-    };
+    //     let that = this;
+    // document.onkeypress = function(e) {
+    //   var keycode = document.all ? event.keyCode : e.which;
+    //   if (keycode == 13) {
+    //     that.search(true);// 登录方法名
+    //      return false;
+    //   }
+    // };
   }
 };
 </script>

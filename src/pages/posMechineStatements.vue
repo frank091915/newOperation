@@ -299,6 +299,7 @@ export default {
       this.$http.toGetposMechineRoomStatements(page,timeScale).then(res => {
         if (res.data.success) {
           this.recordsTotal = res.data.recordsTotal;
+          this.turningPage=''
             this.data=res.data.data.map((item)=>{
                 item.weekNum="第"+item.weekNum+"周";
                 item.timeRange=item.startTime.substring(0,11) + " 至 " + item.endTime.substring(0,11);
