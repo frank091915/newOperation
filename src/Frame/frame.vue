@@ -1,11 +1,11 @@
 <template>
-  <div id="frame" style="height: 100vh;background-color: rgb(0, 21, 41);">
+  <div id="frame" style="height: 100vh">
     <a-layout id="components-layout-demo-side"  class="frame">
       <a-layout-sider
-        width="250px"
+        width="220px"
         v-model="collapsed"
       >
-        <div class="logo"  style="background-color:#4181ff">
+        <div class="logo"  style="background-color:#3BBDBA">
           <img id="logo" src="../assets/sustech.png">
         </div>
         <div id="menuWrapper">
@@ -32,7 +32,7 @@
         </div>
       </a-layout-sider>
     </a-layout>
-    <div style="background-color:#001529;height:30px;width:240px;box-sizing:border-box;color:rgba(255, 255, 255, 0.65);padding-left:10px;text-align:center" >{{versionDescription +"  " + number}}</div>
+    <div style="height:30px;width:220px;box-sizing:border-box;color:rgba(255, 255, 255, 0.65);padding-left:10px;text-align:center" >{{versionDescription +"  " + number}}</div>
   </div>
 </template>
 <script>
@@ -52,36 +52,36 @@ export default {
     }
   },
   created(){
-    // 获取侧边栏菜单数据
-    this.$http.toGetAsideMenu().then((res)=>{
-      this.allParentMenu=res.data.data;
-      this.aloneMenu=res.data.data.filter((item)=>{
-        if(item.subPermissions.length===0){
-          return true
-        }else{
-          return false
-        }
-      });
-      this.parentMenu=res.data.data.filter((item)=>{
-        if(item.subPermissions.length != 0){
-          return true
-        }else{
-          return false
-        }
-      })
-      this.$nextTick(()=>{
-          this.openedParentMenu()
-      })
-    });
+    // // 获取侧边栏菜单数据
+    // this.$http.toGetAsideMenu().then((res)=>{
+    //   this.allParentMenu=res.data.data;
+    //   this.aloneMenu=res.data.data.filter((item)=>{
+    //     if(item.subPermissions.length===0){
+    //       return true
+    //     }else{
+    //       return false
+    //     }
+    //   });
+    //   this.parentMenu=res.data.data.filter((item)=>{
+    //     if(item.subPermissions.length != 0){
+    //       return true
+    //     }else{
+    //       return false
+    //     }
+    //   })
+    //   this.$nextTick(()=>{
+    //       this.openedParentMenu()
+    //   })
+    // });
 
-    // 请求版本信息
-    this.$http.toGetLatestVersion().then((res)=>{
-      // console.log(res)
-      if(res.data.success){
-        this.number=res.data.data.number;
-        this.versionDescription=res.data.data.test ? "测试" : '';
-      }
-    })
+    // // 请求版本信息
+    // this.$http.toGetLatestVersion().then((res)=>{
+    //   // console.log(res)
+    //   if(res.data.success){
+    //     this.number=res.data.data.number;
+    //     this.versionDescription=res.data.data.test ? "测试" : '';
+    //   }
+    // })
 
   },
   computed:{
@@ -197,7 +197,7 @@ body{height:100%}
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-
+  background-color: #fff !important;
 }
 #components-layout-demo-side .logo {
   height: 32px;
@@ -205,17 +205,17 @@ body{height:100%}
   margin: 16px;
 }
 #components-layout-demo-side{
-   max-width: 260px !important;
+   max-width: 220px !important;
    max-height: 100%;
 }
 .ant-layout-sider{
-  min-width: 260px !important;
+  min-width: 220px !important;
 }
 #components-layout-demo-side .logo{
   /* margin-bottom: 18px !important; */
 }
 #logo{
-  width: 162px;
+  width: 172px;
   height: 44px;
 }
 #components-layout-demo-side .logo{
@@ -262,11 +262,12 @@ body{height:100%}
     box-sizing: border-box;
     padding-left: 65px !important;
     padding-right:5px !important;
-    width: 260px !important;
+    width: 220px !important;
   }
   #menuWrapper{
     height: calc(100% - 60px);
     overflow: auto;
+    background-color: #fff !important;
   }
   .menuIcon{
     display: inline-block;

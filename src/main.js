@@ -9,9 +9,7 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 
 // 汉化
-import Frame from "./Frame/frame.vue";
 import zh_CN from 'ant-design-vue/lib/locale-provider/zh_CN';
-import moment from 'moment';
 import 'moment/locale/zh-cn';
 
 // 引入echarts
@@ -170,30 +168,25 @@ Vue.config.productionTip = false
 
 router.beforeEach((to, from, next) => {
 
-  let ifRedirected=false;
-    if(to.redirectedFrom=="/"){
-      ifRedirected=true
-      // console.log("从/重定向过来")
-    }
-    if(window.sessionStorage.getItem("operationToken")){
+  // 如果有ticket,存好tikcet
+  if(window.location.href.indexOf("?ticket=")>0){
+    window.sessionStorage.setItem("ticket",window.location.href.slice(window.location.href.indexOf("?ticket=") + "?ticket=".length))
+}
+
+    if(window.sessionStorage.getItem("ticket")){
         next() 
     }else{
       if(to.path==="/signIn" ){
         next()
       }else{
-        if(!ifRedirected){
-          message.error("请登录")
-        }
-        next({path:"/signIn",query:{
-          redirect:true
-        }})
+        // 跳转到登录组件
+        next("/signIn")
       }
     }
-
+  next()
   })
 
 
-/* eslint-disable no-new */
 new Vue({
   el: '#app',
   router,
