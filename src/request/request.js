@@ -64,19 +64,13 @@ const test = (token) => {
 }
 
 // 菜单
-const toGerMenu = () => {
+const toGetMenu = (token) => {
   return ajaxLogin.post(
-    "/api/SystemApi/GetProjectsByUser",({
-          limit: 20,
-          offset: 0,
-          order: "desc",
-          orderId: "id",
-          search: "",
-          sort: "IsDuBan",
-    }), {
+    "/api/SystemApi/getUserRoleAndAction",{},{
       headers: {
         "Content-Type": "application/json",
-        token:window.sessionStorage.getItem("token")
+        token:token,
+        Authorization:token
       }
     }
   )
@@ -111,5 +105,6 @@ export {
   ticektCheck,
   firstCheck,
   test,
-  turnToLoginPage
+  turnToLoginPage,
+  toGetMenu
 }

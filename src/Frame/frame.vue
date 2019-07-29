@@ -9,30 +9,38 @@
           <img id="logo" src="../assets/sustech.png">
         </div>
         <div id="menuWrapper">
-        <a-menu  theme="dark" :selectedKeys="[currentMenuId]" mode="inline"  :openKeys="[openedMenu]" v-for=" item in allParentMenu" :key="item.path">
+        <a-menu   :selectedKeys="[currentMenuId]" mode="inline"  :openKeys="[openedMenu]" v-for=" item in allParentMenu" :key="item.path">
           <!-- 渲染一级菜单 -->
-          <a-menu-item v-if="!item.subPermissions.length"  :key="item.path" @click="toNavigate(item.path,item.title,item.id,item,item.id)">
-            <span class="menuIcon" :style="menuIconStyle(item.id)"></span> <span  :class=" {'menu-item-active': selectedMenuId == item.id}">{{item.title}}</span>
+          <a-menu-item v-if="!item.SubActions"  :key="item.path" 
+          @click="toNavigate(item.path,item.title,item.ActionID,item,item.ActionID)"
+          :class=" {'ant-menu-item-selected': selectedMenuId == item.ActionID}"
+          >
+            <span class="menuIcon" :style="menuIconStyle(item.ActionID)"></span> <span  :class=" {'menu-item-active': selectedMenuId == item.ActionID}">{{item.ActionName}}</span>
           </a-menu-item>
           <a-sub-menu
             v-else
-            :key="item.id"  
+            :key="item.ActionID"  
             @titleClick='handleSelect' 
+            :class=" {'ant-menu-item-selected': selectedMenuId == item.ActionID}"
           >
-            <span slot="title" ><span class="menuIcon" :style="menuIconStyle(item.id)"></span><span class="menuTitle">{{item.title}}</span></span>
+            <span slot="title" ><span class="menuIcon" :style="menuIconStyle(item.ActionID)"></span><span class="menuTitle">{{item.ActionName}}</span></span>
             <a-menu-item 
-            v-for="subItem in item.subPermissions"
-            :key="subItem.id"
-            @click="toNavigate(subItem.path,subItem.title,subItem.id,subItem,subItem.parentId)"
+            v-for="subItem in item.SubActions"
+            :key="subItem.ActionID"
+            @click="toNavigate(subItem.path,subItem.title,subItem.ActionID,subItem,subItem.SupperActionID)"
             class="childrenMenu"
+            :class=" {'ant-menu-item-selected': selectedMenuId == subItem.ActionID}"
             style="height:25px;line-height:25px"
-            >{{subItem.title}}</a-menu-item>
+            >{{subItem.ActionName}}</a-menu-item>
           </a-sub-menu>
         </a-menu>
         </div>
       </a-layout-sider>
     </a-layout>
-    <div style="height:30px;width:220px;box-sizing:border-box;color:rgba(255, 255, 255, 0.65);padding-left:10px;text-align:center" >{{versionDescription +"  " + number}}</div>
+    <!-- 版本信息 -->
+    <!-- <div style="height:30px;width:220px;box-sizing:border-box;color:rgba(255, 255, 255, 0.65);padding-left:10px;text-align:center" >
+      {{versionDescription +"  " + number}}
+    </div> -->
   </div>
 </template>
 <script>
@@ -52,6 +60,19 @@ export default {
     }
   },
   created(){
+    // 获取菜单
+    let _this=this;
+    setTimeout(function(){
+          _this.$http.toGetMenu(window.sessionStorage.getItem("token")).then((res)=>{
+            console.log("菜单",res)
+            if(res.data.IsSuccess){
+              console.log(res.data.Model.Actions)
+              _this.allParentMenu=res.data.Model.Actions;
+              
+            }
+          })
+    },500)
+
     // // 获取侧边栏菜单数据
     // this.$http.toGetAsideMenu().then((res)=>{
     //   this.allParentMenu=res.data.data;
@@ -89,22 +110,22 @@ export default {
   },
   methods:{
     toNavigate(path,title,menuId,item,menuIconId){
-      if(item.subPermissions){
-        this.openedMenu=menuId
-      }
+      // if(item.SubActions){
+        this.openedMenu=menuIconId
+      // }
       menuIconId=parseInt(menuIconId);
 
-      // console.log(path)
-      // 获取需要的路径字符串
+      // // console.log(path)
+      // // 获取需要的路径字符串
       this.currentMenuId=menuId;
 
-      // 记录选中的父级菜单
+      // // 记录选中的父级菜单
       this.selectedMenuId=menuIconId;
-      let processedPath=path.slice(0,(path.length-3)).split("/").pop();
-      let ultimatePath=path.split('/')
-      ultimatePath=ultimatePath.slice(2,(ultimatePath.length-1))
-      ultimatePath=ultimatePath.join("/")
-      this.$router.push({path:"/"+ ultimatePath,query:{title,menuId,menuIconId}})
+      // let processedPath=path.slice(0,(path.length-3)).split("/").pop();
+      // let ultimatePath=path.split('/')
+      // ultimatePath=ultimatePath.slice(2,(ultimatePath.length-1))
+      // ultimatePath=ultimatePath.join("/")
+      // this.$router.push({path:"/"+ ultimatePath,query:{title,menuId,menuIconId}})
     },
     // 获取需要展开的父级菜单
     openedParentMenu(){
@@ -130,7 +151,6 @@ export default {
       }
     },
     menuIconStyle(id){
-
       if(this.selectedMenuId==id){
         return{
           'background-image':`url('../../../../static/assets/${this.menuIconPathSelected(id)}')`
@@ -140,47 +160,78 @@ export default {
           'background-image':`url('../../../../static/assets/${this.menuIconPathUnselected(id)}')`
         }
       }
-
-      
     },
     menuIconPathSelected(id){
       switch(id){
-        case 1 : 
-        return 'leftbar_status summary.png';
-        case 2 : 
-        return 'leftbar_location display.png';
-        case 3 : 
-        return 'leftbar_ollect.png';
-        case 4 : 
-        return 'leftbar_weak current.png';
-        case 5 : 
-        return 'leftbar_controinet.png';
-        case 6 : 
-        return 'leftbar_report.png';
-        case 8 : 
-        return 'leftbar_alarm maintenance.png';
-        case 9 : 
-        return 'leftbar_system settings.png';
+        case 110130 : 
+        return 'tab_icon_gerenshouye_s.png';
+        case 110120 : 
+        return 'tab_icon_fenxitongji_s.png';
+        case 110020 : 
+        return 'tab_icon_wodexiangmu_s.png';
+        case 110090 : 
+        return 'tab_icon_xinjianlichengbei_s.png';
+        case 110060 : 
+        return 'tab_icon_goutongguanli_s.png';
+        case 110100 : 
+        return 'tab_icon_xiangmuzichan_s.png';
+        case 110020 : 
+        return 'tab_icon_xiangmulixiang_s.png';
+        case 110021 : 
+        return 'tab_icon_jishuwenjian_s.png';
+        case 110050 : 
+        return 'tab_icon_xiangmuguanli_s.png';
+        case 110070 : 
+        return 'tab_icon_wenjianzhongxin_s.png';
+        case 110040 : 
+        return 'tab_icon_zhaobiaoguanli_s.png';
+        case 110080 : 
+        return 'tab_icon_jichuguanli_s.png';
+        case 110110 : 
+        return 'tab_icon_xiangmuhendaotu_s.png';
+        case 110030 : 
+        return 'tab_icon_gongyingshangguanli_s.png';
+        case 110010 : 
+        return 'tab_icon_yusuanguanli_s.png';
+        case 110140 : 
+        return 'tab_icon_xiangmuguanli_s.png';
+        
       }
     },
     menuIconPathUnselected(id){
       switch(id){
-        case 1 : 
-        return 'leftbar_status summary_white.png';
-        case 2 : 
-        return 'leftbar_location display_white.png';
-        case 3 : 
-        return 'leftbar_ollect_white.png';
-        case 4 : 
-        return 'leftbar_weak current_white.png';
-        case 5 : 
-        return 'leftbar_controinet_white.png';
-        case 6 : 
-        return 'leftbar_report_white.png';
-        case 8 : 
-        return 'leftbar_alarm maintenance_white.png';
-        case 9 : 
-        return 'leftbar_system settings_white.png';
+        case 110130 : 
+        return 'tab_icon_gerenshouye_n.png';
+        case 110120 : 
+        return 'tab_icon_fenxitongji_n.png';
+        case 110020 : 
+        return 'tab_icon_wodexiangmu_n.png';
+        case 110090 : 
+        return 'tab_icon_xinjianlichengbei_n.png';
+        case 110060 : 
+        return 'tab_icon_goutongguanli_n.png';
+        case 110100 : 
+        return 'tab_icon_xiangmuzichan_n.png';
+        case 110020 : 
+        return 'tab_icon_xiangmulixiang_n.png';
+        case 110021 : 
+        return 'tab_icon_jishuwenjian_n.png';
+        case 110050 : 
+        return 'tab_icon_xiangmuguanli_n.png';
+        case 110070 : 
+        return 'tab_icon_wenjianzhongxin_n.png';
+        case 110040 : 
+        return 'tab_icon_zhaobiaoguanli_n.png';
+        case 110080 : 
+        return 'tab_icon_jichuguanli_n.png';
+        case 110110 : 
+        return 'tab_icon_xiangmuhendaotu_n.png';
+        case 110030 : 
+        return 'tab_icon_gongyingshangguanli_n.png';
+        case 110010 : 
+        return 'tab_icon_yusuanguanli_n.png';
+        case 110140 : 
+        return 'tab_icon_xiangmuguanli_n.png';
       }
     }
   }
@@ -249,6 +300,18 @@ body{height:100%}
 .ant-menu-item{
   box-sizing: border-box;
   padding-left: 20px !important;
+  margin-bottom: 0px !important;
+  margin-top: 0px !important;
+  border-bottom: 1px solid #F7F7F7 !important;
+}
+.ant-menu-submenu{
+  border-bottom: 1px solid #F7F7F7 !important;
+}
+.childrenMenu {
+  border-bottom: none !important;
+}
+.ant-menu-item::after{
+  border-right:none !important;
 }
 .ant-menu-submenu-title{
   display: flex;
@@ -260,9 +323,17 @@ body{height:100%}
   }
   .childrenMenu{
     box-sizing: border-box;
-    padding-left: 65px !important;
+    padding-left: 55px !important;
     padding-right:5px !important;
     width: 220px !important;
+  }
+  .childrenMenu{
+    margin-top: 3px !important;
+    margin-bottom: 0 !important;
+  }
+  .childrenMenu:nth-child(1){
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
   }
   #menuWrapper{
     height: calc(100% - 60px);
@@ -271,9 +342,9 @@ body{height:100%}
   }
   .menuIcon{
     display: inline-block;
-    width: 18px;
-    height: 18px;
-    margin-top:11px;
+    width: 13px;
+    height: 13px;
+    margin-top:13px;
     float: left;
     margin-right: 10px;
     background-size: 100% 100%;

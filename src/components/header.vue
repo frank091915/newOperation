@@ -113,7 +113,7 @@ export default {
     font-size: 18px;
 }
 #dropDown{
-    width: 252px;
+    width: 228px;
     display: flex;
     flex-direction: row;
     justify-content:space-between;
@@ -133,6 +133,7 @@ export default {
 #informationBox{
   width: 30px;
   height: 30px;
+  margin-right: 34px;
 }
 .avator{
   width: 30px;

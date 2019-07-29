@@ -125,6 +125,7 @@ html,body{
   margin-left: 220px;
   margin-top: 61px;
   /* background-color: #F1F5F6; */
+  overflow: auto;
 }
 #components-back-top-demo-custom .ant-back-top {
     bottom: 20px;
@@ -173,5 +174,27 @@ html,body{
 }
 .ant-tabs-ink-bar{
   background-color:#2BB7B3 !important;
+}
+/* 菜单样式 */
+.ant-menu-item-active{
+  color:#2BB7B3 !important;
+}
+.menu-item-active{
+  color:#2BB7B3 !important;
+}
+.ant-menu-submenu-title:hover{
+  color:#2BB7B3 !important;
+}
+.ant-menu-submenu-arrow{
+  color:#2BB7B3 !important;
+  background-color: #2BB7B3 !important;
+}
+.ant-menu-item-selected{
+  color:#2BB7B3 !important;
+  background-color: #EEFAF9 !important;
+  border-right: none !important;
+}
+.ant-menu-item-selected::after{
+  border-right: none !important;
 }
 </style>
